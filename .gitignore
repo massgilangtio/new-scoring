@@ -1,0 +1,22 @@
+.venv/
+backend/.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.env
+backend/.env
+.tools/
+
+# Local runtime / tooling
+_run.log
+_run.err
+*.log
+.DS_Store
+Thumbs.db
+backend/.venv/
+frontend/writable/cache/*
+frontend/writable/logs/*
+frontend/writable/session/*
+!frontend/writable/**/index.html
+!frontend/writable/**/.gitkeep

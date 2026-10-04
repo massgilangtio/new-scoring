@@ -1,0 +1,13 @@
+&lt;div class="card card-borderless"&gt;
+  &lt;div class="card-header bg-gray-900"&gt;
+    ...
+  &lt;/div&gt;
+  &lt;div class="alert alert-success alert-dismissible fade show rounded-0 d-flex m-0"&gt;
+    &lt;div class="display-6"&gt;&lt;iconify-icon icon="solar:check-circle-line-duotone"&gt;&lt;/iconify-icon&gt;&lt;/div&gt;
+    &lt;div class="small fw-semibold flex-1 ps-10px"&gt;
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque ac posuere lacus, quis suscipit sem. Nulla sagittis aliquam erat non convallis.
+    &lt;/div&gt;
+    &lt;button type="button" class="btn-close" data-bs-dismiss="alert"&gt;&lt;/button&gt;
+  &lt;/div&gt;
+  ...
+&lt;/div&gt;

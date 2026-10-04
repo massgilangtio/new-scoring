@@ -1,0 +1,13 @@
+&lt;div class="card card-borderless shadow-lg"&gt;
+  &lt;div class="card-header bg-gray-900"&gt;
+    &lt;h4 class="card-header-title text-white"&gt;Card title&lt;/h4&gt;
+    &lt;div class="btn-group btn-group-toggle my-n1" data-toggle="buttons"&gt;
+      &lt;input type="radio" name="options" class="btn-check" id="option1" autocomplete="off" checked /&gt;
+      &lt;label class="btn btn-success btn-xs" for="option1"&gt; Option 1&lt;/label&gt;
+      
+      &lt;input type="radio" name="options" class="btn-check" id="option2" autocomplete="off" /&gt;
+      &lt;label class="btn btn-success btn-xs" for="option2"&gt; Option 2&lt;/label&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  ...
+&lt;/div&gt;

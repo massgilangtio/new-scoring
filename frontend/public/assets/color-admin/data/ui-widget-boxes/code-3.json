@@ -1,0 +1,13 @@
+&lt;div class="card card-borderless"&gt;
+  &lt;div class="card-header bg-gray-900"&gt;
+    &lt;h4 class="card-header-title text-white"&gt;Card title&lt;/h4&gt;
+    &lt;div class="btn-group my-n1"&gt;
+      &lt;button type="button" class="btn btn-success btn-xs"&gt;Action&lt;/button&gt;
+      &lt;button type="button" class="btn btn-success btn-xs dropdown-toggle" data-bs-toggle="dropdown"&gt;&lt;b class="caret"&gt;&lt;/b&gt;&lt;/button&gt;
+      &lt;div class="dropdown-menu dropdown-menu-end"&gt;
+        ...
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  ...
+&lt;/div&gt;

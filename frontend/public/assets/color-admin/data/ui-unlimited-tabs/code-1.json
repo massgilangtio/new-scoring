@@ -1,0 +1,44 @@
+&lt;!-- dark theme --&gt;
+&lt;div class="card"&gt;
+  &lt;div class="d-flex bg-gray-900 rounded-top"&gt;
+    &lt;div class="nav-tabs-overflow"&gt;
+      &lt;ul class="nav nav-tabs nav-tabs-inverse nav-tabs-borderless"&gt;
+        &lt;li class="nav-item prev-btn"&gt;
+          &lt;a href="javascript:;" data-click="prev-tab" class="nav-link text-theme"&gt;
+            &lt;i class="fa fa-arrow-left mx-n1"&gt;&lt;/i&gt;
+          &lt;/a&gt;
+        &lt;/li&gt;
+        &lt;li class="nav-item"&gt;&lt;a href="#nav-tab-1" data-bs-toggle="tab" class="nav-link active"&gt;Nav Tab 1&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="nav-item"&gt;&lt;a href="#nav-tab-2" data-bs-toggle="tab" class="nav-link"&gt;Nav Tab 2&lt;/a&gt;&lt;/li&gt;
+        ...
+        &lt;li class="nav-item next-btn"&gt;
+          &lt;a href="javascript:;" data-click="next-tab" class="nav-link text-theme"&gt;
+            &lt;i class="fa fa-arrow-right mx-n1"&gt;&lt;/i&gt;
+          &lt;/a&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+    &lt;div class="me-2 ms-2 d-flex align-items-center"&gt;
+      &lt;a href="javascript:;" class="btn btn-xs btn-icon d-flex align-items-center justify-content-center btn-secondary" data-toggle="panel-expand"&gt;
+        &lt;i class="fa fa-expand"&gt;&lt;/i&gt;
+      &lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  
+  &lt;div class="card-body tab-content"&gt;
+    &lt;div class="tab-pane fade active show" id="nav-tab-1"&gt;
+      ...
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- light theme --&gt;
+&lt;div class="card"&gt;
+  &lt;div class="d-flex bg-body rounded-top"&gt;
+    &lt;div class="nav-tabs-overflow"&gt;
+      &lt;ul class="nav nav-tabs nav-tabs-borderless"&gt;
+        ...
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;

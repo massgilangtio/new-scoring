@@ -1,0 +1,11 @@
+&lt;div id="appSidebar" class="app-sidebar" data-bs-theme="dark"&gt;
+  &lt;div class="app-sidebar-content" data-scrollbar="true" data-height="100%"&gt;
+    &lt;div class="menu"&gt;
+      ...
+      &lt;div class="menu-search mt-3"&gt;
+        &lt;input type="text" class="form-control bg-light border-0 shadow-none fw-semibold" placeholder="Filter menu..." data-sidebar-search="true" /&gt;
+      &lt;/div&gt;
+      ...
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;

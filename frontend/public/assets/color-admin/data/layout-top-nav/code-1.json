@@ -1,0 +1,43 @@
+&lt;div id="app" class="app app-with-top-nav"&gt;
+  &lt;div id="appHeader" class="app-header"&gt;
+    ...
+    &lt;div class="menu"&gt;
+      &lt;div class="menu-item d-md-none"&gt;
+        &lt;a href="#" data-toggle="app-top-nav-mobile" class="menu-link"&gt;
+          &lt;iconify-icon icon="solar:add-square-line-duotone"&gt;&lt;/iconify-icon&gt;
+        &lt;/a&gt;
+      &lt;/div&gt;
+      ...
+    &lt;/div&gt;
+  &lt;/div&gt;
+  
+  &lt;div id="appTopNav" class="app-top-nav" data-bs-theme="dark"&gt;
+    &lt;div class="menu"&gt;
+      &lt;div class="menu-item has-sub"&gt;
+        &lt;a href="" class="menu-link"&gt;
+          &lt;div class="menu-icon"&gt;
+            &lt;iconify-icon icon="solar:list-bold-duotone"&gt;&lt;/iconify-icon&gt;
+          &lt;/div&gt;
+          &lt;div class="menu-text"&gt;Menu Level&lt;/div&gt;
+          &lt;div class="menu-caret"&gt;&lt;/div&gt;
+        &lt;/a&gt;
+        &lt;div class="menu-submenu"&gt;
+          &lt;div class="menu-item"&gt;
+            &lt;a href="" class="menu-link"&gt;
+              &lt;div class="menu-text"&gt;Menu 1.1&lt;/div&gt;
+              &lt;div class="menu-caret"&gt;&lt;/div&gt;
+            &lt;/a&gt;
+          &lt;/div&gt;
+          ...
+        &lt;/div&gt;
+      &lt;/div&gt;
+      ...
+      &lt;div class="menu-item menu-control menu-control-start"&gt;
+        &lt;a href="javascript:;" class="menu-link" data-toggle="app-top-nav-prev"&gt;&lt;i class="fa fa-angle-left"&gt;&lt;/i&gt;&lt;/a&gt;
+      &lt;/div&gt;
+      &lt;div class="menu-item menu-control menu-control-end"&gt;
+        &lt;a href="javascript:;" class="menu-link" data-toggle="app-top-nav-next"&gt;&lt;i class="fa fa-angle-right"&gt;&lt;/i&gt;&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;

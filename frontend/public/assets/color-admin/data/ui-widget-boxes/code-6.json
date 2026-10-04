@@ -1,0 +1,6 @@
+&lt;div class="card card-borderless"&gt;
+  &lt;div class="card-header bg-gray-900"&gt;
+    &lt;h4 class="card-header-title text-white"&gt;Card title &lt;span class="badge bg-success ms-1"&gt;NEW&lt;/span&gt;&lt;/h4&gt;
+  &lt;/div&gt;
+  ...
+&lt;/div&gt;

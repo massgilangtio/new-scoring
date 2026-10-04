@@ -1,0 +1,4191 @@
+{
+  "v": 12,
+  "id": "cmqta9bu841pihh1mvequ3hi0",
+  "name": "API SERVICE GATEWAY",
+  "folders": [
+    {
+      "v": 12,
+      "id": "cmqta9but41plhh1mmg6wwdjc",
+      "name": "Gateway",
+      "folders": [
+        {
+          "v": 12,
+          "id": "cmqta9c4k41s4hh1m2gzq2wt7",
+          "name": "SMARTLOAN-NG",
+          "folders": [],
+          "requests": [
+            {
+              "v": "17",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "body": "{\n    \"reqid\"         : \"LN016\",\n    \"channelId\"     : \"27\",\n    \"userGtw\"       : \"slngw\",\n\n    // // Notary\n    // \"paramName\":\"vendors\", \n    // \"filters\":{ \n    //     \"GROUPID\":\"2\" // Notary\n    // }, //\n\n\n    // // Insurance\n    // \"paramName\":\"vendors\", \n    // \"filters\":{ \n    //     \"GROUPID\":\"3\" // Insurance\n    // },\n  \n    // // iNSTANCI\n    // \"paramName\":\"vendors\", \n    // \"filters\":{ \n    //     \"GROUPID\":\"3\" // iNSTANCI\n    // },\n\n    \"-\"             : \"\"\n}",
+                "contentType": "application/json"
+              },
+              "name": "/LoanParameterInquiry",
+              "method": "POST",
+              "params": [],
+              "headers": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Api-Key",
+                  "value": "<<X-Api-Key>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Id",
+                  "value": "<<X-Client-Id>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Timestamp",
+                  "value": "<<X-Timestamp>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Secret",
+                  "value": "<<X-Client-Secret>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Signature",
+                  "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "endpoint": "<<HOST-URL>>/gateway/LoanParameterInquiry",
+              "responses": {},
+              "testScript": "",
+              "description": null,
+              "preRequestScript": "",
+              "requestVariables": [],
+              "id": "cmqta9c5841s6hh1mfur6aip9"
+            },
+            {
+              "v": "17",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "body": "{\r\n    \"reqid\"         : \"FN015\",\r\n    \"channelId\"     : \"27\",\r\n    \"userGtw\"       : \"slngw\",\r\n\r\n    // \"paramName\"     : \"NOTARISID\",\r\n    // \"paramName\"     : \"INSURANCEID\",\r\n    \"paramName\"     : \"TREASURID\",\r\n\r\n    \r\n\r\n    \"-\"             : \"\"\r\n}",
+                "contentType": "application/json"
+              },
+              "name": "/FinancingParameterInquiry",
+              "method": "POST",
+              "params": [],
+              "headers": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Api-Key",
+                  "value": "<<X-Api-Key>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Id",
+                  "value": "<<X-Client-Id>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Timestamp",
+                  "value": "<<X-Timestamp>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Secret",
+                  "value": "<<X-Client-Secret>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Signature",
+                  "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "endpoint": "<<HOST-URL>>/gateway/FinancingParameterInquiry",
+              "responses": {},
+              "testScript": "",
+              "description": null,
+              "preRequestScript": "",
+              "requestVariables": [],
+              "id": "cmqta9c5841s8hh1m5a24l3kj"
+            },
+            {
+              "v": "17",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "body": "{\r\n    \"reqid\"         : \"LN017\",\r\n    \"channelId\"     : \"27\",\r\n    \"userGtw\"       : \"slngw\",\r\n\r\n\r\n    \"-\"             : \"\"\r\n}",
+                "contentType": "application/json"
+              },
+              "name": "/LoanParameterInquiryLBU",
+              "method": "POST",
+              "params": [],
+              "headers": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Api-Key",
+                  "value": "<<X-Api-Key>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Id",
+                  "value": "<<X-Client-Id>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Timestamp",
+                  "value": "<<X-Timestamp>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Secret",
+                  "value": "<<X-Client-Secret>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Signature",
+                  "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "endpoint": "<<HOST-URL>>/gateway/LoanParameterInquiryLBU",
+              "responses": {},
+              "testScript": "",
+              "description": null,
+              "preRequestScript": "",
+              "requestVariables": [],
+              "id": "cmqta9c5841sahh1mbyacu1qp"
+            },
+            {
+              "v": "17",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "body": "{\r\n    \"reqid\"         : \"LN018\",\r\n    \"channelId\"     : \"27\",\r\n    \"userGtw\"       : \"slngw\",\r\n\r\n\r\n    \"-\"             : \"\"\r\n}",
+                "contentType": "application/json"
+              },
+              "name": "/LoanParameterInquirySID",
+              "method": "POST",
+              "params": [],
+              "headers": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Api-Key",
+                  "value": "<<X-Api-Key>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Id",
+                  "value": "<<X-Client-Id>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Timestamp",
+                  "value": "<<X-Timestamp>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Secret",
+                  "value": "<<X-Client-Secret>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Signature",
+                  "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "endpoint": "<<HOST-URL>>/gateway/LoanParameterInquirySID",
+              "responses": {},
+              "testScript": "",
+              "description": null,
+              "preRequestScript": "",
+              "requestVariables": [],
+              "id": "cmqta9c5841schh1mjbp1dlks"
+            },
+            {
+              "v": "17",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "body": "{\r\n    \"reqid\"         : \"FN016\",\r\n    \"channelId\"     : \"27\",\r\n    \"userGtw\"       : \"slngw\",\r\n\r\n\r\n    \"-\"             : \"\"\r\n}",
+                "contentType": "application/json"
+              },
+              "name": "/FinancingParameterInquiryLBU",
+              "method": "POST",
+              "params": [],
+              "headers": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Api-Key",
+                  "value": "<<X-Api-Key>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Id",
+                  "value": "<<X-Client-Id>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Timestamp",
+                  "value": "<<X-Timestamp>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Secret",
+                  "value": "<<X-Client-Secret>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Signature",
+                  "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "endpoint": "<<HOST-URL>>/gateway/FinancingParameterInquiryLBU",
+              "responses": {},
+              "testScript": "",
+              "description": null,
+              "preRequestScript": "",
+              "requestVariables": [],
+              "id": "cmqta9c5941sehh1m586lvw3l"
+            },
+            {
+              "v": "17",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "body": "{\r\n    \"reqid\"         : \"FN017\",\r\n    \"channelId\"     : \"27\",\r\n    \"userGtw\"       : \"slngw\",\r\n\r\n\r\n    \"-\"             : \"\"\r\n}",
+                "contentType": "application/json"
+              },
+              "name": "/FinancingParameterInquirySID",
+              "method": "POST",
+              "params": [],
+              "headers": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Api-Key",
+                  "value": "<<X-Api-Key>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Id",
+                  "value": "<<X-Client-Id>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Timestamp",
+                  "value": "<<X-Timestamp>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Secret",
+                  "value": "<<X-Client-Secret>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Signature",
+                  "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "endpoint": "<<HOST-URL>>/gateway/FinancingParameterInquirySID",
+              "responses": {},
+              "testScript": "",
+              "description": null,
+              "preRequestScript": "",
+              "requestVariables": [],
+              "id": "cmqta9c5941sghh1m4c6qk51x"
+            },
+            {
+              "v": "17",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "body": "{\n    \"reqid\"         : \"LN036\",\n    \"channelId\"     : \"27\",\n    \"userGtw\"       : \"slngw\",\n\n    \"businessUnit\"  : \"2\", // 1 = Konven, 2 = Syariah\n    \"branchId\"      : \"611\",\n    // \"instId\"        : \"\",\n    // \"treasureId\"    : \"\",\n    // \"treasureNm\"    : \"\",\n\n\n    \"-\"             : \"\"\n}",
+                "contentType": "application/json"
+              },
+              "name": "/TreasuryInquiry",
+              "method": "POST",
+              "params": [],
+              "headers": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Api-Key",
+                  "value": "<<X-Api-Key>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Id",
+                  "value": "<<X-Client-Id>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Timestamp",
+                  "value": "<<X-Timestamp>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Secret",
+                  "value": "<<X-Client-Secret>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Signature",
+                  "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "endpoint": "<<HOST-URL>>/gateway/TreasuryInquiry",
+              "responses": {},
+              "testScript": "",
+              "description": null,
+              "preRequestScript": "",
+              "requestVariables": [],
+              "id": "cmqta9c5941sihh1m9q13hb9i"
+            },
+            {
+              "v": "17",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "body": "{\n    \"reqid\"         : \"CF004\",\n    \"channelId\"     : \"27\",\n    \"userGtw\"       : \"slngw\",\n\n    \"cifid\"         : \"0101498595\", \n\n    \"-\"             : \"\"\n}",
+                "contentType": "application/json"
+              },
+              "name": "/CIFInquiry",
+              "method": "POST",
+              "params": [],
+              "headers": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Api-Key",
+                  "value": "<<X-Api-Key>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Id",
+                  "value": "<<X-Client-Id>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Timestamp",
+                  "value": "<<X-Timestamp>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Secret",
+                  "value": "<<X-Client-Secret>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Signature",
+                  "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "endpoint": "<<HOST-URL>>/gateway/CIFInquiry",
+              "responses": {},
+              "testScript": "",
+              "description": null,
+              "preRequestScript": "",
+              "requestVariables": [],
+              "id": "cmqta9c5941skhh1ma6vplvex"
+            },
+            {
+              "v": "17",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "body": "{\n    \"reqid\"         : \"CF005\",\n    \"channelId\"     : \"27\",\n    \"userGtw\"       : \"slngw\",\n\n    // \"accnbr\"         :\"10002090232809\", \n    \"accnbr\"         :\"10004010000110\", \n    // \"accnbr\"         :\"10002090232809\", \n    // \"accnbr\"         :\"117020405061\", \n\n    \"-\"             : \"\"\n}",
+                "contentType": "application/json"
+              },
+              "name": "/CIFInquirybyAccount",
+              "method": "POST",
+              "params": [],
+              "headers": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Api-Key",
+                  "value": "<<X-Api-Key>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Id",
+                  "value": "<<X-Client-Id>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Timestamp",
+                  "value": "<<X-Timestamp>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Secret",
+                  "value": "<<X-Client-Secret>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Signature",
+                  "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "endpoint": "<<HOST-URL>>/gateway/CIFInquirybyAccount",
+              "responses": {},
+              "testScript": "",
+              "description": null,
+              "preRequestScript": "",
+              "requestVariables": [],
+              "id": "cmqta9c5941smhh1m8p6mckb1"
+            },
+            {
+              "v": "17",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "body": "{\n    \"reqid\"         : \"LN014\",\n    \"channelId\"     : \"27\",\n    \"userGtw\"       : \"slngw\",\n    // \"channelId\"     : \"33\",\n    // \"userGtw\"       : \"dtigw\",\n\n    // \"accnbr\"         :\"10006210032795\", \n    // \"accnbr\"         :\"66211060000116\", \n    // \"accnbr\"         :\"10004010000110\", \n    \"accnbr\"         :\"27605380000015\", \n\n    \"-\"             : \"\"\n}",
+                "contentType": "application/json"
+              },
+              "name": "/LoanAccountInquiry",
+              "method": "POST",
+              "params": [],
+              "headers": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Api-Key",
+                  "value": "<<X-Api-Key>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Id",
+                  "value": "<<X-Client-Id>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Timestamp",
+                  "value": "<<X-Timestamp>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Secret",
+                  "value": "<<X-Client-Secret>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Signature",
+                  "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "endpoint": "<<HOST-URL>>/gateway/LoanAccountInquiry",
+              "responses": {},
+              "testScript": "",
+              "description": null,
+              "preRequestScript": "",
+              "requestVariables": [],
+              "id": "cmqta9c5a41sohh1moc4hhr5v"
+            },
+            {
+              "v": "17",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "body": "{\n    \"reqid\"         : \"FN014\",\n    \"channelId\"     : \"27\",\n    \"userGtw\"       : \"slngw\",\n\n    \"accnbr\"         :\"63005230002260\", \n\n    \"-\"             : \"\"\n}",
+                "contentType": "application/json"
+              },
+              "name": "/FinancingAccountInquiry",
+              "method": "POST",
+              "params": [],
+              "headers": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Api-Key",
+                  "value": "<<X-Api-Key>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Id",
+                  "value": "<<X-Client-Id>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Timestamp",
+                  "value": "<<X-Timestamp>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Secret",
+                  "value": "<<X-Client-Secret>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Signature",
+                  "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "endpoint": "<<HOST-URL>>/gateway/FinancingAccountInquiry",
+              "responses": {},
+              "testScript": "",
+              "description": null,
+              "preRequestScript": "",
+              "requestVariables": [],
+              "id": "cmqta9c5a41sqhh1mw8245t6q"
+            },
+            {
+              "v": "17",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "body": "{\n    \"reqid\"         : \"FN021\",\n    \"channelId\"     : \"27\",\n    \"userGtw\"       : \"slngw\",\n\n\n    \"openDt\"        :\"2026-06-16\", \n    \"mgnType\"       :\"A\", \n    \"plafond\"       :\"137000000.0\",  \n    \"advance\"       :\"0\",  // UANG MUKA\n    \"period\"        :\"46\", \n    \"pclPeriod\"     :\"1\", \n    \"pclGrcPeriod\"  :\"0\", \n    \"mgnPeriod\"     :\"1\", \n    \"mgnGrcPeriod\"  :\"0\", \n\n    \"amtMgn\"        :\"0\",\n\n    \"mgnMethod\"     :\"1\",  \n    \"eqRate\"        :\"11.75\" \n}",
+                "contentType": "application/json"
+              },
+              "name": "/FinancingScheduleSimulation",
+              "method": "POST",
+              "params": [],
+              "headers": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Api-Key",
+                  "value": "<<X-Api-Key>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Id",
+                  "value": "<<X-Client-Id>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Timestamp",
+                  "value": "<<X-Timestamp>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Secret",
+                  "value": "<<X-Client-Secret>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Signature",
+                  "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "endpoint": "<<HOST-URL>>/gateway/FinancingScheduleSimulation",
+              "responses": {},
+              "testScript": "",
+              "description": null,
+              "preRequestScript": "",
+              "requestVariables": [],
+              "id": "cmqta9c5a41sshh1mvw8jk7gk"
+            },
+            {
+              "v": "17",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "body": "{\n    \"reqid\"         : \"LN031\",\n    \"channelId\"     : \"27\",\n    \"userGtw\"       : \"slngw\",\n    // \"channelId\"     : \"27\",\n    // \"userGtw\"       : \"kmggw\",\n\n    \"prodId\"         : \"\", \n    \"affAcc\"         : \"11602030027324\", \n    // \"affAcc\"         : \"12002050011114\", \n    // \"affAcc\"         : \"10002090239105\", \n    // \"affAcc\"         : \"10002040425173\", \n    // \"affAcc\"         : \"16002090001122\", \n    // \"affAcc\"         : \"16002040002395\", \n    // \"affAcc\"         : \"10006210032795\", \n\n    \"-\"             : \"\"\n}",
+                "contentType": "application/json"
+              },
+              "name": "/LoanAccountInquirybyAffiliation",
+              "method": "POST",
+              "params": [],
+              "headers": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Api-Key",
+                  "value": "<<X-Api-Key>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Id",
+                  "value": "<<X-Client-Id>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Timestamp",
+                  "value": "<<X-Timestamp>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Secret",
+                  "value": "<<X-Client-Secret>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Signature",
+                  "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "endpoint": "<<HOST-URL>>/gateway/LoanAccountInquirybyAffiliation",
+              "responses": {},
+              "testScript": "",
+              "description": null,
+              "preRequestScript": "",
+              "requestVariables": [],
+              "id": "cmqta9c5a41suhh1m2nq9g7nm"
+            },
+            {
+              "v": "17",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "body": "{\n    \"reqid\"         : \"LN045\",\n    // \"channelId\"     : \"27\",\n    // \"userGtw\"       : \"slngw\",\n    // \"channelId\"     : \"27\",\n    // \"userGtw\"       : \"kmggw\",\n    \"channelId\"     : \"34\",\n    \"userGtw\"       : \"efrgw\",\n\n    // \"prodId\"         : \"\", \n    \"idnbr\"         : \"1271145006820001\" \n    // \"idnbr\"         : \"1271102507880004\" \n    // \"idnbr\"         : \"1207230207800006\" \n    // \"idnbr\"         : \"1276044907710001\" \n    // \"idnbr\"         : \"1220064107660030\" \n    // \"idnbr\"         : \"1204012011850006\" \n\n    // \"-\"             : \"\"\n}",
+                "contentType": "application/json"
+              },
+              "name": "/LoanAccountInquiryByCriteria",
+              "method": "POST",
+              "params": [],
+              "headers": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Api-Key",
+                  "value": "<<X-Api-Key>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Id",
+                  "value": "<<X-Client-Id>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Timestamp",
+                  "value": "<<X-Timestamp>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Secret",
+                  "value": "<<X-Client-Secret>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Signature",
+                  "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "endpoint": "<<HOST-URL>>/gateway/LoanAccountInquiryByCriteria",
+              "responses": {},
+              "testScript": "",
+              "description": null,
+              "preRequestScript": "",
+              "requestVariables": [],
+              "id": "cmqta9c5a41swhh1mwvzj5d7y"
+            },
+            {
+              "v": "17",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "body": "{\n    \"reqid\"         : \"LN019\",\n    \"channelId\"     : \"27\",\n    \"userGtw\"       : \"slngw\",\n\n    \"typeIntId\"     :\"C571\",\n    \"strdt\"         :\"2026-07-27\",\n    \"tenor\":36,\n    \"ciaSts\":0,\n    \"intrate\":\"8\",\n    \"descrate\":\"0\",\n    \"plafon\":\"20000000\",\n    \"intDay\":\"360\",\n    \"prcGrace\":0,\n    \"intGrace\":0,\n    \"intGraceDist\":0,\n    \"provFee\":\"0\",\n    \"getFee\":\"0\"\n\n\n}",
+                "contentType": "application/json"
+              },
+              "name": "/LoanScheduleSimulation",
+              "method": "POST",
+              "params": [],
+              "headers": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Api-Key",
+                  "value": "<<X-Api-Key>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Id",
+                  "value": "<<X-Client-Id>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Timestamp",
+                  "value": "<<X-Timestamp>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Secret",
+                  "value": "<<X-Client-Secret>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Signature",
+                  "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "endpoint": "<<HOST-URL>>/gateway/LoanScheduleSimulation",
+              "responses": {},
+              "testScript": "",
+              "description": null,
+              "preRequestScript": "",
+              "requestVariables": [],
+              "id": "cmqta9c5a41syhh1m8z13h3ns"
+            },
+            {
+              "v": "17",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "body": "{\n    \"reqid\"         : \"FN001\",\n    \"channelId\"     : \"27\",\n    \"userGtw\"       : \"slngw\",\n\n    \"BRANCHID\": \"620\",\n\t\"CIFID\": \"0100044363\",\n\t\"CRTUSER\": \"ciP\",\n\n    \"AGREEDT\": \"2025-09-22\",\n    \"APPLID\": \"05\",\n    \"PRODID\": \"22\",\n    \"MTRTYPE\": 1,\n    \"DISBREK\": \"61203010005300\",\n    \"PRSJMN\": \"0\",\n    \"AFFBLOCK\": 0,\n    \"IDFACILITY\": \"\",\n    \"AMTMATERAI\": \"0\",\n    \"MGNGRACPER\": 0,\n    \"MTDINST\": 3,\n    \"CTGID\": \"08\",\n    \"AMTPROJ\": \"5000000.0000\",\n    \"PLAFOND\": \"5000000.0000\",\n    \"CONTRACTNO\": \"AMA22033006002820M9Q\",\n    \"FLGDISBSCHED\": \"0\",\n    \"PERIODFIN\": 12,\n    \"OFFICIALCONT\": \"\",\n    \"STRTDT\": \"2025-09-22\",\n    \"AMTINS\": \"0\",\n    \"TREASURID\": \"6200000101\",\n    \"MTDMGN\": 2,\n    \"AMTNOTARIS\": \"0\",\n    \"SGMNID\": \"01\",\n    \"KINDMGN\": \"A\",\n    \"DISBBRANCH\": \"7001\",\n    \"AMTMARGIN\": \"750000.0000\",\n    \"STRTINSTLDT\": \"2025-10-22\",\n    \"NOTARISID\": null,\n    \"FLGCOLLAT\": 0,\n    \"NOTE\": \"-\",\n    \"REFRLID\": \"\",\n    \"TKOVR\": \"\",\n    \"REVIEWER\": \"\",\n    \"FLGASN\": 0,\n    \"AFIBRANCH\": \"7001\",\n    \"ACCOFFCID\": \"62000F16\",\n    \"EQRATE\": \"0\",\n    \"MTDDISB\": 2,\n    \"SPCPRICINGRATE\": \"0\",\n    \"DUEDTPRC\": \"\",\n    \"TERMPRC\": \"\",\n    \"CIFIDJMN\": \"\",\n    \"BUSSCODE\": \"101\",\n    \"CHARSID\": \"60\",\n    \"CHARSLIK\": \"9\",\n    \"CRGOLSID\": \"70\",\n    \"CTGBUSSXBRL\": \"NU\",\n    \"CTGFRTFOLIO\": \"36\",\n    \"TYPEUSEDSID\": \"39\",\n    \"TYPEUSEDXBRL\": \"1\",\n    \"ECOSECSID\": \"6500\",\n    \"ECOSECXBRL\": \"001110\",\n    \"GVRMENTPRGM\": \"0\",\n    \"KINDFINXBRL\": \"P01\",\n    \"LOCXBRL\": \"3903\",\n    \"PRSBANKRATIO\": \"0\",\n    \"FLGTYPEDISB\": \"\",\n    \"MAINSALIDSLIK\": \"000\",\n    \"OMSETXBRL\": \"2759124.0900\",\n    \"ORIUSEDSID\": \"9\",\n    \"ORIUSEDXBRL\": \"9\",\n    \"PRJLOCSID\": \"3903\",\n    \"RATINGDT\": \"2025-09-22\",\n    \"RATINGINST\": \"FID\",\n    \"RATINGVAL\": \"50\",\n    \"SDGS\": \"1\",\n    \"SEGMENXBRL\": 5,\n    \"SKIMPBYSLIK\": \"01\",\n    \"SRCFUND\": \"2\",\n    \"STSFINXBRL\": 9,\n    \"TYPEFINXBRL\": 9,\n    \"TYPEINVEST\": 0,\n    \"TYPEPBYSLIK\": \"20\",\n    \"APPRAISERID\": null,\n    \"AMTAPP\": \"0\",\n    \"INSURANCEID\": null,\n    \"AFIREK\": null,\n    \"ASETXBRL\": \"50000000\",\n    \"CATSDGS\": \"12\",\n    \"DISBFLG\": 0,\n    \"FLGTRXWKL\": 0,\n    \"businessObjects\": [\n        {\n            \"OBJNAME\": \"object1\",\n            \"LOCADDR\": \"tidak diketahui\",\n            \"SUPPCONT\": \"05\",\n            \"PROCDT\": \"2025-09-22\",\n            \"AMTUNIT\": 1,\n            \"OBJECTID\": \"1\",\n            \"OBJECTNBR\": \"1\",\n            \"AMOUNT\": \"5000000.0000\",\n            \"NOTE\": \"1\",\n            \"CCYID\": \"IDR\",\n            \"ADVANCE\": \"0\",\n            \"STSOWN\": \"0\",\n            \"BRANCHID\": \"620\",\n            \"CRTDATE\": \"2025-09-22\",\n            \"STSINV\": 0,\n            \"AMTINV\": 0,\n            \"PARENTID\": \"\",\n            \"SUPPLIERID\": null,\n            \"ASSETTYPE\": \"99\",\n            \"ASSETTYPEXBRL\": \"250\",\n            \"BUYERCONT\": \"05\"\n        }\n    ],\n    \"amortizations\": [],\n    \"insurances\": [\n        {\n            \"insId\": \"30006\",\n            \"insPhone\": \"081291818102\",\n            \"insNote\": \"Asuransi\",\n            \"polisNo\": \"0001\",\n            \"insExpired\": \"2034-12-05\",\n            \"insPremi\": \"0\",\n            \"insDefault\": 1\n        }\n    ],\n    \"decMaker\": [\n        {\n            \"aoId\": \"02303509\",\n            \"aoFunc\": \"11\",\n            \"npp\": \"1217230976110804\"\n        }\n    ],\n    \"SUSBSN\": 1,\n    \"CTGBSN\": 1,\n    \"GRPLST\": \"11\",\n    \"FLGINSURANCE\":1,\n    \"MEASCATELBU\":\"PL\",\n    \"GOVPRGLBU\":\"10\",\n    \"SKIMPBYXBRL\":\"99\",\n    \"SEKTORKURXBRL\":\"G\",\n    \"RPIMID\":\"RK11\",\n    \"TYPEID\":\"02\",\n\n\t\n    \"-\":\"\"\n}",
+                "contentType": "application/json"
+              },
+              "name": "/CreateFinancing",
+              "method": "POST",
+              "params": [],
+              "headers": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Api-Key",
+                  "value": "<<X-Api-Key>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Id",
+                  "value": "<<X-Client-Id>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Timestamp",
+                  "value": "<<X-Timestamp>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Secret",
+                  "value": "<<X-Client-Secret>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Signature",
+                  "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "endpoint": "<<HOST-URL>>/gateway/CreateFinancing",
+              "responses": {},
+              "testScript": "",
+              "description": null,
+              "preRequestScript": "",
+              "requestVariables": [],
+              "id": "cmqta9c5b41t0hh1m610o7s67"
+            },
+            {
+              "v": "17",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "body": "{\r\n    \"reqid\"         : \"LN001\",\r\n    \"channelId\"     : \"27\",\r\n    \"userGtw\"       : \"kmggw\",\r\n\r\n    \"reqStatus\"     : 0, \r\n    \"branchId\"      : \"100\", \r\n    \"applId\"        : \"05\", \r\n    \"prodId\"        : \"0501\", \r\n    \"ccyId\"         : \"IDR\", \r\n    \"cifId\"         : \"0000000001\", \r\n    \"crNbr\"         : \"056/CU-PKP/I/2011\", \r\n    \"agreeDt\"       : \"2018-04-30\", \r\n    \"agreeAprDt\"    : \"2018-04-30\", \r\n    \"strtDt\"        : \"2018-04-30\", \r\n    \"plafond\"       : \"50000\", \r\n    \"periodCr\"      : 12, \r\n    \"getFee\"        : \"\", \r\n    \"typeInt\"       : 1, \r\n    \"intRate\"       : \"1\", \r\n    \"prcGrace\"      : 0, \r\n    \"intGrace\"      : 0, \r\n    \"intGraceDist\"  : 0, \r\n    \"paymentVia\"    : 2, \r\n    \"treasurId\"     : \"\", \r\n    \"affAccNbr\"     : \"10001010000450\", \r\n    \"disbursAccNbr\" : \"10001010000450\", \r\n    \"paymentDay\"    : 1, \r\n    \"affBlockDay\"   : 1, \r\n    \"flgUseIns\"     : 1, \r\n    \"note\"          : \"-\", \r\n    \"refrlId\"       : \"000000\", \r\n    \"aoId\"          : \"100b2938\", \r\n    \"stsSindikasi\"  : 0, \r\n    \"rolSindikasi\"  : 0, \r\n    \"groupDeb\"      : \"0010\", \r\n    \"typeUsedLBU\"   : \"3\",\r\n    \"typeCrLBU\"     : \"05\", \r\n    \"catDebLBU\"     : \"10\", \r\n    \"measCateLBU\"   : \"1\", \r\n    \"catPortoLBU\"   : \"10\", \r\n    \"agencies\"      : \"00\", \r\n    \"companyRank\"   : \"00\", \r\n    \"rankDate\"      : \"2017-01-01\", \r\n    \"prjLocLBU\"     : \"8291\", \r\n    \"ecoSecLBU\"     : \"900000\", \r\n    \"charCrLBU\"     : \"9\", \r\n    \"stsDeb\"        : \"9\", \r\n    \"oriUsedLBU\"    : \"9\", \r\n    \"typeFasilities\"    : \"0605\", \r\n    \"charSID\"           : \"99\", \r\n    \"crGolSID\"          : \"19\", \r\n    \"typeUsedSID\"       : \"89\", \r\n    \"ecoSec SID\"        : \"0000\", \r\n    \"oriUsedSID\"        : \"9\", \r\n    \"prjLocSID\"         : \"8291\", \r\n    \"publisherColl\"     : \"886\", \r\n    \"sourceFund\"        : \"00\", \r\n    \"crSector\"          : \"20\", \r\n    \"projectVal\"        : \"0\", \r\n    \"bankRelation\"      : \"2\", \r\n    \"asset\"             : \"0\", \r\n    \"omset\"             : \"0\", \r\n    \"segment\"           : \"0\", \r\n    \"crtUser\"           : \"s9999\", \r\n    \"disbursment\": [ \r\n        { \r\n            \"seq\"           : 1, \r\n            \"schedDt\"       : \"2018-04-30\", \r\n            \"amtDisburs\"    : \"500000\" \r\n        } \r\n    ], \r\n    \"insurances\": [ \r\n        { \r\n            \"insId\"         : \"10006\", \r\n            \"insCP\"         : \"\", \r\n            \"insPhone\"      : \"0614155100\", \r\n            \"insNote\"       : \"SITI RIZKYA\", \r\n            \"polisNo\"       : \"-\", \r\n            \"insExpired\"    : \"2025-04-30\", \r\n            \"insPremi\"      : \"227500\", \r\n            \"insDefault\"    : 1 \r\n            } \r\n    ], \r\n    \"fees\": [ \r\n        { \r\n            \"postId\"    : 623, \r\n            \"vend1orId\" : \"\", \r\n            \"amtPost\"   : \"1000\" \r\n        }, \r\n        { \r\n            \"postId\"    : 631, \r\n            \"vendorId\"  : \"\", \r\n            \"amtPost\"   : \"1000\" \r\n        }, \r\n        { \r\n            \"postId\"    : 136, \r\n            \"vendorId\"  : \"\", \r\n            \"amtPost\"   : \"6000\" \r\n        } \r\n    ]  \r\n\r\n}",
+                "contentType": "application/json"
+              },
+              "name": "/CreateReturnLoanAccount",
+              "method": "POST",
+              "params": [],
+              "headers": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Api-Key",
+                  "value": "<<X-Api-Key>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Id",
+                  "value": "<<X-Client-Id>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Timestamp",
+                  "value": "<<X-Timestamp>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Secret",
+                  "value": "<<X-Client-Secret>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Signature",
+                  "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "endpoint": "<<HOST-URL>>/gateway/CreateReturnLoanAccount",
+              "responses": {},
+              "testScript": "",
+              "description": null,
+              "preRequestScript": "",
+              "requestVariables": [],
+              "id": "cmqta9c5b41t2hh1mn2s9xhx2"
+            },
+            {
+              "v": "17",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "body": "{\n    \"reqid\"         : \"LN005\",\n    \"channelId\"     : \"27\",\n    \"userGtw\"       : \"slngw\",\n\n\n    \"reqStatus\": 0, \n    \"branchId\": \"100\", \n    \"applId\": \"05\", \n    \"prodId\": \"0568\", \n    \"ccyId\": \"IDR\", \n    \"cifId\": \"0101253273\", \n    \"crNbr\": \"0001/100/KPraPen/2025\", \n    \"agreeDt\": \"2025-09-19\", \n    \"agreeAprDt\": \"2025-09-19\", \n    \"strtDt\": \"2025-09-19\", \n    \"plafond\": \"150000000.0\", \n    \"periodCr\": 60, \n    \"intRate\": \"9.6\", \n    \"getFee\": \"\", \n    \"typeInt\": 0, \n    \"prcGrace\": 0, \n    \"intGrace\": 0, \n    \"intGraceDist\": 0, \n    \"paymentVia\": 2, \n    \"treasurId\": \"0000000026\", \n    \"affAccNbr\": \"10002040560610\", \n    \"disbursAccNbr\": \"10002040560610\", \n    \"paymentDay\": 1, \n    \"affBlockDay\": 1, \n    \"flgUseIns\": 1, \n    \"note\": \"-\", \n    \"refrlId\": \"10000000\", \n    \"aoId\": \"100u2095\", \n    \"stsSindikasi\": 0, \n    \"rolSindikasi\": 0, \n    \"groupDeb\": \"S14\", \n    \"typeUsedLBU\": \"3\", \n    \"typeCrLBU\": \"P99\", \n    \"catDebLBU\": \"NU\", \n    \"measCateLBU\": \"AC\", \n    \"catPortoLBU\": \"40\", \n    \"agencies\": \"00\", \n    \"companyRank\": \"00\", \n    \"rankDate\": \"2025-09-19\", \n    \"prjLocLBU\": \"3301\", \n    \"ecoSecLBU\": \"004190\", \n    \"charCrLBU\": \"9\", \n    \"stsDeb\": \"9\", \n    \"oriUsedLBU\": \"3\", \n    \"typeFasilities\": \"0605\", \n    \"charSID\": \"79\", \n    \"crGolSID\": \"99\", \n    \"typeUsedSID\": \"89\", \n    \"ecoSecSID\": \"9990\", \n    \"oriUsedSID\": \"3\", \n    \"prjLocSID\": \"3301\", \n    \"publisherColl\": \"000\", \n    \"sourceFund\": \"00\", \n    \"crSector\": \"20\", \n    \"projectVal\": \"0\", \n    \"bankRelation\": \"2\", \n    \"asset\": \"0\", \n    \"omset\": \"0\", \n    \"segment\": \"NR\", \n    \"crtUser\": \"u1776\", \n    \"disbursment\": [\n        {\n            \"seq\": 1, \n            \"schedDt\": \"2025-09-19\", \n            \"amtDisburs\": \"150000000.0\"\n        }\n    ], \n    \"insurances\": [\n        {\n            \"insId\": \"26843\", \n            \"insCP\": \"\", \n            \"insPhone\": \"082165471604\", \n            \"insNote\": \"Asuransi Chubb Life\", \n            \"polisNo\": \"\", \n            \"insExpired\": \"2030-11-06\", \n            \"insPremi\": \"750000\", \n            \"insDefault\": 1\n        }\n    ], \n    \"fees\": [\n        {\n            \"postId\": 505, \n            \"vendorId\": \"26843\", \n            \"amtPost\": \"750000\"\n        }\n    ], \n    \"decMaker\": [\n        {\n            \"npp\": \"1179\", \n            \"aoId\": \"M. Ricky Budiman\", \n            \"aoFunc\": \"07\"\n        }\n    ], \n    \"payrollType\": \"2\",\n    \n\n\n    \"-\" : \"\"\n}",
+                "contentType": "application/json"
+              },
+              "name": "/CreateApproveLoanAccount",
+              "method": "POST",
+              "params": [],
+              "headers": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Api-Key",
+                  "value": "<<X-Api-Key>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Id",
+                  "value": "<<X-Client-Id>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Timestamp",
+                  "value": "<<X-Timestamp>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Secret",
+                  "value": "<<X-Client-Secret>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Signature",
+                  "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "endpoint": "<<HOST-URL>>/gateway/CreateApproveLoanAccount",
+              "responses": {},
+              "testScript": "",
+              "description": null,
+              "preRequestScript": "",
+              "requestVariables": [],
+              "id": "cmqta9c5b41t4hh1mfwa7aa4u"
+            },
+            {
+              "v": "17",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "body": "{\r\n    \"reqid\"         : \"LN050\",\r\n    \"channelId\"     : \"27\",\r\n    \"userGtw\"       : \"slngw\",\r\n\r\n\r\n    \"reqStatus\": 0, \r\n    \"branchId\": \"100\", \r\n    \"applId\": \"05\", \r\n    \"prodId\": \"0568\", \r\n    \"ccyId\": \"IDR\", \r\n    \"cifId\": \"0101253273\", \r\n    \"crNbr\": \"0001/100/KPraPen/2025\", \r\n    \"agreeDt\": \"2025-09-19\", \r\n    \"agreeAprDt\": \"2025-09-19\", \r\n    \"strtDt\": \"2025-09-19\", \r\n    \"plafond\": \"150000000.0\", \r\n    \"periodCr\": 60, \r\n    \"intRate\": \"9.6\", \r\n    \"getFee\": \"\", \r\n    \"typeInt\": 0, \r\n    \"prcGrace\": 0, \r\n    \"intGrace\": 0, \r\n    \"intGraceDist\": 0, \r\n    \"paymentVia\": 2, \r\n    \"treasurId\": \"\", \r\n    \"affAccNbr\": \"10002040560610\", \r\n    \"disbursAccNbr\": \"10002040560610\", \r\n    \"paymentDay\": 1, \r\n    \"affBlockDay\": 1, \r\n    \"flgUseIns\": 1, \r\n    \"note\": \"-\", \r\n    \"refrlId\": \"10000000\", \r\n    \"aoId\": \"100u2095\", \r\n    \"stsSindikasi\": 0, \r\n    \"rolSindikasi\": 0, \r\n    \"groupDeb\": \"S14\", \r\n    \"typeUsedLBU\": \"3\", \r\n    \"typeCrLBU\": \"P99\", \r\n    \"catDebLBU\": \"NU\", \r\n    \"measCateLBU\": \"AC\", \r\n    \"catPortoLBU\": \"40\", \r\n    \"agencies\": \"00\", \r\n    \"companyRank\": \"00\", \r\n    \"rankDate\": \"2025-09-19\", \r\n    \"prjLocLBU\": \"3301\", \r\n    \"ecoSecLBU\": \"004190\", \r\n    \"charCrLBU\": \"9\", \r\n    \"stsDeb\": \"9\", \r\n    \"oriUsedLBU\": \"3\", \r\n    \"typeFasilities\": \"0605\", \r\n    \"charSID\": \"79\", \r\n    \"crGolSID\": \"99\", \r\n    \"typeUsedSID\": \"89\", \r\n    \"ecoSecSID\": \"9990\", \r\n    \"oriUsedSID\": \"3\", \r\n    \"prjLocSID\": \"3301\", \r\n    \"publisherColl\": \"000\", \r\n    \"sourceFund\": \"00\", \r\n    \"crSector\": \"20\", \r\n    \"projectVal\": \"0\", \r\n    \"bankRelation\": \"2\", \r\n    \"asset\": \"0\", \r\n    \"omset\": \"0\", \r\n    \"segment\": \"NR\", \r\n    \"crtUser\": \"u1776\", \r\n    \"disbursment\": [\r\n        {\r\n            \"seq\": 1, \r\n            \"schedDt\": \"2025-09-19\", \r\n            \"amtDisburs\": \"150000000.0\"\r\n        }\r\n    ], \r\n    \"insurances\": [\r\n        {\r\n            \"insId\": \"26843\", \r\n            \"insCP\": \"\", \r\n            \"insPhone\": \"082165471604\", \r\n            \"insNote\": \"Asuransi Chubb Life\", \r\n            \"polisNo\": \"\", \r\n            \"insExpired\": \"2030-11-06\", \r\n            \"insPremi\": \"750000\", \r\n            \"insDefault\": 1\r\n        }\r\n    ], \r\n    \"fees\": [\r\n        {\r\n            \"postId\": 505, \r\n            \"vendorId\": \"26843\", \r\n            \"amtPost\": \"750000\"\r\n        }\r\n    ], \r\n    \"decMaker\": [\r\n        {\r\n            \"npp\": \"1179\", \r\n            \"aoId\": \"M. Ricky Budiman\", \r\n            \"aoFunc\": \"07\"\r\n        }\r\n    ], \r\n    \"payrollType\": \"2\",\r\n    \r\n\r\n\r\n    \"-\" : \"\"\r\n}",
+                "contentType": "application/json"
+              },
+              "name": "/CreateRequestDisbursementLoanAccount",
+              "method": "POST",
+              "params": [],
+              "headers": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Api-Key",
+                  "value": "<<X-Api-Key>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Id",
+                  "value": "<<X-Client-Id>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Timestamp",
+                  "value": "<<X-Timestamp>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Secret",
+                  "value": "<<X-Client-Secret>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Signature",
+                  "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "endpoint": "<<HOST-URL>>/gateway/CreateRequestDisbursementLoanAccount",
+              "responses": {},
+              "testScript": "",
+              "description": null,
+              "preRequestScript": "",
+              "requestVariables": [],
+              "id": "cmqta9c5b41t6hh1mlaic3qz0"
+            },
+            {
+              "v": "17",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "body": "{\n    \"reqid\"         : \"LN028\",\n    \"channelId\"     : \"27\",\n    \"userGtw\"       : \"slngw\",\n\n    \"crtUser\"           : \"u3635\",\n    \"reqStatus\"         : 0,\n    \"branchId\"          : \"120\",\n    \"applId\"            : \"05\",\n    \"prodId\"            : \"0621\",\n    \"ccyId\"             : \"IDR\",\n    \"cifId\"             : \"0101253273\",\n    \"crNbr\"             : \"0001/120/KMGK-SRTFK-PDK/2025\",\n    \"agreeDt\"           : \"2025-09-22\",\n    \"agreeAprDt\"        : \"2025-09-22\",\n    \"strtDt\"            : \"2025-09-22\",\n    \"plafond\"           : \"365000000.0\",\n    \"periodCr\"          : 180,\n    \"intRate\"           : \"11.75\",\n    \"getFee\"            : \"\",\n    \"typeInt\"           : 0,\n    \"prcGrace\"          : 0,\n    \"intGrace\"          : 0,\n    \"intGraceDist\"      : 0,\n    \"paymentVia\"        : 2,\n    \"treasurId\"         : \"\",\n    \"affAccNbr\"         : \"10002040560610\",\n    \"disbursAccNbr\"     : \"10002040560610\",\n    \"paymentDay\"        : 1,\n    \"affBlockDay\"       : 1,\n    \"flgUseIns\"         : 1,\n    \"note\"              : \"\",\n    \"refrlId\"           : \"12000000\",\n    \"aoId\"              : \"120b1444\",\n    \"stsSindikasi\"      : 0,\n    \"rolSindikasi\"      : 0,\n    \"groupDeb\"          : \"S14\",\n    \"typeUsedLBU\"       : \"3\",\n    \"typeCrLBU\"         : \"P99\",\n    \"catDebLBU\"         : \"NU\",\n    \"measCateLBU\"       : \"AC\",\n    \"catPortoLBU\"       : \"40\",\n    \"agencies\"          : \"00\",\n    \"companyRank\"       : \"00\",\n    \"rankDate\"          : \"2025-09-22\",\n    \"prjLocLBU\"         : \"3301\",\n    \"ecoSecLBU\"         : \"004190\",\n    \"charCrLBU\"         : \"9\",\n    \"stsDeb\"            : \"9\",\n    \"oriUsedLBU\"        : \"3\",\n    \"typeFasilities\"    : \"0605\",\n    \"charSID\"           : \"79\",\n    \"crGolSID\"          : \"99\",\n    \"typeUsedSID\"       : \"89\",\n    \"ecoSecSID\"         : \"9990\",\n    \"oriUsedSID\"        : \"3\",\n    \"prjLocSID\"         : \"3301\",\n    \"publisherColl\"     : \"000\",\n    \"sourceFund\"        : \"00\",\n    \"crSector\"          : \"20\",\n    \"projectVal\"        : \"0\",\n    \"bankRelation\"      : \"2\",\n    \"asset\"             : \"0\",\n    \"omset\"             : \"0\",\n    \"segment\"           : \"NR\",\n    \"disbursment\": [\n        {\n            \"seq\"           : 1,\n            \"schedDt\"       : \"2025-09-22\",\n            \"amtDisburs\"    : \"365000000.0\"\n        }\n    ],\n    \"insurances\": [\n        {\n            \"insId\"         : \"10006\",\n            \"insCP\"         : \"\",\n            \"insPhone\"      : \"081377246670\",\n            \"insNote\"       : \"\",\n            \"polisNo\"       : \"\",\n            \"insExpired\"    : \"2040-12-16\",\n            \"insPremi\"      : \"38325000\",\n            \"insDefault\"    : 1\n        }\n    ],\n    \"fees\": [\n        {\n            \"postId\"    : 505,\n            \"vendorId\"  : \"10006\",\n            \"amtPost\"   : \"38325000\"\n        }\n    ],\n    \"decMaker\": [\n        {\n            \"npp\"       : \"2854\",\n            \"aoId\"      : \"Ahmad Zaidan Harahap\",\n            \"aoFunc\"    : \"07\"\n        }\n    ],\n    \"payrollType\": \"1\",\n    \"accAdds\": {\n        \"AMU\": \"0\",\n        \"FSF\": \"00\"\n    },\n    \"closeAcc\": {\n        \"accNbr\": \"10005680012576\",\n        \"entrastBal\": \"0\",\n        \"entrastPrc\": \"0\",\n        \"entrastInt\": \"0\",\n        \"repayInt\": \"0\",\n        \"repayPenalty\": \"0\",\n        \"repayIntMthd\": \"0\",\n        \"clsdNote\": \"LUNAS MAJU\"\n    },\n\n    \"-\":\"\"\n}\n\n// 210005180000011\n\n// {\n//     \"message\": \"PEMBUKAAN DAN PENUTUPAN REKENING LOAN BERHASIL\",\n//     \"rcode\": \"00\",\n//     \"result\": {\n//         \"accnbr\": \"12005210025896\"\n//     },\n//     \"statusId\": 1\n// }",
+                "contentType": "application/json"
+              },
+              "name": "/CreateRequestCloseLoanAccount",
+              "method": "POST",
+              "params": [],
+              "headers": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Api-Key",
+                  "value": "<<X-Api-Key>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Id",
+                  "value": "<<X-Client-Id>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Timestamp",
+                  "value": "<<X-Timestamp>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Secret",
+                  "value": "<<X-Client-Secret>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Signature",
+                  "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "endpoint": "<<HOST-URL>>/gateway/CreateRequestCloseLoanAccount",
+              "responses": {},
+              "testScript": "",
+              "description": null,
+              "preRequestScript": "",
+              "requestVariables": [],
+              "id": "cmqta9c5b41t8hh1mrkhkp4ow"
+            }
+          ],
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "headers": [],
+          "variables": [],
+          "description": null,
+          "preRequestScript": "",
+          "testScript": ""
+        },
+        {
+          "v": 12,
+          "id": "cmqta9c8541t9hh1m4c2s9ooo",
+          "name": "PASTI",
+          "folders": [],
+          "requests": [
+            {
+              "v": "17",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "body": "{\n    \"reqid\"         : \"00005\",\n    // \"channelId\"     : \"8\",\n    // \"userGtw\"       : \"embgw\",\n  \n    \"channelId\"     : \"52\",\n    \"userGtw\"       : \"pstgw\",\n\n    \"corpId\"        :\"005\", \n    \"prodId\"        :\"01\", \n    \"date\"          :\"01-05-2025\", \n    \"date_rk\"       :\"01-05-2025\", \n    \"branchId\"      :\"001\", \n    \"txCcy\"         :\"IDR\", \n    \"nbrOfAcc\"      :\"2\", \n    \"totalAmount\"   :\"24000\", \n    \"prosesId\"      :\"0005\", \n    \"userId\"        :\"k0229\", \n    \"spvId\"         :\"\", \n    \"revSts\"        :\"0\", \n    \"txType\"        :\"O\", \n    \"refAcc\"        :\"10002040007855\", \n    \"param\": \n    [ \n        { \n            \"accNbr\"    : \"10002040007855\", \n            \"dbCr\"      : 0, \n            \"refAcc\"    : \"\", \n            \"txAmt\"     : 24000, \n            \"txCode\"    : \"199\", \n            \"txId\"      : \"k022900007\", \n            \"txMsg\"     : \"TESTING TRANSAKSI BG ALI\" \n        }, \n        { \n            \"accNbr\"    :\"14602040051152\", \n            \"dbCr\"      :1, \n            \"refAcc\"    :\"\", \n            \"txAmt\"     :24000, \n            \"txCode\"    :\"299\", \n            \"txId\"      :\"k022900007\", \n            \"txMsg\"     :\"TESTING TRANSAKSI BG ALI\" \n        } \n    ], \n\n\n    \"-\" :\"\"\n}\n\n\n\n// Response \n// {\n//     \"message\": \"CREATE REKENING DEPOSITO BERHASIL\",\n//     \"rcode\": \"00\",\n//     \"result\": {\n//         \"ACCNBR\": \"10003010020695\",\n//         \"BILYTNBR\": \"000005\",\n//         \"CIFID\": \"0002841022\",\n//         \"DUEDT\": \"2025-06-01\",\n//         \"DUEPRNC\": 1,\n//         \"SERIBLYTNBR\": \"MB\",\n//         \"STRTDT\": \"2025-05-01\",\n//         \"TXID\": \"37zI2ODIzNQ\"\n//     },\n//     \"statusId\": 1\n// }\n\n",
+                "contentType": "application/json"
+              },
+              "name": "/Transaction",
+              "method": "POST",
+              "params": [],
+              "headers": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Api-Key",
+                  "value": "<<X-Api-Key>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Id",
+                  "value": "<<X-Client-Id>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Timestamp",
+                  "value": "<<X-Timestamp>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Secret",
+                  "value": "<<X-Client-Secret>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Signature",
+                  "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "endpoint": "<<HOST-URL>>/gateway/Transaction",
+              "responses": {},
+              "testScript": "",
+              "description": null,
+              "preRequestScript": "",
+              "requestVariables": [],
+              "id": "cmqta9c8m41tbhh1mwvv6mewc"
+            },
+            {
+              "v": "17",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "body": "{\n    \"reqid\"         : \"00004\",\n    \"userGtw\"       : \"pstgw\",\n    \"channelId\"     : \"52\",\n\n    \"txId\"          : \"k022900006\", \n    \"checker\"       : \"k0229\",\n\n    \"-\" :\"\"\n}\n\n\n\n",
+                "contentType": "application/json"
+              },
+              "name": "/TransactionVerification",
+              "method": "POST",
+              "params": [],
+              "headers": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Api-Key",
+                  "value": "<<X-Api-Key>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Id",
+                  "value": "<<X-Client-Id>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Timestamp",
+                  "value": "<<X-Timestamp>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Secret",
+                  "value": "<<X-Client-Secret>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Signature",
+                  "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "endpoint": "<<HOST-URL>>/gateway/TransactionVerification",
+              "responses": {},
+              "testScript": "",
+              "description": null,
+              "preRequestScript": "",
+              "requestVariables": [],
+              "id": "cmqta9c8m41tdhh1m05hxwdyl"
+            },
+            {
+              "v": "17",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "body": "{\n    \"reqid\"         : \"CA001\",\n    \"userGtw\"       : \"pstgw\",\n    \"channelId\"     : \"25\",\n\n    \"branchId\"      : \"\", \n    \"letterType\"    : \"\",\n    \"unitType\"    \t: \"\",\n    \"pageCount\"    \t: \"\",\n    \"serialNbr\"    \t: \"\",\n    \"pageNbr\"    \t: \"\",\n    \"vendorId\"    \t: \"\",\n    \"price\"    \t\t: \"\",\n    \"invoiceNbr\"    : \"\",\n    \"userId\"    \t: \"\",\n\n    \"-\" :\"\"\n}\n\n\n\n",
+                "contentType": "application/json"
+              },
+              "name": "/InventoryStockChequeBG",
+              "method": "POST",
+              "params": [],
+              "headers": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Api-Key",
+                  "value": "<<X-Api-Key>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Id",
+                  "value": "<<X-Client-Id>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Timestamp",
+                  "value": "<<X-Timestamp>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Secret",
+                  "value": "<<X-Client-Secret>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Signature",
+                  "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "endpoint": "<<HOST-URL>>/gateway/InventoryStockChequeBG",
+              "responses": {},
+              "testScript": "",
+              "description": null,
+              "preRequestScript": "",
+              "requestVariables": [],
+              "id": "cmqta9c8m41tfhh1mpsgkmlm5"
+            },
+            {
+              "v": "17",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "body": "{\n    \"reqid\"         : \"CA002\",\n    \"userGtw\"       : \"pstgw\",\n    \"channelId\"     : \"25\",\n\n    \"branchId\"      : \"\", \n    \"accNbr\"       \t: \"\",\n    \"letterType\"    : \"\",\n    \"unitType\"      : \"\",\n    \"pageCount\"     : \"\",\n    \"serialNbr\"     : \"\",\n    \"pageNbr\"       : \"\",\n    \"userId\"       \t: \"\",\n    \"spvId\"       \t: \"\",\n\n    \"-\" :\"\"\n}\n\n\n\n",
+                "contentType": "application/json"
+              },
+              "name": "/PurchaseChequeBG",
+              "method": "POST",
+              "params": [],
+              "headers": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Api-Key",
+                  "value": "<<X-Api-Key>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Id",
+                  "value": "<<X-Client-Id>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Timestamp",
+                  "value": "<<X-Timestamp>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Secret",
+                  "value": "<<X-Client-Secret>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Signature",
+                  "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "endpoint": "<<HOST-URL>>/gateway/PurchaseChequeBG",
+              "responses": {},
+              "testScript": "",
+              "description": null,
+              "preRequestScript": "",
+              "requestVariables": [],
+              "id": "cmqta9c8m41thhh1mwrewugn3"
+            },
+            {
+              "v": "17",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "body": "{\n    \"reqid\"         : \"CA002\",\n    \"userGtw\"       : \"pstgw\",\n    \"channelId\"     : \"25\",\n\n    \"accnbr\"        : \"\", \n    \"chqbknbr\"      : \"\",\n    \"pagenbr\"       : \"\",\n\n    \"-\" :\"\"\n}\n\n\n\n",
+                "contentType": "application/json"
+              },
+              "name": "/ChequeBGInquery",
+              "method": "POST",
+              "params": [],
+              "headers": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Api-Key",
+                  "value": "<<X-Api-Key>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Id",
+                  "value": "<<X-Client-Id>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Timestamp",
+                  "value": "<<X-Timestamp>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Client-Secret",
+                  "value": "<<X-Client-Secret>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "X-Signature",
+                  "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "endpoint": "<<HOST-URL>>/gateway/ChequeBGInquery",
+              "responses": {},
+              "testScript": "",
+              "description": null,
+              "preRequestScript": "",
+              "requestVariables": [],
+              "id": "cmqta9c8n41tjhh1m7px1wkb8"
+            }
+          ],
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "headers": [],
+          "variables": [],
+          "description": null,
+          "preRequestScript": "",
+          "testScript": ""
+        }
+      ],
+      "requests": [
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\r\n    \"reqid\"         : \"00015\",\r\n    \"channelId\"     : \"33\",\r\n    \"userGtw\"       : \"dtigw\",\r\n\r\n    \"userId\"        : \"K2xVYlBkU3lhMGFxdFNBN2dSbDBKZHhYRXhNSDRubTI1OFl0ellQOXBxZz0=\", // u2852\r\n    \"password\"      : \"bGQrRGZnaTVDd1piQzB2QzJiWnRJREFaaWRnTUZUaFZJOThGMHRWaFlrMD0=\" // P@ssw0rd\r\n    // \"userId\"        : \"NGl3RU5QQ1NMYktQN08zMnN5V05DeTZ0YWZPVWNWK3BpQ2R3UzdGRnJwND0=\", // u2852\r\n\r\n    // \"userId\"        : \"cFhVUHA4RlI0TFRodWdEYTBpTllVQ08rNjFQVzltcVhCQVVYekJFVWoxbz0=\", // u2870\r\n    // \"password\"      : \"bGQrRGZnaTVDd1piQzB2QzJiWnRJREFaaWRnTUZUaFZJOThGMHRWaFlrMD0=\" // P@ssw0rd\r\n}\r\n\r\n\r\n\r\n// dtigw - 33\r\n// kmggw - 27 - kmgSmt22\r\n// embgw - 8 \r\n// amtgw - 46 - amtSmt23\r\n// bgogw - 56 - bgoSmt23",
+            "contentType": "application/json"
+          },
+          "name": "/authLogin",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "/h2dYQxhenD1ERqurg+6DdVAuQu22DWRgwymRTBntvs=",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/gateway/authLogin",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9bvj41pnhh1md1gdzt43"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\r\n    \"reqid\"         : \"00003\",\r\n    \"channelId\"     : \"33\",\r\n    \"userGtw\"       : \"dtigw\"\r\n}",
+            "contentType": "application/json"
+          },
+          "name": "/inqBranch",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/gateway/inqBranch",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9bvj41pphh1m5sp2yz7w"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\r\n    \"reqid\"         : \"00047\",\r\n    \"channelId\"     : \"33\",\r\n    \"userGtw\"       : \"dtigw\"\r\n}",
+            "contentType": "application/json"
+          },
+          "name": "/inqLoanParameterInquiry",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/gateway/inqLoanParameterInquiry",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9bvj41prhh1mvn48ywb5"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\r\n    \"reqid\"         : \"00048\",\r\n    // \"channelId\"     : \"33\",\r\n    // \"userGtw\"       : \"dtigw\"\r\n    \"channelId\"     : \"27\",\r\n    \"userGtw\"       : \"losgw\"\r\n}",
+            "contentType": "application/json"
+          },
+          "name": "/inqLBUParameterInquiry",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/gateway/inqLBUParameterInquiry",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9bvk41pthh1m09x1cmhv"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\r\n    \"reqid\"         : \"00049\",\r\n    \"channelId\"     : \"33\",\r\n    \"userGtw\"       : \"dtigw\"\r\n    // \"channelId\"     : \"27\",\r\n    // \"userGtw\"       : \"kmggw\"\r\n}",
+            "contentType": "application/json"
+          },
+          "name": "/inqSIDParameterInquiry",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/gateway/inqSIDParameterInquiry",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9bvk41pvhh1mlkouja7o"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\r\n    \"reqid\"         : \"00059\",\r\n    \r\n    \"channelId\"     : \"27\",\r\n    \"userGtw\"       : \"losgw\",\r\n\r\n    // \"channelId\"     : \"27\",\r\n    // \"userGtw\"       : \"slngw\",\r\n    \r\n    // \"channelId\"     : \"33\",\r\n    // \"userGtw\"       : \"dtigw\"\r\n    // \"channelId\"     : \"27\",\r\n    // \"userGtw\"       : \"kmggw\"\r\n\r\n    \"branchId\"          : \"100\", \r\n\r\n    \"-\"                 : \"\"\r\n}",
+            "contentType": "application/json"
+          },
+          "name": "/inqInstansi",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/gateway/inqInstansi",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9bvl41pxhh1mvvij5n5n"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\r\n    \"reqid\"         : \"FN034\",\r\n    \r\n    \"channelId\"     : \"33\",\r\n    \"userGtw\"       : \"dtigw\",\r\n\r\n    // \"channelId\"     : \"27\",\r\n    // \"userGtw\"       : \"kmggw\"\r\n\r\n    \"branchId\"          : \"100\", \r\n    \"insId\"             : \"\", \r\n\r\n    \"-\"                 : \"\"\r\n}",
+            "contentType": "application/json"
+          },
+          "name": "/InquiryListInsuranceSyariah",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/gateway/InquiryListInsuranceSyariah",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9bvl41pzhh1mkpa5b9tt"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\n    \"reqid\"         : \"00035\",\n    \"channelId\"     : \"33\",\n    \"userGtw\"       : \"dtigw\",\n  // \"channelId\"     : \"34\",\n  //   \"userGtw\"       : \"efrgw\",\n\n    // \"cifid\"         :\"0000998013\",\n    // \"cifid\"         :\"0001597355\"\n    // \"cifid\"         :\"0000934136\"\n    // \"cifid\"         :\"0002988537\",\n\n\n    // \"cifid\"         :\"0102343824\",\n    // \"cifid\"         :\"0100948009\",\n    // \"cifid\"         :\"0102343833\",\n\n    // \"cifid\"         :\"0000855691\",\n    // \"cifid\"         :\"0101253273\",\n  \n    \"cifid\"         :\"0101727664\",\n\n    \"-\":\"\"\n}",
+            "contentType": "application/json"
+          },
+          "name": "/inqCIFByCIF",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/gateway/inqCIFByCIF",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9bvl41q1hh1m2tfmti4o"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\n    \"reqid\"         : \"00031\",\n    \"channelId\"     : \"33\",\n    \"userGtw\"       : \"dtigw\",\n\n    // \"accnbr\"         :\"10001042906759\"\n    // \"accnbr\"         : \"10002040560610\"\n    // \"accnbr\"         : \"38004010000040\"\n    // \"accnbr\"         : \"21005260000071\"\n    // \"accnbr\"         : \"12502040068158\"\n    \"accnbr\"         : \"10002050026937\"\n\n}",
+            "contentType": "application/json"
+          },
+          "name": "/inqCIFByAcc",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/gateway/inqCIFByAcc",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9bvl41q3hh1m5b3vbh5p"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\n    \"reqid\"         : \"CF006\",\n    // \"channelId\"     : \"8\",\n    // \"userGtw\"       : \"embgw\",\n    // \"channelId\"     : \"33\",\n    // \"userGtw\"       : \"dtigw\",\n    \"channelId\"     : \"34\",\n    \"userGtw\"       : \"efrgw\",\n\n    // \"idnbr\"         : \"1214100112960074\",\n    \n    \"cifnm\"         : \"HENNY\",\n    \"brtdt\"         : \"1987-01-10\",\n    // \"mothrnm\"       : \"SIU HUA\",\n\n    // \"idnbr\"         : \"1271122104890001\",\n\n    // \"idnbr\"         : \"1204012011850006\",\n\n    \"\" : \"\"\n\n}",
+            "contentType": "application/json"
+          },
+          "name": "/inqCIFByCriteria",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/gateway/inqCIFByCriteria",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9bvl41q5hh1mapqd66uo"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\n    \"reqid\"         : \"CF014\",\n    \"channelId\"     : \"8\",\n    \"userGtw\"       : \"embgw\",\n\n    // \"accNbr\"         :\"10001042906759\"\n    \"accNbr\"         : \"38004010000040\"\n\n}",
+            "contentType": "application/json"
+          },
+          "name": "/inqCIFAccByAcc",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/gateway/inqCIFAccByAcc",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9bvl41q7hh1m71kmhby1"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\n    \"reqid\"         : \"CF021\",\n    \"channelId\"     : \"34\",\n    \"userGtw\"       : \"efrgw\",\n\n    \"idNbr\"         : \"127111410160123\"\n\n}",
+            "contentType": "application/json"
+          },
+          "name": "/InquiryBeneficialOwner",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/gateway/InquiryBeneficialOwner",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9bvm41q9hh1m2mnulty2"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\n    \"reqid\"         : \"00197\",\n    \"channelId\"     : \"33\",\n    \"userGtw\"       : \"dtigw\",\n    \n    // \"idnbr\"         : \"1234567891234515\",\n    // \"idnbr\"         : \"1271212708850001\",\n    // \"idnbr\"         : \"120321141094000133\", // 0100012183, 0100118087, 0001570943, 0063306119\n\n    // \"idnbr\"            : \"1271122104890001\",\n\n    \"idnbr\"            : \"1214100112960074\",\n    // \"cifnm\"             : \"ISMAIL\",\n\n    // \"brtdt\"         : \"1994-10-14\",\n    // \"aliasnm\"       : \"\",\n\n    \"-\"                : \"\"\n\n}",
+            "contentType": "application/json"
+          },
+          "name": "/inqCIFDHNTerorisByCriteria",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/gateway/inqCIFDHNTerorisByCriteria",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9bvm41qbhh1mf0a3iflw"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\r\n    \"reqid\"         : \"CF012\",\r\n    \"channelId\"     : \"56\",\r\n    \"userGtw\"       : \"bgogw\",\r\n    \r\n    \"cifId\"         : \"0100830931\" // CV ABIGAEL WIGATA MANDIRI\r\n\r\n}",
+            "contentType": "application/json"
+          },
+          "name": "/inqCIFNonPerorangan",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/gateway/inqCIFNonPerorangan",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9bvm41qdhh1m0l1wiash"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\r\n    \"reqid\"         : \"00044\",\r\n    // \"channelId\"     : \"33\",\r\n    // \"userGtw\"       : \"dtigw\",\r\n    \"channelId\"     : \"27\",\r\n    \"userGtw\"       : \"slngw\",\r\n\r\n    \"typeIntId\"     :\"A571\",\r\n    \"strdt\"         :\"2024-10-17\",\r\n    \"tenor\":120,\r\n    \"ciaSts\":0,\r\n    \"intrate\":\"5\",\r\n    \"descrate\":\"0\",\r\n    \"plafon\":\"154000000\",\r\n    \"intDay\":\"360\",\r\n    \"prcGrace\":0,\r\n    \"intGrace\":0,\r\n    \"intGraceDist\":0,\r\n    \"provFee\":\"770000\",\r\n    \"getFee\":\"0\"\r\n\r\n\r\n        //   {\r\n        //         \"amtbal\": \"153,008,258.00\", saldo akhir/outstanding\r\n        //         \"amtbill\": \"1,633,409.00\", /jumlah angsuran\r\n        //         \"amtint\": \"641,667.00\", anguran bunga\r\n        //         \"amtprc\": \"991,742.00\",angsuran pokok\r\n        //         \"angsKe\": 1, \r\n        //         \"billdt\": \"2024-11-17\" tgl Pembayaran\r\n        //     },\r\n}",
+            "contentType": "application/json"
+          },
+          "name": "/inqLoanSchedule",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/gateway/inqLoanSchedule",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9bvm41qfhh1mmr52059f"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\r\n    \"reqid\"         : \"00036\",\r\n    \"channelId\"     : \"33\",\r\n    \"userGtw\"       : \"dtigw\",\r\n\r\n    \"cifId\"         :\"0000998013\"\r\n}",
+            "contentType": "application/json"
+          },
+          "name": "/inqLoanAccByCIF",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/gateway/inqLoanAccByCIF",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9bvm41qhhh1mkjlxr8dl"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\n    \"reqid\"         : \"LN020\",\n    \"channelId\"     : \"33\",\n    \"userGtw\"       : \"dtigw\",\n\n    // \"accNbr\"        :\"31305970000281\"\n  \n    // \"accNbr\"        :\"10005680012694\"\n    \"accNbr\"        :\"37005990001260\"\n}",
+            "contentType": "application/json"
+          },
+          "name": "/inqLoanAccountSchedule",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/gateway/inqLoanAccountSchedule",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9bvm41qjhh1m1de8mnyk"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\n    \"reqid\"         : \"FN020\",\n    \"channelId\"     : \"33\",\n    \"userGtw\"       : \"dtigw\",\n\n    // \"accnbr\"        : \"61005120000602\" // Syariah OK \n    \"accnbr\"        : \"10005080001630\" // Syariah OK \n}",
+            "contentType": "application/json"
+          },
+          "name": "/inqFinancingAccountSchedule",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/gateway/inqFinancingAccountSchedule",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9bvn41qlhh1msyugpdnr"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\n    \"reqid\"         : \"00002\",\n    \"channelId\"     : \"33\",\n    \"userGtw\"       : \"dtigw\",\n    // \"channelId\"     : \"34\",\n    // \"userGtw\"       : \"efrgw\",\n    // \"channelId\"     : \"27\",\n    // \"userGtw\"       : \"slngw\",\n\n    // \"accnbr\"         :\"10002050026937\"\n    \"accnbr\"         :\"11902040120342\"\n\n    // \"accnbr\"         :\"10006210032795\", \n    // \"accnbr\"         :\"61405220013001\", \n}",
+            "contentType": "application/json"
+          },
+          "name": "/inqAccByAcc",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/gateway/inqAccByAcc",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9bvn41qnhh1m6lh4ic2i"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\r\n    \"reqid\"         : \"00008\",\r\n    \"channelId\"     : \"33\",\r\n    \"userGtw\"       : \"dtigw\",\r\n    \"accNbr\"         : \"10002040560595\",\r\n    \"startDate\"      : \"2023-08-12\",\r\n    \"endDate\"        : \"2023-08-12\"\r\n}",
+            "contentType": "application/json"
+          },
+          "name": "/inqAccStatements",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/gateway/inqAccStatements",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9bvn41qphh1mejkst7k1"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\r\n    \"reqid\"         : \"00084\",\r\n    \"channelId\"     : \"8\",\r\n    \"userGtw\"       : \"embgw\",\r\n\r\n    \"branchId\"          : \"100\",\r\n    \"aoId\"              : \"00000000\",\r\n    \"userId\"            : \"s9999\",\r\n    \"spvId\"             : \"s9999\",\r\n    \"cifId\"             : \"\",\r\n    \"mapCIF\"            : {\r\n        \"AODID\"             : \"00000000\",\r\n        \"IDNBR\"             : \"1214100112966661\",\r\n        \"FULLNM\"            : \"Susanti\",\r\n        \"SURENM\"            : \"Susanti\",\r\n        \"ALIAS\"             : \"-\",\r\n        \"MOTHRNM\"           : \"ibunda\",\r\n        \"BRTDT\"             : \"1996-01-01\",\r\n        \"BRTPLACE\"          : \"Medan\",\r\n        \r\n        \"STSNATION\"         : 1,\r\n        \"FLGCITIZEN\"        : 0,\r\n        \"ADDRDFLT\"          : 0,\r\n        \"COUNTRYID\"         : \"ID\",\r\n        \"ADDR\"              : \"Medan\",\r\n        \"OLDSTAY\"           : \"01\", // Belum Bisa\r\n        \"STSADDR\"           : \"01\", // Belum Bisa\r\n        \"PROVID\"            : \"12\",\r\n        \"CITYID\"            : \"1275\",\r\n        \"KECNM\"             : \"1275060\",\r\n        \"KELNM\"             : \"1275060003\",\r\n        \"RT\"                : \"000\",\r\n        \"RW\"                : \"000\",\r\n        \"POSTALCODE\"        : \"12345\",\r\n\r\n        \"RELIGIONID\"        : \"1\",\r\n        \"SEX\"               : 2,\r\n        \"EMAIL\"             : \"susanti@gmail.com\",\r\n        \"NOTELP\"            : \"082276442588\",\r\n        \"NOHP\"              : \"082276442588\",\r\n        \"TYPEID\"            : \"1\",\r\n        \"LASTEDUID\"         : \"2\",\r\n        \"MARRIAGEID\"        : \"2\",\r\n        \"NPWP\"              : \"000000000000000\",\r\n        \"BLOODTYPE\"         : \"1\",\r\n        \"STSPEP\"            : \"0\",\r\n        \"EXPDT\"             : \"9999-12-31\",\r\n\r\n        \"SALARY\"            : \"1\",\r\n        \"BENACCOPN\"         : \"01\",\r\n        \"GOLOPNACC\"         : \"01\",\r\n        \"TXMAIN\"            : \"1\",\r\n        \"MAINSALID\"         : \"01\",\r\n        \r\n        \"TXADD\"             : \"1\",\r\n        \"ADDSALID\"          : \"01\",\r\n\r\n        \"FREQMNTHWD\"        : \"01\",\r\n        \"AVGMNTHWD\"         : \"01\",\r\n        \"FREQMNTHDEP\"       : \"01\",\r\n        \"AVGMNTHDEP\"        : \"01\",\r\n\r\n        \"TXAVGCASH\"         : \"01\",\r\n        \"TXAVGTRF\"          : \"01\",\r\n        \"TXCASH\"            : \"01\",\r\n        \"TXTRF\"             : \"01\",\r\n\r\n        \"TXINSTRUMEN\"       :\"01\",\r\n        \"TAXID\"             :\"0\", // SKB Pajak & Status Pajak      \r\n        \"HOBBY\"             :\"\",\r\n        \"INSURED\"           :\"\",\r\n\r\n        \"mapJOB\"            : {\r\n            \"COUNTRYID\"         : \"ID\",\r\n            \"JOBID\"             : \"002\",\r\n            \"COMNMJOB\"          : \"PT KITA BERSATU\",\r\n            \"ADDRJOB\"           : \"Medan\",\r\n            \"BUSSID\"            : \"04\",\r\n            \"EMPNO\"             : \"00\",\r\n            \"FUNCJOB\"           : \"00\",\r\n            \"STSJOB\"            : \"0\",\r\n            \"DTSTARTJOB\"        : \"2000-01-01\",\r\n            \"LOCJOB\"            : \"2\",\r\n            \"PROVID\"            : \"12\",\r\n            \"CITYID\"            : \"1275\",\r\n            \"OTHERINFO\"         : \"\",\r\n            \"NOFAXJOB\"          : \"\",\r\n            \"NOTELPJOB\"         : \"\",\r\n            \"POSTALCODE\"        : \"\"\r\n        },\r\n        \"mapRESIDENCE\"      : {\r\n            \"ADDRID\"            : \"1\",\r\n            \"ADDRDFLT\"          : \"1\",\r\n            \"COUNTRYID\"         : \"ID\",\r\n            \"OLDSTAY\"           : \"01\", \r\n            \"STSADDR\"           : \"01\", \r\n            \"ADDR\"              : \"Medan\",\r\n            \"PROVID\"            : \"12\",\r\n            \"CITYID\"            : \"1275\",\r\n            \"KECNM\"             : \"1275060\",\r\n            \"KELNM\"             : \"1275060003\",\r\n            \"RT\"                : \"000\",\r\n            \"RW\"                : \"000\",\r\n            \"POSTALCODE\"        : \"12345\",\r\n            \"NOTELP\"            : \"082276442588\",\r\n            \"NOFAX\"             : \"-\"\r\n        }\r\n                                      \r\n    },\r\n    \"mapSVG\"            :{\r\n        \"PRODID\"            : \"04\",\r\n        \"NICKNM\"            : \"Susanti\",\r\n        \"PRODBU\"            : 1,\r\n        \"FINFOR\"            : \"1\",\r\n        \"FINSRC\"            : \"01\",\r\n        \"AVGTX\"             : \"01\", \r\n\r\n        \"FLGPASSBOOK\"       : 0,\r\n        \"REGNBR\"            : \"\"\r\n    },             \r\n    \"mapEStatement\"         : {\r\n        \"STARTDATE\"             : \"2023-08-06\",\r\n        \"EMAIL\"                 : \"susanti@gmail.com\",\r\n        \"PERIOD\"                : \"WEEKLY\",\r\n        \"PERIODDAY\"             : 1\r\n    }\r\n}",
+            "contentType": "application/json"
+          },
+          "name": "/openingSavingAccount",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/gateway/openingSavingAccount",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9bvn41qrhh1my3821o3c"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\n    \"reqid\"         : \"SV002\",\n    \"channelId\"     : \"34\",\n    \"userGtw\"       : \"efrgw\",\n\n    \"branchId\"          : \"100\",\n    \"aoId\"              : \"00000000\",\n    \"userId\"            : \"s9999\",\n    \"spvId\"             : \"s9999\",\n    // \"cifId\"             : \"0102343912\",\n    \"mapCIF\"            : {\n        \"AODID\"             : \"01000000\",\n        \"IDNBR\"             : \"1214100112960074\",\n        \"FULLNM\"            : \"Susanti4\",\n        \"SURENM\"            : \"Susanti4\",\n        \"ALIAS\"             : \"-\",\n        \"MOTHRNM\"           : \"ibunday\",\n        \"BRTDT\"             : \"1996-02-04\",\n        \"BRTPLACE\"          : \"Medan\",\n        \n        \"STSNATION\"         : 1,\n        \"FLGCITIZEN\"        : 0,\n        \"ADDRDFLT\"          : 0,\n        \"COUNTRYID\"         : \"ID\",\n        \"ADDR\"              : \"Medan\",\n        \"OLDSTAY\"           : \"01\", // Belum Bisa\n        \"STSADDR\"           : \"01\", // Belum Bisa\n        \"PROVID\"            : \"12\",\n        \"CITYID\"            : \"1275\",\n        \"KECNM\"             : \"1275060\",\n        \"KELNM\"             : \"1275060003\",\n        \"RT\"                : \"000\",\n        \"RW\"                : \"000\",\n        \"POSTALCODE\"        : \"12345\",\n\n        \"RELIGIONID\"        : \"1\",\n        \"SEX\"               : 2,\n        \"EMAIL\"             : \"susanti@gmail.com\",\n        \"NOTELP\"            : \"082276442588\",\n        \"NOHP\"              : \"082276442588\",\n        \"TYPEID\"            : \"1\",\n        \"LASTEDUID\"         : \"2\",\n        \"MARRIAGEID\"        : \"2\",\n        \"NPWP\"              : \"000000000000000\",\n        \"BLOODTYPE\"         : \"1\",\n        \"STSPEP\"            : \"0\",\n        \"EXPDT\"             : \"9999-12-31\",\n\n        \"SALARY\"            : \"1\",\n        \"BENACCOPN\"         : \"01\",\n        \"GOLOPNACC\"         : \"01\",\n        \"TXMAIN\"            : \"1\",\n        \"MAINSALID\"         : \"01\",\n        \n        \"TXADD\"             : \"1\",\n        \"ADDSALID\"          : \"01\",\n\n        \"FREQMNTHWD\"        : \"01\",\n        \"AVGMNTHWD\"         : \"01\",\n        \"FREQMNTHDEP\"       : \"01\",\n        \"AVGMNTHDEP\"        : \"01\",\n\n        \"TXAVGCASH\"         : \"01\",\n        \"TXAVGTRF\"          : \"01\",\n        \"TXCASH\"            : \"01\",\n        \"TXTRF\"             : \"01\",\n\n        \"TXINSTRUMEN\"       :\"01\",\n        \"TAXID\"             :\"0\", // SKB Pajak & Status Pajak      \n        \"HOBBY\"             :\"\",\n        \"INSURED\"           :\"\",\n\n        \"mapJOB\"            : {\n            \"COUNTRYID\"         : \"ID\",\n            \"JOBID\"             : \"002\",\n            \"COMNMJOB\"          : \"PT KITA BERSATU\",\n            \"ADDRJOB\"           : \"Medan\",\n            \"BUSSID\"            : \"04\",\n            \"EMPNO\"             : \"00\",\n            \"FUNCJOB\"           : \"00\",\n            \"STSJOB\"            : \"0\",\n            \"DTSTARTJOB\"        : \"2000-01-01\",\n            \"LOCJOB\"            : \"2\",\n            \"PROVID\"            : \"12\",\n            \"CITYID\"            : \"1275\",\n            \"OTHERINFO\"         : \"\",\n            \"NOFAXJOB\"          : \"\",\n            \"NOTELPJOB\"         : \"\",\n            \"POSTALCODE\"        : \"\"\n        },\n        \"mapRESIDENCE\"      : {\n            \"ADDRID\"            : \"1\",\n            \"ADDRDFLT\"          : \"1\",\n            \"COUNTRYID\"         : \"ID\",\n            \"OLDSTAY\"           : \"01\", \n            \"STSADDR\"           : \"01\", \n            \"ADDR\"              : \"Medan\",\n            \"PROVID\"            : \"12\",\n            \"CITYID\"            : \"1275\",\n            \"KECNM\"             : \"1275060\",\n            \"KELNM\"             : \"1275060003\",\n            \"RT\"                : \"000\",\n            \"RW\"                : \"000\",\n            \"POSTALCODE\"        : \"12345\",\n            \"NOTELP\"            : \"082276442588\",\n            \"NOFAX\"             : \"-\"\n        },\n        \"mapRelation\"         : {\n            \"RELATEDID\"         : \"6\",\n            \"STSCIF\"            : 0,\n            \"CIFNORLT\"          : \"\",\n            \"NOTEREL\"           : \"0822768876\",\n\n            \"STSNATION\"         : \"1\",\n            \"COUNTRYID\"         : \"ID\",\n            \"STSPEP\"            : \"0\",\n            \"ADDR\"              : \"MEDAN\",\n            \"PROVID\"            : \"12\",\n            \"CITYID\"            : \"1277\",\n            \"KECNM\"             : \"1277030\",\n            \"KELNM\"             : \"1277030012\",\n            \"RT\"                : \"00\",\n            \"RW\"                : \"00\",\n            \"POSTALCODE\"        : \"\",\n\n            // \"mapBO\"             : {\n            //     \"IDNBR\"         : \"1208095612860064\",\n            //     \"EXPDT\"         : \"9999-12-31\",\n            //     \"FULLNM\"        : \"MARKO\",\n            //     \"SURENM\"        : \"MARKO\",\n            //     \"STSNATION\"     : \"1\", // WNI\n            //     \"SEX\"           : \"1\",\n            //     \"BRTPLACE\"      : \"MEDAN\",\n            //     \"BRTDT\"         : \"1996-02-02\",\n            //     \"MOTHRNM\"       : \"SUSANTI\",\n\n            //     \"ADDR\"          : \"MEDAN\",\n            //     \"PROVID\"        : \"12\",\n            //     \"CITYID\"        : \"1277\",\n            //     \"KECNM\"         : \"1277030\",\n            //     \"KELNM\"         : \"1277030012\",\n            //     \"POSTALCODE\"    : \"1234\",\n            //     \"COUNTRYID\"     : \"ID\",\n            //     \"TYPEID\"        : \"1\",\n            //     \"DOMISILI\"      : \"1\", // DOMISILI SAMA DENGAN IDENTITAS\n\n            //     \"JOBID\"         : \"002\",\n            //     \"JOBPOST\"       : \"04\",\n            //     \"LOCJOB\"        : \"1\",\n            //     \"STSPEP\"        : \"0\",   \n            //     \"NMJOB\"         : \"-\",\n            //     \"BUSSREL\"       : \"-\",   \n            //     \"MONTHINCOME\"   : \"2000000\",   \n            //     \"SRCFUND\"       : \"02\",   \n\n            //     \"TXTYPE\"        : \"\",\n            //     \"TXAMTWIC\"      : \"\",\n            //     \"NOTELPWIC\"     : \"\",\n            //     \"NOHPWIC\"       : \"\"\n            // }\n        }\n                                      \n    },\n    \"mapSVG\"            :{\n        \"PRODID\"            : \"04\",\n        // \"PRODID\"            : \"20\", // MARTABE RENCANA\n        \"NICKNM\"            : \"Susantis\",\n        \"PRODBU\"            : 1,\n        \"FINFOR\"            : \"1\",\n        \"FINSRC\"            : \"01\",\n        \"AVGTX\"             : \"01\", \n\n        \"FLGPASSBOOK\"       : 0,\n        \"REGNBR\"            : \"\",\n        \n        \"REFRLID\"            : \"10000000\",\n\n        \"OWNGRP\"            : \"1\", // Private ownership \n        \n        // \"FIRSTDEP\"          : \"1500000\",\n        // \"DEPOSIT\"           : \"25000000\",\n        // \"PERIOD\"            : \"24\",\n        // \"DEPDATE\"           : \"22\",\n        // \"DISBACC\"           : \"10002040623050\",\n        // \"AFIACC\"            : \"10002040623050\",\n        // \"NOPOLIS\"           : \"PLS-100/2026\",\n        // \"RCPERIOD\"          : \"3\"\n\n        // \"FLGSAVE\"           : \"1\"\n    },             \n    \"mapEStatement\"         : {\n        \"STARTDATE\"             : \"2025-09-22\",\n        \"EMAIL\"                 : \"susantis@gmail.com\",\n        \"PERIOD\"                : \"WEEKLY\",\n        \"PERIODDAY\"             : 1\n    }\n}",
+            "contentType": "application/json"
+          },
+          "name": "/openingSavingAccountEform",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/gateway/openingSavingAccountEform",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9bvn41qthh1mugwtro6c"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\n    \"reqid\"         : \"CF003\",\n    \"channelId\"     : \"34\",\n    \"userGtw\"       : \"efrgw\",\n\n    \"USRUPD\"            : \"s9999\",\n\n    \"CIFID\"             : \"0102021521\",\n    // \"CIFID\"             : \"0102341233\",\n    \n    // \"TYPEID\"            : \"1\", // KTP  \n    // \"IDNBR\"             : \"1271122104890001\",\n    // \"EXPDT\"             : \"9999-12-31\",\n    // \"FULLNM\"            : \"Susanti\",\n    // \"SURENM\"            : \"Susanti\",\n    // \"ALIAS\"             : \"-\",\n    // \"MOTHRNM\"           : \"ibunda\",\n    // \"BRTDT\"             : \"1996-01-01\",\n    // \"BRTPLACE\"          : \"Medan\",\n    \n    // \"NOHP\"              : \"082276442588\",\n    \"NPWP\"              : \"1214086006970002\",\n    \n    // \"RELIGIONID\"        : \"1\",\n    // \"MARRIAGEID\"        : \"2\",\n    // \"LASTEDUID\"         : \"2\",\n    // \"BLOODTYPE\"         : \"1\",\n    // \"HOBBY\"             :\"OLAHRAGA\",\n    // \"STSNATION\"         : 1,\n    \n    // \"COUNTRYID\"         : \"ID\",\n    // \"ADDR\"              : \"Medan\",\n    // \"PROVID\"            : \"12\",\n    // \"CITYID\"            : \"1275\",\n    // \"KECNM\"             : \"1275060\",\n    // \"KELNM\"             : \"1275060003\",\n    // \"RT\"                : \"000\",\n    // \"RW\"                : \"000\",\n    // \"POSTALCODE\"        : \"12345\",\n\n    // \"aoId\"              : \"00000000\",\n    // \"userId\"            : \"s9999\",\n    // \"spvId\"             : \"s9999\",\n    // \"cifId\"             : \"\",\n    // \"mapCIF\"            : {\n    //     \"AODID\"             : \"00000000\",\n    //     \"FLGCITIZEN\"        : 0,\n    //     \"ADDRDFLT\"          : 0,\n\n\n    //     \"SEX\"               : 2,\n    //     \"EMAIL\"             : \"susanti@gmail.com\",\n    //     \"NOTELP\"            : \"082276442588\",\n    //     \"TYPEID\"            : \"1\",\n    //     \"STSPEP\"            : \"0\",\n    //     \"EXPDT\"             : \"9999-12-31\",\n\n    //     \"SALARY\"            : \"1\",\n    //     \"BENACCOPN\"         : \"01\",\n    //     \"GOLOPNACC\"         : \"01\",\n    //     \"TXMAIN\"            : \"1\",\n    //     \"MAINSALID\"         : \"01\",\n        \n    //     \"TXADD\"             : \"1\",\n    //     \"ADDSALID\"          : \"01\",\n\n    //     \"FREQMNTHWD\"        : \"01\",\n    //     \"AVGMNTHWD\"         : \"01\",\n    //     \"FREQMNTHDEP\"       : \"01\",\n    //     \"AVGMNTHDEP\"        : \"01\",\n\n    //     \"TXAVGCASH\"         : \"01\",\n    //     \"TXAVGTRF\"          : \"01\",\n    //     \"TXCASH\"            : \"01\",\n    //     \"TXTRF\"             : \"01\",\n\n    //     \"TXINSTRUMEN\"       :\"01\",\n    //     \"TAXID\"             :\"0\", // SKB Pajak & Status Pajak      \n    //     \"INSURED\"           :\"\",\n\n    //     \"mapJOB\"            : {\n    //         \"COUNTRYID\"         : \"ID\",\n    //         \"JOBID\"             : \"002\",\n    //         \"COMNMJOB\"          : \"PT KITA BERSATU\",\n    //         \"ADDRJOB\"           : \"Medan\",\n    //         \"BUSSID\"            : \"04\",\n    //         \"EMPNO\"             : \"00\",\n    //         \"FUNCJOB\"           : \"00\",\n    //         \"STSJOB\"            : \"0\",\n    //         \"DTSTARTJOB\"        : \"2000-01-01\",\n    //         \"LOCJOB\"            : \"2\",\n    //         \"PROVID\"            : \"12\",\n    //         \"CITYID\"            : \"1275\",\n    //         \"OTHERINFO\"         : \"\",\n    //         \"NOFAXJOB\"          : \"\",\n    //         \"NOTELPJOB\"         : \"\",\n    //         \"POSTALCODE\"        : \"\"\n    //     },\n    //     \"mapRESIDENCE\"      : {\n    //         \"ADDRID\"            : \"1\",\n    //         \"ADDRDFLT\"          : \"1\",\n    //         \"COUNTRYID\"         : \"ID\",\n    //         \"OLDSTAY\"           : \"01\", \n    //         \"STSADDR\"           : \"01\", \n    //         \"ADDR\"              : \"Medan\",\n    //         \"PROVID\"            : \"12\",\n    //         \"CITYID\"            : \"1275\",\n    //         \"KECNM\"             : \"1275060\",\n    //         \"KELNM\"             : \"1275060003\",\n    //         \"RT\"                : \"000\",\n    //         \"RW\"                : \"000\",\n    //         \"POSTALCODE\"        : \"12345\",\n    //         \"NOTELP\"            : \"082276442588\",\n    //         \"NOFAX\"             : \"-\"\n    //     }\n                                      \n    // },\n    // \"mapSVG\"            :{\n    //     \"PRODID\"            : \"04\",\n    //     \"NICKNM\"            : \"Susanti\",\n    //     \"PRODBU\"            : 1,\n    //     \"FINFOR\"            : \"1\",\n    //     \"FINSRC\"            : \"01\",\n    //     \"AVGTX\"             : \"01\", \n\n    //     \"FLGPASSBOOK\"       : 0,\n    //     \"REGNBR\"            : \"\"\n    // },             \n    // \"mapEStatement\"         : {\n    //     \"STARTDATE\"             : \"2023-08-06\",\n    //     \"EMAIL\"                 : \"susanti@gmail.com\",\n    //     \"PERIOD\"                : \"WEEKLY\",\n    //     \"PERIODDAY\"             : 1\n    // },\n\n    \"-\" : \"\"\n}",
+            "contentType": "application/json"
+          },
+          "name": "/UpdateCIF",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/gateway/UpdateCIF",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9bvo41qvhh1mpva3tek6"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\r\n    \"reqid\"         : \"FN001\",\r\n\r\n    // \"channelId\"     : \"27\",\r\n    // \"userGtw\"       : \"kmggw\",\r\n\r\n       \r\n    \"channelId\"     : \"33\",\r\n    \"userGtw\"       : \"dtigw\",\r\n\r\n\r\n    \"-\":\"\"\r\n}\r\n\r\n// 210005180000011",
+            "contentType": "application/json"
+          },
+          "name": "/CreateFinancingAccount",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/gateway/CreateFinancingAccount",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9bvo41qxhh1m0e7mfxpi"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\r\n    \"reqid\"         : \"LN029\",\r\n    \"channelId\"     : \"27\",\r\n    \"userGtw\"       : \"kmggw\",\r\n\r\n    \"branchId\"      : \"100\",  \r\n    \"accNbr\"        : \"10006040707820\",  \r\n    \"entrastBal\"    : \"0\",  \r\n    \"entrastPrc\"    : \"0\",  \r\n    \"entrastInt\"    : \"0\",  \r\n    \"amtPenPasd\"    : \"0\",\r\n    \"amtIntPasd\"    : \"0\",  \r\n    \"repayIntMthd\"  : \"0\",  \r\n    \"nPercent\"      : \"0\",  \r\n    \"repayInt\"      : \"0\",  \r\n    \"repayPenalty\"  : \"1000000\",  \r\n    \"discPenPasd\"   : \"0\",  \r\n    \"discIntPasd\"   : \"0\",  \r\n    \"discRepayInt\"  : \"0\",  \r\n    \"noSKDisc\"      : \"-\",  \r\n    \"tglSKDisc\"     : \"\",  \r\n    \"discGiver\"     : \"\",  \r\n    \"clsdNote\"      : \"PERMINTAAN SENDIRI\",  \r\n    \"crtUser\"       : \"s9999\"  \r\n}",
+            "contentType": "application/json"
+          },
+          "name": "/CloseLoan",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/gateway/CloseLoan",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9bvo41qzhh1ma1f7d0em"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\r\n    \"reqid\"         : \"SV007\",\r\n    \"channelId\"     : \"34\",\r\n    \"userGtw\"       : \"ssvgw\",\r\n\r\n    \"accNbr\"        : \"10002040560610\",  \r\n    \"bookBal\"       : \"1\"\r\n}",
+            "contentType": "application/json"
+          },
+          "name": "/cetakBukuTabungan",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/gateway/cetakBukuTabungan",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9bvo41r1hh1mv382da4e"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\r\n    \"reqid\"         : \"SV008\",\r\n    \"channelId\"     : \"34\",\r\n    \"userGtw\"       : \"ssvgw\",\r\n\r\n    \"param\"          : [\r\n        {\r\n             \"TXID\"         : \"1\",\r\n             \"ACCNBR\"       : \"10002040560610\",\r\n             \"TXCODE\"       : \"1\",\r\n             \"TXDATE\"       : \"2025-04-30\",\r\n             \"TXDTSTLMN\"    : \"-\"\r\n        }\r\n    ]  \r\n}",
+            "contentType": "application/json"
+          },
+          "name": "/updateStatusBukuTabungan",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/gateway/updateStatusBukuTabungan",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9bvo41r3hh1m6h8rlggq"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\r\n    \"reqid\"         : \"DP001\",\r\n    \"channelId\"     : \"8\",\r\n    \"userGtw\"       : \"embgw\",\r\n\r\n    \"PRODID\"        : \"01\", \r\n    \"BRANCHID\"      : \"100\", \r\n    \"USERID\"        : \"s9999\", \r\n    \"CIFID\"         : \"0002841022\", \r\n    \"PRINTNM\"       : \"NAMA REKENING\", \r\n    \"STRTDT\"        : \"2025-05-01\", \r\n    \"DUEDT\"         : \"2025-06-01\", \r\n    \"AOID\"          : \"00000000\", \r\n    \"FINFOR\"        : \"1\", \r\n    \"FINSRC\"        : \"01\", \r\n    \"REFRLID\"       : \"00\",\r\n    \"AMTNOM\"        : \"10000000\", \r\n    \"FLGPS\"         : \"1\", \r\n    \"FLGEXTEND\"     : \"0\", \r\n    \"FLGGETINT\"     : \"1\", \r\n    \"FLGVIAPAYINT\"  : \"1\", \r\n    \"SHAREDTYPE\"    : \"2\", \r\n    \"FLGACCSRC\"     : \"0\", \r\n    \"ACCNBRSRC\"     : \"10002040007855\", \r\n    \"FLGACCDUEDT\"   : \"0\", \r\n    \"ACCNBRDUEDT\"   : \"10002040007855\", \r\n    \"FLGDUEDT\"      : \"1\", \r\n    \"AUTOPLCMN\"     : \"1\", \r\n    \"PRODBU\"        : 1, \r\n    // \"ACCINT\"        : [ \r\n    //     { \r\n    //         \"ACCNBRINT\": \"0010301106077\", \r\n    //         \"TYPERCVINT\": \"1\", \r\n    //         \"SHAREINT\": \"50\", \r\n    //         \"NOTE\": \"Bagi Hasil\" \r\n    //     } \r\n    // ] \r\n\r\n    \"-\" :\"\"\r\n}\r\n\r\n\r\n\r\n// Response \r\n// {\r\n//     \"message\": \"CREATE REKENING DEPOSITO BERHASIL\",\r\n//     \"rcode\": \"00\",\r\n//     \"result\": {\r\n//         \"ACCNBR\": \"10003010020695\",\r\n//         \"BILYTNBR\": \"000005\",\r\n//         \"CIFID\": \"0002841022\",\r\n//         \"DUEDT\": \"2025-06-01\",\r\n//         \"DUEPRNC\": 1,\r\n//         \"SERIBLYTNBR\": \"MB\",\r\n//         \"STRTDT\": \"2025-05-01\",\r\n//         \"TXID\": \"37zI2ODIzNQ\"\r\n//     },\r\n//     \"statusId\": 1\r\n// }\r\n\r\n",
+            "contentType": "application/json"
+          },
+          "name": "/CreateAccDeposito",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/gateway/CreateAccDeposito",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9bvp41r5hh1mzqdujg6h"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\r\n    \"reqid\"         : \"CF022\",\r\n    \"channelId\"     : \"34\",\r\n    \"userGtw\"       : \"efrgw\",\r\n\r\n    \"TYPEID\"        : \"1\", // KTP \r\n    \"IDNBR\"         : \"1208095612860021\", // KTP \r\n    \"FULLNM\"        : \"MARKO\", \r\n    \"SURENM\"        : \"MARKO\", \r\n    \"BRTPLACE\"      : \"MEDAN\", \r\n    \"BRTDT\"         : \"1996-02-02\", \r\n    \"MOTHRNM\"       : \"SUSANTI\", \r\n    \"STSNATION\"     : \"1\", \r\n    \"SEX\"           : \"1\", \r\n    \"EXPDT\"         : \"9999-12-31\", \r\n    \r\n    \"COUNTRYID\"     : \"ID\", \r\n    \"ADDR\"          : \"MEDAN\", \r\n    \"DOMISILI\"      : \"1\",      // Alamat Id->Domisili\r\n    \"PROVID\"        : \"12\", \r\n    \"CITYID\"        : \"1277\", \r\n    \"KECNM\"         : \"1277030\", \r\n    \"KELNM\"         : \"1277030012\", \r\n    \"POSTALCODE\"    : \"22074\", \r\n\r\n    \"JOBID\"         : \"002\", \r\n    \"JOBPOST\"       : \"04\", \r\n    \"LOCJOB\"        : \"1\", \r\n    \"STSPEP\"        : \"0\", \r\n    \"NMJOB\"         : \"00\", \r\n    \"BUSSREL\"       : \"-\", \r\n    \"MONTHINCOME\"   : \"5000000\", \r\n    \"SRCFUND\"       : \"02\", \r\n\r\n    // \"TXAMTWIC\"      : \"\", \r\n    // \"NOTELPWIC\"     : \"\", \r\n    // \"NOHPWIC\"     : \"\", \r\n\r\n    \r\n\r\n    \"-\" :\"\"\r\n}\r\n\r\n",
+            "contentType": "application/json"
+          },
+          "name": "/CreateBeneficialOwner",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM=",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/gateway/CreateBeneficialOwner",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9bvp41r7hh1m7dnxmh8o"
+        }
+      ],
+      "auth": {
+        "authType": "inherit",
+        "authActive": true
+      },
+      "headers": [],
+      "variables": [],
+      "description": null,
+      "preRequestScript": "",
+      "testScript": ""
+    },
+    {
+      "v": 12,
+      "id": "cmqta9bzx41r8hh1m2cxy3j6q",
+      "name": "HRIS",
+      "folders": [],
+      "requests": [
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\n    \"reqid\"         : \"HR001\",\n\n    // \"userId\"        : \"Mjdocm9jUUJISjNUM0lTaU5TdDdNRG95dHBacmVMZW5ROVFUanRLbkRWcz0=\", // 4259\n    // \"password\"      : \"VG1PL050NStYTjJ2NFlXSkNzNCsyU25SeHA0QThwWTE4SENJUVYxUlFLST0=\"\n  \n    \"userId\"        : \"NUorNkNacjdZM2lwamV1VWJKYzFZdDBOMjdnMjVwc3g0a0s0dHFmcDdWND0=\", // 1542\n    \"password\"      : \"TmczNjdFdER0Mk5KN2tJSTNxRW8xTThVZ0lXSkJtemlCb3psUXBQRGdIMzVPb0Zta2FuaEpyVWJXLzZDckJzRQ==\"\n}",
+            "contentType": "application/json"
+          },
+          "name": "/authLogin",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "<<X-Signature>>",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/hris/authLogin",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9c0h41rahh1mamfw0kft"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\r\n    \"reqid\"         : \"HR002\",\r\n\r\n    \"userid\"        : \"2870\"\r\n}",
+            "contentType": "application/json"
+          },
+          "name": "/inqDetailUser",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "<<X-Signature>>",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/hris/inqDetailUser",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9c0h41rchh1m8ds58ru3"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\r\n    \"reqid\"         : \"HR003\"\r\n}",
+            "contentType": "application/json"
+          },
+          "name": "/inqMasterPegawai",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "<<X-Signature>>",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/hris/inqMasterPegawai",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9c0h41rehh1m54kaqaxd"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\r\n    \"reqid\"         : \"HR004\"\r\n}",
+            "contentType": "application/json"
+          },
+          "name": "/inqUnitKerja",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "<<X-Signature>>",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/hris/inqUnitKerja",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9c0i41rghh1mqm7bv73d"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\r\n    \"reqid\"         : \"HR005\"\r\n}",
+            "contentType": "application/json"
+          },
+          "name": "/inqJabatan",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "<<X-Signature>>",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/hris/inqJabatan",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9c0i41rihh1m87d01w9n"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\n    \"reqid\"         : \"HR006\",\n\n    // \"id_unit_kerja\":\"778\", // Cabang\n    // \"id_unit_kerja\":\"755\", // Sekretariat Perusahaan \n    \"id_unit_kerja\":\"665\", // DTI \n    // \"id_unit_kerja\":\"664\", // Treasury\n    // \"id_unit_kerja\":\"778\", // Dops\n    // \"id_unit_kerja\":\"735\", // Cabkor Medan \n    // \"id_unit_kerja\":\"558\", // Dolok Sanggul \n    // \"id_unit_kerja\":\"733\", // DCR\n    // \"id_unit_kerja\":\"732\", // DDJ\n    // \"id_unit_kerja\":\"803\", // DST\n    // \"id_unit_kerja\":\"667\", // DMR\n    // \"id_unit_kerja\":\"663\", // Kepatuhan\n    // \"id_unit_kerja\":\"479\", // Divisi Umum\n    // \"id_unit_kerja\":\"691\", // CABANG LIMA PULUH\n    // \"id_unit_kerja\":\"575\", // CABANG KISARAN\n    // \"id_unit_kerja\":\"753\", // CABANG BATAM\n    // \"id_unit_kerja\":\"669\", // UKK APU & PPT\n    // \"id_unit_kerja\":\"840\", // UKK APU PPT & PPPSPM\n    // \"id_unit_kerja\":\"558\", \n    // \"id_unit_kerja\":\"653\", // Lahomi\n    // \"id_unit_kerja\":\"509\",  // Teluk Dalam\n    // \"id_unit_kerja\":\"747\",  // Lahusa\n    // \"id_unit_kerja\":\"785\", // Ngumban Surbakit / 128\n    // \"kd_unit_penempatan\":\"117\",\n    // \"userid\":\"4287\",\n    // \"userid\":\"4216\",\n    // \"userid\":\"1776\",\n    // \"userid\":\"0931\",\n    // \"userid\":\"3743\",\n    // \"userid\":\"3442\",\n    // \"userid\":\"4259\",\n    // \"userid\":\"2558\",\n    // \"userid\":\"3004\",\n    // \"id_unit_kerja\":\"558\", // DDJ\n    // \"userid\":\"3886\",\n    // \"userid\":\"25058\",\n    // \"userid\":\"3497\",\n    // \"id_unit_kerja\":\"125\", // DPK\n    // \"id_unit_kerja\":\"735\", // Cabang Kantor Medan\n    // \"userid\":\"1319\",\n    // \"userid\":\"0968\",\n    // \"userid\":\"3180\",\n    // \"userid\":\"1735\",\n    // \"userid\":\"4392\",\n\n    // \"userid\":\"4393\",\n    // \"userid\":\"2148\",\n    // \"userid\":\"1776\",\n    // \"userid\":\"2870\",\n    // \"nrik\":\"3459.04071993.01112016\",\n  \n    // \"search\":\"ramadhan\", // \"id_jabatan\": \"6706\",\n\n  // \"id_kel_jabatan\": \"324\",\n\n    \"kondisi\":\"\"\n    // \"\":\"\",\n}",
+            "contentType": "application/json"
+          },
+          "name": "/inqMasterPegawaiByKondisi",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "<<X-Signature>>",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/hris/inqMasterPegawaiByKondisi",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9c0i41rkhh1m73ap0bnz"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": null,
+            "contentType": null
+          },
+          "name": "New Request",
+          "method": "GET",
+          "params": [
+            {
+              "key": "action",
+              "value": "kirim_sms",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "email",
+              "value": "jda.jadikanaja@gmail.com",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "passkey",
+              "value": "Hm123123",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "no_tujuan",
+              "value": "082276442544",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "pesan",
+              "value": "testing",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "json",
+              "value": "1",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "headers": [],
+          "endpoint": "https://reguler.medansms.co.id/sms_api.php",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9c0i41rmhh1m9oh04m6l"
+        }
+      ],
+      "auth": {
+        "authType": "inherit",
+        "authActive": true
+      },
+      "headers": [],
+      "variables": [],
+      "description": null,
+      "preRequestScript": "",
+      "testScript": ""
+    },
+    {
+      "v": 12,
+      "id": "cmqta9c1j41rnhh1m9g099gkn",
+      "name": "Helper",
+      "folders": [],
+      "requests": [
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\n    \"reqid\"     : \"00000\",\n    // \"encrypted\" : \"P@ssw0rd\",\n    // \"encrypted\" : \"4259\",\n  \n    \"encrypted\" : \"kuG'i)wdsb9X3;L*\",\n    \"decrypted\" : \"WjMyN2ZELzRwaDd2bENxT1dsbkc4aEFyT01TMGI3TWFIVjVKOXVyWG1zbz0=\"\n}",
+            "contentType": "application/json"
+          },
+          "name": "/hashing",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "<<X-Signature>>",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/hashing",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9c2241rphh1mpw8ro1gl"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\r\n    \"reqid\"     : \"00000\"\r\n}",
+            "contentType": "application/json"
+          },
+          "name": "/genkey",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "<<X-Signature>>",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/genkey",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9c2341rrhh1mgqvelewj"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\r\n    \"reqid\"     : \"SS001\",\r\n    \"phone\"     : \"082276442544\",\r\n    \"msg\"       : \"TESTING\",\r\n    \"trxdesc\"   : \"KMG-ONLINE\"\r\n}",
+            "contentType": "application/json"
+          },
+          "name": "/SendSMS",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "<<X-Signature>>",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/SendSMS",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9c2341rthh1m3q248shw"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\r\n    \"reqid\"     : \"00000\",\r\n    \"kd_id\"     : \"u2852\",\r\n    \"no_wa\"     : \"082276442544\",\r\n    \"message\"   : \"Testing\"\r\n}",
+            "contentType": "application/json"
+          },
+          "name": "/sendWaMessage",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "<<X-Signature>>",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/sendWaMessage",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9c2341rvhh1mdw8hhas4"
+        }
+      ],
+      "auth": {
+        "authType": "inherit",
+        "authActive": true
+      },
+      "headers": [],
+      "variables": [],
+      "description": null,
+      "preRequestScript": "",
+      "testScript": ""
+    },
+    {
+      "v": 12,
+      "id": "cmqta9c2p41rwhh1mmkpt0lhl",
+      "name": "Send Message",
+      "folders": [],
+      "requests": [
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\r\n    \"reqid\"         : \"SM001\",\r\n    \"authkey\"       : \"UGxRZUZMMjEveXVETlNPYzIvV3EvRk9mM09PbVUzU3VUTVVvRSt1T0pRaz0\",\r\n    \"kd\"            : \"026\",\r\n    \"phone\"         : \"082276442544\",\r\n    \"message\"       : \"testing\"\r\n}",
+            "contentType": "application/json"
+          },
+          "name": "/sendmessage/wa",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "<<X-Signature>>",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/sendmessage/wa",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9c3841ryhh1m47sovcb7"
+        },
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\n    \"reqid\"     : \"SM002\",\n    // \"kode\"      : \"071\", //  alpan\n\n\n    // \"kode\"      : \"081\", // eform\n    // \"email\"     : \"franfestusdakhi@banksumut.co.id\",\n    // \"subject\"   : \"Testing\",\n    // \"message\"   : \"Testing\"\n    \n    \"kode\"      : \"091\", // smartloan ng\n    \"email\"     : \"gilangprasetyo@banksumut.co.id\",\n    \"subject\"   : \"Testing\",\n    \"message\"   : \"Testing\"\n}",
+            "contentType": "application/json"
+          },
+          "name": "/sendmessage/email",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Api-Key",
+              "value": "<<X-Api-Key>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Id",
+              "value": "<<X-Client-Id>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Timestamp",
+              "value": "<<X-Timestamp>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Client-Secret",
+              "value": "<<X-Client-Secret>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "X-Signature",
+              "value": "<<X-Signature>>",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "<<HOST-URL>>/sendmessage/email",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9c3841s0hh1m9dfcpzmx"
+        }
+      ],
+      "auth": {
+        "authType": "inherit",
+        "authActive": true
+      },
+      "headers": [],
+      "variables": [],
+      "description": null,
+      "preRequestScript": "",
+      "testScript": ""
+    },
+    {
+      "v": 12,
+      "id": "cmqta9c3k41s1hh1mizx0ajb9",
+      "name": "Dapenbun",
+      "folders": [],
+      "requests": [
+        {
+          "v": "17",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "body": "{\r\n    \"username\":\"fernando_bsu\",\r\n    \"password\":\"password\",\r\n    \"type\":1\r\n}",
+            "contentType": "application/x-www-form-urlencoded"
+          },
+          "name": "/auth/login",
+          "method": "POST",
+          "params": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/x-www-form-urlencoded",
+              "active": false,
+              "description": ""
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "endpoint": "https://portal.dapenbun.co.id/sso/api/auth/login",
+          "responses": {},
+          "testScript": "",
+          "description": null,
+          "preRequestScript": "",
+          "requestVariables": [],
+          "id": "cmqta9c4d41s3hh1mt68m3rp6"
+        }
+      ],
+      "auth": {
+        "authType": "inherit",
+        "authActive": true
+      },
+      "headers": [],
+      "variables": [],
+      "description": null,
+      "preRequestScript": "",
+      "testScript": ""
+    }
+  ],
+  "requests": [
+    {
+      "v": "17",
+      "auth": {
+        "authType": "inherit",
+        "authActive": true
+      },
+      "body": {
+        "body": "{\r\n    // ALPAN\r\n    // kd : 002\r\n    // authkey : ajdzUnJTRzNPbG9uN1ZJRHh3STQxMWRBR0NucHA5cVp4cDRieXBWaDlmRT0\r\n    \r\n\r\n    // KMG-ONLINE\r\n    // kd : 005\r\n    // authkey : Q3hjUkZEcUlIVHI5WjRKcmJJNWRYRndSMmg0K0w0QVBrR1NEczRBSElOUT0\r\n\r\n\r\n    // E-FORM\r\n    // kd : 026\r\n    // authkey : UGxRZUZMMjEveXVETlNPYzIvV3EvRk9mM09PbVUzU3VUTVVvRSt1T0pRaz0\r\n    \r\n    \r\n    // SAMRTLOAN\r\n    // kd : 008\r\n    // authkey : TEczYW1NcGt3YjFjMDFmak9iWi8yaEN1ZDB4KysrNTlONFhtbHV3Q0VjQT0\r\n}",
+        "contentType": "application/json"
+      },
+      "name": "Send Message",
+      "method": "GET",
+      "params": [
+        {
+          "key": "kd",
+          "value": "026",
+          "active": true,
+          "description": ""
+        },
+        {
+          "key": "tp",
+          "value": "4",
+          "active": true,
+          "description": ""
+        },
+        {
+          "key": "authkey",
+          "value": "UGxRZUZMMjEveXVETlNPYzIvV3EvRk9mM09PbVUzU3VUTVVvRSt1T0pRaz0",
+          "active": true,
+          "description": ""
+        },
+        {
+          "key": "phone",
+          "value": "082276442544",
+          "active": true,
+          "description": ""
+        },
+        {
+          "key": "text",
+          "value": "*Bukti Registrasi* \\n Nomor Registreasi : 1234567890 \\nUnit Kantor : 100 - Cabang Utama Medan, Tgl. Datang : Jumat, 10-01-2025 10.10 WIB \\n\\n\\nSilahkan datang ke *Customer Service Kantor Cabang Bank Sumut* yang telah Anda pilih dengan menunjukkan data Identitas atau Nomor Registrasi Anda",
+          "active": false,
+          "description": ""
+        },
+        {
+          "key": "text",
+          "value": "*Bukti Registrasi* \\nNomor Registreasi : 1234567890 \\nUnit Kantor : 100 - Cabang Utama Medan \n                Tgl. Datang : 10-01-2025 10.00 WIB \n                \n                Silahkan datang ke *Customer Service Kantor Cabang Bank Sumut* yang telah Anda pilih dengan menunjukkan data Identitas atau Nomor Registrasi Anda",
+          "active": false,
+          "description": ""
+        },
+        {
+          "key": "text",
+          "value": "*REGISTRASI BERHASIL* \nNomor Registrasi : 100042501300001 \nTanggal Registrasi : 30/01/2025 11:39 WIB \nUnit Kantor : 100 - Kantor Cabang Utama Medan\nTanggal Datang ke Bank Sumut : 30/01/2025\n                        \nSilahkan datang ke Customer Service Kantor Cabang Bank Sumut yang telah Anda pilih dengan menunjukkan Identitas atau Nomor Registrasi Anda. Nomor Registrasi hanya berlaku sesuai tanggal yang dipilih saat registrasi dan jam opersional kantor Bank Sumut.",
+          "active": true,
+          "description": ""
+        }
+      ],
+      "headers": [],
+      "endpoint": "http://192.168.3.75:81/sendmessage/wa\nNomor Registrasi : 100042501300001 \nTanggal Registrasi : 30/01/2025 11:39 WIB \nUnit Kantor : 100 - Kantor Cabang Utama Medan\nTanggal Datang ke Bank Sumut : 30/01/2025\n                        \nSilahkan datang ke Customer Service Kantor Cabang Bank Sumut yang telah Anda pilih dengan menunjukkan Identitas atau Nomor Registrasi Anda. Nomor Registrasi hanya berlaku sesuai tanggal yang dipilih saat registrasi dan jam opersional kantor Bank Sumut.",
+      "responses": {},
+      "testScript": "",
+      "description": null,
+      "preRequestScript": "",
+      "requestVariables": [],
+      "id": "cmqta9bum41pkhh1m7lufm8p2"
+    }
+  ],
+  "auth": {
+    "authType": "inherit",
+    "authActive": true
+  },
+  "headers": [],
+  "variables": [],
+  "description": null,
+  "preRequestScript": "",
+  "testScript": ""
+}

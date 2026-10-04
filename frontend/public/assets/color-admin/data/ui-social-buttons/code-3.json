@@ -1,0 +1,11 @@
+&lt;!-- btn-lg --&gt;
+&lt;a href="#" class="btn btn-social btn-lg btn-facebook"&gt;...&lt;/a&gt;
+
+&lt;!-- default --&gt;
+&lt;a href="#" class="btn btn-social btn-facebook"&gt;...&lt;/a&gt;
+
+&lt;!-- btn-sm --&gt;
+&lt;a href="#" class="btn btn-social btn-sm btn-facebook"&gt;...&lt;/a&gt;
+
+&lt;!-- btn-xs --&gt;
+&lt;a href="#" class="btn btn-social btn-xs btn-facebook"&gt;...&lt;/a&gt;

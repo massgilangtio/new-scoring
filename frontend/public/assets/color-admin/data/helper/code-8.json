@@ -1,0 +1,8 @@
+&lt;!-- example --&gt;
+&lt;div class="bg-primary bg-opacity-50"&gt;&lt;/div&gt;
+
+&lt;!-- background gradient --&gt;
+&lt;div class="bg-gradient-45 bg-gradient-from-gray-900 bg-gradient-to-transparent"&gt;&lt;/div&gt;
+
+&lt;!-- background blur --&gt;
+&lt;div class="bg-theme bg-opacity-15 bg-blur-1"&gt;&lt;/div&gt;

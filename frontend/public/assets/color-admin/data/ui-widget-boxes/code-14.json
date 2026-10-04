@@ -1,0 +1,15 @@
+&lt;!-- background & border --&gt;
+&lt;div class="card border-dark bg-gray-900 text-white"&gt;
+  &lt;div class="card-header bg-dark fw-bold small border-dark"&gt;...&lt;/div&gt;
+  &lt;div class="card-body"&gt;
+    ...
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- border & color --&gt;
+&lt;div class="card border-theme"&gt;
+  &lt;div class="card-header border-theme text-theme fw-bold small"&gt;...&lt;/div&gt;
+  &lt;div class="card-body"&gt;
+    ...
+  &lt;/div&gt;
+&lt;/div&gt;

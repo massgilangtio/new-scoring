@@ -1,0 +1,25 @@
+&lt;body class="app-boxed-layout"&gt;
+  &lt;div id="app" class="app app-sidebar-fixed app-with-top-menu"&gt;
+    &lt;div class="app-header"&gt;
+      ...
+      &lt;div class="menu"&gt;
+        &lt;div class="menu-item d-md-none"&gt;
+          &lt;a href="#" data-toggle="app-top-nav-mobile" class="menu-link"&gt;
+            &lt;iconify-icon icon="solar:add-square-line-duotone"&gt;&lt;/iconify-icon&gt;
+          &lt;/a&gt;
+        &lt;/div&gt;
+        ...
+      &lt;/div&gt;
+    &lt;/div&gt;
+          
+    &lt;div class="app-top-nav" data-bs-theme="dark"&gt;
+      ...
+    &lt;/div&gt;
+  
+    &lt;div class="app-sidebar" data-bs-theme="dark"&gt;
+      ...
+    &lt;/div&gt;
+  
+    ...
+  &lt;/div&gt;
+&lt;/div&gt;

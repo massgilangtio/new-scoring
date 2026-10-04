@@ -1,0 +1,13 @@
+&lt;div id="header" class="app-header"&gt;
+  &lt;div class="menu"&gt;
+    &lt;div class="menu-item dropdown dropdown-lg"&gt;
+      &lt;a href="#" class="menu-link dropdown-toggle d-flex align-items-center gap-2" data-bs-toggle="dropdown"&gt;
+        ...
+      &lt;/a&gt;
+
+      &lt;div class="dropdown-menu dropdown-menu-lg p-3 p-lg-4 shadow-lg"&gt;
+        ...
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;

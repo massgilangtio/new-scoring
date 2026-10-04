@@ -1,0 +1,11 @@
+ALTER TABLE debtors
+    DROP COLUMN IF EXISTS religion,
+    DROP COLUMN IF EXISTS address,
+    DROP COLUMN IF EXISTS phone,
+    DROP COLUMN IF EXISTS gender,
+    DROP COLUMN IF EXISTS mother_name,
+    DROP COLUMN IF EXISTS birth_place,
+    DROP COLUMN IF EXISTS birth_date,
+    DROP COLUMN IF EXISTS npwp,
+    DROP COLUMN IF EXISTS cif_id,
+    DROP COLUMN IF EXISTS cis_id;

@@ -1,0 +1,10 @@
+&lt;div class="card card-borderless"&gt;
+  &lt;div class="card-header bg-gray-900"&gt;
+    ...
+  &lt;/div&gt;
+  &lt;div class="card-body"&gt;
+    &lt;div data-scrollbar="true" data-height="250px"&gt;
+      ...
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;

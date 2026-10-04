@@ -1,0 +1,6 @@
+🔵 Blue Row: #F3F7FF
+🟢 Green Row: #F2FBF7
+🟣 Purple Row: #F8F5FF
+🟠 Orange Row: #FFF8ED
+🔴 Red Row: #FFF4F5
+🩵 Cyan Row: #F0FBFD

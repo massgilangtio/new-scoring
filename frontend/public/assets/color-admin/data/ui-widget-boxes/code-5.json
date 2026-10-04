@@ -1,0 +1,9 @@
+&lt;div class="card card-borderless"&gt;
+  &lt;div class="card-header bg-gray-900"&gt;
+    &lt;h4 class="card-header-title text-white"&gt;Card title&lt;/h4&gt;
+    &lt;div class="progress h-10px bg-gray-700 w-150px"&gt;
+      &lt;div class="progress-bar progress-bar-striped bg-success progress-bar-animated fw-bold" style="width: 40%"&gt;40%&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  ...
+&lt;/div&gt;

@@ -1,0 +1,12 @@
+&lt;div class="card card-borderless"&gt;
+  &lt;div class="card-header bg-gray-900 hover-focus-visible"&gt;
+    &lt;h4 class="card-header-title text-white"&gt;Card title&lt;/h4&gt;
+    &lt;div class="card-header-btn"&gt;
+      &lt;a href="#" class="btn btn-xs btn-icon btn-default" data-toggle="card-expand"&gt;&lt;i class="fa fa-expand hover-focus-visible-elm"&gt;&lt;/i&gt;&lt;/a&gt;
+      &lt;a href="#" class="btn btn-xs btn-icon btn-success" data-toggle="card-reload"&gt;&lt;i class="fa fa-redo hover-focus-visible-elm"&gt;&lt;/i&gt;&lt;/a&gt;
+      &lt;a href="#" class="btn btn-xs btn-icon btn-warning" data-toggle="card-collapse"&gt;&lt;i class="fa fa-minus hover-focus-visible-elm"&gt;&lt;/i&gt;&lt;/a&gt;
+      &lt;a href="#" class="btn btn-xs btn-icon btn-danger" data-toggle="card-remove"&gt;&lt;i class="fa fa-times hover-focus-visible-elm"&gt;&lt;/i&gt;&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  ...
+&lt;/div&gt;

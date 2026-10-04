@@ -1,0 +1,18 @@
+&lt;div class="card card-borderless shadow-lg"&gt;
+  &lt;div class="card-header bg-gray-900"&gt;
+    ...
+  &lt;/div&gt;
+  &lt;div class="d-flex gap-2 py-10px px-3"&gt;
+    &lt;div class="btn-group btn-group-sm"&gt;
+      &lt;a class="btn btn-white" href="javascript:;"&gt;&lt;i class="fa fa-bold"&gt;&lt;/i&gt;&lt;/a&gt;
+      &lt;a class="btn btn-white active" href="javascript:;"&gt;&lt;i class="fa fa-italic"&gt;&lt;/i&gt;&lt;/a&gt;
+      &lt;a class="btn btn-white" href="javascript:;"&gt;&lt;i class="fa fa-underline"&gt;&lt;/i&gt;&lt;/a&gt;
+    &lt;/div&gt;
+    ...
+  &lt;/div&gt;
+  &lt;textarea class="form-control border-start-0 border-end-0 rounded-0 bg-light" rows="8"&gt;This is a form textarea.&lt;/textarea&gt;
+  &lt;div class="d-flex gap-2 py-10px px-3 justify-content-end"&gt;
+    &lt;a href="javascript:;" class="btn btn-white btn-sm"&gt;Cancel&lt;/a&gt;
+    &lt;a href="javascript:;" class="btn btn-primary btn-sm"&gt;Action&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/div&gt;

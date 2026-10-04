@@ -1,0 +1,16 @@
+&lt;div class="card overflow-hidden"&gt;
+  &lt;div class="card-img-top h-150px bg-gray-400 rounded-0"&gt;&lt;/div&gt;
+  &lt;div class="card-body"&gt;
+    &lt;h5 class="card-title placeholder-glow"&gt;
+      &lt;span class="placeholder placeholder-lg col-6 bg-gray-500"&gt;&lt;/span&gt;
+    &lt;/h5&gt;
+    &lt;p class="card-text placeholder-glow"&gt;
+      &lt;span class="placeholder placeholder-sm col-7 bg-gray-500 me-2"&gt;&lt;/span&gt;
+      &lt;span class="placeholder placeholder-sm col-4 bg-gray-500 me-2"&gt;&lt;/span&gt;
+      &lt;span class="placeholder placeholder-sm col-4 bg-gray-500 me-2"&gt;&lt;/span&gt;
+      &lt;span class="placeholder placeholder-sm col-6 bg-gray-500 me-2"&gt;&lt;/span&gt;
+      &lt;span class="placeholder placeholder-sm col-8 bg-gray-500 me-2"&gt;&lt;/span&gt;
+    &lt;/p&gt;
+    &lt;a class="btn btn-primary bg-gray-500 border-gray-500 disabled placeholder col-6" aria-disabled="true"&gt;&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
