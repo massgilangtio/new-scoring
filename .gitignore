@@ -20,3 +20,15 @@ frontend/writable/logs/*
 frontend/writable/session/*
 !frontend/writable/**/index.html
 !frontend/writable/**/.gitkeep
+
+# local screenshot tooling
+docs/phase1-screenshots/node_modules/
+docs/phase1-screenshots/package-lock.json
+docs/phase1-screenshots/package.json
+docs/phase1-screenshots/chrome-profile*/
+docs/phase1-screenshots/measure.js
+docs/phase1-screenshots/measure-dom.html
+docs/phase1-screenshots/measure-dom.html.err
+frontend/public/_phase1_shell_preview_mobile_open.html
+frontend/public/_phase1_measure.html
+

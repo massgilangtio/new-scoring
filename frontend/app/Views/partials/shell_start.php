@@ -18,7 +18,7 @@ if (is_string($token) && $token !== '') {
     $unreadNav = (int) ($notes['result']['unread_count'] ?? 0);
 }
 
-// --- Navigation Groups ---
+// --- Navigation Groups (functionality preserved) ---
 $groups = [];
 $tx = [];
 if ($can('scoring.submit')) {
@@ -68,173 +68,195 @@ $subtitle   = $roleLine;
 if ($branchLine !== '') {
     $subtitle = trim($roleLine . ($roleLine !== '' ? ' · ' : '') . $branchLine);
 }
+$displayName = $name !== '' ? $name : 'Admin IT';
+$displayRole = $subtitle !== '' ? $subtitle : 'ADMIN IT - KANTOR PUSAT';
+$displayInitials = $initials !== '' ? $initials : 'AI';
+$badgeCount = $unreadNav > 0 ? $unreadNav : 0;
 ?>
 <!doctype html>
 <html lang="id">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title><?= esc($title) ?> — New Scoring Credit System</title>
     <?= view('partials/assets') ?>
 </head>
-<body class="app-body">
-<div class="app-frame d-lg-flex min-vh-100">
+<body>
+    <!-- BEGIN #loader -->
+    <div id="loader" class="app-loader"><span class="spinner"></span></div>
+    <!-- END #loader -->
 
-    <!-- ============================================================
-         SIDEBAR (Island Card - Profile Style)
-         ============================================================ -->
-    <aside class="offcanvas-lg offcanvas-start app-sidebar sidebar-card d-flex flex-column" tabindex="-1" id="appSidebar" aria-labelledby="appSidebarLabel">
+    <!-- BEGIN #app -->
+    <div id="app" class="app app-header-fixed app-sidebar-fixed">
 
-        <div class="offcanvas-body d-flex flex-column p-0 h-100">
-
-            <!-- Sidebar Brand Header -->
-            <div class="sidebar-brand-header">
-                <a href="<?= site_url('/') ?>" class="sidebar-brand-link" title="New Scoring Credit System">
-                    <img src="<?= base_url('assets/images/logo-horizontal.png') ?>?v=<?= filemtime(FCPATH . 'assets/images/logo-horizontal.png') ?>" alt="New Scoring Credit System" class="sidebar-brand-logo sidebar-logo-full">
-                    <img src="<?= base_url('assets/images/favicon.png') ?>?v=<?= filemtime(FCPATH . 'assets/images/favicon.png') ?>" alt="New Scoring Credit System" class="sidebar-brand-logo sidebar-logo-collapsed">
+        <!-- BEGIN #appHeader -->
+        <div id="appHeader" class="app-header">
+            <div class="brand">
+                <div class="mobile-toggler">
+                    <button type="button" class="menu-toggler" data-toggle-class="app-sidebar-mobile-toggled" data-toggle-target=".app" aria-label="Buka Menu">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <a href="<?= site_url('/') ?>" class="brand-logo" title="New Scoring Credit System">
+                    <img src="<?= base_url('assets/images/logo-horizontal.png') ?>?v=<?= @filemtime(FCPATH . 'assets/images/logo-horizontal.png') ?: time() ?>" alt="New Scoring Credit System" class="brand-logo-img">
                 </a>
-                <button type="button" class="sidebar-collapse-btn" id="sidebarCollapseBtn" aria-label="Toggle menu" title="Kecilkan sidebar">
-                    <i class="fa-solid fa-angles-left"></i>
-                </button>
             </div>
 
-            <!-- Navigation -->
-            <nav class="side-nav flex-grow-1">
-
-                <!-- Dashboard -->
-                <a class="nav-item-link <?= $path === '' ? 'active' : '' ?>" href="<?= site_url('/') ?>">
-                    <div class="nav-icon-box nav-icon-blue">
-                        <i class="fa-solid fa-house"></i>
-                    </div>
-                    <span class="nav-label">Dashboard</span>
-                    <i class="nav-arrow fa-solid fa-chevron-right"></i>
-                </a>
-
-                <!-- Dynamic groups -->
-                <?php foreach ($groups as $group) : ?>
-                    <?php
-                    $open = false;
-                    foreach ($group['items'] as $item) {
-                        $open = $open || $item['active'];
-                    }
-                    ?>
-                    <details class="nav-group" <?= $open ? 'open' : '' ?>>
-                        <summary class="nav-group-summary">
-                            <div class="nav-icon-box nav-icon-<?= esc($group['theme'] ?? 'blue') ?>">
-                                <i class="<?= esc($group['icon']) ?>"></i>
-                            </div>
-                            <span class="nav-label"><?= esc($group['label']) ?></span>
-                            <i class="nav-arrow fa-solid fa-chevron-down"></i>
-                        </summary>
-                        <div class="nav-tree">
-                            <?php foreach ($group['items'] as $item) : ?>
-                                <a class="nav-tree-item <?= $item['active'] ? 'active' : '' ?>" href="<?= esc($item['href']) ?>">
-                                    <span class="nav-tree-node <?= $item['active'] ? 'active' : '' ?>"></span>
-                                    <i class="nav-tree-icon <?= esc($item['icon'] ?? 'fa-solid fa-circle') ?>"></i>
-                                    <span class="nav-tree-label"><?= esc($item['label']) ?></span>
-                                </a>
-                            <?php endforeach; ?>
-                        </div>
-                    </details>
-                <?php endforeach; ?>
-
-                <!-- Notifications -->
-                <a class="nav-item-link <?= $path === 'notifications' ? 'active' : '' ?>" href="<?= site_url('notifications') ?>">
-                    <div class="nav-icon-box nav-icon-pink">
-                        <i class="fa-solid fa-bell"></i>
-                    </div>
-                    <span class="nav-label">Notifikasi</span>
-                    <span class="nav-badge-pill"><?= esc((string) ($unreadNav > 0 ? $unreadNav : 5)) ?></span>
-                </a>
-
-            </nav>
-
-        </div>
-    </aside>
-
-    <!-- ============================================================
-         WORKSPACE
-         ============================================================ -->
-    <div class="app-workspace flex-grow-1 min-w-0 d-flex flex-column">
-
-        <!-- TOPBAR -->
-        <header class="topbar">
-
-            <!-- Mobile Offcanvas Menu Toggle -->
-            <button type="button" class="topbar-square-btn d-lg-none" data-bs-toggle="offcanvas" data-bs-target="#appSidebar" aria-controls="appSidebar" aria-label="Buka Menu" title="Buka Menu">
-                <i class="fa-solid fa-bars"></i>
-            </button>
-
-            <!-- Brand Logo (Bank Sumut) -->
-            <a class="topbar-brand" href="<?= site_url('/') ?>" title="Bank Sumut">
-                <img src="<?= base_url('assets/images/logo-banksumut.png') ?>?v=<?= filemtime(FCPATH . 'assets/images/logo-banksumut.png') ?>" alt="Bank Sumut" class="topbar-logo topbar-logo-banksumut">
-            </a>
-
-            <!-- Vertical Divider -->
-            <div class="topbar-divider d-none d-sm-block"></div>
-
-            <!-- Page Title -->
-            <h1 class="topbar-title mb-0"><?= esc($title) ?></h1>
-
-            <!-- Spacer -->
-            <div class="topbar-spacer"></div>
-
-            <!-- 5. Search Bar -->
-            <form class="topbar-search d-none d-lg-flex" method="get" action="<?= site_url('/') ?>">
-                <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                <input type="search" name="q"
-                       value="<?= esc((string) ($_GET['q'] ?? '')) ?>"
-                       placeholder="Cari debitur / produk..."
-                       aria-label="Cari">
-                <kbd class="search-kbd d-none d-xl-inline-block">Ctrl + K</kbd>
-            </form>
-
-            <!-- 6. Vertical Divider -->
-            <div class="topbar-divider d-none d-md-block"></div>
-
-            <!-- 7. Notification Bell Button -->
-            <a class="topbar-square-btn position-relative" href="<?= site_url('notifications') ?>" aria-label="Notifikasi" title="Notifikasi">
-                <i class="fa-regular fa-bell"></i>
-                <span class="topbar-dot-badge"></span>
-            </a>
-
-            <!-- 8. Inbox / Mail Button -->
-            <a class="topbar-square-btn position-relative" href="<?= site_url('notifications') ?>" aria-label="Pesan Masuk" title="Pesan Masuk">
-                <i class="fa-regular fa-envelope"></i>
-                <span class="topbar-count-badge"><?= esc((string) ($unreadNav > 0 ? $unreadNav : 6)) ?></span>
-            </a>
-
-            <!-- 9. User Profile Chip & Dropdown -->
-            <details class="user-chip topbar-user-chip">
-                <summary aria-label="Menu pengguna">
-                    <span class="topbar-avatar"><?= esc($initials !== '' ? $initials : 'AI') ?></span>
-                    <span class="topbar-user-info d-none d-md-flex">
-                        <strong class="topbar-user-name"><?= esc($name !== '' ? $name : 'Admin IT') ?></strong>
-                        <small class="topbar-user-role"><?= esc($subtitle !== '' ? $subtitle : 'ADMIN IT - KANTOR PUSAT') ?></small>
-                    </span>
-                    <i class="fa-solid fa-chevron-down topbar-chevron"></i>
-                </summary>
-                <div class="user-dropdown">
-                    <div class="px-3 py-2 mb-1 border-bottom">
-                        <div class="fw-bold" style="font-size:13px;color:var(--primary);"><?= esc($name !== '' ? $name : 'Admin IT') ?></div>
-                        <div style="font-size:11px;color:var(--text-muted);"><?= esc($subtitle !== '' ? $subtitle : 'ADMIN IT - KANTOR PUSAT') ?></div>
-                    </div>
-                    <form method="post" action="<?= site_url('logout') ?>">
-                        <?= csrf_field() ?>
-                        <button class="btn-logout" type="submit">
-                            <i class="fa-solid fa-right-from-bracket"></i>
-                            Keluar
+            <div class="menu">
+                <div class="menu-item menu-item-form d-none d-md-flex">
+                    <form action="<?= site_url('/') ?>" method="get" name="search">
+                        <input type="text" class="form-control" name="q" value="<?= esc((string) ($_GET['q'] ?? '')) ?>" placeholder="Cari debitur / produk..." aria-label="Cari">
+                        <button type="submit" class="btn btn-search" aria-label="Cari">
+                            <iconify-icon icon="octicon:search-16"></iconify-icon>
                         </button>
                     </form>
                 </div>
-            </details>
 
-            <!-- 10. App Launcher / Grid Button -->
-            <button class="topbar-square-btn topbar-grid-btn d-none d-sm-inline-flex" type="button" aria-label="Aplikasi" title="Menu Aplikasi">
-                <i class="fa-solid fa-table-cells"></i>
-            </button>
+                <div class="menu-item dropdown">
+                    <a href="<?= site_url('/') ?>" class="menu-link" title="Menu">
+                        <iconify-icon icon="solar:widget-bold-duotone"></iconify-icon>
+                    </a>
+                </div>
 
-        </header>
+                <div class="menu-item dropdown">
+                    <a href="<?= site_url('notifications') ?>" class="menu-link" title="Notifikasi">
+                        <iconify-icon icon="solar:bell-bing-bold-duotone"></iconify-icon>
+                        <?php if ($badgeCount > 0) : ?>
+                            <span class="badge"><?= esc((string) $badgeCount) ?></span>
+                        <?php endif; ?>
+                    </a>
+                </div>
 
-                <!-- PAGE CONTENT -->
-        <main class="page<?= $isDashboard ? ' dash-page' : '' ?>">
+                <div class="menu-item dropdown">
+                    <a href="#" class="menu-link dropdown-toggle" data-bs-toggle="dropdown" aria-label="Menu pengguna">
+                        <span class="rounded-circle bg-theme text-white d-inline-flex align-items-center justify-content-center me-2" style="width:30px;height:30px;font-size:12px;font-weight:700;">
+                            <?= esc($displayInitials) ?>
+                        </span>
+                        <span class="d-none d-md-inline"><?= esc($displayName) ?></span>
+                        <b class="caret d-none"></b>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end me-1">
+                        <div class="px-3 py-2 border-bottom mb-1">
+                            <div class="fw-bold"><?= esc($displayName) ?></div>
+                            <div class="small text-muted"><?= esc($displayRole) ?></div>
+                        </div>
+                        <a href="<?= site_url('notifications') ?>" class="dropdown-item">Notifikasi</a>
+                        <div class="dropdown-divider"></div>
+                        <form method="post" action="<?= site_url('logout') ?>" class="header-logout-form">
+                            <?= csrf_field() ?>
+                            <button class="dropdown-item" type="submit">Keluar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END #appHeader -->
+
+        <!-- BEGIN #sidebar -->
+        <div id="sidebar" class="app-sidebar" data-bs-theme="dark">
+            <div class="app-sidebar-content" data-scrollbar="true" data-height="100%">
+                <div class="menu">
+                    <div class="menu-profile position-relative">
+                        <a href="javascript:;" class="menu-link" data-bs-toggle="dropdown">
+                            <div class="menu-profile-cover with-shadow"></div>
+                            <div class="menu-profile-image avatar-initials"><?= esc($displayInitials) ?></div>
+                            <div class="menu-profile-info">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-grow-1"><?= esc($displayName) ?></div>
+                                    <div class="menu-caret ms-auto"></div>
+                                </div>
+                                <small><?= esc($displayRole) ?></small>
+                            </div>
+                        </a>
+                        <div class="dropdown-menu w-100 mt-1">
+                            <a href="<?= site_url('notifications') ?>" class="dropdown-item d-flex align-items-center gap-2 py-2">
+                                <i class="fa-solid fa-bell opacity-50"></i>
+                                <div class="flex-fill">Notifikasi</div>
+                                <?php if ($badgeCount > 0) : ?>
+                                    <span class="badge bg-danger rounded-pill"><?= esc((string) $badgeCount) ?></span>
+                                <?php endif; ?>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <form method="post" action="<?= site_url('logout') ?>" class="header-logout-form">
+                                <?= csrf_field() ?>
+                                <button class="dropdown-item d-flex align-items-center gap-2 py-2" type="submit">
+                                    <i class="fa-solid fa-right-from-bracket opacity-50"></i>
+                                    <div class="flex-fill">Keluar</div>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="menu-header">Navigation</div>
+
+                    <div class="menu-item<?= $path === '' ? ' active' : '' ?>">
+                        <a href="<?= site_url('/') ?>" class="menu-link">
+                            <div class="menu-icon"><i class="fa-solid fa-house"></i></div>
+                            <div class="menu-text">Dashboard</div>
+                        </a>
+                    </div>
+
+                    <?php foreach ($groups as $group) : ?>
+                        <?php
+                        $open = false;
+                        foreach ($group['items'] as $item) {
+                            $open = $open || ! empty($item['active']);
+                        }
+                        ?>
+                        <div class="menu-item has-sub<?= $open ? ' active' : '' ?>">
+                            <a href="javascript:;" class="menu-link">
+                                <div class="menu-icon"><i class="<?= esc($group['icon']) ?>"></i></div>
+                                <div class="menu-text"><?= esc($group['label']) ?></div>
+                                <div class="menu-caret"></div>
+                            </a>
+                            <div class="menu-submenu">
+                                <?php foreach ($group['items'] as $item) : ?>
+                                    <div class="menu-item<?= ! empty($item['active']) ? ' active' : '' ?>">
+                                        <a href="<?= esc($item['href']) ?>" class="menu-link">
+                                            <div class="menu-text">
+                                                <i class="<?= esc($item['icon'] ?? 'fa-solid fa-circle') ?> me-1 opacity-50"></i>
+                                                <?= esc($item['label']) ?>
+                                            </div>
+                                        </a>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+
+                    <div class="menu-item<?= $path === 'notifications' ? ' active' : '' ?>">
+                        <a href="<?= site_url('notifications') ?>" class="menu-link">
+                            <div class="menu-icon"><i class="fa-solid fa-bell"></i></div>
+                            <div class="menu-text">Notifikasi</div>
+                            <?php if ($badgeCount > 0) : ?>
+                                <span class="menu-label"><?= esc((string) $badgeCount) ?></span>
+                            <?php endif; ?>
+                        </a>
+                    </div>
+
+                    <div class="menu-item d-flex">
+                        <a href="javascript:;" class="app-sidebar-minify-btn ms-auto d-flex align-items-center text-decoration-none" data-toggle="app-sidebar-minify" aria-label="Kecilkan sidebar">
+                            <i class="fa fa-angle-double-left"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="app-sidebar-mobile-backdrop"><a href="#" data-dismiss="app-sidebar-mobile" class="stretched-link"></a></div>
+        <!-- END #sidebar -->
+
+        <!-- BEGIN #content -->
+        <div id="content" class="app-content">
+            <ol class="breadcrumb float-xl-end">
+                <li class="breadcrumb-item"><a href="<?= site_url('/') ?>">Home</a></li>
+                <li class="breadcrumb-item active"><?= esc($title) ?></li>
+            </ol>
+            <h1 class="page-header">
+                <?= esc($title) ?>
+                <?php if ($isDashboard) : ?>
+                    <small>ringkasan aktivitas scoring</small>
+                <?php endif; ?>
+            </h1>
+            <div class="page<?= $isDashboard ? ' dash-page' : '' ?>">

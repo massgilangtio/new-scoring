@@ -1,22 +1,12 @@
 <?php
-// Phase 3: Plugin Integration — semua CDN dan asset dependencies
-// Urutan load: Font → CSS Plugins → JS Plugins (jQuery, Bootstrap, DataTables, Select2, SweetAlert2) → app.css
+// Phase 1 — Color Admin core + existing functional plugins
+// Order: Color Admin CSS → plugin CSS → compat → core JS → plugin JS → app.js
 ?>
 <link rel="icon" href="<?= base_url('assets/images/favicon.png') ?>">
 
-<!-- Google Fonts: DM Sans -->
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link
-  href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap"
-  rel="stylesheet"
-/>
-
-<!-- Font Awesome 6 Free -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
-
-<!-- Bootstrap 5 CSS -->
-<link rel="stylesheet" href="<?= base_url('vendor/bootstrap/bootstrap.min.css') ?>">
+<!-- Color Admin core CSS -->
+<link href="<?= base_url('assets/color-admin/css/vendor.min.css') ?>" rel="stylesheet">
+<link href="<?= base_url('assets/color-admin/css/default/app.min.css') ?>" rel="stylesheet">
 
 <!-- DataTables CSS (Bootstrap 5 theme) -->
 <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.min.css">
@@ -29,15 +19,16 @@
 <!-- SweetAlert2 CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.4/dist/sweetalert2.min.css">
 
-<!-- App CSS -->
-<link rel="stylesheet" href="<?= base_url('css/app.css') ?>?v=<?= filemtime(FCPATH . 'css/app.css') ?>">
+<!-- Legacy page styles (content only) + Phase 1 shell overrides -->
+<link rel="stylesheet" href="<?= base_url('css/app.css') ?>?v=<?= @filemtime(FCPATH . 'css/app.css') ?: time() ?>">
+<link rel="stylesheet" href="<?= base_url('css/shell-phase1.css') ?>?v=<?= @filemtime(FCPATH . 'css/shell-phase1.css') ?: time() ?>">
 
-<!-- Core JavaScript Libraries loaded upfront for view scripts -->
-<!-- jQuery 3.7.x -->
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
+<!-- Iconify (Color Admin icons) -->
+<script src="<?= base_url('assets/color-admin/js/iconify/iconify-icon.min.js') ?>"></script>
 
-<!-- Bootstrap 5 Bundle (Popper included) -->
-<script src="<?= base_url('vendor/bootstrap/bootstrap.bundle.min.js') ?>"></script>
+<!-- Color Admin core JS (includes jQuery + Bootstrap) -->
+<script src="<?= base_url('assets/color-admin/js/vendor.min.js') ?>"></script>
+<script src="<?= base_url('assets/color-admin/js/app.min.js') ?>"></script>
 
 <!-- DataTables 2 + Bootstrap 5 + Responsive -->
 <script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
@@ -52,4 +43,4 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.4/dist/sweetalert2.all.min.js"></script>
 
 <!-- Global App JS -->
-<script src="<?= base_url('js/app.js') ?>?v=<?= filemtime(FCPATH . 'js/app.js') ?>"></script>
+<script src="<?= base_url('js/app.js') ?>?v=<?= @filemtime(FCPATH . 'js/app.js') ?: time() ?>"></script>

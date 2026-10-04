@@ -1,57 +1,23 @@
-        </main>
-    </div><!-- .app-workspace -->
-</div><!-- .app-frame -->
+            </div><!-- /.page -->
+        </div>
+        <!-- END #content -->
+
+        <!-- BEGIN scroll-top-btn -->
+        <a href="javascript:;" class="btn btn-icon btn-circle btn-theme btn-scroll-to-top" data-toggle="scroll-to-top" aria-label="Scroll to top">
+            <i class="fa fa-angle-up"></i>
+        </a>
+        <!-- END scroll-top-btn -->
+    </div>
+    <!-- END #app -->
 
 <script>
-    /* ============================================================
-       Sidebar Toggle / Collapse
-       ============================================================ */
-    (function () {
-        // Restore preference on desktop
-        if (localStorage.getItem('sidebar_collapsed') === '1' && window.innerWidth >= 992) {
-            document.body.classList.add('sidebar-collapsed');
-        }
-
-        var collapseBtn = document.getElementById('sidebarCollapseBtn');
-
-        function toggleSidebarState(e) {
-            e.preventDefault();
-            if (window.innerWidth < 992) {
-                var offcanvasEl = document.getElementById('appSidebar');
-                if (offcanvasEl && typeof bootstrap !== 'undefined' && bootstrap.Offcanvas) {
-                    var bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvasEl) || new bootstrap.Offcanvas(offcanvasEl);
-                    bsOffcanvas.toggle();
-                }
-            } else {
-                document.body.classList.toggle('sidebar-collapsed');
-                localStorage.setItem('sidebar_collapsed', document.body.classList.contains('sidebar-collapsed') ? '1' : '0');
-            }
-        }
-
-        if (collapseBtn) {
-            collapseBtn.addEventListener('click', toggleSidebarState);
-        }
-    })();
-
-    /* ============================================================
-       Keyboard shortcut: Ctrl+K → focus search
-       ============================================================ */
+    /* Keyboard shortcut: Ctrl+K → focus search (functionality preserved) */
     document.addEventListener('keydown', function (e) {
         if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
-            var input = document.querySelector('.topbar-search input, .top-search input');
+            var input = document.querySelector('.app-header form[name="search"] input');
             if (!input) return;
             e.preventDefault();
             input.focus();
-        }
-    });
-
-    /* ============================================================
-       User chip dropdown — close when clicking outside
-       ============================================================ */
-    document.addEventListener('click', function (e) {
-        var chip = document.querySelector('.user-chip');
-        if (chip && !chip.contains(e.target)) {
-            chip.removeAttribute('open');
         }
     });
 </script>
