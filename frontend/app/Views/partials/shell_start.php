@@ -22,9 +22,8 @@ if (is_string($token) && $token !== '') {
 $groups = [];
 $tx = [];
 if ($can('scoring.submit')) {
-    $tx[] = ['label' => 'Pengajuan Scoring',     'href' => site_url('scoring/credit'),     'active' => $path === 'scoring/credit' || str_starts_with($path, 'scoring/credit') || $path === 'transactions/new', 'icon' => 'fa-solid fa-file-circle-plus'];
-    $tx[] = ['label' => 'Daftar Scoring',        'href' => site_url('transactions'),      'active' => $path === 'transactions' || (str_starts_with($path, 'transactions/') && ! str_starts_with($path, 'transactions/new')), 'icon' => 'fa-solid fa-table-list'];
-    $tx[] = ['label' => 'Request Scoring Ulang', 'href' => site_url('rescore'),           'active' => $path === 'rescore' || str_starts_with($path, 'rescore/'), 'icon' => 'fa-solid fa-arrows-rotate'];
+    $tx[] = ['label' => 'Pengajuan Scoring', 'href' => site_url('scoring/credit'), 'active' => $path === 'scoring/credit' || str_starts_with($path, 'scoring/credit') || $path === 'transactions/new', 'icon' => 'fa-solid fa-file-circle-plus'];
+    $tx[] = ['label' => 'Daftar Scoring',    'href' => site_url('transactions'),  'active' => $path === 'transactions' || (str_starts_with($path, 'transactions/') && ! str_starts_with($path, 'transactions/new')), 'icon' => 'fa-solid fa-table-list'];
 }
 if ($tx !== []) {
     $groups[] = ['label' => 'Transaksi Scoring', 'icon' => 'fa-solid fa-file-invoice', 'theme' => 'cyan', 'items' => $tx];

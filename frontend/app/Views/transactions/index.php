@@ -112,11 +112,21 @@ $doneCount = (int) (($statusCounts['approved'] ?? 0) + ($statusCounts['rejected'
                                 </span>
                             </td>
                             <td class="text-center">
-                                <a href="<?= site_url('transactions/' . $item['id']) ?>"
-                                   class="btn btn-default btn-xs btn-icon"
-                                   title="Buka Detail">
-                                    <i class="fa fa-eye"></i>
-                                </a>
+                                <div class="d-inline-flex align-items-center gap-1">
+                                    <a href="<?= site_url('transactions/' . $item['id']) ?>"
+                                       class="btn btn-default btn-xs btn-icon"
+                                       title="Buka Detail">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                    <?php if (in_array($status, ['approved', 'rejected'], true)) : ?>
+                                    <form method="post" action="<?= site_url('transactions/' . $item['id'] . '/duplicate') ?>" class="d-inline rescore-from-tx-form">
+                                        <?= csrf_field() ?>
+                                        <button type="button" class="btn btn-theme btn-xs btn-icon btn-rescore-tx" title="Scoring Ulang">
+                                            <i class="fa fa-arrows-rotate"></i>
+                                        </button>
+                                    </form>
+                                    <?php endif; ?>
+                                </div>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -144,6 +154,20 @@ $(document).ready(function () {
             ]
         });
     }
+
+    $(document).on('click', '.btn-rescore-tx', function () {
+        var $btn = $(this);
+        App.confirm({
+            title: 'Scoring Ulang',
+            text: 'Pengajuan baru akan dibuat (ID berbeda). Debitur & produk sama; jawaban parameter dikosongkan agar bisa diedit. Lanjutkan?',
+            confirmButtonText: '<i class="fa-solid fa-arrows-rotate me-1"></i> Ya, Scoring Ulang'
+        }).then(function (result) {
+            if (result.isConfirmed) {
+                App.btnLoading($btn, '');
+                $btn.closest('form').submit();
+            }
+        });
+    });
 });
 </script>
 

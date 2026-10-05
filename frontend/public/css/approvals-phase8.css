@@ -1,0 +1,6 @@
+/* Phase 8 — Approvals + Rescore (Color Admin) */
+
+#content .decision-pill:has(.decision-radio:checked) {
+  border-color: var(--bs-theme, #0c83f0) !important;
+  box-shadow: 0 0 0 1px var(--bs-theme, #0c83f0);
+}

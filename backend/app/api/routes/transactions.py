@@ -25,7 +25,6 @@ from app.models.tables import (
     ScoringSnapshotLine,
     ScoringTransaction,
     ScoringVersion,
-    SystemSetting,
     User,
 )
 from app.services.audit import write_audit
@@ -255,6 +254,7 @@ def get_transaction(transaction_id: int, actor: User = Depends(current_user), db
             "transaction_no": transaction.transaction_no,
             "status": transaction.status,
             "editable": transaction.status in EDITABLE and transaction.created_by == actor.id,
+            "duplicated_from_id": transaction.duplicated_from_id,
             "debtor": {"id": debtor.id, "nik": debtor.nik, "full_name": debtor.full_name} if debtor else None,
             "product": {"id": product.id, "name": product.name} if product else None,
             "version": _detail(db, version) if version else None,
@@ -419,11 +419,9 @@ def duplicate_transaction(transaction_id: int, actor: User = Depends(current_use
     _submitter(db, actor)
     source = _transaction_or_404(db, transaction_id)
     _visible(db, actor, source)
-    setting = db.get(SystemSetting, "duplicate_enabled")
-    if setting is None or setting.setting_value != "true":
-        raise ApiError(400, "01", "Duplikasi transaksi sedang tidak diaktifkan")
+    # Scoring ulang: new draft TX — same debtor/product only. Answers are NOT copied (editable blank form).
     if source.status not in {"approved", "rejected"}:
-        raise ApiError(400, "01", "Hanya transaksi disetujui atau ditolak yang dapat diduplikasi")
+        raise ApiError(400, "01", "Hanya transaksi disetujui atau ditolak yang dapat di-scoring ulang")
     if source.branch_id != actor.branch_id:
         raise ApiError(403, "04", "Anda tidak memiliki hak akses untuk cabang ini")
     version = _active_version(db, source.product_id)
@@ -441,6 +439,7 @@ def duplicate_transaction(transaction_id: int, actor: User = Depends(current_use
     db.add(clone)
     db.flush()
     clone.transaction_no = f"TX{clone.id:08d}"
+    # Intentionally do not copy ScoringInput / DynamicFieldInput — user re-enters parameters.
     db.refresh(source)
     if source.status != source_status:
         raise ApiError(400, "01", "Transaksi sumber tidak boleh berubah")
@@ -450,11 +449,11 @@ def duplicate_transaction(transaction_id: int, actor: User = Depends(current_use
         "scoring.transaction_duplicated",
         object_type="scoring_transaction",
         object_id=str(clone.id),
-        after_data={"duplicated_from_id": source.id, "scoring_version_id": version.id},
+        after_data={"duplicated_from_id": source.id, "scoring_version_id": version.id, "answers_copied": False},
     )
     db.commit()
     return {
         "rcode": "00",
-        "message": "Transaksi baru berhasil dibuat dari transaksi sumber",
+        "message": "Scoring ulang dibuat. Parameter dikosongkan agar dapat diisi ulang.",
         "result": {"id": clone.id, "transaction_no": clone.transaction_no, "duplicated_from_id": source.id},
     }

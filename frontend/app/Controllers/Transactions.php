@@ -179,6 +179,10 @@ class Transactions extends BaseController
             return redirect()->to('/transactions/' . $id . '/review')->with('error', (string) $result['message']);
         }
 
-        return redirect()->to('/transactions/' . $result['result']['id'])->with('message', (string) $result['message']);
+        $newId = (int) ($result['result']['id'] ?? 0);
+        return redirect()->to('/transactions/' . $newId)->with(
+            'message',
+            'Scoring ulang dibuat (ID baru). Silakan isi ulang parameter penilaian — data jawaban lama tidak disalin.'
+        );
     }
 }

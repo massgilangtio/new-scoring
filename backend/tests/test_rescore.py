@@ -122,17 +122,7 @@ def test_rescore_request_is_consumed_and_duplicate_keeps_source():
     consumed = client.get("/api/v1/rescore", headers=maker_headers).json()["result"]["items"][0]
     assert consumed["status"] == "consumed"
 
-    assert client.put(
-        "/api/v1/rescore/duplicate-setting",
-        headers=maker_headers,
-        json={"enabled": False},
-    ).status_code == 200
-    assert client.post(f"/api/v1/transactions/{first_id}/duplicate", headers=maker_headers).status_code == 400
-    assert client.put(
-        "/api/v1/rescore/duplicate-setting",
-        headers=maker_headers,
-        json={"enabled": True},
-    ).status_code == 200
+    # Scoring ulang (duplicate) always allowed for approved/rejected — no toggle gate.
     newer = client.post(f"/api/v1/scoring/products/{product_id}/versions", headers=maker_headers).json()["result"]["id"]
     new_parameter = client.post(
         f"/api/v1/scoring/versions/{newer}/parameters",
@@ -155,5 +145,4 @@ def test_rescore_request_is_consumed_and_duplicate_keeps_source():
     assert source["snapshot"]["result_label"] == "Layak"
     assert clone["version"]["id"] == newer
     assert clone["version"]["status"] == "active"
-    client.put("/api/v1/rescore/duplicate-setting", headers=maker_headers, json={"enabled": False})
     engine.dispose()

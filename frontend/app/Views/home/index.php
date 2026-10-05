@@ -388,14 +388,6 @@ $productBar = ['#0c83f0', '#00acac', '#f59c1a', '#ff5b57', '#8753de'];
                         </span>
                         <i class="fa fa-chevron-right text-muted"></i>
                     </a>
-                    <a href="<?= site_url('rescore') ?>" class="list-group-item list-group-item-action d-flex align-items-center gap-2">
-                        <iconify-icon icon="solar:refresh-bold-duotone" class="fs-4 text-warning"></iconify-icon>
-                        <span class="flex-1">
-                            <span class="d-block fw-bold small">Request Ulang</span>
-                            <span class="d-block text-muted" style="font-size:11px;">Ajukan re-scoring</span>
-                        </span>
-                        <i class="fa fa-chevron-right text-muted"></i>
-                    </a>
                 <?php endif; ?>
                 <a href="<?= site_url($can('scoring.approve') || $can('scoring.assign') ? 'approvals' : 'transactions') ?>" class="list-group-item list-group-item-action d-flex align-items-center gap-2">
                     <iconify-icon icon="solar:clipboard-check-bold-duotone" class="fs-4 text-teal"></iconify-icon>
