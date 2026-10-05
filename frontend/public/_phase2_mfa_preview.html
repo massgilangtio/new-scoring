@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Phase 2 Preview — MFA Overlay</title>
+    <link rel="icon" href="assets/images/favicon.png">
+    <link href="assets/color-admin/css/vendor.min.css" rel="stylesheet">
+    <link href="assets/color-admin/css/default/app.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/auth-phase2.css">
+    <script src="assets/color-admin/js/iconify/iconify-icon.min.js"></script>
+</head>
+<body class="pace-top mfa-open">
+    <div id="app" class="app app-full-height app-without-header">
+        <div class="auth auth-with-box auth-with-media">
+            <div class="auth-container">
+                <div class="auth-media">
+                    <img src="assets/images/background-login.png" class="auth-media-img object-fit-cover" alt="">
+                    <div class="auth-media-content p-0" aria-hidden="true"></div>
+                </div>
+                <div class="auth-content">
+                    <h1 class="text-center">Masuk</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mfa-layer" id="mfaLayer">
+        <section class="mfa-dialog" role="dialog" aria-modal="true">
+            <aside class="mfa-side">
+                <img class="mfa-art" src="assets/images/background-mfa.png" alt="MFA" onerror="this.style.display='none'">
+            </aside>
+            <div class="mfa-main">
+                <button class="mfa-close" type="button" aria-label="Tutup">×</button>
+                <ol class="mfa-stepper">
+                    <li class="is-done"><span>1</span>Scan QR Code</li>
+                    <li class="mfa-step-line" aria-hidden="true"></li>
+                    <li class="is-on"><span>2</span>Verifikasi Kode</li>
+                </ol>
+                <div class="mfa-verify">
+                    <div class="mfa-otp-card">
+                        <img src="assets/images/icon-auth.png" alt="">
+                        <div>
+                            <strong>Masukkan Kode Verifikasi</strong>
+                            <p class="mb-0 text-muted small">Buka Google Authenticator, lalu masukkan 6 digit kode.</p>
+                        </div>
+                    </div>
+                    <div class="otp-boxes">
+                        <input class="otp-digit is-filled" value="1" maxlength="1" readonly>
+                        <input class="otp-digit is-filled" value="2" maxlength="1" readonly>
+                        <input class="otp-digit is-filled" value="3" maxlength="1" readonly>
+                        <input class="otp-digit" maxlength="1" readonly>
+                        <input class="otp-digit" maxlength="1" readonly>
+                        <input class="otp-digit" maxlength="1" readonly>
+                    </div>
+                    <p class="mfa-timer">
+                        <iconify-icon icon="solar:clock-circle-bold-duotone"></iconify-icon>
+                        <span>Kode akan berubah dalam <strong>22 detik</strong></span>
+                    </p>
+                    <div class="mfa-meter"><span style="width:73%"></span></div>
+                    <div class="mfa-actions">
+                        <button class="mfa-ghost" type="button">Kembali</button>
+                        <button class="mfa-next" type="button">Verifikasi →</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script src="assets/color-admin/js/vendor.min.js"></script>
+    <script src="assets/color-admin/js/app.min.js"></script>
+</body>
+</html>

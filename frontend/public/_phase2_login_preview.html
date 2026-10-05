@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Phase 2 Preview — Login (auth_with_image)</title>
+    <link rel="icon" href="assets/images/favicon.png">
+    <link href="assets/color-admin/css/vendor.min.css" rel="stylesheet">
+    <link href="assets/color-admin/css/default/app.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/auth-phase2.css">
+    <script src="assets/color-admin/js/iconify/iconify-icon.min.js"></script>
+</head>
+<body class="pace-top">
+    <div id="app" class="app app-full-height app-without-header">
+        <div class="auth auth-with-box auth-with-media">
+            <div class="auth-container">
+                <div class="auth-media">
+                    <img src="assets/images/background-login.png" class="auth-media-img object-fit-cover" alt="New Scoring Credit System">
+                    <div class="auth-media-content p-0" aria-hidden="true"></div>
+                </div>
+                <div class="auth-content">
+                    <form id="loginForm" method="post" action="#" name="login_form">
+                        <div class="text-center mb-3">
+                            <img class="auth-brand-logo auth-brand-logo-light" src="assets/images/logo-horizontal.png" alt="New Scoring Credit System">
+                        </div>
+                        <h1 class="text-center">Masuk</h1>
+                        <div class="text-muted text-center mb-4">
+                            Silakan masuk untuk mengakses New Scoring Credit System.
+                        </div>
+                        <p id="loginError" class="alert alert-danger" hidden></p>
+                        <div class="mb-3 pb-1">
+                            <label class="form-label" for="username">Username <span class="text-danger">*</span></label>
+                            <input id="username" name="username" type="text" class="form-control form-control-lg h-45px fs-15px" placeholder="Masukkan username Anda">
+                        </div>
+                        <div class="mb-3 pb-1">
+                            <label class="form-label" for="password">Password <span class="text-danger">*</span></label>
+                            <div class="password-field">
+                                <input id="password" name="password" type="password" class="form-control form-control-lg h-45px fs-15px" placeholder="Masukkan password Anda">
+                                <button class="reveal" type="button" aria-label="Tampilkan password">
+                                    <iconify-icon icon="solar:eye-bold-duotone"></iconify-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <button type="submit" class="btn btn-theme btn-lg fw-bold d-flex align-items-center justify-content-center w-100 h-45px">Masuk</button>
+                        </div>
+                        <div class="text-center text-secondary">
+                            Belum memiliki akses? <span class="fw-bold">Hubungi Administrator</span>.
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="assets/color-admin/js/vendor.min.js"></script>
+    <script src="assets/color-admin/js/app.min.js"></script>
+</body>
+</html>

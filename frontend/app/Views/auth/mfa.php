@@ -2,60 +2,54 @@
 <html lang="id">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Autentikator — New Scoring Credit System</title>
-    <?= view('partials/assets') ?>
+    <?= view('partials/assets_auth') ?>
 </head>
-<body class="auth-body">
-    <main class="container-fluid px-0">
-        <div class="row g-0 min-vh-100">
-            <?= view('partials/auth_brand') ?>
-            <section class="col-12 col-lg-6 auth-panel d-flex align-items-center justify-content-center p-4">
-                <article class="auth-card mfa-card w-100" style="max-width: 520px;">
+<body class="pace-top">
+    <div id="loader" class="app-loader"><span class="spinner"></span></div>
+
+    <div id="app" class="app app-full-height app-without-header">
+        <div class="auth auth-with-box auth-with-media">
+            <div class="auth-container">
+                <div class="auth-media">
+                    <img src="<?= base_url('assets/images/background-login.png') ?>" class="auth-media-img object-fit-cover" alt="New Scoring Credit System">
+                    <div class="auth-media-content p-0" aria-hidden="true"></div>
+                </div>
+                <div class="auth-content">
                     <?php $setup = ($step ?? '') === 'mfa_setup'; ?>
-                    <ol class="steps list-unstyled d-flex justify-content-between mb-4">
-                        <li class="<?= $setup ? 'current text-primary' : 'done text-success' ?> d-flex align-items-center gap-2">
-                            <span class="badge rounded-circle <?= $setup ? 'bg-primary' : 'bg-success' ?> text-white">1</span>
-                            <div>
-                                <strong class="d-block small"><?= $setup ? 'Scan QR Code' : 'Login' ?></strong>
-                                <small class="text-muted d-block" style="font-size: 11px;"><?= $setup ? 'Google Authenticator' : 'Berhasil' ?></small>
-                            </div>
-                        </li>
-                        <li class="<?= $setup ? 'text-muted' : 'current text-primary' ?> d-flex align-items-center gap-2">
-                            <span class="badge rounded-circle <?= $setup ? 'bg-secondary' : 'bg-primary' ?> text-white">2</span>
-                            <div>
-                                <strong class="d-block small">Verifikasi Kode</strong>
-                                <small class="text-muted d-block" style="font-size: 11px;">6 Digit OTP</small>
-                            </div>
-                        </li>
-                        <li class="text-muted d-flex align-items-center gap-2">
-                            <span class="badge rounded-circle bg-secondary text-white">3</span>
-                            <div>
-                                <strong class="d-block small">Selesai</strong>
-                                <small class="text-muted d-block" style="font-size: 11px;">Masuk Sistem</small>
-                            </div>
-                        </li>
-                    </ol>
+                    <div class="text-center mb-3">
+                        <img class="auth-brand-logo auth-brand-logo-light" src="<?= base_url('assets/images/logo-horizontal.png') ?>" alt="New Scoring Credit System">
+                    </div>
+
+                    <div class="row g-2 mb-4 text-center">
+                        <div class="col-4">
+                            <div class="small fw-semibold <?= $setup ? 'text-theme' : 'text-success' ?>">1. <?= $setup ? 'Scan QR' : 'Login' ?></div>
+                        </div>
+                        <div class="col-4">
+                            <div class="small fw-semibold <?= $setup ? 'text-muted' : 'text-theme' ?>">2. Verifikasi OTP</div>
+                        </div>
+                        <div class="col-4">
+                            <div class="small fw-semibold text-muted">3. Selesai</div>
+                        </div>
+                    </div>
 
                     <?php if ($setup) : ?>
-                        <h2 class="fw-bold fs-4 mb-1 text-dark">Aktifkan Google Authenticator</h2>
-                        <p class="text-muted small mb-4">Pindai kode QR di bawah dengan aplikasi Google Authenticator, lalu masukkan 6 digit kode yang tampil.</p>
+                        <h1 class="text-center fs-3">Aktifkan Authenticator</h1>
+                        <div class="text-muted text-center mb-4">Pindai QR Code, lalu masukkan 6 digit kode.</div>
                     <?php else : ?>
-                        <h2 class="fw-bold fs-4 mb-1 text-dark">Verifikasi Dua Langkah</h2>
-                        <p class="text-muted small mb-4">Masukkan 6 digit kode dari aplikasi Google Authenticator di perangkat Anda.</p>
+                        <h1 class="text-center fs-3">Verifikasi Dua Langkah</h1>
+                        <div class="text-muted text-center mb-4">Masukkan 6 digit kode dari Google Authenticator.</div>
                     <?php endif; ?>
 
                     <?php if (! empty($error)) : ?>
-                        <div class="alert alert-danger d-flex align-items-center gap-2 mb-3">
-                            <i class="fa-solid fa-circle-exclamation flex-shrink-0"></i>
-                            <div><?= esc($error) ?></div>
-                        </div>
+                        <div class="alert alert-danger"><?= esc($error) ?></div>
                     <?php endif; ?>
 
-                    <div class="row g-3 align-items-center mb-4">
+                    <div class="row g-3 align-items-center mb-3">
                         <?php if ($setup && ! empty($qr)) : ?>
                             <div class="col-12 col-md-5 text-center">
-                                <div class="qr p-2 bg-white border rounded shadow-sm d-inline-block">
+                                <div class="p-2 bg-white border rounded d-inline-block">
                                     <?= $qr ?>
                                 </div>
                             </div>
@@ -64,28 +58,23 @@
                             <form method="post" action="<?= site_url('mfa') ?>">
                                 <?= csrf_field() ?>
                                 <div class="mb-3">
-                                    <label class="form-label fw-semibold" for="code">Kode OTP (6 Digit)</label>
-                                    <input id="code" name="code" class="form-control form-control-lg text-center font-monospace fs-4 tracking-wider" 
-                                           inputmode="numeric" pattern="\d{6}" maxlength="6" autocomplete="one-time-code" placeholder="000000" required autofocus>
+                                    <label class="form-label" for="code">Kode OTP (6 Digit) <span class="text-danger">*</span></label>
+                                    <input id="code" name="code" class="form-control form-control-lg h-45px fs-15px text-center" inputmode="numeric" pattern="\d{6}" maxlength="6" autocomplete="one-time-code" placeholder="000000" required autofocus>
                                 </div>
-                                <button type="submit" class="btn btn-primary btn-lg w-100 mb-2">
-                                    <i class="fa-solid fa-shield-check me-2"></i>Verifikasi &amp; Masuk
+                                <button type="submit" class="btn btn-theme btn-lg fw-bold d-flex align-items-center justify-content-center w-100 h-45px">
+                                    Verifikasi &amp; Masuk
                                 </button>
-                                <p class="text-muted small mb-0">
-                                    <i class="fa-regular fa-clock me-1"></i>Kode berubah otomatis setiap 30 detik.
-                                </p>
+                                <p class="text-muted small mt-2 mb-0">Kode berubah otomatis setiap 30 detik.</p>
                             </form>
                         </div>
                     </div>
 
-                    <div class="border-top pt-3 text-center">
-                        <a href="<?= site_url('login') ?>" class="text-decoration-none small text-muted">
-                            <i class="fa-solid fa-arrow-left me-1"></i>Kembali ke halaman login
-                        </a>
+                    <div class="text-center">
+                        <a href="<?= site_url('login') ?>" class="link-dark fw-bold small">← Kembali ke halaman login</a>
                     </div>
-                </article>
-            </section>
+                </div>
+            </div>
         </div>
-    </main>
+    </div>
 </body>
 </html>

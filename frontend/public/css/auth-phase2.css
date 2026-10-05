@@ -1,0 +1,447 @@
+/* Phase 2 — Auth (Color Admin auth_with_image) + MFA overlay */
+
+.auth-brand-logo {
+  display: block;
+  height: 40px;
+  width: auto;
+  max-width: 220px;
+  object-fit: contain;
+  margin: 0 auto;
+}
+
+.auth-brand-logo-light {
+  background: transparent;
+  padding: 0;
+}
+
+/* Prefer left branding area of background-login.png inside media panel */
+.auth.auth-with-media .auth-media-img {
+  object-position: left center;
+}
+
+.auth.auth-with-media .auth-media-content {
+  pointer-events: none;
+  background: transparent !important;
+}
+
+/* Password reveal (functionality selector: .reveal) */
+.password-field {
+  position: relative;
+}
+
+.password-field .reveal {
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  transform: translateY(-50%);
+  border: 0;
+  background: transparent;
+  color: rgba(var(--bs-body-color-rgb), 0.55);
+  padding: 0.25rem;
+  line-height: 1;
+  z-index: 2;
+}
+
+.password-field .form-control {
+  padding-right: 2.75rem;
+}
+
+/* MFA overlay — keep existing IDs/classes used by login JS */
+.mfa-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1080;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(15, 23, 32, 0.72);
+  backdrop-filter: blur(2px);
+}
+
+.mfa-layer[hidden] {
+  display: none !important;
+}
+
+.mfa-dialog {
+  width: min(920px, 100%);
+  max-height: calc(100vh - 2rem);
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  background: var(--bs-component-bg, #fff);
+  border-radius: 0.75rem;
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.35);
+}
+
+.mfa-side {
+  min-height: 280px;
+  background: #eaf6ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+}
+
+.mfa-art {
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+  object-fit: contain;
+}
+
+.mfa-main {
+  position: relative;
+  padding: 1.5rem;
+  min-height: 0;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.mfa-setup,
+.mfa-verify {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.mfa-setup[hidden],
+.mfa-verify[hidden] {
+  display: none !important;
+}
+
+.mfa-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.85rem;
+  border: 0;
+  background: transparent;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: inherit;
+  opacity: 0.65;
+}
+
+.mfa-stepper {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0;
+  margin: 0 0 1.25rem;
+}
+
+.mfa-stepper li {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(var(--bs-body-color-rgb), 0.45);
+}
+
+.mfa-stepper li span {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(var(--bs-body-color-rgb), 0.12);
+  font-size: 0.75rem;
+}
+
+.mfa-stepper li.is-on,
+.mfa-stepper li.is-done {
+  color: var(--bs-theme, #0c83f0);
+}
+
+.mfa-stepper li.is-on span,
+.mfa-stepper li.is-done span {
+  background: var(--bs-theme, #0c83f0);
+  color: #fff;
+}
+
+.mfa-step-line {
+  flex: 1;
+  height: 2px !important;
+  background: rgba(var(--bs-body-color-rgb), 0.12);
+  padding: 0 !important;
+}
+
+.mfa-scan {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+
+.mfa-qr-frame {
+  position: relative;
+  border: 1px solid rgba(var(--bs-body-color-rgb), 0.12);
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  background: #fff;
+}
+
+.mfa-qr svg,
+.mfa-qr img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.mfa-guide {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.mfa-guide li {
+  display: grid;
+  grid-template-columns: 1.5rem 28px 1fr;
+  gap: 0.55rem;
+  align-items: start;
+  font-size: 0.875rem;
+}
+
+.mfa-guide li span {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 999px;
+  background: rgba(var(--bs-theme-rgb, 12, 131, 240), 0.12);
+  color: var(--bs-theme, #0c83f0);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.75rem;
+}
+
+.mfa-guide img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.mfa-note,
+.mfa-tip {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  font-size: 0.85rem;
+  color: rgba(var(--bs-body-color-rgb), 0.7);
+  margin: 1rem 0;
+}
+
+.mfa-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  margin-top: auto;
+  padding-top: 0.75rem;
+}
+
+.mfa-ghost,
+.mfa-next {
+  border-radius: 0.5rem;
+  padding: 0.65rem 1rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.mfa-ghost {
+  background: transparent;
+  border-color: rgba(var(--bs-body-color-rgb), 0.18);
+}
+
+.mfa-next {
+  background: var(--bs-theme, #0c83f0);
+  color: #fff;
+}
+
+.mfa-otp-card {
+  display: flex;
+  gap: 0.85rem;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.mfa-otp-card img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.otp-boxes {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin-bottom: 0.85rem;
+}
+
+.otp-digit {
+  width: 100%;
+  height: 52px;
+  text-align: center;
+  font-size: 1.35rem;
+  font-weight: 700;
+  border: 1px solid rgba(var(--bs-body-color-rgb), 0.18);
+  border-radius: 0.55rem;
+  background: #fff;
+}
+
+.otp-digit.is-filled,
+.otp-digit:focus {
+  border-color: var(--bs-theme, #0c83f0);
+  outline: none;
+  box-shadow: 0 0 0 0.2rem rgba(12, 131, 240, 0.15);
+}
+
+.mfa-timer {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  margin-bottom: 0.4rem;
+}
+
+.mfa-timer svg {
+  width: 16px;
+  height: 16px;
+}
+
+.mfa-meter {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(var(--bs-body-color-rgb), 0.1);
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.mfa-meter span {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: var(--bs-theme, #0c83f0);
+}
+
+#loginError.alert:not([hidden]),
+#mfaError.alert:not([hidden]) {
+  display: block;
+}
+
+/* Mobile MFA — form-first like login mobile; keep verify buttons visible */
+@media (max-width: 767.98px) {
+  .mfa-layer {
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem;
+  }
+
+  .mfa-dialog {
+    width: 100%;
+    height: auto;
+    max-height: calc(100dvh - 1.5rem);
+    grid-template-columns: 1fr;
+    border-radius: 1rem;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Match login mobile: hide media/art, keep form card only */
+  .mfa-side {
+    display: none !important;
+  }
+
+  .mfa-main {
+    padding: 1.1rem 1rem 1rem;
+    overflow: visible;
+  }
+
+  .mfa-setup,
+  .mfa-verify {
+    overflow: visible;
+    flex: 0 1 auto;
+  }
+
+  .mfa-close {
+    top: 0.5rem;
+    right: 0.65rem;
+    z-index: 2;
+  }
+
+  .mfa-stepper {
+    gap: 0.4rem;
+    margin-bottom: 0.85rem;
+    padding-right: 1.5rem;
+  }
+
+  .mfa-stepper li {
+    font-size: 0.75rem;
+  }
+
+  .mfa-otp-card {
+    margin-bottom: 0.75rem;
+  }
+
+  .mfa-otp-card p {
+    font-size: 0.8rem;
+  }
+
+  .otp-boxes {
+    gap: 0.35rem;
+    margin-bottom: 0.65rem;
+  }
+
+  .otp-digit {
+    height: 46px;
+    font-size: 1.15rem;
+  }
+
+  .mfa-timer,
+  .mfa-tip,
+  .mfa-note {
+    font-size: 0.78rem;
+    margin: 0.5rem 0;
+  }
+
+  .mfa-meter {
+    margin-bottom: 0.65rem;
+  }
+
+  .mfa-scan {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .mfa-qr-frame {
+    max-width: 180px;
+    margin: 0 auto;
+  }
+
+  /* Compact actions directly under content (like login mobile CTA) */
+  .mfa-actions {
+    position: static;
+    margin-top: 1rem;
+    padding: 0;
+    background: transparent;
+    flex-wrap: nowrap;
+  }
+
+  .mfa-ghost,
+  .mfa-next {
+    flex: 1 1 0;
+    min-height: 44px;
+    justify-content: center;
+  }
+
+  .auth-brand-logo {
+    height: 32px;
+  }
+}
