@@ -7,11 +7,14 @@
 <div data-swal="error" data-swal-title="Terjadi Kesalahan" data-swal-message="<?= esc($error) ?>" hidden></div>
 <?php endif; ?>
 
-<ul class="nav nav-pills tx-stepper gap-2 mb-3">
-    <li class="nav-item"><span class="nav-link disabled"><i class="fa fa-check me-1 text-success"></i>1. Produk &amp; Debitur</span></li>
-    <li class="nav-item"><span class="nav-link active"><i class="fa fa-pen me-1"></i>2. Input Scoring</span></li>
-    <li class="nav-item"><a class="nav-link" href="<?= site_url('transactions/' . $item['id'] . '/review') ?>"><i class="fa fa-flag-checkered me-1"></i>3. Konfirmasi</a></li>
-</ul>
+<?= view('partials/form_wizard_nav', [
+    'current' => 2,
+    'steps'   => [
+        ['label' => 'Produk & Debitur', 'href' => site_url('transactions')],
+        ['label' => 'Input Scoring'],
+        ['label' => 'Ringkasan', 'href' => site_url('transactions/' . $item['id'] . '/review')],
+    ],
+]) ?>
 
 <div class="card card-borderless mb-3">
     <div class="card-header bg-gray-900" data-bs-theme="dark">
@@ -31,6 +34,13 @@
             <span class="fw-semibold text-dark"><?= esc($item['debtor']['full_name'] ?? '-') ?></span>
             &mdash; <?= esc($item['product']['name'] ?? '-') ?>
         </div>
+        <?php if (! empty($item['duplicated_from_id'])) : ?>
+        <div class="alert alert-info py-2 px-3 small mb-0 mt-2">
+            <i class="fa fa-info-circle me-1"></i>
+            Scoring ulang dari transaksi #<?= esc((string) $item['duplicated_from_id']) ?>.
+            Debitur &amp; produk sama; <strong>parameter dikosongkan</strong> — silakan isi ulang.
+        </div>
+        <?php endif; ?>
     </div>
 </div>
 
@@ -68,6 +78,7 @@ foreach ($item['answers'] as $answer) {
                             name="option[<?= esc($parameter['id']) ?>]"
                             class="select2" required
                             data-placeholder="Pilih nilai...">
+                        <option value=""></option>
                         <?php foreach ($parameter['options'] as $option) : ?>
                             <option value="<?= esc($option['id']) ?>"
                                 <?= (int) ($selected[$parameter['id']] ?? 0) === (int) $option['id'] ? 'selected' : '' ?>>

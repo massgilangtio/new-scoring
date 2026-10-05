@@ -27,6 +27,8 @@
 <link rel="stylesheet" href="<?= base_url('css/access-phase5.css') ?>?v=<?= @filemtime(FCPATH . 'css/access-phase5.css') ?: time() ?>">
 <link rel="stylesheet" href="<?= base_url('css/scoring-phase6.css') ?>?v=<?= @filemtime(FCPATH . 'css/scoring-phase6.css') ?: time() ?>">
 <link rel="stylesheet" href="<?= base_url('css/transactions-phase7.css') ?>?v=<?= @filemtime(FCPATH . 'css/transactions-phase7.css') ?: time() ?>">
+<link rel="stylesheet" href="<?= base_url('css/approvals-phase8.css') ?>?v=<?= @filemtime(FCPATH . 'css/approvals-phase8.css') ?: time() ?>">
+<link rel="stylesheet" href="<?= base_url('css/form-wizards.css') ?>?v=<?= @filemtime(FCPATH . 'css/form-wizards.css') ?: time() ?>">
 
 <!-- Iconify (Color Admin icons) -->
 <script src="<?= base_url('assets/color-admin/js/iconify/iconify-icon.min.js') ?>"></script>
@@ -49,3 +51,4 @@
 
 <!-- Global App JS -->
 <script src="<?= base_url('js/app.js') ?>?v=<?= @filemtime(FCPATH . 'js/app.js') ?: time() ?>"></script>
+<script src="<?= base_url('js/form-wizard.js') ?>?v=<?= @filemtime(FCPATH . 'js/form-wizard.js') ?: time() ?>"></script>

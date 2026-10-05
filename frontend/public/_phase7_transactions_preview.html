@@ -9,6 +9,7 @@
     <link href="assets/color-admin/css/default/app.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/shell-phase1.css">
     <link rel="stylesheet" href="css/transactions-phase7.css">
+    <link rel="stylesheet" href="css/form-wizards.css">
     <script src="assets/color-admin/js/iconify/iconify-icon.min.js"></script>
     <style>
         .preview-page { display: none; }
@@ -46,9 +47,8 @@
                 <div class="menu-item has-sub active">
                     <a href="javascript:;" class="menu-link"><div class="menu-icon"><i class="fa fa-file-invoice"></i></div><div class="menu-text">Transaksi Scoring</div><div class="menu-caret"></div></a>
                     <div class="menu-submenu">
+                        <div class="menu-item" data-preview-nav="list"><a href="#list" class="menu-link"><div class="menu-text">Pengajuan Scoring</div></a></div>
                         <div class="menu-item" data-preview-nav="list"><a href="#list" class="menu-link"><div class="menu-text">Daftar Scoring</div></a></div>
-                        <div class="menu-item" data-preview-nav="input"><a href="#input" class="menu-link"><div class="menu-text">Input Scoring</div></a></div>
-                        <div class="menu-item" data-preview-nav="review"><a href="#review" class="menu-link"><div class="menu-text">Konfirmasi</div></a></div>
                     </div>
                 </div>
             </div>
@@ -139,7 +139,12 @@
                                     <td>Kredit Multiguna</td>
                                     <td>01 Apr 2026</td>
                                     <td><span class="badge badge-approved">Approved</span></td>
-                                    <td class="text-center"><button class="btn btn-default btn-xs btn-icon"><i class="fa fa-eye"></i></button></td>
+                                    <td class="text-center">
+                                        <div class="d-inline-flex align-items-center gap-1">
+                                            <button class="btn btn-default btn-xs btn-icon" title="Buka Detail"><i class="fa fa-eye"></i></button>
+                                            <button class="btn btn-theme btn-xs btn-icon" title="Scoring Ulang"><i class="fa fa-arrows-rotate"></i></button>
+                                        </div>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -153,11 +158,13 @@
             <ol class="breadcrumb float-xl-end"><li class="breadcrumb-item"><a href="#">Home</a></li><li class="breadcrumb-item active">Input Scoring</li></ol>
             <h1 class="page-header">Input Scoring <small>langkah 2</small></h1>
 
-            <ul class="nav nav-pills tx-stepper gap-2 mb-3">
-                <li class="nav-item"><span class="nav-link disabled"><i class="fa fa-check me-1 text-success"></i>1. Produk &amp; Debitur</span></li>
-                <li class="nav-item"><span class="nav-link active"><i class="fa fa-pen me-1"></i>2. Input Scoring</span></li>
-                <li class="nav-item"><a class="nav-link" href="#review"><i class="fa fa-flag-checkered me-1"></i>3. Konfirmasi</a></li>
-            </ul>
+            <div class="nav-wizards-container mb-3">
+                <nav class="nav nav-wizards-1">
+                    <div class="nav-item col"><a class="nav-link completed" href="javascript:;"><div class="nav-no">1</div><div class="nav-text">Produk &amp; Debitur</div></a></div>
+                    <div class="nav-item col"><a class="nav-link active" href="javascript:;"><div class="nav-no">2</div><div class="nav-text">Input Scoring</div></a></div>
+                    <div class="nav-item col"><a class="nav-link disabled" href="#review"><div class="nav-no">3</div><div class="nav-text">Ringkasan</div></a></div>
+                </nav>
+            </div>
 
             <div class="card card-borderless mb-3">
                 <div class="card-header bg-gray-900" data-bs-theme="dark">
@@ -191,27 +198,21 @@
 
         <!-- REVIEW -->
         <div class="preview-page" id="page-review" data-preview="review">
-            <ol class="breadcrumb float-xl-end"><li class="breadcrumb-item"><a href="#">Home</a></li><li class="breadcrumb-item active">Konfirmasi Scoring</li></ol>
-            <h1 class="page-header">Konfirmasi Scoring <small>langkah 3</small></h1>
-
-            <ul class="nav nav-pills tx-stepper gap-2 mb-3">
-                <li class="nav-item"><span class="nav-link disabled"><i class="fa fa-check me-1 text-success"></i>1. Produk &amp; Debitur</span></li>
-                <li class="nav-item"><a class="nav-link" href="#input"><i class="fa fa-check me-1 text-success"></i>2. Input Scoring</a></li>
-                <li class="nav-item"><span class="nav-link active"><i class="fa fa-flag-checkered me-1"></i>3. Konfirmasi</span></li>
-            </ul>
+            <ol class="breadcrumb float-xl-end"><li class="breadcrumb-item"><a href="#">Home</a></li><li class="breadcrumb-item"><a href="#list">Daftar Scoring</a></li><li class="breadcrumb-item active">TRX-2026-0039</li></ol>
+            <h1 class="page-header">Detail Transaksi <small>scoring ulang dari transaksi selesai</small></h1>
 
             <div class="row g-3">
                 <div class="col-lg-8">
-                    <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-blue bg-gradient-to-indigo overflow-hidden mb-3" data-bs-theme="dark">
+                    <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-teal bg-gradient-to-green overflow-hidden mb-3" data-bs-theme="dark">
                         <div class="card-body position-relative z-3">
                             <div class="row align-items-center">
                                 <div class="col-auto">
-                                    <div class="text-white text-opacity-75 small fw-semibold mb-1">Total Skor</div>
+                                    <div class="text-white text-opacity-75 small fw-semibold mb-1">Skor Tersimpan</div>
                                     <div class="display-5 fw-bold text-white mb-0">420</div>
                                 </div>
                                 <div class="col">
                                     <div class="fw-bold text-white fs-5">LAYAK</div>
-                                    <div class="text-white text-opacity-75 small font-monospace">TRX-2026-0040 — Siti Rahayu</div>
+                                    <div class="text-white text-opacity-75 small font-monospace">TRX-2026-0039 — Andi Wijaya</div>
                                 </div>
                             </div>
                         </div>
@@ -236,26 +237,27 @@
                             </table>
                         </div>
                     </div>
-
-                    <div class="d-flex justify-content-between">
-                        <button class="btn btn-default"><i class="fa fa-arrow-left me-1"></i> Kembali ke Input</button>
-                        <button class="btn btn-theme"><i class="fa fa-paper-plane me-1"></i> Submit &amp; Kunci Pengajuan</button>
-                    </div>
                 </div>
                 <div class="col-lg-4">
-                    <div class="card card-borderless">
+                    <div class="card card-borderless mb-3">
                         <div class="card-header bg-gray-900" data-bs-theme="dark">
                             <h4 class="card-header-title text-white mb-0"><iconify-icon icon="solar:info-circle-bold-duotone" class="me-1"></iconify-icon> Informasi Pengajuan</h4>
                         </div>
                         <div class="card-body p-0">
                             <table class="table table-sm align-middle mb-0">
                                 <tbody>
-                                    <tr><td class="text-muted small">Nomor</td><td class="text-end"><span class="badge bg-primary bg-opacity-15 text-primary py-6px font-monospace">TRX-2026-0040</span></td></tr>
-                                    <tr><td class="text-muted small">Debitur</td><td class="fw-semibold text-end small">Siti Rahayu</td></tr>
-                                    <tr><td class="text-muted small">Produk</td><td class="fw-semibold text-end small">Kredit Pemilikan Rumah</td></tr>
-                                    <tr><td class="text-muted small">Status</td><td class="text-end"><span class="badge badge-draft">draft</span></td></tr>
+                                    <tr><td class="text-muted small">Nomor</td><td class="text-end"><span class="badge bg-primary bg-opacity-15 text-primary py-6px font-monospace">TRX-2026-0039</span></td></tr>
+                                    <tr><td class="text-muted small">Debitur</td><td class="fw-semibold text-end small">Andi Wijaya</td></tr>
+                                    <tr><td class="text-muted small">Produk</td><td class="fw-semibold text-end small">Kredit Multiguna</td></tr>
+                                    <tr><td class="text-muted small">Status</td><td class="text-end"><span class="badge badge-approved">approved</span></td></tr>
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                    <div class="card card-borderless">
+                        <div class="card-body">
+                            <p class="text-muted small mb-3">Pengajuan baru (ID berbeda), debitur &amp; produk sama. Parameter dikosongkan agar bisa diisi ulang.</p>
+                            <button class="btn btn-theme w-100"><i class="fa fa-arrows-rotate me-1"></i> Scoring Ulang</button>
                         </div>
                     </div>
                 </div>

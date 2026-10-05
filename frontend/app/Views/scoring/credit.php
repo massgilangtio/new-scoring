@@ -7,17 +7,28 @@
 <div data-swal="error" data-swal-title="Terjadi Kesalahan" data-swal-message="<?= esc($error) ?>" hidden></div>
 <?php endif; ?>
 
+<div id="creditWizard" data-form-wizard data-wizard-start="1">
+<?= view('partials/form_wizard_nav', [
+    'current' => 1,
+    'steps'   => [
+        ['label' => 'Pilih Debitur'],
+        ['label' => 'Pilih Produk'],
+        ['label' => 'Penilaian Scoring'],
+        ['label' => 'Ringkasan / Konfirmasi'],
+    ],
+]) ?>
+
 <form id="creditScoringForm">
     <?= csrf_field() ?>
 
     <div class="row g-3">
         <!-- 1. Section: Pilih CIS ID / Debitur & Edit Data Debitur -->
-        <div class="col-12">
+        <div class="col-12" data-wizard-pane="1">
             <div class="card card-borderless overflow-hidden">
                 <div class="card-header bg-gray-900" data-bs-theme="dark">
                     <h4 class="card-header-title text-white mb-0">
                         <iconify-icon icon="solar:user-check-bold-duotone" class="me-1"></iconify-icon>
-                        1. Pilih Debitur &amp; Periksa Profil
+                        Pilih Debitur &amp; Periksa Profil
                     </h4>
                     <span class="badge bg-white bg-opacity-15 text-white">Data master (read-only)</span>
                 </div>
@@ -111,15 +122,21 @@
                     </div>
                 </div>
             </div>
+            <div class="wizard-actions">
+                <span></span>
+                <button type="button" class="btn btn-theme" data-wizard-next id="btnCreditNext1">
+                    Berikutnya <i class="fa fa-arrow-right ms-1"></i>
+                </button>
+            </div>
         </div>
 
         <!-- 2. Section: Pilih Kode Produk yang Memiliki Mapping Parameter -->
-        <div class="col-12">
+        <div class="col-12 d-none" data-wizard-pane="2">
             <div class="card card-borderless overflow-hidden">
                 <div class="card-header bg-gray-900" data-bs-theme="dark">
                     <h4 class="card-header-title text-white mb-0">
                         <iconify-icon icon="solar:box-bold-duotone" class="me-1"></iconify-icon>
-                        2. Pilih Kode Produk Kredit
+                        Pilih Kode Produk Kredit
                     </h4>
                     <span class="badge bg-white bg-opacity-15 text-white">Produk dengan mapping aktif</span>
                 </div>
@@ -140,15 +157,23 @@
                     </div>
                 </div>
             </div>
+            <div class="wizard-actions">
+                <button type="button" class="btn btn-default" data-wizard-prev>
+                    <i class="fa fa-arrow-left me-1"></i> Sebelumnya
+                </button>
+                <button type="button" class="btn btn-theme" data-wizard-next id="btnCreditNext2">
+                    Berikutnya <i class="fa fa-arrow-right ms-1"></i>
+                </button>
+            </div>
         </div>
 
         <!-- 3. Section: Penilaian Parameter Hasil Mapping (Beserta Kode & Deskripsi) -->
-        <div class="col-12" id="scoringSection" style="display: none;">
+        <div class="col-12 d-none" data-wizard-pane="3" id="scoringSection">
             <div class="card card-borderless overflow-hidden">
                 <div class="card-header bg-gray-900" data-bs-theme="dark">
                     <h4 class="card-header-title text-white mb-0">
                         <iconify-icon icon="solar:checklist-minimalistic-bold-duotone" class="me-1"></iconify-icon>
-                        3. Penilaian Parameter Scoring
+                        Penilaian Parameter Scoring
                     </h4>
                     <div class="d-flex align-items-center gap-2">
                         <span class="badge bg-white bg-opacity-15 text-white" id="topCutoffBadge">
@@ -178,30 +203,73 @@
                         <textarea class="form-control" id="scoringNotes" name="notes" rows="2" 
                                   placeholder="Tambahkan catatan khusus analisa scoring debitur ini jika ada..."></textarea>
                     </div>
+                    <input type="hidden" id="cutoffPassingScore" value="350.00">
+                </div>
+            </div>
+            <div class="wizard-actions">
+                <button type="button" class="btn btn-default" data-wizard-prev>
+                    <i class="fa fa-arrow-left me-1"></i> Sebelumnya
+                </button>
+                <button type="button" class="btn btn-theme" data-wizard-next id="btnCreditNext3">
+                    Berikutnya <i class="fa fa-arrow-right ms-1"></i>
+                </button>
+            </div>
+        </div>
 
-                    <!-- Panel Hasil Analisa & Kelayakan Scoring -->
-                    <div class="p-3 bg-light rounded-4 border mt-4">
-                        <div class="row g-3 align-items-center">
-                            <!-- Batas skor dari konfigurasi produk (read-only) -->
-                            <div class="col-12 col-md-4">
-                                <label class="form-label fw-bold text-dark mb-1 small d-flex align-items-center gap-1">
-                                    <i class="fa-solid fa-award text-primary"></i> Batas Skor Layak
-                                </label>
-                                <div class="d-flex align-items-center gap-2">
-                                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 fw-bold fs-6" id="cutoffPassingScoreDisplay">
-                                        &ge; 350.00
-                                    </span>
-                                    <span class="text-muted small">Poin</span>
-                                </div>
-                                <input type="hidden" id="cutoffPassingScore" value="350.00">
-                                <div class="form-text text-muted small" style="font-size: 11px;">
-                                    Dari konfigurasi mapping produk. Ubah di menu <strong>Mapping Produk</strong>.
+        <!-- 4. Ringkasan data scoring -->
+        <div class="col-12 d-none" data-wizard-pane="4">
+            <div class="card card-borderless overflow-hidden">
+                <div class="card-header bg-gray-900" data-bs-theme="dark">
+                    <h4 class="card-header-title text-white mb-0">
+                        <iconify-icon icon="solar:clipboard-check-bold-duotone" class="me-1"></iconify-icon>
+                        Ringkasan Data Scoring
+                    </h4>
+                    <span class="badge bg-white bg-opacity-15 text-white">Periksa sebelum simpan</span>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <div class="p-3 bg-light rounded-3 h-100">
+                                <div class="text-muted small fw-semibold text-uppercase mb-2">Debitur</div>
+                                <div class="fw-bold text-dark" id="sumDebtorName">-</div>
+                                <div class="small text-muted mt-1">
+                                    CIS: <strong id="sumCisId">-</strong> &bull; NIK: <strong id="sumNik">-</strong>
                                 </div>
                             </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 bg-light rounded-3 h-100">
+                                <div class="text-muted small fw-semibold text-uppercase mb-2">Produk</div>
+                                <div class="fw-bold text-dark" id="sumProductName">-</div>
+                                <div class="small text-muted mt-1">
+                                    Batas layak: <span class="badge bg-primary-subtle text-primary border" id="cutoffPassingScoreDisplay">&ge; 350.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                            <!-- Live Skor & Hasil Status Kelayakan -->
-                            <div class="col-12 col-md-4 text-center border-start border-end">
-                                <div class="text-muted small fw-semibold text-uppercase">Total Skor Akumulasi</div>
+                    <div class="mb-4">
+                        <div class="fw-semibold text-dark mb-2">Rincian Penilaian Parameter</div>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-striped align-middle mb-0" id="sumParamsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Parameter</th>
+                                        <th>Pilihan</th>
+                                        <th class="text-end">Skor</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="sumParamsBody">
+                                    <tr><td colspan="3" class="text-muted text-center">Belum ada penilaian</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-light rounded-4 border">
+                        <div class="row g-3 align-items-center">
+                            <div class="col-12 col-md-4 text-center border-md-end">
+                                <div class="text-muted small fw-semibold text-uppercase">Total Skor</div>
                                 <div class="display-6 fw-bold text-primary mb-1" id="finalScoreDisplay">0.00</div>
                                 <div id="eligibilityStatusContainer">
                                     <span class="badge bg-danger text-white px-3 py-2 rounded-pill fw-bold fs-6" id="eligibilityBadge">
@@ -209,23 +277,32 @@
                                     </span>
                                 </div>
                             </div>
-
-                            <!-- Action Button: Simpan Scoring -->
+                            <div class="col-12 col-md-4">
+                                <div class="text-muted small fw-semibold text-uppercase mb-1">Catatan</div>
+                                <div class="small text-dark" id="sumNotes">-</div>
+                            </div>
                             <div class="col-12 col-md-4 text-end">
-                                <button type="button" class="btn btn-theme btn-lg w-100 py-3" id="btnSaveScoring">
+                                <button type="button" class="btn btn-theme btn-lg w-100 py-3" id="btnSaveScoring" data-wizard-finish>
                                     <i class="fa fa-floppy-disk me-2"></i> Simpan Scoring Kredit
                                 </button>
                                 <div class="text-muted small mt-2 text-center" style="font-size: 11px;">
-                                    Status kelayakan & detail penilaian disimpan ke sistem
+                                    Status kelayakan &amp; detail penilaian disimpan ke sistem
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="wizard-actions">
+                <button type="button" class="btn btn-default" data-wizard-prev>
+                    <i class="fa fa-arrow-left me-1"></i> Sebelumnya
+                </button>
+                <span class="text-muted small">Pastikan ringkasan benar sebelum menyimpan</span>
+            </div>
         </div>
     </div>
 </form>
+</div>
 
 <!-- Modal: Pilih Supervisi / Pimpinan Unit (Pimunit) -->
 <div class="modal fade" id="supervisorModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
@@ -327,6 +404,67 @@ $(document).ready(function () {
         }
     });
 
+    // Wizard step guards
+    $('#creditWizard').on('wizard:beforeNext', function (e, step) {
+        if (step === 1 && !currentDebtorId) {
+            e.preventDefault();
+            Swal.fire({ icon: 'warning', title: 'Debitur Belum Dipilih', text: 'Silakan pilih debitur terlebih dahulu.', confirmButtonColor: '#0c2b6b' });
+            return;
+        }
+        if (step === 2 && !currentProductId) {
+            e.preventDefault();
+            Swal.fire({ icon: 'warning', title: 'Produk Belum Dipilih', text: 'Silakan pilih kode produk kredit terlebih dahulu.', confirmButtonColor: '#0c2b6b' });
+            return;
+        }
+        if (step === 3) {
+            const totalParams = currentParameters.length;
+            const selectedParams = $('.param-radio:checked').length;
+            if (!totalParams || selectedParams < totalParams) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Penilaian Belum Lengkap',
+                    text: 'Harap lengkapi pilihan untuk seluruh parameter yang tersedia.',
+                    confirmButtonColor: '#0c2b6b'
+                });
+            }
+        }
+    });
+
+    function fillScoringSummary() {
+        $('#sumDebtorName').text($('#debFullName').val() || $('#dispDebtorName').text() || '-');
+        $('#sumCisId').text($('#dispCisId').text() || '-');
+        $('#sumNik').text($('#debNik').val() || '-');
+        const prodLabel = $('#productSelect option:selected').text().trim() || '-';
+        $('#sumProductName').text(prodLabel);
+        const notes = ($('#scoringNotes').val() || '').trim();
+        $('#sumNotes').text(notes || '(Tidak ada catatan)');
+
+        const rows = [];
+        $('.param-radio:checked').each(function () {
+            const name = $(this).data('param-name') || '-';
+            const code = $(this).data('code') || '';
+            const desc = $(this).data('desc') || '';
+            const total = parseFloat($(this).data('total')) || 0;
+            rows.push(
+                '<tr>' +
+                '<td class="fw-semibold">' + $('<div>').text(name).html() + '</td>' +
+                '<td><span class="badge bg-secondary-subtle text-secondary me-1">' + $('<div>').text(String(code)).html() + '</span>' +
+                $('<div>').text(desc).html() + '</td>' +
+                '<td class="text-end fw-bold">' + total.toFixed(2) + '</td>' +
+                '</tr>'
+            );
+        });
+        $('#sumParamsBody').html(rows.length ? rows.join('') : '<tr><td colspan="3" class="text-muted text-center">Belum ada penilaian</td></tr>');
+        calculateTotalScore();
+    }
+
+    $('#creditWizard').on('wizard:step', function (e, step) {
+        if (step === 4) {
+            fillScoringSummary();
+        }
+    });
+
     // When Product is chosen -> Load mapped parameters
     $('#productSelect').on('change', function () {
         const productId = $(this).val();
@@ -334,13 +472,11 @@ $(document).ready(function () {
         currentMappingId = $(this).find(':selected').data('mapping-id');
 
         if (!productId) {
-            $('#scoringSection').slideUp(200);
             $('#parameterContainer').empty();
             return;
         }
 
         $('#parameterContainer').html('<div class="text-center py-4"><i class="fa-solid fa-spinner fa-spin fa-2x text-primary mb-2"></i><p class="text-muted small">Memuat parameter mapping produk...</p></div>');
-        $('#scoringSection').slideDown(200);
 
         $.get('<?= site_url('scoring/credit/mapping-items/') ?>' + productId, function (res) {
             if (res.rcode === '00' && res.result && res.result.parameters) {

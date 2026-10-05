@@ -350,7 +350,7 @@ $inactiveDebtorPct = $totalDebtors > 0 ? (int) round(($inactiveDebtors / $totalD
 <!-- Modal: Tambah Debitur Baru (Redesigned matching Master Produk layout) -->
 <div class="modal fade product-modal-custom debtor-modal-custom" id="createDebtorModal" aria-labelledby="createDebtorModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
-        <form method="post" action="<?= site_url('master/debtors') ?>" class="modal-content product-modal-content border-0 shadow-2xl" id="createDebtorForm">
+        <form method="post" action="<?= site_url('master/debtors') ?>" class="modal-content product-modal-content border-0 shadow-2xl" id="createDebtorForm" data-form-wizard>
             <?= csrf_field() ?>
             <div class="modal-body p-0">
                 <div class="product-modal-grid">
@@ -393,162 +393,167 @@ $inactiveDebtorPct = $totalDebtors > 0 ? (int) round(($inactiveDebtors / $totalD
                             </button>
                         </div>
 
-                        <!-- Form Body Inputs -->
+                        <!-- Form Body Inputs (Color Admin form wizard) -->
                         <div class="product-modal-main-body">
-                            <div class="row g-3">
-                                <!-- NIK -->
-                                <div class="col-12 col-md-6">
-                                    <label class="modal-form-label" for="create_nik">Nomor Induk Kependudukan (NIK) <span class="text-danger">*</span></label>
-                                    <div class="modal-input-wrap">
-                                        <i class="fa-solid fa-id-card modal-input-icon"></i>
-                                        <input type="text" class="form-control modal-input-control" id="create_nik" name="nik"
-                                               pattern="[0-9]{16}" maxlength="16" placeholder="16 digit NIK" required>
-                                    </div>
-                                    <div class="modal-input-hint">Contoh: 1271012304950001</div>
-                                </div>
+                            <?= view('partials/form_wizard_nav', [
+                                'current' => 1,
+                                'steps'   => [
+                                    ['label' => 'Identitas'],
+                                    ['label' => 'Kontak'],
+                                    ['label' => 'Sistem'],
+                                    ['label' => 'Ringkasan'],
+                                ],
+                            ]) ?>
 
-                                <!-- Nama Lengkap -->
-                                <div class="col-12 col-md-6">
-                                    <label class="modal-form-label" for="create_full_name">Nama Lengkap Sesuai KTP <span class="text-danger">*</span></label>
-                                    <div class="modal-input-wrap">
-                                        <i class="fa-solid fa-user modal-input-icon"></i>
-                                        <input type="text" class="form-control modal-input-control" id="create_full_name" name="full_name"
-                                               placeholder="Nama lengkap debitur" maxlength="150" required>
-                                    </div>
-                                </div>
-
-                                <!-- Cabang -->
-                                <div class="col-12">
-                                    <label class="modal-form-label" for="create_branch_id">Cabang Pemroses <span class="text-danger">*</span></label>
-                                    <div class="modal-input-wrap">
-                                        <i class="fa-solid fa-building modal-input-icon"></i>
-                                        <select class="form-select modal-select2" id="create_branch_id" name="branch_id" data-placeholder="Pilih cabang..." required>
-                                            <option value=""></option>
-                                            <?php foreach ($branches as $branch) : ?>
-                                                <option value="<?= esc($branch['id']) ?>">
-                                                    <?= esc(!empty($branch['code']) ? '[' . $branch['code'] . '] ' . $branch['name'] : $branch['name']) ?>
-                                                </option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <!-- Tanggal Lahir -->
-                                <div class="col-12 col-md-6">
-                                    <label class="modal-form-label" for="create_birth_date">Tanggal Lahir</label>
-                                    <div class="modal-input-wrap">
-                                        <i class="fa-solid fa-calendar modal-input-icon"></i>
-                                        <input type="date" class="form-control modal-input-control" id="create_birth_date" name="birth_date">
-                                    </div>
-                                </div>
-
-                                <!-- Tempat Lahir -->
-                                <div class="col-12 col-md-6">
-                                    <label class="modal-form-label" for="create_birth_place">Tempat Lahir</label>
-                                    <div class="modal-input-wrap">
-                                        <i class="fa-solid fa-map-pin modal-input-icon"></i>
-                                        <input type="text" class="form-control modal-input-control" id="create_birth_place" name="birth_place" placeholder="Kota kelahiran">
-                                    </div>
-                                </div>
-
-                                <!-- Telepon -->
-                                <div class="col-12 col-md-6">
-                                    <label class="modal-form-label" for="create_phone">Nomor Telepon / WhatsApp</label>
-                                    <div class="modal-input-wrap">
-                                        <i class="fa-solid fa-phone modal-input-icon"></i>
-                                        <input type="text" class="form-control modal-input-control" id="create_phone" name="phone" placeholder="Contoh: 081234567890">
-                                    </div>
-                                </div>
-
-                                <!-- Jenis Kelamin -->
-                                <div class="col-12 col-md-6">
-                                    <label class="modal-form-label" for="create_gender">Jenis Kelamin</label>
-                                    <div class="modal-input-wrap">
-                                        <i class="fa-solid fa-venus-mars modal-input-icon"></i>
-                                        <select class="form-select modal-select2" id="create_gender" name="gender" data-placeholder="Pilih Gender">
-                                            <option value=""></option>
-                                            <option value="Laki-laki">Laki-laki</option>
-                                            <option value="Perempuan">Perempuan</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <!-- Agama -->
-                                <div class="col-12 col-md-6">
-                                    <label class="modal-form-label" for="create_religion">Agama</label>
-                                    <div class="modal-input-wrap">
-                                        <i class="fa-solid fa-hands-praying modal-input-icon"></i>
-                                        <select class="form-select modal-select2" id="create_religion" name="religion" data-placeholder="Pilih Agama">
-                                            <option value=""></option>
-                                            <?php foreach ($religions as $rel) : ?>
-                                                <option value="<?= esc($rel) ?>"><?= esc($rel) ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <!-- NPWP -->
-                                <div class="col-12 col-md-6">
-                                    <label class="modal-form-label" for="create_npwp">NPWP</label>
-                                    <div class="modal-input-wrap">
-                                        <i class="fa-solid fa-file-invoice modal-input-icon"></i>
-                                        <input type="text" class="form-control modal-input-control" id="create_npwp" name="npwp" placeholder="Nomor Pokok Wajib Pajak">
-                                    </div>
-                                </div>
-
-                                <!-- CIS ID -->
-                                <div class="col-12 col-md-6">
-                                    <label class="modal-form-label" for="create_cis_id">CIS ID</label>
-                                    <div class="modal-input-wrap">
-                                        <i class="fa-solid fa-barcode modal-input-icon"></i>
-                                        <input type="text" class="form-control modal-input-control bg-light cursor-not-allowed font-monospace fw-bold" id="create_cis_id" name="cis_id" placeholder="0226XXXXXX (Otomatis)" readonly maxlength="10">
-                                    </div>
-                                    <div class="modal-input-hint text-primary"><i class="fa-solid fa-wand-magic-sparkles me-1"></i> Dibuat otomatis oleh sistem (10 digit: 02 + Tahun + Nomor Urut)</div>
-                                </div>
-
-                                <!-- CIF ID -->
-                                <div class="col-12 col-md-6">
-                                    <label class="modal-form-label" for="create_cif_id">CIF ID</label>
-                                    <div class="modal-input-group">
-                                        <div class="modal-input-wrap flex-grow-1">
-                                            <i class="fa-solid fa-fingerprint modal-input-icon"></i>
-                                            <input type="text" class="form-control modal-input-control input-with-btn font-monospace" id="create_cif_id" name="cif_id" placeholder="Customer Information File ID" maxlength="30">
+                            <div data-wizard-pane="1">
+                                <div class="row g-3">
+                                    <div class="col-12 col-md-6">
+                                        <label class="modal-form-label" for="create_nik">Nomor Induk Kependudukan (NIK) <span class="text-danger">*</span></label>
+                                        <div class="modal-input-wrap">
+                                            <i class="fa-solid fa-id-card modal-input-icon"></i>
+                                            <input type="text" class="form-control modal-input-control" id="create_nik" name="nik"
+                                                   pattern="[0-9]{16}" maxlength="16" placeholder="16 digit NIK" required>
                                         </div>
-                                        <button type="button" class="btn btn-inquiry-cif" id="btnInquiryCifCreate" title="Inquiry CIF dari Core Banking">
-                                            <i class="fa-solid fa-magnifying-glass me-1"></i> Inquiry
-                                        </button>
+                                        <div class="modal-input-hint">Contoh: 1271012304950001</div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <label class="modal-form-label" for="create_full_name">Nama Lengkap Sesuai KTP <span class="text-danger">*</span></label>
+                                        <div class="modal-input-wrap">
+                                            <i class="fa-solid fa-user modal-input-icon"></i>
+                                            <input type="text" class="form-control modal-input-control" id="create_full_name" name="full_name"
+                                                   placeholder="Nama lengkap debitur" maxlength="150" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="modal-form-label" for="create_branch_id">Cabang Pemroses <span class="text-danger">*</span></label>
+                                        <div class="modal-input-wrap">
+                                            <i class="fa-solid fa-building modal-input-icon"></i>
+                                            <select class="form-select modal-select2" id="create_branch_id" name="branch_id" data-placeholder="Pilih cabang..." required>
+                                                <option value=""></option>
+                                                <?php foreach ($branches as $branch) : ?>
+                                                    <option value="<?= esc($branch['id']) ?>">
+                                                        <?= esc(!empty($branch['code']) ? '[' . $branch['code'] . '] ' . $branch['name'] : $branch['name']) ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <label class="modal-form-label" for="create_birth_date">Tanggal Lahir</label>
+                                        <div class="modal-input-wrap">
+                                            <i class="fa-solid fa-calendar modal-input-icon"></i>
+                                            <input type="date" class="form-control modal-input-control" id="create_birth_date" name="birth_date">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <label class="modal-form-label" for="create_birth_place">Tempat Lahir</label>
+                                        <div class="modal-input-wrap">
+                                            <i class="fa-solid fa-map-pin modal-input-icon"></i>
+                                            <input type="text" class="form-control modal-input-control" id="create_birth_place" name="birth_place" placeholder="Kota kelahiran">
+                                        </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- Alamat -->
-                                <div class="col-12">
-                                    <label class="modal-form-label" for="create_address">Alamat Lengkap</label>
-                                    <div class="modal-input-wrap">
-                                        <i class="fa-solid fa-house-chimney modal-input-icon"></i>
-                                        <input type="text" class="form-control modal-input-control" id="create_address" name="address" placeholder="Jalan, RT/RW, Kelurahan, Kecamatan, Kota">
+                            <div class="d-none" data-wizard-pane="2">
+                                <div class="row g-3">
+                                    <div class="col-12 col-md-6">
+                                        <label class="modal-form-label" for="create_phone">Nomor Telepon / WhatsApp</label>
+                                        <div class="modal-input-wrap">
+                                            <i class="fa-solid fa-phone modal-input-icon"></i>
+                                            <input type="text" class="form-control modal-input-control" id="create_phone" name="phone" placeholder="Contoh: 081234567890">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <label class="modal-form-label" for="create_gender">Jenis Kelamin</label>
+                                        <div class="modal-input-wrap">
+                                            <i class="fa-solid fa-venus-mars modal-input-icon"></i>
+                                            <select class="form-select modal-select2" id="create_gender" name="gender" data-placeholder="Pilih Gender">
+                                                <option value=""></option>
+                                                <option value="Laki-laki">Laki-laki</option>
+                                                <option value="Perempuan">Perempuan</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <label class="modal-form-label" for="create_religion">Agama</label>
+                                        <div class="modal-input-wrap">
+                                            <i class="fa-solid fa-hands-praying modal-input-icon"></i>
+                                            <select class="form-select modal-select2" id="create_religion" name="religion" data-placeholder="Pilih Agama">
+                                                <option value=""></option>
+                                                <?php foreach ($religions as $rel) : ?>
+                                                    <option value="<?= esc($rel) ?>"><?= esc($rel) ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <label class="modal-form-label" for="create_mother_name">Nama Gadis Ibu Kandung</label>
+                                        <div class="modal-input-wrap">
+                                            <i class="fa-solid fa-person-breastfeeding modal-input-icon"></i>
+                                            <input type="text" class="form-control modal-input-control" id="create_mother_name" name="mother_name" placeholder="Nama ibu kandung untuk verifikasi">
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="modal-form-label" for="create_address">Alamat Lengkap</label>
+                                        <div class="modal-input-wrap">
+                                            <i class="fa-solid fa-house-chimney modal-input-icon"></i>
+                                            <input type="text" class="form-control modal-input-control" id="create_address" name="address" placeholder="Jalan, RT/RW, Kelurahan, Kecamatan, Kota">
+                                        </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- Nama Ibu Kandung -->
-                                <div class="col-12 col-md-6">
-                                    <label class="modal-form-label" for="create_mother_name">Nama Gadis Ibu Kandung</label>
-                                    <div class="modal-input-wrap">
-                                        <i class="fa-solid fa-person-breastfeeding modal-input-icon"></i>
-                                        <input type="text" class="form-control modal-input-control" id="create_mother_name" name="mother_name" placeholder="Nama ibu kandung untuk verifikasi">
+                            <div class="d-none" data-wizard-pane="3">
+                                <div class="row g-3">
+                                    <div class="col-12 col-md-6">
+                                        <label class="modal-form-label" for="create_npwp">NPWP</label>
+                                        <div class="modal-input-wrap">
+                                            <i class="fa-solid fa-file-invoice modal-input-icon"></i>
+                                            <input type="text" class="form-control modal-input-control" id="create_npwp" name="npwp" placeholder="Nomor Pokok Wajib Pajak">
+                                        </div>
                                     </div>
-                                </div>
-
-                                <!-- Debitur Aktif Toggle -->
-                                <div class="col-12 col-md-6 d-flex align-items-center">
-                                    <div class="modal-status-toggle-card w-100">
-                                        <div class="form-check form-switch m-0">
-                                            <input class="form-check-input modal-switch-input" type="checkbox" id="create_isActive" name="is_active" value="1" checked>
-                                            <div class="modal-switch-text">
-                                                <label class="modal-switch-label" for="create_isActive">Debitur Aktif</label>
-                                                <div class="modal-switch-desc">Dapat langsung diproses dalam engine scoring kredit.</div>
+                                    <div class="col-12 col-md-6">
+                                        <label class="modal-form-label" for="create_cis_id">CIS ID</label>
+                                        <div class="modal-input-wrap">
+                                            <i class="fa-solid fa-barcode modal-input-icon"></i>
+                                            <input type="text" class="form-control modal-input-control bg-light cursor-not-allowed font-monospace fw-bold" id="create_cis_id" name="cis_id" placeholder="0226XXXXXX (Otomatis)" readonly maxlength="10">
+                                        </div>
+                                        <div class="modal-input-hint text-primary"><i class="fa-solid fa-wand-magic-sparkles me-1"></i> Dibuat otomatis oleh sistem</div>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="modal-form-label" for="create_cif_id">CIF ID</label>
+                                        <div class="modal-input-group">
+                                            <div class="modal-input-wrap flex-grow-1">
+                                                <i class="fa-solid fa-fingerprint modal-input-icon"></i>
+                                                <input type="text" class="form-control modal-input-control input-with-btn font-monospace" id="create_cif_id" name="cif_id" placeholder="Customer Information File ID" maxlength="30">
+                                            </div>
+                                            <button type="button" class="btn btn-inquiry-cif" id="btnInquiryCifCreate" title="Inquiry CIF dari Core Banking">
+                                                <i class="fa-solid fa-magnifying-glass me-1"></i> Inquiry
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="modal-status-toggle-card w-100">
+                                            <div class="form-check form-switch m-0">
+                                                <input class="form-check-input modal-switch-input" type="checkbox" id="create_isActive" name="is_active" value="1" checked>
+                                                <div class="modal-switch-text">
+                                                    <label class="modal-switch-label" for="create_isActive">Debitur Aktif</label>
+                                                    <div class="modal-switch-desc">Dapat langsung diproses dalam engine scoring kredit.</div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+
+                            <div class="d-none" data-wizard-pane="4">
+                                <div class="mb-2 fw-semibold text-dark">Konfirmasi / Ringkasan Data Debitur</div>
+                                <p class="text-muted small mb-3">Periksa kembali data sebelum disimpan.</p>
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-striped align-middle mb-0 wizard-summary-table">
+                                        <tbody id="createDebtorSummaryBody"></tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -558,9 +563,17 @@ $inactiveDebtorPct = $totalDebtors > 0 ? (int) round(($inactiveDebtors / $totalD
                             <button type="button" class="btn-modal-cancel" data-bs-dismiss="modal">
                                 <i class="fa-solid fa-xmark me-1"></i> Batal
                             </button>
-                            <button type="submit" class="btn-modal-submit" id="btnSubmitCreateDebtor">
-                                <i class="fa-solid fa-floppy-disk me-1"></i> Simpan Debitur
-                            </button>
+                            <div class="d-flex align-items-center gap-2 ms-auto">
+                                <button type="button" class="btn btn-default" data-wizard-prev>
+                                    <i class="fa fa-arrow-left me-1"></i> Sebelumnya
+                                </button>
+                                <button type="button" class="btn btn-theme" data-wizard-next>
+                                    Berikutnya <i class="fa fa-arrow-right ms-1"></i>
+                                </button>
+                                <button type="submit" class="btn-modal-submit d-none" id="btnSubmitCreateDebtor" data-wizard-finish>
+                                    <i class="fa-solid fa-floppy-disk me-1"></i> Simpan Debitur
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -572,7 +585,7 @@ $inactiveDebtorPct = $totalDebtors > 0 ? (int) round(($inactiveDebtors / $totalD
 <!-- Modal: Edit Debitur -->
 <div class="modal fade product-modal-custom debtor-modal-custom" id="editDebtorModal" aria-labelledby="editDebtorModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
-        <form method="post" action="" class="modal-content product-modal-content border-0 shadow-2xl" id="editDebtorForm">
+        <form method="post" action="" class="modal-content product-modal-content border-0 shadow-2xl" id="editDebtorForm" data-form-wizard>
             <?= csrf_field() ?>
             <div class="modal-body p-0">
                 <div class="product-modal-grid">
@@ -614,160 +627,165 @@ $inactiveDebtorPct = $totalDebtors > 0 ? (int) round(($inactiveDebtors / $totalD
                             </button>
                         </div>
 
-                        <!-- Form Body Inputs -->
+                        <!-- Form Body Inputs (Color Admin form wizard) -->
                         <div class="product-modal-main-body">
-                            <div class="row g-3">
-                                <!-- NIK -->
-                                <div class="col-12 col-md-6">
-                                    <label class="modal-form-label" for="edit_nik">Nomor Induk Kependudukan (NIK) <span class="text-danger">*</span></label>
-                                    <div class="modal-input-wrap">
-                                        <i class="fa-solid fa-id-card modal-input-icon"></i>
-                                        <input type="text" class="form-control modal-input-control" id="edit_nik" name="nik"
-                                               pattern="[0-9]{16}" maxlength="16" required>
-                                    </div>
-                                </div>
+                            <?= view('partials/form_wizard_nav', [
+                                'current' => 1,
+                                'steps'   => [
+                                    ['label' => 'Identitas'],
+                                    ['label' => 'Kontak'],
+                                    ['label' => 'Sistem'],
+                                    ['label' => 'Ringkasan'],
+                                ],
+                            ]) ?>
 
-                                <!-- Nama Lengkap -->
-                                <div class="col-12 col-md-6">
-                                    <label class="modal-form-label" for="edit_full_name">Nama Lengkap Sesuai KTP <span class="text-danger">*</span></label>
-                                    <div class="modal-input-wrap">
-                                        <i class="fa-solid fa-user modal-input-icon"></i>
-                                        <input type="text" class="form-control modal-input-control" id="edit_full_name" name="full_name" required maxlength="150">
-                                    </div>
-                                </div>
-
-                                <!-- Cabang -->
-                                <div class="col-12">
-                                    <label class="modal-form-label" for="edit_branch_id">Cabang Pemroses <span class="text-danger">*</span></label>
-                                    <div class="modal-input-wrap">
-                                        <i class="fa-solid fa-building modal-input-icon"></i>
-                                        <select class="form-select modal-select2" id="edit_branch_id" name="branch_id" data-placeholder="Pilih cabang..." required>
-                                            <option value=""></option>
-                                            <?php foreach ($branches as $branch) : ?>
-                                                <option value="<?= esc($branch['id']) ?>">
-                                                    <?= esc(!empty($branch['code']) ? '[' . $branch['code'] . '] ' . $branch['name'] : $branch['name']) ?>
-                                                </option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <!-- Tanggal Lahir -->
-                                <div class="col-12 col-md-6">
-                                    <label class="modal-form-label" for="edit_birth_date">Tanggal Lahir</label>
-                                    <div class="modal-input-wrap">
-                                        <i class="fa-solid fa-calendar modal-input-icon"></i>
-                                        <input type="date" class="form-control modal-input-control" id="edit_birth_date" name="birth_date">
-                                    </div>
-                                </div>
-
-                                <!-- Tempat Lahir -->
-                                <div class="col-12 col-md-6">
-                                    <label class="modal-form-label" for="edit_birth_place">Tempat Lahir</label>
-                                    <div class="modal-input-wrap">
-                                        <i class="fa-solid fa-map-pin modal-input-icon"></i>
-                                        <input type="text" class="form-control modal-input-control" id="edit_birth_place" name="birth_place">
-                                    </div>
-                                </div>
-
-                                <!-- Telepon -->
-                                <div class="col-12 col-md-6">
-                                    <label class="modal-form-label" for="edit_phone">Nomor Telepon</label>
-                                    <div class="modal-input-wrap">
-                                        <i class="fa-solid fa-phone modal-input-icon"></i>
-                                        <input type="text" class="form-control modal-input-control" id="edit_phone" name="phone">
-                                    </div>
-                                </div>
-
-                                <!-- Jenis Kelamin -->
-                                <div class="col-12 col-md-6">
-                                    <label class="modal-form-label" for="edit_gender">Jenis Kelamin</label>
-                                    <div class="modal-input-wrap">
-                                        <i class="fa-solid fa-venus-mars modal-input-icon"></i>
-                                        <select class="form-select modal-select2" id="edit_gender" name="gender" data-placeholder="Pilih Gender">
-                                            <option value=""></option>
-                                            <option value="Laki-laki">Laki-laki</option>
-                                            <option value="Perempuan">Perempuan</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <!-- Agama -->
-                                <div class="col-12 col-md-6">
-                                    <label class="modal-form-label" for="edit_religion">Agama</label>
-                                    <div class="modal-input-wrap">
-                                        <i class="fa-solid fa-hands-praying modal-input-icon"></i>
-                                        <select class="form-select modal-select2" id="edit_religion" name="religion" data-placeholder="Pilih Agama">
-                                            <option value=""></option>
-                                            <?php foreach ($religions as $rel) : ?>
-                                                <option value="<?= esc($rel) ?>"><?= esc($rel) ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <!-- NPWP -->
-                                <div class="col-12 col-md-6">
-                                    <label class="modal-form-label" for="edit_npwp">NPWP</label>
-                                    <div class="modal-input-wrap">
-                                        <i class="fa-solid fa-file-invoice modal-input-icon"></i>
-                                        <input type="text" class="form-control modal-input-control" id="edit_npwp" name="npwp">
-                                    </div>
-                                </div>
-
-                                <!-- CIS ID -->
-                                <div class="col-12 col-md-6">
-                                    <label class="modal-form-label" for="edit_cis_id">CIS ID</label>
-                                    <div class="modal-input-wrap">
-                                        <i class="fa-solid fa-barcode modal-input-icon"></i>
-                                        <input type="text" class="form-control modal-input-control bg-light cursor-not-allowed font-monospace fw-bold" id="edit_cis_id" name="cis_id" placeholder="Customer Information System ID" readonly maxlength="10">
-                                    </div>
-                                    <div class="modal-input-hint text-muted"><i class="fa-solid fa-lock me-1"></i> Terdaftar di sistem (10 digit)</div>
-                                </div>
-
-                                <!-- CIF ID -->
-                                <div class="col-12 col-md-6">
-                                    <label class="modal-form-label" for="edit_cif_id">CIF ID</label>
-                                    <div class="modal-input-group">
-                                        <div class="modal-input-wrap flex-grow-1">
-                                            <i class="fa-solid fa-fingerprint modal-input-icon"></i>
-                                            <input type="text" class="form-control modal-input-control input-with-btn font-monospace" id="edit_cif_id" name="cif_id" placeholder="Customer Information File ID" maxlength="30">
+                            <div data-wizard-pane="1">
+                                <div class="row g-3">
+                                    <div class="col-12 col-md-6">
+                                        <label class="modal-form-label" for="edit_nik">Nomor Induk Kependudukan (NIK) <span class="text-danger">*</span></label>
+                                        <div class="modal-input-wrap">
+                                            <i class="fa-solid fa-id-card modal-input-icon"></i>
+                                            <input type="text" class="form-control modal-input-control" id="edit_nik" name="nik"
+                                                   pattern="[0-9]{16}" maxlength="16" required>
                                         </div>
-                                        <button type="button" class="btn btn-inquiry-cif" id="btnInquiryCifEdit" title="Inquiry CIF dari Core Banking">
-                                            <i class="fa-solid fa-magnifying-glass me-1"></i> Inquiry
-                                        </button>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <label class="modal-form-label" for="edit_full_name">Nama Lengkap Sesuai KTP <span class="text-danger">*</span></label>
+                                        <div class="modal-input-wrap">
+                                            <i class="fa-solid fa-user modal-input-icon"></i>
+                                            <input type="text" class="form-control modal-input-control" id="edit_full_name" name="full_name" required maxlength="150">
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="modal-form-label" for="edit_branch_id">Cabang Pemroses <span class="text-danger">*</span></label>
+                                        <div class="modal-input-wrap">
+                                            <i class="fa-solid fa-building modal-input-icon"></i>
+                                            <select class="form-select modal-select2" id="edit_branch_id" name="branch_id" data-placeholder="Pilih cabang..." required>
+                                                <option value=""></option>
+                                                <?php foreach ($branches as $branch) : ?>
+                                                    <option value="<?= esc($branch['id']) ?>">
+                                                        <?= esc(!empty($branch['code']) ? '[' . $branch['code'] . '] ' . $branch['name'] : $branch['name']) ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <label class="modal-form-label" for="edit_birth_date">Tanggal Lahir</label>
+                                        <div class="modal-input-wrap">
+                                            <i class="fa-solid fa-calendar modal-input-icon"></i>
+                                            <input type="date" class="form-control modal-input-control" id="edit_birth_date" name="birth_date">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <label class="modal-form-label" for="edit_birth_place">Tempat Lahir</label>
+                                        <div class="modal-input-wrap">
+                                            <i class="fa-solid fa-map-pin modal-input-icon"></i>
+                                            <input type="text" class="form-control modal-input-control" id="edit_birth_place" name="birth_place">
+                                        </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- Alamat -->
-                                <div class="col-12">
-                                    <label class="modal-form-label" for="edit_address">Alamat Lengkap</label>
-                                    <div class="modal-input-wrap">
-                                        <i class="fa-solid fa-house-chimney modal-input-icon"></i>
-                                        <input type="text" class="form-control modal-input-control" id="edit_address" name="address">
+                            <div class="d-none" data-wizard-pane="2">
+                                <div class="row g-3">
+                                    <div class="col-12 col-md-6">
+                                        <label class="modal-form-label" for="edit_phone">Nomor Telepon</label>
+                                        <div class="modal-input-wrap">
+                                            <i class="fa-solid fa-phone modal-input-icon"></i>
+                                            <input type="text" class="form-control modal-input-control" id="edit_phone" name="phone">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <label class="modal-form-label" for="edit_gender">Jenis Kelamin</label>
+                                        <div class="modal-input-wrap">
+                                            <i class="fa-solid fa-venus-mars modal-input-icon"></i>
+                                            <select class="form-select modal-select2" id="edit_gender" name="gender" data-placeholder="Pilih Gender">
+                                                <option value=""></option>
+                                                <option value="Laki-laki">Laki-laki</option>
+                                                <option value="Perempuan">Perempuan</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <label class="modal-form-label" for="edit_religion">Agama</label>
+                                        <div class="modal-input-wrap">
+                                            <i class="fa-solid fa-hands-praying modal-input-icon"></i>
+                                            <select class="form-select modal-select2" id="edit_religion" name="religion" data-placeholder="Pilih Agama">
+                                                <option value=""></option>
+                                                <?php foreach ($religions as $rel) : ?>
+                                                    <option value="<?= esc($rel) ?>"><?= esc($rel) ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <label class="modal-form-label" for="edit_mother_name">Nama Gadis Ibu Kandung</label>
+                                        <div class="modal-input-wrap">
+                                            <i class="fa-solid fa-person-breastfeeding modal-input-icon"></i>
+                                            <input type="text" class="form-control modal-input-control" id="edit_mother_name" name="mother_name">
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="modal-form-label" for="edit_address">Alamat Lengkap</label>
+                                        <div class="modal-input-wrap">
+                                            <i class="fa-solid fa-house-chimney modal-input-icon"></i>
+                                            <input type="text" class="form-control modal-input-control" id="edit_address" name="address">
+                                        </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- Nama Ibu Kandung -->
-                                <div class="col-12 col-md-6">
-                                    <label class="modal-form-label" for="edit_mother_name">Nama Gadis Ibu Kandung</label>
-                                    <div class="modal-input-wrap">
-                                        <i class="fa-solid fa-person-breastfeeding modal-input-icon"></i>
-                                        <input type="text" class="form-control modal-input-control" id="edit_mother_name" name="mother_name">
+                            <div class="d-none" data-wizard-pane="3">
+                                <div class="row g-3">
+                                    <div class="col-12 col-md-6">
+                                        <label class="modal-form-label" for="edit_npwp">NPWP</label>
+                                        <div class="modal-input-wrap">
+                                            <i class="fa-solid fa-file-invoice modal-input-icon"></i>
+                                            <input type="text" class="form-control modal-input-control" id="edit_npwp" name="npwp">
+                                        </div>
                                     </div>
-                                </div>
-
-                                <!-- Debitur Aktif Toggle -->
-                                <div class="col-12 col-md-6 d-flex align-items-center">
-                                    <div class="modal-status-toggle-card w-100">
-                                        <div class="form-check form-switch m-0">
-                                            <input class="form-check-input modal-switch-input" type="checkbox" id="edit_isActive" name="is_active" value="1">
-                                            <div class="modal-switch-text">
-                                                <label class="modal-switch-label" for="edit_isActive">Debitur Aktif</label>
-                                                <div class="modal-switch-desc">Dapat langsung diproses dalam engine scoring kredit.</div>
+                                    <div class="col-12 col-md-6">
+                                        <label class="modal-form-label" for="edit_cis_id">CIS ID</label>
+                                        <div class="modal-input-wrap">
+                                            <i class="fa-solid fa-barcode modal-input-icon"></i>
+                                            <input type="text" class="form-control modal-input-control bg-light cursor-not-allowed font-monospace fw-bold" id="edit_cis_id" name="cis_id" placeholder="Customer Information System ID" readonly maxlength="10">
+                                        </div>
+                                        <div class="modal-input-hint text-muted"><i class="fa-solid fa-lock me-1"></i> Terdaftar di sistem (10 digit)</div>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="modal-form-label" for="edit_cif_id">CIF ID</label>
+                                        <div class="modal-input-group">
+                                            <div class="modal-input-wrap flex-grow-1">
+                                                <i class="fa-solid fa-fingerprint modal-input-icon"></i>
+                                                <input type="text" class="form-control modal-input-control input-with-btn font-monospace" id="edit_cif_id" name="cif_id" placeholder="Customer Information File ID" maxlength="30">
+                                            </div>
+                                            <button type="button" class="btn btn-inquiry-cif" id="btnInquiryCifEdit" title="Inquiry CIF dari Core Banking">
+                                                <i class="fa-solid fa-magnifying-glass me-1"></i> Inquiry
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="modal-status-toggle-card w-100">
+                                            <div class="form-check form-switch m-0">
+                                                <input class="form-check-input modal-switch-input" type="checkbox" id="edit_isActive" name="is_active" value="1">
+                                                <div class="modal-switch-text">
+                                                    <label class="modal-switch-label" for="edit_isActive">Debitur Aktif</label>
+                                                    <div class="modal-switch-desc">Dapat langsung diproses dalam engine scoring kredit.</div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+
+                            <div class="d-none" data-wizard-pane="4">
+                                <div class="mb-2 fw-semibold text-dark">Konfirmasi / Ringkasan Data Debitur</div>
+                                <p class="text-muted small mb-3">Periksa kembali data sebelum disimpan.</p>
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-striped align-middle mb-0 wizard-summary-table">
+                                        <tbody id="editDebtorSummaryBody"></tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -777,9 +795,17 @@ $inactiveDebtorPct = $totalDebtors > 0 ? (int) round(($inactiveDebtors / $totalD
                             <button type="button" class="btn-modal-cancel" data-bs-dismiss="modal">
                                 <i class="fa-solid fa-xmark me-1"></i> Batal
                             </button>
-                            <button type="submit" class="btn-modal-submit" id="btnSubmitEditDebtor">
-                                <i class="fa-solid fa-floppy-disk me-1"></i> Simpan Perubahan
-                            </button>
+                            <div class="d-flex align-items-center gap-2 ms-auto">
+                                <button type="button" class="btn btn-default" data-wizard-prev>
+                                    <i class="fa fa-arrow-left me-1"></i> Sebelumnya
+                                </button>
+                                <button type="button" class="btn btn-theme" data-wizard-next>
+                                    Berikutnya <i class="fa fa-arrow-right ms-1"></i>
+                                </button>
+                                <button type="submit" class="btn-modal-submit d-none" id="btnSubmitEditDebtor" data-wizard-finish>
+                                    <i class="fa-solid fa-floppy-disk me-1"></i> Simpan Perubahan
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1137,16 +1163,64 @@ $(document).ready(function () {
         });
     });
 
+    function debtorFieldVal(prefix, name, asSelect) {
+        var $el = $('#' + prefix + '_' + name);
+        if (!$el.length) return '-';
+        if (asSelect || $el.is('select')) {
+            var t = $el.find('option:selected').text().trim();
+            return t || '-';
+        }
+        if ($el.is(':checkbox')) {
+            return $el.is(':checked') ? 'Aktif' : 'Nonaktif';
+        }
+        var v = ($el.val() || '').toString().trim();
+        return v || '-';
+    }
+
+    function fillDebtorSummary(prefix, bodyId) {
+        var rows = [
+            ['NIK', debtorFieldVal(prefix, 'nik')],
+            ['Nama Lengkap', debtorFieldVal(prefix, 'full_name')],
+            ['Cabang', debtorFieldVal(prefix, 'branch_id', true)],
+            ['Tanggal Lahir', debtorFieldVal(prefix, 'birth_date')],
+            ['Tempat Lahir', debtorFieldVal(prefix, 'birth_place')],
+            ['Telepon', debtorFieldVal(prefix, 'phone')],
+            ['Jenis Kelamin', debtorFieldVal(prefix, 'gender', true)],
+            ['Agama', debtorFieldVal(prefix, 'religion', true)],
+            ['Nama Ibu Kandung', debtorFieldVal(prefix, 'mother_name')],
+            ['Alamat', debtorFieldVal(prefix, 'address')],
+            ['NPWP', debtorFieldVal(prefix, 'npwp')],
+            ['CIS ID', debtorFieldVal(prefix, 'cis_id')],
+            ['CIF ID', debtorFieldVal(prefix, 'cif_id')],
+            ['Status', debtorFieldVal(prefix, 'isActive')]
+        ];
+        var html = rows.map(function (r) {
+            return '<tr><th class="text-muted" style="width:40%">' + r[0] + '</th><td class="fw-semibold">' + $('<div>').text(r[1]).html() + '</td></tr>';
+        }).join('');
+        $('#' + bodyId).html(html);
+    }
+
+    $('#createDebtorForm').on('wizard:step', function (e, step) {
+        if (step === 4) fillDebtorSummary('create', 'createDebtorSummaryBody');
+    });
+    $('#editDebtorForm').on('wizard:step', function (e, step) {
+        if (step === 4) fillDebtorSummary('edit', 'editDebtorSummaryBody');
+    });
+
     $('#createDebtorModal').on('shown.bs.modal', function () {
         App.initSelect2InModal('#create_branch_id', '#createDebtorModal', { placeholder: 'Pilih cabang...', width: '100%' });
         App.initSelect2InModal('#create_gender', '#createDebtorModal', { placeholder: 'Pilih Gender', minimumResultsForSearch: Infinity, width: '100%' });
         App.initSelect2InModal('#create_religion', '#createDebtorModal', { placeholder: 'Pilih Agama', minimumResultsForSearch: Infinity, width: '100%' });
+        var go = $('#createDebtorForm').data('wizardGo');
+        if (typeof go === 'function') { go(1); }
     });
 
     $('#editDebtorModal').on('shown.bs.modal', function () {
         App.initSelect2InModal('#edit_branch_id', '#editDebtorModal', { placeholder: 'Pilih cabang...', width: '100%' });
         App.initSelect2InModal('#edit_gender', '#editDebtorModal', { placeholder: 'Pilih Gender', minimumResultsForSearch: Infinity, width: '100%' });
         App.initSelect2InModal('#edit_religion', '#editDebtorModal', { placeholder: 'Pilih Agama', minimumResultsForSearch: Infinity, width: '100%' });
+        var go = $('#editDebtorForm').data('wizardGo');
+        if (typeof go === 'function') { go(1); }
     });
 
     // CIF Inquiry Function

@@ -7,11 +7,14 @@
 <div data-swal="success" data-swal-message="<?= esc($message) ?>" hidden></div>
 <?php endif; ?>
 
-<ul class="nav nav-pills tx-stepper gap-2 mb-3">
-    <li class="nav-item"><span class="nav-link disabled"><i class="fa fa-check me-1 text-success"></i>1. Produk &amp; Debitur</span></li>
-    <li class="nav-item"><a class="nav-link" href="<?= site_url('transactions/' . $item['id']) ?>"><i class="fa fa-check me-1 text-success"></i>2. Input Scoring</a></li>
-    <li class="nav-item"><span class="nav-link active"><i class="fa fa-flag-checkered me-1"></i>3. Konfirmasi</span></li>
-</ul>
+<?= view('partials/form_wizard_nav', [
+    'current' => 3,
+    'steps'   => [
+        ['label' => 'Produk & Debitur', 'href' => site_url('transactions')],
+        ['label' => 'Input Scoring', 'href' => ! empty($item['editable']) ? site_url('transactions/' . $item['id']) : 'javascript:;'],
+        ['label' => 'Ringkasan'],
+    ],
+]) ?>
 
 <div class="row g-3">
     <div class="col-12 col-lg-8">
@@ -151,14 +154,14 @@
             </div>
         </div>
 
-        <?php if (in_array($item['status'], ['approved', 'rejected'], true)) : ?>
+        <?php if (in_array($item['status'], ['approved', 'rejected'], true) && in_array('scoring.submit', $profile['permissions'] ?? [], true)) : ?>
         <div class="card card-borderless">
             <div class="card-body">
-                <p class="text-muted small mb-3">Buat pengajuan baru berdasarkan data yang sama.</p>
+                <p class="text-muted small mb-3">Buat pengajuan baru (ID berbeda) dengan debitur &amp; produk yang sama. Parameter scoring dikosongkan agar bisa diisi ulang.</p>
                 <form id="dupForm" method="post" action="<?= site_url('transactions/' . $item['id'] . '/duplicate') ?>">
                     <?= csrf_field() ?>
-                    <button type="button" id="btnDuplicate" class="btn btn-default w-100">
-                        <i class="fa fa-copy me-1"></i> Duplikasi Transaksi
+                    <button type="button" id="btnDuplicate" class="btn btn-theme w-100">
+                        <i class="fa fa-arrows-rotate me-1"></i> Scoring Ulang
                     </button>
                 </form>
             </div>
@@ -184,12 +187,12 @@ $(document).ready(function () {
 
     $('#btnDuplicate').on('click', function () {
         App.confirm({
-            title: 'Duplikasi Transaksi',
-            text: 'Akan dibuat pengajuan baru dengan data yang sama. Lanjutkan?',
-            confirmButtonText: '<i class="fa-solid fa-copy me-1"></i> Ya, Duplikasi'
+            title: 'Scoring Ulang',
+            text: 'Pengajuan baru akan dibuat (ID berbeda). Debitur & produk sama; jawaban parameter dikosongkan agar bisa diedit. Lanjutkan?',
+            confirmButtonText: '<i class="fa-solid fa-arrows-rotate me-1"></i> Ya, Scoring Ulang'
         }).then(function (result) {
             if (result.isConfirmed) {
-                App.btnLoading($('#btnDuplicate'), 'Menduplikasi...');
+                App.btnLoading($('#btnDuplicate'), 'Membuat...');
                 $('#dupForm').submit();
             }
         });

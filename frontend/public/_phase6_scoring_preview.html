@@ -9,6 +9,7 @@
     <link href="assets/color-admin/css/default/app.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/shell-phase1.css">
     <link rel="stylesheet" href="css/scoring-phase6.css">
+    <link rel="stylesheet" href="css/form-wizards.css">
     <script src="assets/color-admin/js/iconify/iconify-icon.min.js"></script>
     <style>
         .preview-page { display: none; }
@@ -291,79 +292,120 @@
             <ol class="breadcrumb float-xl-end"><li class="breadcrumb-item"><a href="#">Home</a></li><li class="breadcrumb-item active">Scoring Kredit</li></ol>
             <h1 class="page-header">Scoring Kredit <small>penilaian debitur</small></h1>
 
-            <div class="row g-3">
-                <div class="col-12">
-                    <div class="card card-borderless overflow-hidden">
-                        <div class="card-header bg-gray-900" data-bs-theme="dark">
-                            <h4 class="card-header-title text-white mb-0"><iconify-icon icon="solar:user-check-bold-duotone" class="me-1"></iconify-icon> 1. Pilih Debitur &amp; Periksa Profil</h4>
-                            <span class="badge bg-white bg-opacity-15 text-white">Data master (read-only)</span>
-                        </div>
-                        <div class="card-body">
-                            <label class="form-label fw-semibold">Pilih CIS ID / Nama Debitur <span class="text-danger">*</span></label>
-                            <select class="form-select mb-3"><option>[CIS: 100200300] 1271010101010001 - Budi Santoso (KCU Medan)</option></select>
-                            <div class="form-text text-muted mb-3">Profil ditampilkan read-only; ubah data lewat Master Debitur.</div>
-                            <div class="p-3 bg-light rounded-3 d-flex align-items-center justify-content-between mb-3">
-                                <div class="d-flex align-items-center gap-3">
-                                    <div class="bg-theme text-white rounded-circle d-flex align-items-center justify-content-center" style="width:42px;height:42px;"><i class="fa fa-user"></i></div>
-                                    <div>
-                                        <h6 class="fw-bold mb-0">Budi Santoso</h6>
-                                        <div class="small text-muted">CIS ID: <strong>100200300</strong> · CIF ID: <strong>CIF-7788</strong></div>
-                                    </div>
-                                </div>
-                                <span class="badge bg-success bg-opacity-15 text-success py-6px">Debitur Aktif</span>
-                            </div>
-                            <div class="row g-3">
-                                <div class="col-md-4"><label class="form-label small fw-semibold">NIK</label><input class="form-control form-control-sm" value="1271010101010001" readonly></div>
-                                <div class="col-md-4"><label class="form-label small fw-semibold">Nama Lengkap</label><input class="form-control form-control-sm" value="Budi Santoso" readonly></div>
-                                <div class="col-md-4"><label class="form-label small fw-semibold">Telepon</label><input class="form-control form-control-sm" value="081234567890" readonly></div>
-                            </div>
-                        </div>
-                    </div>
+            <div id="creditWizardPreview" data-form-wizard data-wizard-start="1">
+                <div class="nav-wizards-container mb-3">
+                    <nav class="nav nav-wizards-1">
+                        <div class="nav-item col"><a class="nav-link active" href="javascript:;"><div class="nav-no">1</div><div class="nav-text">Pilih Debitur</div></a></div>
+                        <div class="nav-item col"><a class="nav-link disabled" href="javascript:;"><div class="nav-no">2</div><div class="nav-text">Pilih Produk</div></a></div>
+                        <div class="nav-item col"><a class="nav-link disabled" href="javascript:;"><div class="nav-no">3</div><div class="nav-text">Penilaian Scoring</div></a></div>
+                        <div class="nav-item col"><a class="nav-link disabled" href="javascript:;"><div class="nav-no">4</div><div class="nav-text">Ringkasan / Konfirmasi</div></a></div>
+                    </nav>
                 </div>
-                <div class="col-12">
-                    <div class="card card-borderless overflow-hidden">
-                        <div class="card-header bg-gray-900" data-bs-theme="dark">
-                            <h4 class="card-header-title text-white mb-0"><iconify-icon icon="solar:box-bold-duotone" class="me-1"></iconify-icon> 2. Pilih Kode Produk Kredit</h4>
-                            <span class="badge bg-white bg-opacity-15 text-white">Produk dengan mapping aktif</span>
-                        </div>
-                        <div class="card-body">
-                            <label class="form-label fw-semibold">Kode Produk Kredit <span class="text-danger">*</span></label>
-                            <select class="form-select"><option>KMG — Kredit Multiguna (v2026.01)</option></select>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12">
-                    <div class="card card-borderless overflow-hidden">
-                        <div class="card-header bg-gray-900" data-bs-theme="dark">
-                            <h4 class="card-header-title text-white mb-0"><iconify-icon icon="solar:checklist-minimalistic-bold-duotone" class="me-1"></iconify-icon> 3. Penilaian Parameter Scoring</h4>
-                            <div class="d-flex align-items-center gap-2">
-                                <span class="badge bg-white bg-opacity-15 text-white"><i class="fa fa-award me-1"></i>Batas: ≥ 350.00</span>
-                                <span class="badge bg-theme text-white">420.00</span>
-                                <span class="badge bg-success text-white fw-bold"><i class="fa fa-circle-check me-1"></i> LAYAK</span>
+
+                <div class="row g-3">
+                    <div class="col-12" data-wizard-pane="1">
+                        <div class="card card-borderless overflow-hidden">
+                            <div class="card-header bg-gray-900" data-bs-theme="dark">
+                                <h4 class="card-header-title text-white mb-0"><iconify-icon icon="solar:user-check-bold-duotone" class="me-1"></iconify-icon> Pilih Debitur &amp; Periksa Profil</h4>
+                                <span class="badge bg-white bg-opacity-15 text-white">Data master (read-only)</span>
                             </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="border rounded-3 p-3 mb-3">
-                                <div class="fw-bold mb-2">Karakter Debitur</div>
-                                <div class="row g-2">
-                                    <div class="col-md-6"><div class="border rounded-3 p-2 param-choice-card is-selected"><div class="form-check mb-0"><input class="form-check-input" type="radio" checked><label class="form-check-label"><span class="badge bg-primary bg-opacity-15 text-primary font-monospace me-1">A</span> Sangat Baik <small class="text-muted">(100)</small></label></div></div></div>
-                                    <div class="col-md-6"><div class="border rounded-3 p-2 param-choice-card"><div class="form-check mb-0"><input class="form-check-input" type="radio"><label class="form-check-label"><span class="badge bg-primary bg-opacity-15 text-primary font-monospace me-1">B</span> Baik <small class="text-muted">(75)</small></label></div></div></div>
-                                </div>
-                            </div>
-                            <div class="p-3 bg-light rounded-3 border">
-                                <div class="row g-3 align-items-center">
-                                    <div class="col-md-4">
-                                        <label class="form-label small fw-bold">Batas Skor Layak</label>
-                                        <div class="d-flex align-items-center gap-2">
-                                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 fw-bold fs-6">&ge; 350.00</span>
-                                            <span class="text-muted small">Poin</span>
+                            <div class="card-body">
+                                <label class="form-label fw-semibold">Pilih CIS ID / Nama Debitur <span class="text-danger">*</span></label>
+                                <select class="form-select mb-3"><option>[CIS: 100200300] 1271010101010001 - Budi Santoso (KCU Medan)</option></select>
+                                <div class="p-3 bg-light rounded-3 d-flex align-items-center justify-content-between mb-3">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="bg-theme text-white rounded-circle d-flex align-items-center justify-content-center" style="width:42px;height:42px;"><i class="fa fa-user"></i></div>
+                                        <div>
+                                            <h6 class="fw-bold mb-0">Budi Santoso</h6>
+                                            <div class="small text-muted">CIS ID: <strong>100200300</strong> · CIF ID: <strong>CIF-7788</strong></div>
                                         </div>
-                                        <div class="form-text small">Dari konfigurasi mapping produk. Ubah di menu Mapping Produk.</div>
                                     </div>
-                                    <div class="col-md-4 text-center"><div class="text-muted small text-uppercase">Total Skor</div><div class="display-6 fw-bold text-primary mb-0">420.00</div><span class="badge bg-success text-white">LAYAK</span></div>
-                                    <div class="col-md-4"><button class="btn btn-theme btn-lg w-100 py-3"><i class="fa fa-floppy-disk me-2"></i> Simpan Scoring Kredit</button></div>
+                                    <span class="badge bg-success bg-opacity-15 text-success py-6px">Debitur Aktif</span>
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-md-4"><label class="form-label small fw-semibold">NIK</label><input class="form-control form-control-sm" value="1271010101010001" readonly></div>
+                                    <div class="col-md-4"><label class="form-label small fw-semibold">Nama Lengkap</label><input class="form-control form-control-sm" value="Budi Santoso" readonly></div>
+                                    <div class="col-md-4"><label class="form-label small fw-semibold">Telepon</label><input class="form-control form-control-sm" value="081234567890" readonly></div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="wizard-actions"><span></span><button type="button" class="btn btn-theme" data-wizard-next>Berikutnya <i class="fa fa-arrow-right ms-1"></i></button></div>
+                    </div>
+
+                    <div class="col-12 d-none" data-wizard-pane="2">
+                        <div class="card card-borderless overflow-hidden">
+                            <div class="card-header bg-gray-900" data-bs-theme="dark">
+                                <h4 class="card-header-title text-white mb-0"><iconify-icon icon="solar:box-bold-duotone" class="me-1"></iconify-icon> Pilih Kode Produk Kredit</h4>
+                                <span class="badge bg-white bg-opacity-15 text-white">Produk dengan mapping aktif</span>
+                            </div>
+                            <div class="card-body">
+                                <label class="form-label fw-semibold">Kode Produk Kredit <span class="text-danger">*</span></label>
+                                <select class="form-select"><option>KMG — Kredit Multiguna (v2026.01)</option></select>
+                            </div>
+                        </div>
+                        <div class="wizard-actions">
+                            <button type="button" class="btn btn-default" data-wizard-prev><i class="fa fa-arrow-left me-1"></i> Sebelumnya</button>
+                            <button type="button" class="btn btn-theme" data-wizard-next>Berikutnya <i class="fa fa-arrow-right ms-1"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="col-12 d-none" data-wizard-pane="3">
+                        <div class="card card-borderless overflow-hidden">
+                            <div class="card-header bg-gray-900" data-bs-theme="dark">
+                                <h4 class="card-header-title text-white mb-0"><iconify-icon icon="solar:checklist-minimalistic-bold-duotone" class="me-1"></iconify-icon> Penilaian Parameter Scoring</h4>
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="badge bg-theme text-white">420.00</span>
+                                    <span class="badge bg-success text-white fw-bold"><i class="fa fa-circle-check me-1"></i> LAYAK</span>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="border rounded-3 p-3 mb-3">
+                                    <div class="fw-bold mb-2">Karakter Debitur</div>
+                                    <div class="row g-2">
+                                        <div class="col-md-6"><div class="border rounded-3 p-2 param-choice-card is-selected"><div class="form-check mb-0"><input class="form-check-input" type="radio" checked><label class="form-check-label"><span class="badge bg-primary bg-opacity-15 text-primary font-monospace me-1">A</span> Sangat Baik</label></div></div></div>
+                                        <div class="col-md-6"><div class="border rounded-3 p-2 param-choice-card"><div class="form-check mb-0"><input class="form-check-input" type="radio"><label class="form-check-label"><span class="badge bg-primary bg-opacity-15 text-primary font-monospace me-1">B</span> Baik</label></div></div></div>
+                                    </div>
+                                </div>
+                                <label class="form-label fw-semibold">Catatan Analisa Scoring (Opsional)</label>
+                                <textarea class="form-control" rows="2">Memenuhi kriteria kelayakan</textarea>
+                            </div>
+                        </div>
+                        <div class="wizard-actions">
+                            <button type="button" class="btn btn-default" data-wizard-prev><i class="fa fa-arrow-left me-1"></i> Sebelumnya</button>
+                            <button type="button" class="btn btn-theme" data-wizard-next>Berikutnya <i class="fa fa-arrow-right ms-1"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="col-12 d-none" data-wizard-pane="4">
+                        <div class="card card-borderless overflow-hidden">
+                            <div class="card-header bg-gray-900" data-bs-theme="dark">
+                                <h4 class="card-header-title text-white mb-0"><iconify-icon icon="solar:clipboard-check-bold-duotone" class="me-1"></iconify-icon> Ringkasan Data Scoring</h4>
+                                <span class="badge bg-white bg-opacity-15 text-white">Periksa sebelum simpan</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-6"><div class="p-3 bg-light rounded-3"><div class="text-muted small text-uppercase mb-1">Debitur</div><div class="fw-bold">Budi Santoso</div><div class="small text-muted">CIS: 100200300 · NIK: 1271010101010001</div></div></div>
+                                    <div class="col-md-6"><div class="p-3 bg-light rounded-3"><div class="text-muted small text-uppercase mb-1">Produk</div><div class="fw-bold">KMG — Kredit Multiguna</div><div class="small text-muted">Batas layak: <span class="badge bg-primary-subtle text-primary border">&ge; 350.00</span></div></div></div>
+                                </div>
+                                <table class="table table-sm table-striped mb-3">
+                                    <thead><tr><th>Parameter</th><th>Pilihan</th><th class="text-end">Skor</th></tr></thead>
+                                    <tbody>
+                                        <tr><td class="fw-semibold">Karakter Debitur</td><td><span class="badge bg-secondary-subtle text-secondary me-1">A</span> Sangat Baik</td><td class="text-end fw-bold">100.00</td></tr>
+                                        <tr><td class="fw-semibold">Kapasitas</td><td><span class="badge bg-secondary-subtle text-secondary me-1">A</span> DSR &lt; 30%</td><td class="text-end fw-bold">320.00</td></tr>
+                                    </tbody>
+                                </table>
+                                <div class="p-3 bg-light rounded-4 border">
+                                    <div class="row g-3 align-items-center">
+                                        <div class="col-md-4 text-center"><div class="text-muted small text-uppercase">Total Skor</div><div class="display-6 fw-bold text-primary mb-0">420.00</div><span class="badge bg-success text-white">LAYAK</span></div>
+                                        <div class="col-md-4"><div class="text-muted small text-uppercase mb-1">Catatan</div><div class="small">Memenuhi kriteria kelayakan</div></div>
+                                        <div class="col-md-4"><button class="btn btn-theme btn-lg w-100 py-3" data-wizard-finish><i class="fa fa-floppy-disk me-2"></i> Simpan Scoring Kredit</button></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="wizard-actions">
+                            <button type="button" class="btn btn-default" data-wizard-prev><i class="fa fa-arrow-left me-1"></i> Sebelumnya</button>
+                            <span class="text-muted small">Pastikan ringkasan benar sebelum menyimpan</span>
                         </div>
                     </div>
                 </div>
@@ -373,6 +415,7 @@
 </div>
 <script src="assets/color-admin/js/vendor.min.js"></script>
 <script src="assets/color-admin/js/app.min.js"></script>
+<script src="js/form-wizard.js"></script>
 <script>
 function showPreview(name) {
     document.querySelectorAll('.preview-page').forEach(function (el) {

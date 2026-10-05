@@ -244,7 +244,7 @@ $inactivePct = $totalProducts > 0 ? (int) round(($inactiveCount / $totalProducts
 <!-- Modal: Tambah Produk Baru -->
 <div class="modal fade product-modal-custom" id="createProductModal" aria-labelledby="createProductModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
-        <form method="post" action="<?= site_url('master/products') ?>" class="modal-content product-modal-content border-0 shadow-2xl" id="createProductForm">
+        <form method="post" action="<?= site_url('master/products') ?>" class="modal-content product-modal-content border-0 shadow-2xl" id="createProductForm" data-form-wizard>
             <?= csrf_field() ?>
             <div class="modal-body p-0">
                 <div class="product-modal-grid">
@@ -287,85 +287,98 @@ $inactivePct = $totalProducts > 0 ? (int) round(($inactiveCount / $totalProducts
                             </button>
                         </div>
 
-                        <!-- Form Body Inputs -->
+                        <!-- Form Body Inputs (Color Admin form wizard) -->
                         <div class="product-modal-main-body">
-                            <div class="row g-3">
-                                <!-- Kode Produk -->
-                                <div class="col-12 col-md-6">
-                                    <label class="modal-form-label" for="create_code">Kode Produk <span class="text-danger">*</span></label>
-                                    <div class="modal-input-wrap">
-                                        <i class="fa-solid fa-hashtag modal-input-icon"></i>
-                                        <input type="text" class="form-control modal-input-control" id="create_code" name="code" placeholder="Contoh: KMG" maxlength="30" required>
-                                    </div>
-                                    <div class="modal-input-hint">Gunakan kode unik, misal: KMG / 0532 / 0792</div>
-                                </div>
+                            <?= view('partials/form_wizard_nav', [
+                                'current' => 1,
+                                'steps'   => [
+                                    ['label' => 'Data Dasar'],
+                                    ['label' => 'Detail & Status'],
+                                    ['label' => 'Ringkasan'],
+                                ],
+                            ]) ?>
 
-                                <!-- Nama Produk -->
-                                <div class="col-12 col-md-6">
-                                    <label class="modal-form-label" for="create_name">Nama Produk <span class="text-danger">*</span></label>
-                                    <div class="modal-input-wrap">
-                                        <i class="fa-solid fa-file-lines modal-input-icon"></i>
-                                        <input type="text" class="form-control modal-input-control" id="create_name" name="name" placeholder="Contoh: Kredit Multiguna" maxlength="150" required>
+                            <div data-wizard-pane="1">
+                                <div class="row g-3">
+                                    <div class="col-12 col-md-6">
+                                        <label class="modal-form-label" for="create_code">Kode Produk <span class="text-danger">*</span></label>
+                                        <div class="modal-input-wrap">
+                                            <i class="fa-solid fa-hashtag modal-input-icon"></i>
+                                            <input type="text" class="form-control modal-input-control" id="create_code" name="code" placeholder="Contoh: KMG" maxlength="30" required>
+                                        </div>
+                                        <div class="modal-input-hint">Gunakan kode unik, misal: KMG / 0532 / 0792</div>
                                     </div>
-                                </div>
-
-                                <!-- Status Branch -->
-                                <div class="col-12 col-md-6">
-                                    <label class="modal-form-label" for="create_businessUnit">Status Branch <span class="text-danger">*</span></label>
-                                    <div class="modal-input-wrap">
-                                        <i class="fa-solid fa-building modal-input-icon"></i>
-                                        <select class="form-select modal-select2" id="create_businessUnit" name="business_unit" required>
-                                            <option value="0" selected>Konvensional</option>
-                                            <option value="1">Syariah</option>
-                                        </select>
+                                    <div class="col-12 col-md-6">
+                                        <label class="modal-form-label" for="create_name">Nama Produk <span class="text-danger">*</span></label>
+                                        <div class="modal-input-wrap">
+                                            <i class="fa-solid fa-file-lines modal-input-icon"></i>
+                                            <input type="text" class="form-control modal-input-control" id="create_name" name="name" placeholder="Contoh: Kredit Multiguna" maxlength="150" required>
+                                        </div>
                                     </div>
-                                </div>
-
-                                <!-- Jenis Produk -->
-                                <div class="col-12 col-md-6">
-                                    <label class="modal-form-label" for="create_productType">Jenis Produk</label>
-                                    <div class="modal-input-wrap">
-                                        <i class="fa-solid fa-layer-group modal-input-icon"></i>
-                                        <select class="form-select modal-select2" id="create_productType" name="product_type_id" data-placeholder="-- Pilih Jenis Produk --">
-                                            <option value="">-- Pilih Jenis Produk --</option>
-                                            <?php foreach ($types as $type) : ?>
-                                                <option value="<?= esc($type['id']) ?>"><?= esc($type['name']) ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
+                                    <div class="col-12 col-md-6">
+                                        <label class="modal-form-label" for="create_businessUnit">Status Branch <span class="text-danger">*</span></label>
+                                        <div class="modal-input-wrap">
+                                            <i class="fa-solid fa-building modal-input-icon"></i>
+                                            <select class="form-select modal-select2" id="create_businessUnit" name="business_unit" required>
+                                                <option value="0" selected>Konvensional</option>
+                                                <option value="1">Syariah</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
-
-                                <!-- Suku Bunga -->
-                                <div class="col-12 col-md-6">
-                                    <label class="modal-form-label" for="create_interestRate">Suku Bunga (%)</label>
-                                    <div class="modal-input-wrap">
-                                        <i class="fa-solid fa-percent modal-input-icon"></i>
-                                        <input type="number" step="0.01" class="form-control modal-input-control" id="create_interestRate" name="interest_rate" placeholder="Contoh: 9.60">
-                                    </div>
-                                </div>
-
-                                <!-- Produk Aktif Toggle -->
-                                <div class="col-12 col-md-6 d-flex align-items-center">
-                                    <div class="modal-status-toggle-card w-100">
-                                        <div class="form-check form-switch m-0">
-                                            <input class="form-check-input modal-switch-input" type="checkbox" id="create_isActive" name="is_active" value="1" checked>
-                                            <div class="modal-switch-text">
-                                                <label class="modal-switch-label" for="create_isActive">Produk Aktif</label>
-                                                <div class="modal-switch-desc">Dapat digunakan dalam formulir scoring kredit.</div>
-                                            </div>
+                                    <div class="col-12 col-md-6">
+                                        <label class="modal-form-label" for="create_productType">Jenis Produk</label>
+                                        <div class="modal-input-wrap">
+                                            <i class="fa-solid fa-layer-group modal-input-icon"></i>
+                                            <select class="form-select modal-select2" id="create_productType" name="product_type_id" data-placeholder="-- Pilih Jenis Produk --">
+                                                <option value="">-- Pilih Jenis Produk --</option>
+                                                <?php foreach ($types as $type) : ?>
+                                                    <option value="<?= esc($type['id']) ?>"><?= esc($type['name']) ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Informasi Tambahan Alert Banner -->
-                            <div class="modal-info-alert mt-4">
-                                <div class="modal-info-alert-icon">
-                                    <i class="fa-solid fa-circle-info"></i>
+                            <div class="d-none" data-wizard-pane="2">
+                                <div class="row g-3">
+                                    <div class="col-12 col-md-6">
+                                        <label class="modal-form-label" for="create_interestRate">Suku Bunga (%)</label>
+                                        <div class="modal-input-wrap">
+                                            <i class="fa-solid fa-percent modal-input-icon"></i>
+                                            <input type="number" step="0.01" class="form-control modal-input-control" id="create_interestRate" name="interest_rate" placeholder="Contoh: 9.60">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 d-flex align-items-center">
+                                        <div class="modal-status-toggle-card w-100">
+                                            <div class="form-check form-switch m-0">
+                                                <input class="form-check-input modal-switch-input" type="checkbox" id="create_isActive" name="is_active" value="1" checked>
+                                                <div class="modal-switch-text">
+                                                    <label class="modal-switch-label" for="create_isActive">Produk Aktif</label>
+                                                    <div class="modal-switch-desc">Dapat digunakan dalam formulir scoring kredit.</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="modal-info-alert-text">
-                                    <h6 class="modal-info-alert-title mb-1">Informasi Tambahan</h6>
-                                    <p class="modal-info-alert-desc mb-0">Data produk yang disimpan akan muncul pada daftar produk dan dapat digunakan untuk proses pengajuan kredit.</p>
+                                <div class="modal-info-alert mt-4">
+                                    <div class="modal-info-alert-icon">
+                                        <i class="fa-solid fa-circle-info"></i>
+                                    </div>
+                                    <div class="modal-info-alert-text">
+                                        <h6 class="modal-info-alert-title mb-1">Informasi Tambahan</h6>
+                                        <p class="modal-info-alert-desc mb-0">Data produk yang disimpan akan muncul pada daftar produk dan dapat digunakan untuk proses pengajuan kredit.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-none" data-wizard-pane="3">
+                                <div class="mb-2 fw-semibold text-dark">Konfirmasi / Ringkasan Data Produk</div>
+                                <p class="text-muted small mb-3">Periksa kembali data sebelum disimpan.</p>
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-striped align-middle mb-0 wizard-summary-table">
+                                        <tbody id="createProductSummaryBody"></tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -375,9 +388,17 @@ $inactivePct = $totalProducts > 0 ? (int) round(($inactiveCount / $totalProducts
                             <button type="button" class="btn-modal-cancel" data-bs-dismiss="modal">
                                 <i class="fa-solid fa-xmark me-1"></i> Batal
                             </button>
-                            <button type="submit" class="btn-modal-submit">
-                                <i class="fa-solid fa-floppy-disk me-1"></i> Simpan Produk
-                            </button>
+                            <div class="d-flex align-items-center gap-2 ms-auto">
+                                <button type="button" class="btn btn-default" data-wizard-prev>
+                                    <i class="fa fa-arrow-left me-1"></i> Sebelumnya
+                                </button>
+                                <button type="button" class="btn btn-theme" data-wizard-next>
+                                    Berikutnya <i class="fa fa-arrow-right ms-1"></i>
+                                </button>
+                                <button type="submit" class="btn-modal-submit d-none" data-wizard-finish>
+                                    <i class="fa-solid fa-floppy-disk me-1"></i> Simpan Produk
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -389,7 +410,7 @@ $inactivePct = $totalProducts > 0 ? (int) round(($inactiveCount / $totalProducts
 <!-- Modal: Ubah Produk -->
 <div class="modal fade product-modal-custom" id="editProductModal" aria-labelledby="editProductModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
-        <form method="post" action="" class="modal-content product-modal-content border-0 shadow-2xl" id="editProductForm">
+        <form method="post" action="" class="modal-content product-modal-content border-0 shadow-2xl" id="editProductForm" data-form-wizard>
             <?= csrf_field() ?>
             <div class="modal-body p-0">
                 <div class="product-modal-grid">
@@ -432,85 +453,98 @@ $inactivePct = $totalProducts > 0 ? (int) round(($inactiveCount / $totalProducts
                             </button>
                         </div>
 
-                        <!-- Form Body Inputs -->
+                        <!-- Form Body Inputs (Color Admin form wizard) -->
                         <div class="product-modal-main-body">
-                            <div class="row g-3">
-                                <!-- Kode Produk -->
-                                <div class="col-12 col-md-6">
-                                    <label class="modal-form-label" for="edit_code">Kode Produk <span class="text-danger">*</span></label>
-                                    <div class="modal-input-wrap">
-                                        <i class="fa-solid fa-hashtag modal-input-icon"></i>
-                                        <input type="text" class="form-control modal-input-control" id="edit_code" name="code" placeholder="Contoh: KMG" maxlength="30" required>
-                                    </div>
-                                    <div class="modal-input-hint">Gunakan kode unik, misal: KMG / 0532 / 0792</div>
-                                </div>
+                            <?= view('partials/form_wizard_nav', [
+                                'current' => 1,
+                                'steps'   => [
+                                    ['label' => 'Data Dasar'],
+                                    ['label' => 'Detail & Status'],
+                                    ['label' => 'Ringkasan'],
+                                ],
+                            ]) ?>
 
-                                <!-- Nama Produk -->
-                                <div class="col-12 col-md-6">
-                                    <label class="modal-form-label" for="edit_name">Nama Produk <span class="text-danger">*</span></label>
-                                    <div class="modal-input-wrap">
-                                        <i class="fa-solid fa-file-lines modal-input-icon"></i>
-                                        <input type="text" class="form-control modal-input-control" id="edit_name" name="name" placeholder="Contoh: Kredit Multiguna" maxlength="150" required>
+                            <div data-wizard-pane="1">
+                                <div class="row g-3">
+                                    <div class="col-12 col-md-6">
+                                        <label class="modal-form-label" for="edit_code">Kode Produk <span class="text-danger">*</span></label>
+                                        <div class="modal-input-wrap">
+                                            <i class="fa-solid fa-hashtag modal-input-icon"></i>
+                                            <input type="text" class="form-control modal-input-control" id="edit_code" name="code" placeholder="Contoh: KMG" maxlength="30" required>
+                                        </div>
+                                        <div class="modal-input-hint">Gunakan kode unik, misal: KMG / 0532 / 0792</div>
                                     </div>
-                                </div>
-
-                                <!-- Status Branch -->
-                                <div class="col-12 col-md-6">
-                                    <label class="modal-form-label" for="edit_businessUnit">Status Branch <span class="text-danger">*</span></label>
-                                    <div class="modal-input-wrap">
-                                        <i class="fa-solid fa-building modal-input-icon"></i>
-                                        <select class="form-select modal-select2" id="edit_businessUnit" name="business_unit" required>
-                                            <option value="0">Konvensional</option>
-                                            <option value="1">Syariah</option>
-                                        </select>
+                                    <div class="col-12 col-md-6">
+                                        <label class="modal-form-label" for="edit_name">Nama Produk <span class="text-danger">*</span></label>
+                                        <div class="modal-input-wrap">
+                                            <i class="fa-solid fa-file-lines modal-input-icon"></i>
+                                            <input type="text" class="form-control modal-input-control" id="edit_name" name="name" placeholder="Contoh: Kredit Multiguna" maxlength="150" required>
+                                        </div>
                                     </div>
-                                </div>
-
-                                <!-- Jenis Produk -->
-                                <div class="col-12 col-md-6">
-                                    <label class="modal-form-label" for="edit_productType">Jenis Produk</label>
-                                    <div class="modal-input-wrap">
-                                        <i class="fa-solid fa-layer-group modal-input-icon"></i>
-                                        <select class="form-select modal-select2" id="edit_productType" name="product_type_id" data-placeholder="-- Pilih Jenis Produk --">
-                                            <option value="">-- Pilih Jenis Produk --</option>
-                                            <?php foreach ($types as $type) : ?>
-                                                <option value="<?= esc($type['id']) ?>"><?= esc($type['name']) ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
+                                    <div class="col-12 col-md-6">
+                                        <label class="modal-form-label" for="edit_businessUnit">Status Branch <span class="text-danger">*</span></label>
+                                        <div class="modal-input-wrap">
+                                            <i class="fa-solid fa-building modal-input-icon"></i>
+                                            <select class="form-select modal-select2" id="edit_businessUnit" name="business_unit" required>
+                                                <option value="0">Konvensional</option>
+                                                <option value="1">Syariah</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
-
-                                <!-- Suku Bunga -->
-                                <div class="col-12 col-md-6">
-                                    <label class="modal-form-label" for="edit_interestRate">Suku Bunga (%)</label>
-                                    <div class="modal-input-wrap">
-                                        <i class="fa-solid fa-percent modal-input-icon"></i>
-                                        <input type="number" step="0.01" class="form-control modal-input-control" id="edit_interestRate" name="interest_rate" placeholder="Contoh: 9.60">
-                                    </div>
-                                </div>
-
-                                <!-- Produk Aktif Toggle -->
-                                <div class="col-12 col-md-6 d-flex align-items-center">
-                                    <div class="modal-status-toggle-card w-100">
-                                        <div class="form-check form-switch m-0">
-                                            <input class="form-check-input modal-switch-input" type="checkbox" id="edit_isActive" name="is_active" value="1">
-                                            <div class="modal-switch-text">
-                                                <label class="modal-switch-label" for="edit_isActive">Produk Aktif</label>
-                                                <div class="modal-switch-desc">Dapat digunakan dalam formulir scoring kredit.</div>
-                                            </div>
+                                    <div class="col-12 col-md-6">
+                                        <label class="modal-form-label" for="edit_productType">Jenis Produk</label>
+                                        <div class="modal-input-wrap">
+                                            <i class="fa-solid fa-layer-group modal-input-icon"></i>
+                                            <select class="form-select modal-select2" id="edit_productType" name="product_type_id" data-placeholder="-- Pilih Jenis Produk --">
+                                                <option value="">-- Pilih Jenis Produk --</option>
+                                                <?php foreach ($types as $type) : ?>
+                                                    <option value="<?= esc($type['id']) ?>"><?= esc($type['name']) ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Informasi Tambahan Alert Banner -->
-                            <div class="modal-info-alert mt-4">
-                                <div class="modal-info-alert-icon">
-                                    <i class="fa-solid fa-circle-info"></i>
+                            <div class="d-none" data-wizard-pane="2">
+                                <div class="row g-3">
+                                    <div class="col-12 col-md-6">
+                                        <label class="modal-form-label" for="edit_interestRate">Suku Bunga (%)</label>
+                                        <div class="modal-input-wrap">
+                                            <i class="fa-solid fa-percent modal-input-icon"></i>
+                                            <input type="number" step="0.01" class="form-control modal-input-control" id="edit_interestRate" name="interest_rate" placeholder="Contoh: 9.60">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 d-flex align-items-center">
+                                        <div class="modal-status-toggle-card w-100">
+                                            <div class="form-check form-switch m-0">
+                                                <input class="form-check-input modal-switch-input" type="checkbox" id="edit_isActive" name="is_active" value="1">
+                                                <div class="modal-switch-text">
+                                                    <label class="modal-switch-label" for="edit_isActive">Produk Aktif</label>
+                                                    <div class="modal-switch-desc">Dapat digunakan dalam formulir scoring kredit.</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="modal-info-alert-text">
-                                    <h6 class="modal-info-alert-title mb-1">Catatan Pembaruan</h6>
-                                    <p class="modal-info-alert-desc mb-0">Pastikan suku bunga dan jenis produk telah dikonfirmasi dengan regulasi produk terkini.</p>
+                                <div class="modal-info-alert mt-4">
+                                    <div class="modal-info-alert-icon">
+                                        <i class="fa-solid fa-circle-info"></i>
+                                    </div>
+                                    <div class="modal-info-alert-text">
+                                        <h6 class="modal-info-alert-title mb-1">Catatan Pembaruan</h6>
+                                        <p class="modal-info-alert-desc mb-0">Pastikan suku bunga dan jenis produk telah dikonfirmasi dengan regulasi produk terkini.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-none" data-wizard-pane="3">
+                                <div class="mb-2 fw-semibold text-dark">Konfirmasi / Ringkasan Data Produk</div>
+                                <p class="text-muted small mb-3">Periksa kembali data sebelum disimpan.</p>
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-striped align-middle mb-0 wizard-summary-table">
+                                        <tbody id="editProductSummaryBody"></tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -520,9 +554,17 @@ $inactivePct = $totalProducts > 0 ? (int) round(($inactiveCount / $totalProducts
                             <button type="button" class="btn-modal-cancel" data-bs-dismiss="modal">
                                 <i class="fa-solid fa-xmark me-1"></i> Batal
                             </button>
-                            <button type="submit" class="btn-modal-submit">
-                                <i class="fa-solid fa-floppy-disk me-1"></i> Simpan Perubahan
-                            </button>
+                            <div class="d-flex align-items-center gap-2 ms-auto">
+                                <button type="button" class="btn btn-default" data-wizard-prev>
+                                    <i class="fa fa-arrow-left me-1"></i> Sebelumnya
+                                </button>
+                                <button type="button" class="btn btn-theme" data-wizard-next>
+                                    Berikutnya <i class="fa fa-arrow-right ms-1"></i>
+                                </button>
+                                <button type="submit" class="btn-modal-submit d-none" data-wizard-finish>
+                                    <i class="fa-solid fa-floppy-disk me-1"></i> Simpan Perubahan
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -950,6 +992,42 @@ $(document).ready(function () {
         width: '100%'
     });
 
+    function productFieldVal(prefix, name) {
+        var $el = $('#' + prefix + '_' + name);
+        if (!$el.length) return '-';
+        if ($el.is('select')) {
+            var t = $el.find('option:selected').text().trim();
+            return t || '-';
+        }
+        if ($el.is(':checkbox')) {
+            return $el.is(':checked') ? 'Aktif' : 'Nonaktif';
+        }
+        var v = ($el.val() || '').toString().trim();
+        return v || '-';
+    }
+
+    function fillProductSummary(prefix, bodyId) {
+        var rows = [
+            ['Kode Produk', productFieldVal(prefix, 'code')],
+            ['Nama Produk', productFieldVal(prefix, 'name')],
+            ['Status Branch', productFieldVal(prefix, 'businessUnit')],
+            ['Jenis Produk', productFieldVal(prefix, 'productType')],
+            ['Suku Bunga (%)', productFieldVal(prefix, 'interestRate')],
+            ['Status', productFieldVal(prefix, 'isActive')]
+        ];
+        var html = rows.map(function (r) {
+            return '<tr><th class="text-muted" style="width:40%">' + r[0] + '</th><td class="fw-semibold">' + $('<div>').text(r[1]).html() + '</td></tr>';
+        }).join('');
+        $('#' + bodyId).html(html);
+    }
+
+    $('#createProductForm').on('wizard:step', function (e, step) {
+        if (step === 3) fillProductSummary('create', 'createProductSummaryBody');
+    });
+    $('#editProductForm').on('wizard:step', function (e, step) {
+        if (step === 3) fillProductSummary('edit', 'editProductSummaryBody');
+    });
+
     // Inisialisasi Select2 pada Modal Tambah dan Ubah
     $('#createProductModal').on('shown.bs.modal', function () {
         App.initSelect2InModal('#create_businessUnit', '#createProductModal', {
@@ -961,6 +1039,13 @@ $(document).ready(function () {
             allowClear: true,
             width: '100%'
         });
+        var go = $('#createProductForm').data('wizardGo');
+        if (typeof go === 'function') { go(1); }
+    });
+
+    $('#editProductModal').on('shown.bs.modal', function () {
+        var go = $('#editProductForm').data('wizardGo');
+        if (typeof go === 'function') { go(1); }
     });
 
     $('#editProductModal').on('shown.bs.modal', function () {

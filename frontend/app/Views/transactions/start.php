@@ -4,31 +4,14 @@
 <div data-swal="error" data-swal-title="Terjadi Kesalahan" data-swal-message="<?= esc($error) ?>" hidden></div>
 <?php endif; ?>
 
-<!-- Breadcrumb -->
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="<?= site_url('transactions') ?>">Pengajuan Scoring</a></li>
-        <li class="breadcrumb-item active">Pengajuan Baru</li>
-    </ol>
-</nav>
-
-<!-- Stepper -->
-<div class="d-flex align-items-center gap-3 mb-4">
-    <div class="d-flex align-items-center gap-2">
-        <span class="d-inline-flex align-items-center justify-content-center rounded-circle fw-bold" style="width:32px;height:32px;background:var(--secondary);color:#fff;font-size:14px;">1</span>
-        <span class="fw-bold" style="color:var(--primary);">Pilih Produk & Debitur</span>
-    </div>
-    <div style="flex:1;height:2px;background:var(--border);"></div>
-    <div class="d-flex align-items-center gap-2 text-muted">
-        <span class="d-inline-flex align-items-center justify-content-center rounded-circle fw-bold" style="width:32px;height:32px;background:var(--border);color:var(--text-muted);font-size:14px;">2</span>
-        <span class="fw-semibold" style="font-size:13px;">Input Scoring</span>
-    </div>
-    <div style="flex:1;height:2px;background:var(--border);"></div>
-    <div class="d-flex align-items-center gap-2 text-muted">
-        <span class="d-inline-flex align-items-center justify-content-center rounded-circle fw-bold" style="width:32px;height:32px;background:var(--border);color:var(--text-muted);font-size:14px;">3</span>
-        <span class="fw-semibold" style="font-size:13px;">Konfirmasi</span>
-    </div>
-</div>
+<?= view('partials/form_wizard_nav', [
+    'current' => 1,
+    'steps'   => [
+        ['label' => 'Produk & Debitur'],
+        ['label' => 'Input Scoring'],
+        ['label' => 'Ringkasan'],
+    ],
+]) ?>
 
 <!-- Form Card -->
 <div class="card">
