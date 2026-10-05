@@ -1,0 +1,24 @@
+/* Phase 6 — Scoring Config (Color Admin) */
+
+#content .scoring-subnav .nav-link {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #6c757d;
+  border-radius: 0.5rem;
+}
+
+#content .scoring-subnav .nav-link.active {
+  background: var(--bs-theme, #0c83f0);
+  color: #fff;
+}
+
+#content .param-choice-card {
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+#content .param-choice-card:hover,
+#content .param-choice-card.is-selected {
+  border-color: var(--bs-theme, #0c83f0) !important;
+  box-shadow: 0 0 0 1px var(--bs-theme, #0c83f0);
+}

@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Phase 6 Preview — Scoring Config</title>
+    <link rel="icon" href="assets/images/favicon.png">
+    <link href="assets/color-admin/css/vendor.min.css" rel="stylesheet">
+    <link href="assets/color-admin/css/default/app.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/shell-phase1.css">
+    <link rel="stylesheet" href="css/scoring-phase6.css">
+    <script src="assets/color-admin/js/iconify/iconify-icon.min.js"></script>
+    <style>
+        .preview-page { display: none; }
+        .preview-page.is-on { display: block; }
+    </style>
+</head>
+<body>
+<div id="app" class="app app-header-fixed app-sidebar-fixed">
+    <div id="appHeader" class="app-header">
+        <div class="brand">
+            <div class="mobile-toggler">
+                <button type="button" class="menu-toggler" data-toggle-class="app-sidebar-mobile-toggled" data-toggle-target=".app">
+                    <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+                </button>
+            </div>
+            <a href="#" class="brand-logo"><img src="assets/images/logo-horizontal.png" alt="New Scoring" class="brand-logo-img"></a>
+        </div>
+        <div class="menu">
+            <div class="menu-item menu-item-form d-none d-md-flex">
+                <form action="#"><input type="text" class="form-control" placeholder="Cari..."><button class="btn btn-search" type="submit"><iconify-icon icon="octicon:search-16"></iconify-icon></button></form>
+            </div>
+            <div class="menu-item"><a href="#" class="menu-link"><iconify-icon icon="solar:bell-bing-bold-duotone"></iconify-icon><span class="badge">2</span></a></div>
+            <div class="menu-item"><a href="#" class="menu-link"><span class="rounded-circle bg-theme text-white d-inline-flex align-items-center justify-content-center" style="width:30px;height:30px;font-size:12px;font-weight:700;">AI</span></a></div>
+        </div>
+    </div>
+    <div id="sidebar" class="app-sidebar" data-bs-theme="dark">
+        <div class="app-sidebar-content" data-scrollbar="true" data-height="100%">
+            <div class="menu">
+                <div class="menu-profile"><a href="javascript:;" class="menu-link"><div class="menu-profile-cover with-shadow"></div><div class="menu-profile-image avatar-initials">AI</div><div class="menu-profile-info"><div class="d-flex align-items-center"><div class="flex-grow-1">Admin IT</div></div><small>ADMIN IT · KANTOR PUSAT</small></div></a></div>
+                <div class="menu-header">Navigation</div>
+                <div class="menu-item has-sub" data-preview-group="tx">
+                    <a href="javascript:;" class="menu-link"><div class="menu-icon"><i class="fa fa-file-invoice"></i></div><div class="menu-text">Transaksi Scoring</div><div class="menu-caret"></div></a>
+                    <div class="menu-submenu">
+                        <div class="menu-item" data-preview-nav="credit"><a href="#credit" class="menu-link"><div class="menu-text">Pengajuan Scoring</div></a></div>
+                    </div>
+                </div>
+                <div class="menu-item has-sub" data-preview-group="cfg">
+                    <a href="javascript:;" class="menu-link"><div class="menu-icon"><i class="fa fa-sliders"></i></div><div class="menu-text">Parameter Scoring</div><div class="menu-caret"></div></a>
+                    <div class="menu-submenu">
+                        <div class="menu-item" data-preview-nav="parameters"><a href="#parameters" class="menu-link"><div class="menu-text">Konfigurasi Parameter</div></a></div>
+                        <div class="menu-item" data-preview-nav="mapping"><a href="#mapping" class="menu-link"><div class="menu-text">Mapping Produk</div></a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="app-sidebar-mobile-backdrop"><a href="#" data-dismiss="app-sidebar-mobile" class="stretched-link"></a></div>
+
+    <div id="content" class="app-content">
+        <!-- PARAMETERS -->
+        <div class="preview-page is-on" id="page-parameters" data-preview="parameters">
+            <ol class="breadcrumb float-xl-end"><li class="breadcrumb-item"><a href="#">Home</a></li><li class="breadcrumb-item active">Konfigurasi Parameter</li></ol>
+            <h1 class="page-header">Konfigurasi Parameter <small>master parameter scoring</small></h1>
+
+            <ul class="nav nav-pills scoring-subnav gap-2 mb-3">
+                <li class="nav-item"><a class="nav-link active" href="#parameters"><i class="fa fa-sliders me-1"></i>Parameter</a></li>
+                <li class="nav-item"><a class="nav-link" href="#mapping"><i class="fa fa-diagram-project me-1"></i>Mapping</a></li>
+            </ul>
+
+            <div class="row mb-3">
+                <div class="col-xl-4 col-md-4">
+                    <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-info bg-gradient-to-blue overflow-hidden" data-bs-theme="dark">
+                        <div class="card-body position-relative z-3">
+                            <div class="mb-2 fw-bold text-white">Total Parameter</div>
+                            <div class="h2 mb-4">6</div>
+                            <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:100%;"></div></div>
+                            <div class="small fw-semibold text-white text-opacity-75 mb-n1">Master parameter scoring</div>
+                        </div>
+                        <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                            <iconify-icon icon="solar:slider-vertical-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-md-4 mt-3 mt-md-0">
+                    <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-teal bg-gradient-to-green overflow-hidden" data-bs-theme="dark">
+                        <div class="card-body position-relative z-3">
+                            <div class="mb-2 fw-bold text-white">Total Sub Parameter</div>
+                            <div class="h2 mb-4">24</div>
+                            <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:80%;"></div></div>
+                            <div class="small fw-semibold text-white text-opacity-75 mb-n1">Opsi penilaian aktif</div>
+                        </div>
+                        <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                            <iconify-icon icon="solar:layers-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-md-4 mt-3 mt-md-0">
+                    <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-orange bg-gradient-to-pink overflow-hidden" data-bs-theme="dark">
+                        <div class="card-body position-relative z-3">
+                            <div class="mb-2 fw-bold text-white">Rata-rata Sub / Param</div>
+                            <div class="h2 mb-4">4.0</div>
+                            <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:60%;"></div></div>
+                            <div class="small fw-semibold text-white text-opacity-75 mb-n1">Kepadatan opsi per parameter</div>
+                        </div>
+                        <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                            <iconify-icon icon="solar:calculator-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-borderless mb-3">
+                <div class="card-header bg-gray-900" data-bs-theme="dark">
+                    <h4 class="card-header-title text-white mb-0"><iconify-icon icon="solar:filter-bold-duotone" class="me-1"></iconify-icon> Filter Data</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-5"><label class="form-label">Search Parameter</label><div class="input-group"><span class="input-group-text"><i class="fa fa-search"></i></span><input class="form-control" placeholder="Cari nama parameter..."></div></div>
+                        <div class="col-md-4"><label class="form-label">Kategori</label><select class="form-select"><option>Semua Parameter</option></select></div>
+                        <div class="col-md-3 d-flex align-items-end gap-2"><button class="btn btn-theme flex-grow-1"><i class="fa fa-search me-1"></i> Terapkan</button><button class="btn btn-default"><i class="fa fa-rotate-left"></i></button></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-borderless table-card">
+                <div class="card-header bg-gray-900" data-bs-theme="dark">
+                    <h4 class="card-header-title text-white mb-0"><iconify-icon icon="solar:checklist-minimalistic-bold-duotone" class="me-1"></iconify-icon> Daftar Konfigurasi Parameter</h4>
+                    <div class="card-header-btn"><button class="btn btn-theme btn-sm"><i class="fa fa-plus me-1"></i> Tambah Parameter Baru</button></div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped align-middle mb-0">
+                            <thead><tr><th class="text-center">NO</th><th class="text-center">ID PARAM</th><th>NAMA PARAMETER</th><th class="text-center">SUB</th><th>DETAIL SUB</th><th class="text-center">AKSI</th></tr></thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center text-muted">1</td>
+                                    <td class="text-center"><div class="d-inline-flex align-items-center gap-1"><span class="badge bg-primary bg-opacity-15 text-primary py-6px font-monospace">PRM-001</span><button class="btn btn-default btn-xs btn-icon"><i class="fa fa-copy"></i></button></div></td>
+                                    <td class="fw-semibold">Karakter Debitur</td>
+                                    <td class="text-center"><span class="badge bg-info bg-opacity-15 text-info py-6px">4 Sub</span></td>
+                                    <td><span class="badge bg-primary bg-opacity-15 text-primary font-monospace me-1">A</span> Sangat Baik <span class="text-muted small">(25 × 4 = 100)</span></td>
+                                    <td class="text-center"><button class="btn btn-default btn-xs btn-icon"><i class="fa fa-ellipsis"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center text-muted">2</td>
+                                    <td class="text-center"><div class="d-inline-flex align-items-center gap-1"><span class="badge bg-primary bg-opacity-15 text-primary py-6px font-monospace">PRM-002</span><button class="btn btn-default btn-xs btn-icon"><i class="fa fa-copy"></i></button></div></td>
+                                    <td class="fw-semibold">Kapasitas Bayar</td>
+                                    <td class="text-center"><span class="badge bg-info bg-opacity-15 text-info py-6px">4 Sub</span></td>
+                                    <td><span class="badge bg-primary bg-opacity-15 text-primary font-monospace me-1">A</span> DSR &lt; 30% <span class="text-muted small">(30 × 4 = 120)</span></td>
+                                    <td class="text-center"><button class="btn btn-default btn-xs btn-icon"><i class="fa fa-ellipsis"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center text-muted">3</td>
+                                    <td class="text-center"><div class="d-inline-flex align-items-center gap-1"><span class="badge bg-primary bg-opacity-15 text-primary py-6px font-monospace">PRM-003</span><button class="btn btn-default btn-xs btn-icon"><i class="fa fa-copy"></i></button></div></td>
+                                    <td class="fw-semibold">Jaminan / Agunan</td>
+                                    <td class="text-center"><span class="badge bg-info bg-opacity-15 text-info py-6px">3 Sub</span></td>
+                                    <td><span class="badge bg-primary bg-opacity-15 text-primary font-monospace me-1">A</span> Sertifikat SHM <span class="text-muted small">(20 × 5 = 100)</span></td>
+                                    <td class="text-center"><button class="btn btn-default btn-xs btn-icon"><i class="fa fa-ellipsis"></i></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAPPING -->
+        <div class="preview-page" id="page-mapping" data-preview="mapping">
+            <ol class="breadcrumb float-xl-end"><li class="breadcrumb-item"><a href="#">Home</a></li><li class="breadcrumb-item active">Mapping Produk</li></ol>
+            <h1 class="page-header">Mapping Produk <small>hubungkan parameter ke produk</small></h1>
+
+            <ul class="nav nav-pills scoring-subnav gap-2 mb-3">
+                <li class="nav-item"><a class="nav-link" href="#parameters"><i class="fa fa-sliders me-1"></i>Parameter</a></li>
+                <li class="nav-item"><a class="nav-link active" href="#mapping"><i class="fa fa-diagram-project me-1"></i>Mapping</a></li>
+            </ul>
+
+            <div class="row mb-3">
+                <div class="col-xl-4 col-md-4">
+                    <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-blue bg-gradient-to-indigo overflow-hidden" data-bs-theme="dark">
+                        <div class="card-body position-relative z-3">
+                            <div class="mb-2 fw-bold text-white">Produk Terpetakan</div>
+                            <div class="h2 mb-4">8</div>
+                            <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:67%;"></div></div>
+                            <div class="small fw-semibold text-white text-opacity-75 mb-n1">dari 12 master produk</div>
+                        </div>
+                        <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                            <iconify-icon icon="solar:box-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-md-4 mt-3 mt-md-0">
+                    <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-teal bg-gradient-to-green overflow-hidden" data-bs-theme="dark">
+                        <div class="card-body position-relative z-3">
+                            <div class="mb-2 fw-bold text-white">Versi Kebijakan</div>
+                            <div class="h2 mb-4">11</div>
+                            <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:100%;"></div></div>
+                            <div class="small fw-semibold text-white text-opacity-75 mb-n1">Mapping aktif digunakan</div>
+                        </div>
+                        <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                            <iconify-icon icon="solar:branching-paths-up-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-md-4 mt-3 mt-md-0">
+                    <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-orange bg-gradient-to-pink overflow-hidden" data-bs-theme="dark">
+                        <div class="card-body position-relative z-3">
+                            <div class="mb-2 fw-bold text-white">Katalog Produk</div>
+                            <div class="h2 mb-4">12</div>
+                            <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:100%;"></div></div>
+                            <div class="small fw-semibold text-white text-opacity-75 mb-n1">Source of truth master</div>
+                        </div>
+                        <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                            <iconify-icon icon="solar:database-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-borderless mb-3">
+                <div class="card-header bg-gray-900" data-bs-theme="dark">
+                    <h4 class="card-header-title text-white mb-0"><iconify-icon icon="solar:filter-bold-duotone" class="me-1"></iconify-icon> Filter Data Mapping</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-4"><label class="form-label">Search Mapping / Versi</label><div class="input-group"><span class="input-group-text"><i class="fa fa-search"></i></span><input class="form-control" placeholder="Cari versi atau produk..."></div></div>
+                        <div class="col-md-5"><label class="form-label">Filter Master Produk</label><select class="form-select"><option>Semua Master Produk</option></select></div>
+                        <div class="col-md-3 d-flex align-items-end gap-2"><button class="btn btn-theme flex-grow-1"><i class="fa fa-search me-1"></i> Terapkan</button><button class="btn btn-default"><i class="fa fa-rotate-left"></i></button></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-borderless table-card">
+                <div class="card-header bg-gray-900" data-bs-theme="dark">
+                    <h4 class="card-header-title text-white mb-0"><iconify-icon icon="solar:checklist-minimalistic-bold-duotone" class="me-1"></iconify-icon> Daftar Mapping Produk</h4>
+                    <div class="card-header-btn"><button class="btn btn-theme btn-sm"><i class="fa fa-plus me-1"></i> Buat Mapping Baru</button></div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped align-middle mb-0">
+                            <thead><tr><th class="text-center">NO</th><th class="text-center">KODE PRODUK</th><th>NAMA PRODUK</th><th>VERSI</th><th class="text-center">BATAS LAYAK</th><th>PARAMETER</th><th class="text-center">AKSI</th></tr></thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center text-muted">1</td>
+                                    <td class="text-center"><div class="d-inline-flex align-items-center gap-1"><span class="badge bg-primary bg-opacity-15 text-primary py-6px font-monospace">KMG</span><button class="btn btn-default btn-xs btn-icon"><i class="fa fa-copy"></i></button></div></td>
+                                    <td class="fw-semibold">Kredit Multiguna</td>
+                                    <td><span class="badge bg-success bg-opacity-15 text-success py-6px">v2026.01</span></td>
+                                    <td class="text-center"><span class="badge bg-info bg-opacity-15 text-info py-6px">&ge; 350.00</span></td>
+                                    <td><span class="badge bg-light text-dark border me-1">Karakter</span><span class="badge bg-light text-dark border">Kapasitas</span></td>
+                                    <td class="text-center"><button class="btn btn-default btn-xs btn-icon"><i class="fa fa-ellipsis"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center text-muted">2</td>
+                                    <td class="text-center"><div class="d-inline-flex align-items-center gap-1"><span class="badge bg-primary bg-opacity-15 text-primary py-6px font-monospace">KPR</span><button class="btn btn-default btn-xs btn-icon"><i class="fa fa-copy"></i></button></div></td>
+                                    <td class="fw-semibold">Kredit Pemilikan Rumah</td>
+                                    <td><span class="badge bg-success bg-opacity-15 text-success py-6px">v2026.01</span></td>
+                                    <td class="text-center"><span class="badge bg-info bg-opacity-15 text-info py-6px">&ge; 380.00</span></td>
+                                    <td><span class="badge bg-light text-dark border me-1">Agunan</span><span class="badge bg-light text-dark border">Kapasitas</span></td>
+                                    <td class="text-center"><button class="btn btn-default btn-xs btn-icon"><i class="fa fa-ellipsis"></i></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CREDIT -->
+        <div class="preview-page" id="page-credit" data-preview="credit">
+            <ol class="breadcrumb float-xl-end"><li class="breadcrumb-item"><a href="#">Home</a></li><li class="breadcrumb-item active">Scoring Kredit</li></ol>
+            <h1 class="page-header">Scoring Kredit <small>penilaian debitur</small></h1>
+
+            <div class="row g-3">
+                <div class="col-12">
+                    <div class="card card-borderless overflow-hidden">
+                        <div class="card-header bg-gray-900" data-bs-theme="dark">
+                            <h4 class="card-header-title text-white mb-0"><iconify-icon icon="solar:user-check-bold-duotone" class="me-1"></iconify-icon> 1. Pilih Debitur &amp; Periksa Profil</h4>
+                            <span class="badge bg-white bg-opacity-15 text-white">Data master (read-only)</span>
+                        </div>
+                        <div class="card-body">
+                            <label class="form-label fw-semibold">Pilih CIS ID / Nama Debitur <span class="text-danger">*</span></label>
+                            <select class="form-select mb-3"><option>[CIS: 100200300] 1271010101010001 - Budi Santoso (KCU Medan)</option></select>
+                            <div class="form-text text-muted mb-3">Profil ditampilkan read-only; ubah data lewat Master Debitur.</div>
+                            <div class="p-3 bg-light rounded-3 d-flex align-items-center justify-content-between mb-3">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="bg-theme text-white rounded-circle d-flex align-items-center justify-content-center" style="width:42px;height:42px;"><i class="fa fa-user"></i></div>
+                                    <div>
+                                        <h6 class="fw-bold mb-0">Budi Santoso</h6>
+                                        <div class="small text-muted">CIS ID: <strong>100200300</strong> · CIF ID: <strong>CIF-7788</strong></div>
+                                    </div>
+                                </div>
+                                <span class="badge bg-success bg-opacity-15 text-success py-6px">Debitur Aktif</span>
+                            </div>
+                            <div class="row g-3">
+                                <div class="col-md-4"><label class="form-label small fw-semibold">NIK</label><input class="form-control form-control-sm" value="1271010101010001" readonly></div>
+                                <div class="col-md-4"><label class="form-label small fw-semibold">Nama Lengkap</label><input class="form-control form-control-sm" value="Budi Santoso" readonly></div>
+                                <div class="col-md-4"><label class="form-label small fw-semibold">Telepon</label><input class="form-control form-control-sm" value="081234567890" readonly></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="card card-borderless overflow-hidden">
+                        <div class="card-header bg-gray-900" data-bs-theme="dark">
+                            <h4 class="card-header-title text-white mb-0"><iconify-icon icon="solar:box-bold-duotone" class="me-1"></iconify-icon> 2. Pilih Kode Produk Kredit</h4>
+                            <span class="badge bg-white bg-opacity-15 text-white">Produk dengan mapping aktif</span>
+                        </div>
+                        <div class="card-body">
+                            <label class="form-label fw-semibold">Kode Produk Kredit <span class="text-danger">*</span></label>
+                            <select class="form-select"><option>KMG — Kredit Multiguna (v2026.01)</option></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="card card-borderless overflow-hidden">
+                        <div class="card-header bg-gray-900" data-bs-theme="dark">
+                            <h4 class="card-header-title text-white mb-0"><iconify-icon icon="solar:checklist-minimalistic-bold-duotone" class="me-1"></iconify-icon> 3. Penilaian Parameter Scoring</h4>
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="badge bg-white bg-opacity-15 text-white"><i class="fa fa-award me-1"></i>Batas: ≥ 350.00</span>
+                                <span class="badge bg-theme text-white">420.00</span>
+                                <span class="badge bg-success text-white fw-bold"><i class="fa fa-circle-check me-1"></i> LAYAK</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="border rounded-3 p-3 mb-3">
+                                <div class="fw-bold mb-2">Karakter Debitur</div>
+                                <div class="row g-2">
+                                    <div class="col-md-6"><div class="border rounded-3 p-2 param-choice-card is-selected"><div class="form-check mb-0"><input class="form-check-input" type="radio" checked><label class="form-check-label"><span class="badge bg-primary bg-opacity-15 text-primary font-monospace me-1">A</span> Sangat Baik <small class="text-muted">(100)</small></label></div></div></div>
+                                    <div class="col-md-6"><div class="border rounded-3 p-2 param-choice-card"><div class="form-check mb-0"><input class="form-check-input" type="radio"><label class="form-check-label"><span class="badge bg-primary bg-opacity-15 text-primary font-monospace me-1">B</span> Baik <small class="text-muted">(75)</small></label></div></div></div>
+                                </div>
+                            </div>
+                            <div class="p-3 bg-light rounded-3 border">
+                                <div class="row g-3 align-items-center">
+                                    <div class="col-md-4"><label class="form-label small fw-bold">Batas Skor Layak</label><div class="input-group"><span class="input-group-text">≥</span><input class="form-control fw-bold" value="350.00"></div></div>
+                                    <div class="col-md-4 text-center"><div class="text-muted small text-uppercase">Total Skor</div><div class="display-6 fw-bold text-primary mb-0">420.00</div><span class="badge bg-success text-white">LAYAK</span></div>
+                                    <div class="col-md-4"><button class="btn btn-theme btn-lg w-100 py-3"><i class="fa fa-floppy-disk me-2"></i> Simpan Scoring Kredit</button></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="assets/color-admin/js/vendor.min.js"></script>
+<script src="assets/color-admin/js/app.min.js"></script>
+<script>
+function showPreview(name) {
+    document.querySelectorAll('.preview-page').forEach(function (el) {
+        el.classList.toggle('is-on', el.getAttribute('data-preview') === name);
+    });
+    document.querySelectorAll('[data-preview-nav]').forEach(function (el) {
+        el.classList.toggle('active', el.getAttribute('data-preview-nav') === name);
+    });
+    document.querySelectorAll('[data-preview-group]').forEach(function (el) {
+        var g = el.getAttribute('data-preview-group');
+        var active = (g === 'cfg' && (name === 'parameters' || name === 'mapping')) || (g === 'tx' && name === 'credit');
+        el.classList.toggle('active', active);
+    });
+}
+var hash = (location.hash || '#parameters').replace('#', '');
+if (['parameters', 'mapping', 'credit'].indexOf(hash) === -1) hash = 'parameters';
+showPreview(hash);
+window.addEventListener('hashchange', function () {
+    var h = (location.hash || '#parameters').replace('#', '');
+    if (['parameters', 'mapping', 'credit'].indexOf(h) !== -1) showPreview(h);
+});
+</script>
+</body>
+</html>

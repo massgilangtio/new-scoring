@@ -25,161 +25,121 @@ $distinctMappedCount = count($mappedProductIds);
 <div data-swal="error" data-swal-title="Terjadi Kesalahan" data-swal-message="<?= esc($error) ?>" hidden></div>
 <?php endif; ?>
 
-<!-- 1. Page Title Header Card (Mockup Redesign Standard - Source of Truth: Produk) -->
-<div class="module-header module-header-card">
-    <div class="module-header-panel-wrap">
-        <div class="module-header-content">
-            <div class="module-icon-cube">
-                <i class="fa-solid fa-diagram-project"></i>
+<ul class="nav nav-pills scoring-subnav gap-2 mb-3">
+    <li class="nav-item"><a class="nav-link" href="<?= site_url('scoring/parameters') ?>"><i class="fa fa-sliders me-1"></i>Parameter</a></li>
+    <li class="nav-item"><a class="nav-link active" href="<?= site_url('scoring/mapping') ?>"><i class="fa fa-diagram-project me-1"></i>Mapping</a></li>
+</ul>
+
+<div class="row mb-3">
+    <div class="col-xl-4 col-md-4">
+        <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-blue bg-gradient-to-indigo overflow-hidden" data-bs-theme="dark">
+            <div class="card-body position-relative z-3">
+                <div class="mb-2 fw-bold text-white">Produk Terpetakan</div>
+                <div class="h2 mb-4"><?= esc((string) $distinctMappedCount) ?></div>
+                <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:<?= $totalMasterProducts > 0 ? (int) round($distinctMappedCount / $totalMasterProducts * 100) : 0 ?>%;"></div></div>
+                <div class="small fw-semibold text-white text-opacity-75 mb-n1">dari <?= esc((string) $totalMasterProducts) ?> master produk</div>
             </div>
-            <div class="module-header-divider"></div>
-            <div class="module-title-box text-start">
-                <div class="d-flex align-items-center justify-content-start gap-2 flex-wrap text-start">
-                    <h2 class="module-title text-start mb-0">Mapping Produk</h2>
-                    <span class="module-badge-pill"><?= $totalMappings ?> Versi Mapping</span>
-                </div>
-                <p class="module-subtitle text-start mb-0">Hubungkan master parameter scoring dengan produk kredit, sesuaikan bobot & nilai, serta kelola versi kebijakan.</p>
+            <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                <iconify-icon icon="solar:box-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 col-md-4 mt-3 mt-md-0">
+        <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-teal bg-gradient-to-green overflow-hidden" data-bs-theme="dark">
+            <div class="card-body position-relative z-3">
+                <div class="mb-2 fw-bold text-white">Versi Kebijakan</div>
+                <div class="h2 mb-4"><?= esc((string) $totalMappings) ?></div>
+                <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:100%;"></div></div>
+                <div class="small fw-semibold text-white text-opacity-75 mb-n1">Mapping aktif digunakan</div>
+            </div>
+            <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                <iconify-icon icon="solar:branching-paths-up-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 col-md-4 mt-3 mt-md-0">
+        <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-orange bg-gradient-to-pink overflow-hidden" data-bs-theme="dark">
+            <div class="card-body position-relative z-3">
+                <div class="mb-2 fw-bold text-white">Katalog Produk</div>
+                <div class="h2 mb-4"><?= esc((string) $totalMasterProducts) ?></div>
+                <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:100%;"></div></div>
+                <div class="small fw-semibold text-white text-opacity-75 mb-n1">Source of truth master</div>
+            </div>
+            <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                <iconify-icon icon="solar:database-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
             </div>
         </div>
     </div>
 </div>
 
-<!-- 2. KPI / Summary Metric Cards (Source of Truth Produk Design Standard) -->
-<div class="row g-3 mb-4">
-    <!-- Card 1: Produk Terpetakan -->
-    <div class="col-12 col-md-4">
-        <div class="card border-0 shadow-sm rounded-4 p-3 h-100 bg-white d-flex flex-row align-items-center gap-3">
-            <div class="d-flex align-items-center justify-content-center rounded-3 text-white" style="width: 52px; height: 52px; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); box-shadow: 0 4px 12px rgba(2, 132, 199, 0.28);">
-                <i class="fa-solid fa-cube fa-lg"></i>
-            </div>
-            <div>
-                <span class="text-muted small fw-semibold d-block text-uppercase" style="font-size: 11px; letter-spacing: 0.5px;">Produk Terpetakan</span>
-                <div class="d-flex align-items-baseline gap-2">
-                    <h3 class="fw-bold mb-0 text-dark"><?= $distinctMappedCount ?></h3>
-                    <span class="badge bg-primary-subtle text-primary rounded-pill px-2 py-1 small" style="font-size: 11px;">
-                        dari <?= $totalMasterProducts ?> Master Produk
-                    </span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Card 2: Total Versi Mapping -->
-    <div class="col-12 col-md-4">
-        <div class="card border-0 shadow-sm rounded-4 p-3 h-100 bg-white d-flex flex-row align-items-center gap-3">
-            <div class="d-flex align-items-center justify-content-center rounded-3 text-white" style="width: 52px; height: 52px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.28);">
-                <i class="fa-solid fa-code-branch fa-lg"></i>
-            </div>
-            <div>
-                <span class="text-muted small fw-semibold d-block text-uppercase" style="font-size: 11px; letter-spacing: 0.5px;">Versi Kebijakan</span>
-                <div class="d-flex align-items-baseline gap-2">
-                    <h3 class="fw-bold mb-0 text-dark"><?= $totalMappings ?></h3>
-                    <span class="badge bg-success-subtle text-success rounded-pill px-2 py-1 small" style="font-size: 11px;">Aktif Digunakan</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Card 3: Source of Truth - Master Produk -->
-    <div class="col-12 col-md-4">
-        <div class="card border-0 shadow-sm rounded-4 p-3 h-100 bg-white d-flex flex-row align-items-center gap-3">
-            <div class="d-flex align-items-center justify-content-center rounded-3 text-white" style="width: 52px; height: 52px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); box-shadow: 0 4px 12px rgba(245, 158, 11, 0.28);">
-                <i class="fa-solid fa-database fa-lg"></i>
-            </div>
-            <div>
-                <span class="text-muted small fw-semibold d-block text-uppercase" style="font-size: 11px; letter-spacing: 0.5px;">Source of Truth</span>
-                <div class="d-flex align-items-baseline gap-2">
-                    <h3 class="fw-bold mb-0 text-dark"><?= $totalMasterProducts ?></h3>
-                    <span class="badge bg-warning-subtle text-dark rounded-pill px-2 py-1 small fw-semibold" style="font-size: 11px;">Katalog Produk</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- 3. Filter Data Card (Standard Produk) -->
-<div class="filter-card">
-    <div class="filter-card-header">
-        <div class="filter-header-left">
-            <div class="filter-icon-badge">
-                <i class="fa-solid fa-filter"></i>
-            </div>
-            <div>
-                <h6 class="filter-title">Filter Data Mapping</h6>
-                <p class="filter-subtitle">Gunakan filter untuk mencari mapping berdasarkan produk atau versi kebijakan.</p>
-            </div>
-        </div>
-        <div>
-            <button type="button" class="filter-toggle-btn" id="btnToggleFilter" data-bs-toggle="collapse" data-bs-target="#filterCollapse" aria-expanded="true" aria-controls="filterCollapse">
+<div class="card card-borderless mb-3 filter-card">
+    <div class="card-header bg-gray-900" data-bs-theme="dark">
+        <h4 class="card-header-title text-white mb-0 d-flex align-items-center gap-2">
+            <iconify-icon icon="solar:filter-bold-duotone"></iconify-icon>
+            Filter Data Mapping
+        </h4>
+        <div class="card-header-btn">
+            <button type="button" class="btn btn-default btn-xs" id="btnToggleFilter" data-bs-toggle="collapse" data-bs-target="#filterCollapse" aria-expanded="true" aria-controls="filterCollapse">
                 <span id="filterToggleText">Sembunyikan Filter</span>
-                <i class="fa-solid fa-chevron-up" id="filterToggleIcon"></i>
+                <i class="fa fa-chevron-up ms-1" id="filterToggleIcon"></i>
             </button>
         </div>
     </div>
     <div class="collapse show" id="filterCollapse">
-        <div class="filter-card-body">
+        <div class="card-body filter-card-body">
             <div class="row g-3">
                 <div class="col-12 col-md-6 col-lg-4">
-                    <label class="filter-form-label" for="filterSearchMapping">Search Mapping / Versi</label>
-                    <div class="filter-input-wrap">
-                        <i class="fa-solid fa-magnifying-glass filter-input-icon"></i>
-                        <input type="text" class="form-control" id="filterSearchMapping" placeholder="Cari nama versi, produk, atau kode..." style="padding-left: 36px !important;">
+                    <label class="form-label" for="filterSearchMapping">Search Mapping / Versi</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fa fa-search"></i></span>
+                        <input type="text" class="form-control" id="filterSearchMapping" placeholder="Cari nama versi, produk, atau kode...">
                     </div>
                 </div>
                 <div class="col-12 col-md-6 col-lg-5">
-                    <label class="filter-form-label" for="filterProductSelect">Filter Master Produk (Source of Truth)</label>
-                    <div class="filter-input-wrap">
-                        <i class="fa-solid fa-box filter-input-icon"></i>
-                        <select class="form-select" id="filterProductSelect" style="padding-left: 36px !important;">
-                            <option value="">Semua Master Produk</option>
-                            <?php foreach ($products as $p) : ?>
-                                <option value="<?= esc($p['code']) ?>">
-                                    <?= esc($p['code']) ?> - <?= esc($p['name']) ?> (<?= !empty($p['business_unit']) ? 'Syariah' : 'Konvensional' ?>)
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
+                    <label class="form-label" for="filterProductSelect">Filter Master Produk</label>
+                    <select class="form-select" id="filterProductSelect">
+                        <option value="">Semua Master Produk</option>
+                        <?php foreach ($products as $p) : ?>
+                            <option value="<?= esc($p['code']) ?>">
+                                <?= esc($p['code']) ?> - <?= esc($p['name']) ?> (<?= ! empty($p['business_unit']) ? 'Syariah' : 'Konvensional' ?>)
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
-                <div class="col-12 col-lg-3 d-flex align-items-end">
-                    <div class="filter-actions w-100">
-                        <button type="button" class="btn-apply-filter flex-grow-1" id="btnApplyFilter">
-                            <i class="fa-solid fa-magnifying-glass"></i> Terapkan
-                        </button>
-                        <button type="button" class="btn-reset-filter" id="btnResetFilter">
-                            <i class="fa-solid fa-rotate-left"></i> Reset
-                        </button>
-                    </div>
+                <div class="col-12 col-lg-3 d-flex align-items-end gap-2">
+                    <button type="button" class="btn btn-theme flex-grow-1" id="btnApplyFilter">
+                        <i class="fa fa-search me-1"></i> Terapkan
+                    </button>
+                    <button type="button" class="btn btn-default" id="btnResetFilter">
+                        <i class="fa fa-rotate-left"></i>
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- 4. Table Card (Standard Produk) -->
-<div class="table-card">
-    <div class="table-card-header">
-        <h5 class="table-card-title">
-            <i class="fa-solid fa-list-check"></i> Daftar Mapping Produk
-        </h5>
-        <div class="table-card-actions d-flex align-items-center gap-2">
-            <!-- Dropdown Export Button -->
+<div class="card card-borderless table-card">
+    <div class="card-header bg-gray-900" data-bs-theme="dark">
+        <h4 class="card-header-title text-white mb-0">
+            <iconify-icon icon="solar:checklist-minimalistic-bold-duotone" class="me-1"></iconify-icon>
+            Daftar Mapping Produk
+        </h4>
+        <div class="card-header-btn d-flex align-items-center gap-2 table-card-actions">
             <div class="dropdown">
-                <button type="button" class="btn-export dropdown-toggle" id="btnExportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa-solid fa-arrow-up-from-bracket"></i> Export
+                <button type="button" class="btn btn-default btn-sm dropdown-toggle" id="btnExportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa fa-upload me-1"></i> Export
                 </button>
-                <ul class="dropdown-menu dropdown-menu-end shadow-sm border" aria-labelledby="btnExportDropdown" style="font-size: 12px; min-width: 170px; border-radius: 10px;">
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="btnExportDropdown">
                     <li>
-                        <button type="button" class="dropdown-item d-flex align-items-center gap-2 py-2" onclick="window.print()">
-                            <i class="fa-solid fa-file-pdf text-danger" style="font-size: 13px; width: 16px;"></i>
-                            <span>Export PDF / Cetak</span>
+                        <button type="button" class="dropdown-item" onclick="window.print()">
+                            <i class="fa fa-file-pdf text-danger me-2"></i> Export PDF / Cetak
                         </button>
                     </li>
                 </ul>
             </div>
-
-            <!-- Buat Mapping Baru Action Button -->
-            <button type="button" class="btn btn-success-gradient" id="btnTambahMappingTabel" data-bs-toggle="modal" data-bs-target="#mappingModal">
-                <i class="fa-solid fa-plus"></i> Buat Mapping Baru
+            <button type="button" class="btn btn-theme btn-sm" id="btnTambahMappingTabel" data-bs-toggle="modal" data-bs-target="#mappingModal">
+                <i class="fa fa-plus me-1"></i> Buat Mapping Baru
             </button>
         </div>
     </div>
@@ -227,9 +187,14 @@ $distinctMappedCount = count($mappedProductIds);
                                     <span class="cell-no-badge"><?= $idx + 1 ?></span>
                                 </td>
                                 <td class="text-center align-middle">
-                                    <span class="badge bg-light text-primary border px-2 py-1 rounded-pill fw-bold" style="font-size: 11.5px;">
-                                        <i class="fa-solid fa-tag me-1"></i><?= esc($m['product_code'] ?? '-') ?>
-                                    </span>
+                                    <div class="d-inline-flex align-items-center gap-1">
+                                        <span class="badge bg-primary bg-opacity-15 text-primary py-6px font-monospace"><?= esc($m['product_code'] ?? '-') ?></span>
+                                        <?php if (! empty($m['product_code'])) : ?>
+                                        <button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" data-clipboard="<?= esc($m['product_code']) ?>" title="Salin Kode Produk">
+                                            <i class="fa fa-copy"></i>
+                                        </button>
+                                        <?php endif; ?>
+                                    </div>
                                 </td>
                                 <td class="align-middle">
                                     <div class="fw-bold text-dark fs-6"><?= esc($m['product_name'] ?? '-') ?></div>

@@ -14,157 +14,119 @@ $avgSub = $totalParams > 0 ? round($totalSub / $totalParams, 1) : 0;
 <div data-swal="error" data-swal-title="Terjadi Kesalahan" data-swal-message="<?= esc($error) ?>" hidden></div>
 <?php endif; ?>
 
-<!-- 1. Page Title Header Card (Mockup Redesign Standard - Source of Truth: Produk) -->
-<div class="module-header module-header-card">
-    <div class="module-header-panel-wrap">
-        <div class="module-header-content">
-            <div class="module-icon-cube">
-                <i class="fa-solid fa-sliders"></i>
+<ul class="nav nav-pills scoring-subnav gap-2 mb-3">
+    <li class="nav-item"><a class="nav-link active" href="<?= site_url('scoring/parameters') ?>"><i class="fa fa-sliders me-1"></i>Parameter</a></li>
+    <li class="nav-item"><a class="nav-link" href="<?= site_url('scoring/mapping') ?>"><i class="fa fa-diagram-project me-1"></i>Mapping</a></li>
+</ul>
+
+<div class="row mb-3">
+    <div class="col-xl-4 col-md-4">
+        <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-info bg-gradient-to-blue overflow-hidden" data-bs-theme="dark">
+            <div class="card-body position-relative z-3">
+                <div class="mb-2 fw-bold text-white">Total Parameter</div>
+                <div class="h2 mb-4"><?= esc((string) $totalParams) ?></div>
+                <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:100%;"></div></div>
+                <div class="small fw-semibold text-white text-opacity-75 mb-n1">Master parameter scoring</div>
             </div>
-            <div class="module-header-divider"></div>
-            <div class="module-title-box text-start">
-                <div class="d-flex align-items-center justify-content-start gap-2 flex-wrap text-start">
-                    <h2 class="module-title text-start mb-0">Konfigurasi Parameter</h2>
-                    <span class="module-badge-pill"><?= $totalParams ?> Parameter</span>
-                </div>
-                <p class="module-subtitle text-start mb-0">Kelola master parameter dan sub parameter dinamis untuk engine perhitungan scoring kredit.</p>
+            <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                <iconify-icon icon="solar:slider-vertical-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 col-md-4 mt-3 mt-md-0">
+        <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-teal bg-gradient-to-green overflow-hidden" data-bs-theme="dark">
+            <div class="card-body position-relative z-3">
+                <div class="mb-2 fw-bold text-white">Total Sub Parameter</div>
+                <div class="h2 mb-4"><?= esc((string) $totalSub) ?></div>
+                <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:<?= $totalParams > 0 ? min(100, (int) round($totalSub / max($totalParams, 1) * 20)) : 0 ?>%;"></div></div>
+                <div class="small fw-semibold text-white text-opacity-75 mb-n1">Opsi penilaian aktif</div>
+            </div>
+            <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                <iconify-icon icon="solar:layers-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 col-md-4 mt-3 mt-md-0">
+        <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-orange bg-gradient-to-pink overflow-hidden" data-bs-theme="dark">
+            <div class="card-body position-relative z-3">
+                <div class="mb-2 fw-bold text-white">Rata-rata Sub / Param</div>
+                <div class="h2 mb-4"><?= esc((string) $avgSub) ?></div>
+                <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:<?= min(100, (int) round((float) $avgSub * 15)) ?>%;"></div></div>
+                <div class="small fw-semibold text-white text-opacity-75 mb-n1">Kepadatan opsi per parameter</div>
+            </div>
+            <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                <iconify-icon icon="solar:calculator-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
             </div>
         </div>
     </div>
 </div>
 
-<!-- 2. KPI / Summary Metric Cards (Matching Produk Design Standard) -->
-<div class="row g-3 mb-4">
-    <!-- Card 1: Total Parameter -->
-    <div class="col-12 col-md-4">
-        <div class="card border-0 shadow-sm rounded-4 p-3 h-100 bg-white d-flex flex-row align-items-center gap-3">
-            <div class="d-flex align-items-center justify-content-center rounded-3 text-white" style="width: 52px; height: 52px; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.28);">
-                <i class="fa-solid fa-sliders fa-lg"></i>
-            </div>
-            <div>
-                <span class="text-muted small fw-semibold d-block text-uppercase" style="font-size: 11px; letter-spacing: 0.5px;">Total Parameter</span>
-                <div class="d-flex align-items-baseline gap-2">
-                    <h3 class="fw-bold mb-0 text-dark"><?= $totalParams ?></h3>
-                    <span class="badge bg-primary-subtle text-primary rounded-pill px-2 py-1 small" style="font-size: 11px;">Master</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Card 2: Total Sub Parameter -->
-    <div class="col-12 col-md-4">
-        <div class="card border-0 shadow-sm rounded-4 p-3 h-100 bg-white d-flex flex-row align-items-center gap-3">
-            <div class="d-flex align-items-center justify-content-center rounded-3 text-white" style="width: 52px; height: 52px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.28);">
-                <i class="fa-solid fa-layer-group fa-lg"></i>
-            </div>
-            <div>
-                <span class="text-muted small fw-semibold d-block text-uppercase" style="font-size: 11px; letter-spacing: 0.5px;">Total Sub Parameter</span>
-                <div class="d-flex align-items-baseline gap-2">
-                    <h3 class="fw-bold mb-0 text-dark"><?= $totalSub ?></h3>
-                    <span class="badge bg-success-subtle text-success rounded-pill px-2 py-1 small" style="font-size: 11px;">Aktif</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Card 3: Rata-rata Sub per Parameter -->
-    <div class="col-12 col-md-4">
-        <div class="card border-0 shadow-sm rounded-4 p-3 h-100 bg-white d-flex flex-row align-items-center gap-3">
-            <div class="d-flex align-items-center justify-content-center rounded-3 text-white" style="width: 52px; height: 52px; background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); box-shadow: 0 4px 12px rgba(139, 92, 246, 0.28);">
-                <i class="fa-solid fa-calculator fa-lg"></i>
-            </div>
-            <div>
-                <span class="text-muted small fw-semibold d-block text-uppercase" style="font-size: 11px; letter-spacing: 0.5px;">Rata-Rata Sub / Param</span>
-                <div class="d-flex align-items-baseline gap-2">
-                    <h3 class="fw-bold mb-0 text-dark"><?= $avgSub ?></h3>
-                    <span class="badge rounded-pill px-2 py-1 small" style="font-size: 11px; background: #ede9fe; color: #6d28d9;">Kategori</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- 3. Filter Data Card (Standard Produk) -->
-<div class="filter-card">
-    <div class="filter-card-header">
-        <div class="filter-header-left">
-            <div class="filter-icon-badge">
-                <i class="fa-solid fa-filter"></i>
-            </div>
-            <div>
-                <h6 class="filter-title">Filter Data</h6>
-                <p class="filter-subtitle">Gunakan filter berikut untuk mencari parameter scoring dengan cepat.</p>
-            </div>
-        </div>
-        <div>
-            <button type="button" class="filter-toggle-btn" id="btnToggleFilter" data-bs-toggle="collapse" data-bs-target="#filterCollapse" aria-expanded="true" aria-controls="filterCollapse">
+<div class="card card-borderless mb-3 filter-card">
+    <div class="card-header bg-gray-900" data-bs-theme="dark">
+        <h4 class="card-header-title text-white mb-0 d-flex align-items-center gap-2">
+            <iconify-icon icon="solar:filter-bold-duotone"></iconify-icon>
+            Filter Data
+        </h4>
+        <div class="card-header-btn">
+            <button type="button" class="btn btn-default btn-xs" id="btnToggleFilter" data-bs-toggle="collapse" data-bs-target="#filterCollapse" aria-expanded="true" aria-controls="filterCollapse">
                 <span id="filterToggleText">Sembunyikan Filter</span>
-                <i class="fa-solid fa-chevron-up" id="filterToggleIcon"></i>
+                <i class="fa fa-chevron-up ms-1" id="filterToggleIcon"></i>
             </button>
         </div>
     </div>
     <div class="collapse show" id="filterCollapse">
-        <div class="filter-card-body">
+        <div class="card-body filter-card-body">
             <div class="row g-3">
                 <div class="col-12 col-md-6 col-lg-5">
-                    <label class="filter-form-label" for="filterSearchParam">Search Parameter</label>
-                    <div class="filter-input-wrap">
-                        <i class="fa-solid fa-magnifying-glass filter-input-icon"></i>
-                        <input type="text" class="form-control" id="filterSearchParam" placeholder="Cari nama parameter atau sub parameter..." style="padding-left: 36px !important;">
+                    <label class="form-label" for="filterSearchParam">Search Parameter</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fa fa-search"></i></span>
+                        <input type="text" class="form-control" id="filterSearchParam" placeholder="Cari nama parameter atau sub parameter...">
                     </div>
                 </div>
                 <div class="col-12 col-md-6 col-lg-4">
-                    <label class="filter-form-label" for="filterParamName">Pilih Kategori Parameter</label>
-                    <div class="filter-input-wrap">
-                        <i class="fa-solid fa-tag filter-input-icon"></i>
-                        <select class="form-select" id="filterParamName" style="padding-left: 36px !important;">
-                            <option value="">Semua Parameter</option>
-                            <?php foreach ($parameters as $p) : ?>
-                                <option value="<?= esc($p['name']) ?>"><?= esc($p['name']) ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
+                    <label class="form-label" for="filterParamName">Pilih Kategori Parameter</label>
+                    <select class="form-select" id="filterParamName">
+                        <option value="">Semua Parameter</option>
+                        <?php foreach ($parameters as $p) : ?>
+                            <option value="<?= esc($p['name']) ?>"><?= esc($p['name']) ?></option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
-                <div class="col-12 col-lg-3 d-flex align-items-end">
-                    <div class="filter-actions w-100">
-                        <button type="button" class="btn-apply-filter flex-grow-1" id="btnApplyFilter">
-                            <i class="fa-solid fa-magnifying-glass"></i> Terapkan
-                        </button>
-                        <button type="button" class="btn-reset-filter" id="btnResetFilter">
-                            <i class="fa-solid fa-rotate-left"></i> Reset
-                        </button>
-                    </div>
+                <div class="col-12 col-lg-3 d-flex align-items-end gap-2">
+                    <button type="button" class="btn btn-theme flex-grow-1" id="btnApplyFilter">
+                        <i class="fa fa-search me-1"></i> Terapkan
+                    </button>
+                    <button type="button" class="btn btn-default" id="btnResetFilter">
+                        <i class="fa fa-rotate-left"></i>
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- 4. Table Card (Standard Produk) -->
-<div class="table-card">
-    <div class="table-card-header">
-        <h5 class="table-card-title">
-            <i class="fa-solid fa-list-check"></i> Daftar Konfigurasi Parameter
-        </h5>
-        <div class="table-card-actions d-flex align-items-center gap-2">
-            <!-- Dropdown Export Button -->
+<div class="card card-borderless table-card">
+    <div class="card-header bg-gray-900" data-bs-theme="dark">
+        <h4 class="card-header-title text-white mb-0">
+            <iconify-icon icon="solar:checklist-minimalistic-bold-duotone" class="me-1"></iconify-icon>
+            Daftar Konfigurasi Parameter
+        </h4>
+        <div class="card-header-btn d-flex align-items-center gap-2 table-card-actions">
             <div class="dropdown">
-                <button type="button" class="btn-export dropdown-toggle" id="btnExportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa-solid fa-arrow-up-from-bracket"></i> Export
+                <button type="button" class="btn btn-default btn-sm dropdown-toggle" id="btnExportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa fa-upload me-1"></i> Export
                 </button>
-                <ul class="dropdown-menu dropdown-menu-end shadow-sm border" aria-labelledby="btnExportDropdown" style="font-size: 12px; min-width: 170px; border-radius: 10px;">
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="btnExportDropdown">
                     <li>
-                        <button type="button" class="dropdown-item d-flex align-items-center gap-2 py-2" onclick="window.print()">
-                            <i class="fa-solid fa-file-pdf text-danger" style="font-size: 13px; width: 16px;"></i>
-                            <span>Export PDF / Cetak</span>
+                        <button type="button" class="dropdown-item" onclick="window.print()">
+                            <i class="fa fa-file-pdf text-danger me-2"></i> Export PDF / Cetak
                         </button>
                     </li>
                 </ul>
             </div>
-
-            <!-- Tambah Parameter Baru Action Button (Green / Hijau) -->
-            <button type="button" class="btn btn-success-gradient" id="btnTambahParamTabel" data-bs-toggle="modal" data-bs-target="#parameterModal">
-                <i class="fa-solid fa-plus"></i> Tambah Parameter Baru
+            <button type="button" class="btn btn-theme btn-sm" id="btnTambahParamTabel" data-bs-toggle="modal" data-bs-target="#parameterModal">
+                <i class="fa fa-plus me-1"></i> Tambah Parameter Baru
             </button>
         </div>
     </div>
@@ -205,9 +167,13 @@ $avgSub = $totalParams > 0 ? round($totalSub / $totalParams, 1) : 0;
                                     <span class="cell-no-badge"><?= $idx + 1 ?></span>
                                 </td>
                                 <td class="text-center align-middle">
-                                    <span class="badge bg-light text-primary border px-2 py-1 rounded-pill fw-bold" style="font-size: 11px;">
-                                        <i class="fa-solid fa-hashtag me-1"></i>PRM-<?= str_pad((string)$param['id'], 3, '0', STR_PAD_LEFT) ?>
-                                    </span>
+                                    <?php $prmCode = 'PRM-' . str_pad((string) $param['id'], 3, '0', STR_PAD_LEFT); ?>
+                                    <div class="d-inline-flex align-items-center gap-1">
+                                        <span class="badge bg-primary bg-opacity-15 text-primary py-6px font-monospace"><?= esc($prmCode) ?></span>
+                                        <button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" data-clipboard="<?= esc($prmCode) ?>" title="Salin ID Parameter">
+                                            <i class="fa fa-copy"></i>
+                                        </button>
+                                    </div>
                                 </td>
                                 <td class="align-middle">
                                     <div class="fw-bold text-dark fs-6"><?= esc($param['name']) ?></div>
@@ -398,7 +364,7 @@ $avgSub = $totalParams > 0 ? round($totalSub / $totalParams, 1) : 0;
                             <button type="button" class="btn btn-light px-4 fw-semibold" data-bs-dismiss="modal">
                                 <i class="fa-solid fa-xmark me-1"></i> Batal
                             </button>
-                            <button type="submit" class="btn btn-success-gradient px-4" id="btnSubmitParam">
+                            <button type="submit" class="btn btn-theme px-4" id="btnSubmitParam">
                                 <i class="fa-solid fa-floppy-disk me-1"></i> Simpan Parameter
                             </button>
                         </div>

@@ -7,36 +7,21 @@
 <div data-swal="error" data-swal-title="Terjadi Kesalahan" data-swal-message="<?= esc($error) ?>" hidden></div>
 <?php endif; ?>
 
-<!-- Page Header -->
-<div class="page-header d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-4">
-    <div class="page-header-text">
-        <h2 class="d-flex align-items-center gap-2 mb-1">
-            <span class="badge bg-primary-subtle text-primary p-2 rounded-3">
-                <i class="fa-solid fa-calculator"></i>
-            </span>
-            Scoring Kredit
-        </h2>
-        <p class="text-muted mb-0">Lakukan penilaian scoring kredit debitur berdasarkan mapping parameter produk kredit</p>
-    </div>
-</div>
-
 <form id="creditScoringForm">
     <?= csrf_field() ?>
 
-    <div class="row g-4">
+    <div class="row g-3">
         <!-- 1. Section: Pilih CIS ID / Debitur & Edit Data Debitur -->
         <div class="col-12">
-            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-                <div class="card-header bg-white py-3 px-4 border-bottom d-flex align-items-center justify-content-between">
-                    <div class="d-flex align-items-center gap-2">
-                        <span class="badge bg-primary-subtle text-primary p-2 rounded-2">
-                            <i class="fa-solid fa-user-check"></i>
-                        </span>
-                        <h5 class="mb-0 fw-bold">1. Pilih Debitur & Periksa Profil</h5>
-                    </div>
-                    <span class="badge bg-light text-muted fw-normal px-3 py-2 rounded-pill">Data Debitur Dapat Diedit Langsung</span>
+            <div class="card card-borderless overflow-hidden">
+                <div class="card-header bg-gray-900" data-bs-theme="dark">
+                    <h4 class="card-header-title text-white mb-0">
+                        <iconify-icon icon="solar:user-check-bold-duotone" class="me-1"></iconify-icon>
+                        1. Pilih Debitur &amp; Periksa Profil
+                    </h4>
+                    <span class="badge bg-white bg-opacity-15 text-white">Data master (read-only)</span>
                 </div>
-                <div class="card-body p-4">
+                <div class="card-body">
                     <!-- Dropdown Pilih Debitur -->
                     <div class="mb-4">
                         <label for="debtorSelect" class="form-label fw-semibold text-dark">
@@ -51,10 +36,10 @@
                                 </option>
                             <?php endforeach; ?>
                         </select>
-                        <div class="form-text text-muted">Pilih debitur dari daftar master untuk menampilkan data profil.</div>
+                        <div class="form-text text-muted">Pilih debitur dari daftar master. Profil ditampilkan read-only; ubah data lewat Master Debitur.</div>
                     </div>
 
-                    <!-- Panel Detail Data Debitur (Editable) -->
+                    <!-- Panel Detail Data Debitur (read-only) -->
                     <div id="debtorDetailPanel" class="d-none">
                         <div class="p-3 bg-light rounded-3 mb-3 d-flex align-items-center justify-content-between">
                             <div class="d-flex align-items-center gap-3">
@@ -73,23 +58,22 @@
                             </span>
                         </div>
 
-                        <!-- Editable Fields -->
                         <div class="row g-3">
                             <div class="col-md-6 col-lg-4">
                                 <label class="form-label small fw-semibold text-dark">NIK</label>
-                                <input type="text" class="form-control form-control-sm" id="debNik" name="nik">
+                                <input type="text" class="form-control form-control-sm" id="debNik" name="nik" readonly tabindex="-1">
                             </div>
                             <div class="col-md-6 col-lg-4">
                                 <label class="form-label small fw-semibold text-dark">Nama Lengkap Sesuai KTP</label>
-                                <input type="text" class="form-control form-control-sm" id="debFullName" name="full_name">
+                                <input type="text" class="form-control form-control-sm" id="debFullName" name="full_name" readonly tabindex="-1">
                             </div>
                             <div class="col-md-6 col-lg-4">
                                 <label class="form-label small fw-semibold text-dark">Nomor Telepon / WhatsApp</label>
-                                <input type="text" class="form-control form-control-sm" id="debPhone" name="phone">
+                                <input type="text" class="form-control form-control-sm" id="debPhone" name="phone" readonly tabindex="-1">
                             </div>
                             <div class="col-md-6 col-lg-3">
                                 <label class="form-label small fw-semibold text-dark">Jenis Kelamin</label>
-                                <select class="form-select form-select-sm" id="debGender" name="gender">
+                                <select class="form-select form-select-sm" id="debGender" name="gender" disabled>
                                     <option value="">Pilih</option>
                                     <option value="Laki-laki">Laki-laki</option>
                                     <option value="Perempuan">Perempuan</option>
@@ -97,7 +81,7 @@
                             </div>
                             <div class="col-md-6 col-lg-3">
                                 <label class="form-label small fw-semibold text-dark">Agama</label>
-                                <select class="form-select form-select-sm" id="debReligion" name="religion">
+                                <select class="form-select form-select-sm" id="debReligion" name="religion" disabled>
                                     <option value="">Pilih</option>
                                     <option value="Islam">Islam</option>
                                     <option value="Protestan">Protestan</option>
@@ -109,19 +93,19 @@
                             </div>
                             <div class="col-md-6 col-lg-3">
                                 <label class="form-label small fw-semibold text-dark">Tanggal Lahir</label>
-                                <input type="date" class="form-control form-control-sm" id="debBirthDate" name="birth_date">
+                                <input type="date" class="form-control form-control-sm" id="debBirthDate" name="birth_date" readonly tabindex="-1">
                             </div>
                             <div class="col-md-6 col-lg-3">
                                 <label class="form-label small fw-semibold text-dark">Tempat Lahir</label>
-                                <input type="text" class="form-control form-control-sm" id="debBirthPlace" name="birth_place">
+                                <input type="text" class="form-control form-control-sm" id="debBirthPlace" name="birth_place" readonly tabindex="-1">
                             </div>
                             <div class="col-md-6 col-lg-4">
                                 <label class="form-label small fw-semibold text-dark">NPWP</label>
-                                <input type="text" class="form-control form-control-sm" id="debNpwp" name="npwp">
+                                <input type="text" class="form-control form-control-sm" id="debNpwp" name="npwp" readonly tabindex="-1">
                             </div>
                             <div class="col-md-6 col-lg-8">
                                 <label class="form-label small fw-semibold text-dark">Alamat Lengkap</label>
-                                <input type="text" class="form-control form-control-sm" id="debAddress" name="address">
+                                <input type="text" class="form-control form-control-sm" id="debAddress" name="address" readonly tabindex="-1">
                             </div>
                         </div>
                     </div>
@@ -131,17 +115,15 @@
 
         <!-- 2. Section: Pilih Kode Produk yang Memiliki Mapping Parameter -->
         <div class="col-12">
-            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-                <div class="card-header bg-white py-3 px-4 border-bottom d-flex align-items-center justify-content-between">
-                    <div class="d-flex align-items-center gap-2">
-                        <span class="badge bg-warning-subtle text-warning p-2 rounded-2">
-                            <i class="fa-solid fa-box-open"></i>
-                        </span>
-                        <h5 class="mb-0 fw-bold">2. Pilih Kode Produk Kredit</h5>
-                    </div>
-                    <span class="badge bg-light text-muted fw-normal px-3 py-2 rounded-pill">Hanya Produk dengan Mapping Parameter Aktif</span>
+            <div class="card card-borderless overflow-hidden">
+                <div class="card-header bg-gray-900" data-bs-theme="dark">
+                    <h4 class="card-header-title text-white mb-0">
+                        <iconify-icon icon="solar:box-bold-duotone" class="me-1"></iconify-icon>
+                        2. Pilih Kode Produk Kredit
+                    </h4>
+                    <span class="badge bg-white bg-opacity-15 text-white">Produk dengan mapping aktif</span>
                 </div>
-                <div class="card-body p-4">
+                <div class="card-body">
                     <div class="mb-2">
                         <label for="productSelect" class="form-label fw-semibold text-dark">
                             Kode Produk Kredit <span class="text-danger">*</span>
@@ -162,27 +144,23 @@
 
         <!-- 3. Section: Penilaian Parameter Hasil Mapping (Beserta Kode & Deskripsi) -->
         <div class="col-12" id="scoringSection" style="display: none;">
-            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-                <div class="card-header bg-white py-3 px-4 border-bottom d-flex align-items-center justify-content-between">
+            <div class="card card-borderless overflow-hidden">
+                <div class="card-header bg-gray-900" data-bs-theme="dark">
+                    <h4 class="card-header-title text-white mb-0">
+                        <iconify-icon icon="solar:checklist-minimalistic-bold-duotone" class="me-1"></iconify-icon>
+                        3. Penilaian Parameter Scoring
+                    </h4>
                     <div class="d-flex align-items-center gap-2">
-                        <span class="badge bg-info-subtle text-info p-2 rounded-2">
-                            <i class="fa-solid fa-list-check"></i>
+                        <span class="badge bg-white bg-opacity-15 text-white" id="topCutoffBadge">
+                            <i class="fa fa-award me-1"></i>Batas: &ge; 350.00
                         </span>
-                        <h5 class="mb-0 fw-bold">3. Penilaian Parameter Scoring</h5>
-                    </div>
-                    <div class="d-flex align-items-center gap-2">
-                        <span class="badge bg-light text-muted border fs-6 px-3 py-2 rounded-pill fw-semibold" id="topCutoffBadge">
-                            <i class="fa-solid fa-award me-1"></i>Batas: &ge; 350.00
-                        </span>
-                        <span class="badge bg-primary text-white fs-6 px-3 py-2 rounded-pill" id="totalScoreBadge">
-                            0.00
-                        </span>
-                        <span class="badge bg-danger text-white fs-6 px-3 py-2 rounded-pill fw-bold" id="topEligibilityBadge">
-                            <i class="fa-solid fa-circle-xmark me-1"></i> TIDAK LAYAK
+                        <span class="badge bg-theme text-white" id="totalScoreBadge">0.00</span>
+                        <span class="badge bg-danger text-white fw-bold" id="topEligibilityBadge">
+                            <i class="fa fa-circle-xmark me-1"></i> TIDAK LAYAK
                         </span>
                     </div>
                 </div>
-                <div class="card-body p-4">
+                <div class="card-body">
                     <p class="text-muted mb-4 small">
                         Pilih opsi nilai untuk setiap parameter yang ter-mapping pada produk ini:
                     </p>
@@ -233,8 +211,8 @@
 
                             <!-- Action Button: Simpan Scoring -->
                             <div class="col-12 col-md-4 text-end">
-                                <button type="button" class="btn btn-success btn-lg shadow px-4 fw-semibold w-100 py-3" id="btnSaveScoring">
-                                    <i class="fa-solid fa-floppy-disk me-2"></i> Simpan Scoring Kredit
+                                <button type="button" class="btn btn-theme btn-lg w-100 py-3" id="btnSaveScoring">
+                                    <i class="fa fa-floppy-disk me-2"></i> Simpan Scoring Kredit
                                 </button>
                                 <div class="text-muted small mt-2 text-center" style="font-size: 11px;">
                                     Status kelayakan & detail penilaian disimpan ke sistem
@@ -252,12 +230,12 @@
 <div class="modal fade" id="supervisorModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content rounded-4 border-0 shadow" style="background-color: #ffffff !important;">
-            <div class="modal-header border-bottom py-3 px-4 bg-primary text-white rounded-top-4">
-                <div class="d-flex align-items-center gap-2">
-                    <i class="fa-solid fa-user-shield fs-5"></i>
-                    <h5 class="modal-title fw-bold">Pilih Supervisi / Pimpinan Unit (Pimunit)</h5>
-                </div>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <iconify-icon icon="solar:shield-user-bold-duotone" class="me-1 text-primary"></iconify-icon>
+                    Pilih Supervisi / Pimpinan Unit (Pimunit)
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-4">
                 <p class="text-muted small mb-3">
@@ -283,10 +261,10 @@
                     Supervisi yang dipilih akan menerima notifikasi in-app untuk meninjau dan memutuskan approval pengajuan ini.
                 </div>
             </div>
-            <div class="modal-footer border-top py-2 px-4">
-                <button type="button" class="btn btn-light px-3" data-bs-dismiss="modal">Batal</button>
-                <button type="button" class="btn btn-primary px-4 fw-semibold" id="btnConfirmSendSupervisor">
-                    <i class="fa-solid fa-paper-plane me-1"></i> Kirim ke Supervisi
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-bs-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-theme" id="btnConfirmSendSupervisor">
+                    <i class="fa fa-paper-plane me-1"></i> Kirim ke Supervisi
                 </button>
             </div>
         </div>
