@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Phase 5 Preview — Access Control</title>
+    <link rel="icon" href="assets/images/favicon.png">
+    <link href="assets/color-admin/css/vendor.min.css" rel="stylesheet">
+    <link href="assets/color-admin/css/default/app.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/shell-phase1.css">
+    <link rel="stylesheet" href="css/access-phase5.css">
+    <script src="assets/color-admin/js/iconify/iconify-icon.min.js"></script>
+    <style>
+        .preview-page { display: none; }
+        .preview-page.is-on { display: block; }
+    </style>
+</head>
+<body>
+<div id="app" class="app app-header-fixed app-sidebar-fixed">
+    <div id="appHeader" class="app-header">
+        <div class="brand">
+            <div class="mobile-toggler">
+                <button type="button" class="menu-toggler" data-toggle-class="app-sidebar-mobile-toggled" data-toggle-target=".app">
+                    <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+                </button>
+            </div>
+            <a href="#" class="brand-logo"><img src="assets/images/logo-horizontal.png" alt="New Scoring" class="brand-logo-img"></a>
+        </div>
+        <div class="menu">
+            <div class="menu-item menu-item-form d-none d-md-flex">
+                <form action="#"><input type="text" class="form-control" placeholder="Cari..."><button class="btn btn-search" type="submit"><iconify-icon icon="octicon:search-16"></iconify-icon></button></form>
+            </div>
+            <div class="menu-item"><a href="#" class="menu-link"><iconify-icon icon="solar:bell-bing-bold-duotone"></iconify-icon><span class="badge">2</span></a></div>
+            <div class="menu-item"><a href="#" class="menu-link"><span class="rounded-circle bg-theme text-white d-inline-flex align-items-center justify-content-center" style="width:30px;height:30px;font-size:12px;font-weight:700;">AI</span></a></div>
+        </div>
+    </div>
+    <div id="sidebar" class="app-sidebar" data-bs-theme="dark">
+        <div class="app-sidebar-content" data-scrollbar="true" data-height="100%">
+            <div class="menu">
+                <div class="menu-profile"><a href="javascript:;" class="menu-link"><div class="menu-profile-cover with-shadow"></div><div class="menu-profile-image avatar-initials">AI</div><div class="menu-profile-info"><div class="d-flex align-items-center"><div class="flex-grow-1">Admin IT</div></div><small>ADMIN IT · KANTOR PUSAT</small></div></a></div>
+                <div class="menu-header">Navigation</div>
+                <div class="menu-item"><a href="#" class="menu-link"><div class="menu-icon"><i class="fa fa-home"></i></div><div class="menu-text">Dashboard</div></a></div>
+                <div class="menu-item has-sub active">
+                    <a href="javascript:;" class="menu-link"><div class="menu-icon"><i class="fa fa-user-group"></i></div><div class="menu-text">User &amp; Access</div><div class="menu-caret"></div></a>
+                    <div class="menu-submenu">
+                        <div class="menu-item" data-preview-nav="users"><a href="#users" class="menu-link"><div class="menu-text">User</div></a></div>
+                        <div class="menu-item" data-preview-nav="roles"><a href="#roles" class="menu-link"><div class="menu-text">Role</div></a></div>
+                        <div class="menu-item" data-preview-nav="permissions"><a href="#permissions" class="menu-link"><div class="menu-text">Permission</div></a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="app-sidebar-mobile-backdrop"><a href="#" data-dismiss="app-sidebar-mobile" class="stretched-link"></a></div>
+
+    <div id="content" class="app-content">
+        <!-- USERS -->
+        <div class="preview-page is-on" id="page-users" data-preview="users">
+            <ol class="breadcrumb float-xl-end"><li class="breadcrumb-item"><a href="#">Home</a></li><li class="breadcrumb-item active">Manajemen User</li></ol>
+            <h1 class="page-header">Manajemen User <small>kelola akun pengguna</small></h1>
+
+            <ul class="nav nav-pills access-subnav gap-2 mb-3">
+                <li class="nav-item"><a class="nav-link active" href="#users"><i class="fa fa-users me-1"></i>Pengguna</a></li>
+                <li class="nav-item"><a class="nav-link" href="#roles"><i class="fa fa-user-shield me-1"></i>Role</a></li>
+                <li class="nav-item"><a class="nav-link" href="#permissions"><i class="fa fa-key me-1"></i>Hak Akses</a></li>
+            </ul>
+
+            <div class="row mb-3">
+                <div class="col-xl-4 col-md-4">
+                    <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-info bg-gradient-to-blue overflow-hidden" data-bs-theme="dark">
+                        <div class="card-body position-relative z-3">
+                            <div class="mb-2 fw-bold text-white">Total User</div>
+                            <div class="h2 mb-4">8</div>
+                            <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:100%;"></div></div>
+                            <div class="small fw-semibold text-white text-opacity-75 mb-n1">Semua pengguna terdaftar</div>
+                        </div>
+                        <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                            <iconify-icon icon="solar:users-group-rounded-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-md-4 mt-3 mt-md-0">
+                    <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-teal bg-gradient-to-green overflow-hidden" data-bs-theme="dark">
+                        <div class="card-body position-relative z-3">
+                            <div class="mb-2 fw-bold text-white">Aktif</div>
+                            <div class="h2 mb-4">7</div>
+                            <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:88%;"></div></div>
+                            <div class="small fw-semibold text-white text-opacity-75 mb-n1">User berstatus aktif</div>
+                        </div>
+                        <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                            <iconify-icon icon="solar:check-circle-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-md-4 mt-3 mt-md-0">
+                    <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-orange bg-gradient-to-pink overflow-hidden" data-bs-theme="dark">
+                        <div class="card-body position-relative z-3">
+                            <div class="mb-2 fw-bold text-white">Nonaktif</div>
+                            <div class="h2 mb-4">1</div>
+                            <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:12%;"></div></div>
+                            <div class="small fw-semibold text-white text-opacity-75 mb-n1">User nonaktif</div>
+                        </div>
+                        <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                            <iconify-icon icon="solar:close-circle-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-borderless table-card">
+                <div class="card-header bg-gray-900" data-bs-theme="dark">
+                    <h4 class="card-header-title text-white mb-0">
+                        <iconify-icon icon="solar:users-group-rounded-bold-duotone" class="me-1"></iconify-icon>
+                        Daftar User
+                    </h4>
+                    <div class="card-header-btn">
+                        <button type="button" class="btn btn-theme btn-sm"><i class="fa fa-plus me-1"></i> Tambah User Baru</button>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th style="width:50px;">No</th>
+                                    <th>Username</th>
+                                    <th>Nama Lengkap</th>
+                                    <th>Role</th>
+                                    <th>Cabang</th>
+                                    <th class="text-center">Status</th>
+                                    <th class="text-center" style="width:100px;">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-muted">1</td>
+                                    <td>
+                                        <div class="d-inline-flex align-items-center gap-1">
+                                            <span class="badge bg-primary bg-opacity-15 text-primary py-6px font-monospace">admin.it</span>
+                                            <button type="button" class="btn btn-default btn-xs btn-icon"><i class="fa fa-copy"></i></button>
+                                        </div>
+                                    </td>
+                                    <td class="fw-semibold">Admin IT</td>
+                                    <td><span class="badge bg-info bg-opacity-15 text-info py-6px">Admin IT</span></td>
+                                    <td>Kantor Pusat</td>
+                                    <td class="text-center"><span class="badge bg-success bg-opacity-15 text-success py-6px">Aktif</span></td>
+                                    <td class="text-center"><button type="button" class="btn btn-default btn-xs btn-icon"><i class="fa fa-pen"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">2</td>
+                                    <td>
+                                        <div class="d-inline-flex align-items-center gap-1">
+                                            <span class="badge bg-primary bg-opacity-15 text-primary py-6px font-monospace">kabag.kredit</span>
+                                            <button type="button" class="btn btn-default btn-xs btn-icon"><i class="fa fa-copy"></i></button>
+                                        </div>
+                                    </td>
+                                    <td class="fw-semibold">Budi Santoso</td>
+                                    <td><span class="badge bg-info bg-opacity-15 text-info py-6px">Kabag Kredit</span></td>
+                                    <td>Kantor Pusat</td>
+                                    <td class="text-center"><span class="badge bg-success bg-opacity-15 text-success py-6px">Aktif</span></td>
+                                    <td class="text-center"><button type="button" class="btn btn-default btn-xs btn-icon"><i class="fa fa-pen"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">3</td>
+                                    <td>
+                                        <div class="d-inline-flex align-items-center gap-1">
+                                            <span class="badge bg-primary bg-opacity-15 text-primary py-6px font-monospace">ao.medan</span>
+                                            <button type="button" class="btn btn-default btn-xs btn-icon"><i class="fa fa-copy"></i></button>
+                                        </div>
+                                    </td>
+                                    <td class="fw-semibold">Siti Rahayu</td>
+                                    <td><span class="badge bg-info bg-opacity-15 text-info py-6px">Account Officer</span></td>
+                                    <td>KCU Medan</td>
+                                    <td class="text-center"><span class="badge bg-success bg-opacity-15 text-success py-6px">Aktif</span></td>
+                                    <td class="text-center"><button type="button" class="btn btn-default btn-xs btn-icon"><i class="fa fa-pen"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">4</td>
+                                    <td>
+                                        <div class="d-inline-flex align-items-center gap-1">
+                                            <span class="badge bg-primary bg-opacity-15 text-primary py-6px font-monospace">ao.binjai</span>
+                                            <button type="button" class="btn btn-default btn-xs btn-icon"><i class="fa fa-copy"></i></button>
+                                        </div>
+                                    </td>
+                                    <td class="fw-semibold">Andi Wijaya</td>
+                                    <td><span class="badge bg-info bg-opacity-15 text-info py-6px">Account Officer</span></td>
+                                    <td>Cabang Binjai</td>
+                                    <td class="text-center"><span class="badge bg-secondary bg-opacity-15 text-secondary py-6px">Nonaktif</span></td>
+                                    <td class="text-center"><button type="button" class="btn btn-default btn-xs btn-icon"><i class="fa fa-pen"></i></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ROLES -->
+        <div class="preview-page" id="page-roles" data-preview="roles">
+            <ol class="breadcrumb float-xl-end"><li class="breadcrumb-item"><a href="#">Home</a></li><li class="breadcrumb-item active">Manajemen Role</li></ol>
+            <h1 class="page-header">Manajemen Role <small>atur role &amp; hak akses</small></h1>
+
+            <ul class="nav nav-pills access-subnav gap-2 mb-3">
+                <li class="nav-item"><a class="nav-link" href="#users"><i class="fa fa-users me-1"></i>Pengguna</a></li>
+                <li class="nav-item"><a class="nav-link active" href="#roles"><i class="fa fa-user-shield me-1"></i>Role</a></li>
+                <li class="nav-item"><a class="nav-link" href="#permissions"><i class="fa fa-key me-1"></i>Hak Akses</a></li>
+            </ul>
+
+            <div class="row mb-3">
+                <div class="col-xl-4 col-md-4">
+                    <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-blue bg-gradient-to-indigo overflow-hidden" data-bs-theme="dark">
+                        <div class="card-body position-relative z-3">
+                            <div class="mb-2 fw-bold text-white">Total Role</div>
+                            <div class="h2 mb-4">4</div>
+                            <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:100%;"></div></div>
+                            <div class="small fw-semibold text-white text-opacity-75 mb-n1">Role terdaftar</div>
+                        </div>
+                        <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                            <iconify-icon icon="solar:shield-user-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-md-4 mt-3 mt-md-0">
+                    <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-teal bg-gradient-to-green overflow-hidden" data-bs-theme="dark">
+                        <div class="card-body position-relative z-3">
+                            <div class="mb-2 fw-bold text-white">Katalog Permission</div>
+                            <div class="h2 mb-4">12</div>
+                            <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:100%;"></div></div>
+                            <div class="small fw-semibold text-white text-opacity-75 mb-n1">Permission tersedia</div>
+                        </div>
+                        <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                            <iconify-icon icon="solar:key-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-md-4 mt-3 mt-md-0">
+                    <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-orange bg-gradient-to-pink overflow-hidden" data-bs-theme="dark">
+                        <div class="card-body position-relative z-3">
+                            <div class="mb-2 fw-bold text-white">Assignment</div>
+                            <div class="h2 mb-4">28</div>
+                            <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:70%;"></div></div>
+                            <div class="small fw-semibold text-white text-opacity-75 mb-n1">Permission terikat ke role</div>
+                        </div>
+                        <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                            <iconify-icon icon="solar:link-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-end mb-3">
+                <button type="button" class="btn btn-theme btn-sm"><i class="fa fa-plus me-1"></i> Tambah Role</button>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-12 col-lg-6">
+                    <div class="card card-borderless h-100 role-perm-card">
+                        <div class="card-header bg-gray-900" data-bs-theme="dark">
+                            <div>
+                                <h4 class="card-header-title text-white mb-0">Admin IT</h4>
+                                <div class="d-inline-flex align-items-center gap-1 mt-1">
+                                    <span class="badge bg-white bg-opacity-15 text-white font-monospace">admin_it</span>
+                                    <button type="button" class="btn btn-default btn-xs btn-icon"><i class="fa fa-copy"></i></button>
+                                </div>
+                            </div>
+                            <span class="badge bg-theme">12 permission</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-2">
+                                <div class="col-12 col-sm-6"><div class="form-check"><input class="form-check-input" type="checkbox" checked id="p1"><label class="form-check-label" for="p1"><span class="fw-semibold d-block">Kelola Akses</span><small class="text-muted font-monospace">access.manage</small></label></div></div>
+                                <div class="col-12 col-sm-6"><div class="form-check"><input class="form-check-input" type="checkbox" checked id="p2"><label class="form-check-label" for="p2"><span class="fw-semibold d-block">Kelola Master</span><small class="text-muted font-monospace">master.manage</small></label></div></div>
+                                <div class="col-12 col-sm-6"><div class="form-check"><input class="form-check-input" type="checkbox" checked id="p3"><label class="form-check-label" for="p3"><span class="fw-semibold d-block">Ajukan Scoring</span><small class="text-muted font-monospace">scoring.submit</small></label></div></div>
+                                <div class="col-12 col-sm-6"><div class="form-check"><input class="form-check-input" type="checkbox" checked id="p4"><label class="form-check-label" for="p4"><span class="fw-semibold d-block">Approve Scoring</span><small class="text-muted font-monospace">scoring.approve</small></label></div></div>
+                                <div class="col-12 col-sm-6"><div class="form-check"><input class="form-check-input" type="checkbox" checked id="p5"><label class="form-check-label" for="p5"><span class="fw-semibold d-block">Konfigurasi Parameter</span><small class="text-muted font-monospace">scoring.configure</small></label></div></div>
+                                <div class="col-12 col-sm-6"><div class="form-check"><input class="form-check-input" type="checkbox" checked id="p6"><label class="form-check-label" for="p6"><span class="fw-semibold d-block">Assign Approval</span><small class="text-muted font-monospace">scoring.assign</small></label></div></div>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent d-flex justify-content-end">
+                            <button type="button" class="btn btn-theme btn-sm"><i class="fa fa-floppy-disk me-1"></i> Simpan Hak Akses</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="card card-borderless h-100 role-perm-card">
+                        <div class="card-header bg-gray-900" data-bs-theme="dark">
+                            <div>
+                                <h4 class="card-header-title text-white mb-0">Account Officer</h4>
+                                <div class="d-inline-flex align-items-center gap-1 mt-1">
+                                    <span class="badge bg-white bg-opacity-15 text-white font-monospace">ao</span>
+                                    <button type="button" class="btn btn-default btn-xs btn-icon"><i class="fa fa-copy"></i></button>
+                                </div>
+                            </div>
+                            <span class="badge bg-theme">2 permission</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-2">
+                                <div class="col-12 col-sm-6"><div class="form-check"><input class="form-check-input" type="checkbox" id="p7"><label class="form-check-label" for="p7"><span class="fw-semibold d-block">Kelola Akses</span><small class="text-muted font-monospace">access.manage</small></label></div></div>
+                                <div class="col-12 col-sm-6"><div class="form-check"><input class="form-check-input" type="checkbox" id="p8"><label class="form-check-label" for="p8"><span class="fw-semibold d-block">Kelola Master</span><small class="text-muted font-monospace">master.manage</small></label></div></div>
+                                <div class="col-12 col-sm-6"><div class="form-check"><input class="form-check-input" type="checkbox" checked id="p9"><label class="form-check-label" for="p9"><span class="fw-semibold d-block">Ajukan Scoring</span><small class="text-muted font-monospace">scoring.submit</small></label></div></div>
+                                <div class="col-12 col-sm-6"><div class="form-check"><input class="form-check-input" type="checkbox" id="p10"><label class="form-check-label" for="p10"><span class="fw-semibold d-block">Approve Scoring</span><small class="text-muted font-monospace">scoring.approve</small></label></div></div>
+                                <div class="col-12 col-sm-6"><div class="form-check"><input class="form-check-input" type="checkbox" id="p11"><label class="form-check-label" for="p11"><span class="fw-semibold d-block">Konfigurasi Parameter</span><small class="text-muted font-monospace">scoring.configure</small></label></div></div>
+                                <div class="col-12 col-sm-6"><div class="form-check"><input class="form-check-input" type="checkbox" checked id="p12"><label class="form-check-label" for="p12"><span class="fw-semibold d-block">Lihat Laporan</span><small class="text-muted font-monospace">report.view</small></label></div></div>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent d-flex justify-content-end">
+                            <button type="button" class="btn btn-theme btn-sm"><i class="fa fa-floppy-disk me-1"></i> Simpan Hak Akses</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PERMISSIONS -->
+        <div class="preview-page" id="page-permissions" data-preview="permissions">
+            <ol class="breadcrumb float-xl-end"><li class="breadcrumb-item"><a href="#">Home</a></li><li class="breadcrumb-item active">Hak Akses</li></ol>
+            <h1 class="page-header">Hak Akses <small>katalog permission</small></h1>
+
+            <ul class="nav nav-pills access-subnav gap-2 mb-3">
+                <li class="nav-item"><a class="nav-link" href="#users"><i class="fa fa-users me-1"></i>Pengguna</a></li>
+                <li class="nav-item"><a class="nav-link" href="#roles"><i class="fa fa-user-shield me-1"></i>Role</a></li>
+                <li class="nav-item"><a class="nav-link active" href="#permissions"><i class="fa fa-key me-1"></i>Hak Akses</a></li>
+            </ul>
+
+            <div class="row mb-3">
+                <div class="col-xl-4 col-md-4">
+                    <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-indigo bg-gradient-to-purple overflow-hidden" data-bs-theme="dark">
+                        <div class="card-body position-relative z-3">
+                            <div class="mb-2 fw-bold text-white">Total Permission</div>
+                            <div class="h2 mb-4">12</div>
+                            <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:100%;"></div></div>
+                            <div class="small fw-semibold text-white text-opacity-75 mb-n1">Katalog hak akses</div>
+                        </div>
+                        <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                            <iconify-icon icon="solar:key-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-md-4 mt-3 mt-md-0">
+                    <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-teal bg-gradient-to-cyan overflow-hidden" data-bs-theme="dark">
+                        <div class="card-body position-relative z-3">
+                            <div class="mb-2 fw-bold text-white">Aktif</div>
+                            <div class="h2 mb-4">12</div>
+                            <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:100%;"></div></div>
+                            <div class="small fw-semibold text-white text-opacity-75 mb-n1">Permission aktif</div>
+                        </div>
+                        <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                            <iconify-icon icon="solar:check-circle-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-md-4 mt-3 mt-md-0">
+                    <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-orange bg-gradient-to-pink overflow-hidden" data-bs-theme="dark">
+                        <div class="card-body position-relative z-3">
+                            <div class="mb-2 fw-bold text-white">Nonaktif</div>
+                            <div class="h2 mb-4">0</div>
+                            <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:0%;"></div></div>
+                            <div class="small fw-semibold text-white text-opacity-75 mb-n1">Permission nonaktif</div>
+                        </div>
+                        <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                            <iconify-icon icon="solar:close-circle-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert alert-info d-flex align-items-start gap-2 mb-3">
+                <i class="fa fa-circle-info mt-1"></i>
+                <div class="small mb-0">
+                    <strong>Catatan:</strong> Katalog ini bersifat terpusat. Penugasan permission ke role dikonfigurasi melalui menu Role.
+                </div>
+            </div>
+
+            <div class="card card-borderless table-card">
+                <div class="card-header bg-gray-900" data-bs-theme="dark">
+                    <h4 class="card-header-title text-white mb-0">
+                        <iconify-icon icon="solar:shield-keyhole-bold-duotone" class="me-1"></iconify-icon>
+                        Daftar Hak Akses
+                    </h4>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th style="width: 60px;" class="text-center">No</th>
+                                    <th style="width: 280px;">Kode Permission</th>
+                                    <th>Nama Hak Akses</th>
+                                    <th style="width: 140px;" class="text-center">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center text-muted">1</td>
+                                    <td>
+                                        <div class="d-inline-flex align-items-center gap-1">
+                                            <span class="badge bg-primary bg-opacity-15 text-primary py-6px font-monospace">access.manage</span>
+                                            <button type="button" class="btn btn-default btn-xs btn-icon"><i class="fa fa-copy"></i></button>
+                                        </div>
+                                    </td>
+                                    <td class="fw-semibold">Kelola Akses</td>
+                                    <td class="text-center"><span class="badge bg-success bg-opacity-15 text-success py-6px">Aktif</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center text-muted">2</td>
+                                    <td>
+                                        <div class="d-inline-flex align-items-center gap-1">
+                                            <span class="badge bg-primary bg-opacity-15 text-primary py-6px font-monospace">master.manage</span>
+                                            <button type="button" class="btn btn-default btn-xs btn-icon"><i class="fa fa-copy"></i></button>
+                                        </div>
+                                    </td>
+                                    <td class="fw-semibold">Kelola Master Data</td>
+                                    <td class="text-center"><span class="badge bg-success bg-opacity-15 text-success py-6px">Aktif</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center text-muted">3</td>
+                                    <td>
+                                        <div class="d-inline-flex align-items-center gap-1">
+                                            <span class="badge bg-primary bg-opacity-15 text-primary py-6px font-monospace">scoring.submit</span>
+                                            <button type="button" class="btn btn-default btn-xs btn-icon"><i class="fa fa-copy"></i></button>
+                                        </div>
+                                    </td>
+                                    <td class="fw-semibold">Ajukan Scoring</td>
+                                    <td class="text-center"><span class="badge bg-success bg-opacity-15 text-success py-6px">Aktif</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center text-muted">4</td>
+                                    <td>
+                                        <div class="d-inline-flex align-items-center gap-1">
+                                            <span class="badge bg-primary bg-opacity-15 text-primary py-6px font-monospace">scoring.approve</span>
+                                            <button type="button" class="btn btn-default btn-xs btn-icon"><i class="fa fa-copy"></i></button>
+                                        </div>
+                                    </td>
+                                    <td class="fw-semibold">Approve Scoring</td>
+                                    <td class="text-center"><span class="badge bg-success bg-opacity-15 text-success py-6px">Aktif</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center text-muted">5</td>
+                                    <td>
+                                        <div class="d-inline-flex align-items-center gap-1">
+                                            <span class="badge bg-primary bg-opacity-15 text-primary py-6px font-monospace">scoring.configure</span>
+                                            <button type="button" class="btn btn-default btn-xs btn-icon"><i class="fa fa-copy"></i></button>
+                                        </div>
+                                    </td>
+                                    <td class="fw-semibold">Konfigurasi Parameter</td>
+                                    <td class="text-center"><span class="badge bg-success bg-opacity-15 text-success py-6px">Aktif</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center text-muted">6</td>
+                                    <td>
+                                        <div class="d-inline-flex align-items-center gap-1">
+                                            <span class="badge bg-primary bg-opacity-15 text-primary py-6px font-monospace">scoring.assign</span>
+                                            <button type="button" class="btn btn-default btn-xs btn-icon"><i class="fa fa-copy"></i></button>
+                                        </div>
+                                    </td>
+                                    <td class="fw-semibold">Assign Approval</td>
+                                    <td class="text-center"><span class="badge bg-success bg-opacity-15 text-success py-6px">Aktif</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="assets/color-admin/js/vendor.min.js"></script>
+<script src="assets/color-admin/js/app.min.js"></script>
+<script>
+function showPreview(name) {
+    document.querySelectorAll('.preview-page').forEach(function (el) {
+        el.classList.toggle('is-on', el.getAttribute('data-preview') === name);
+    });
+    document.querySelectorAll('[data-preview-nav]').forEach(function (el) {
+        el.classList.toggle('active', el.getAttribute('data-preview-nav') === name);
+    });
+}
+var hash = (location.hash || '#users').replace('#', '');
+if (['users', 'roles', 'permissions'].indexOf(hash) === -1) hash = 'users';
+showPreview(hash);
+window.addEventListener('hashchange', function () {
+    var h = (location.hash || '#users').replace('#', '');
+    if (['users', 'roles', 'permissions'].indexOf(h) !== -1) showPreview(h);
+});
+</script>
+</body>
+</html>

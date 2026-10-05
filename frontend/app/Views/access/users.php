@@ -1,3 +1,16 @@
+<?php
+$users = $users ?? [];
+$roles = $roles ?? [];
+$branches = $branches ?? [];
+$totalUsers = count($users);
+$activeUsers = 0;
+foreach ($users as $u) {
+    if (! empty($u['is_active'])) {
+        $activeUsers++;
+    }
+}
+$inactiveUsers = max(0, $totalUsers - $activeUsers);
+?>
 <?= view('partials/shell_start', ['profile' => $profile, 'title' => 'Manajemen User']) ?>
 
 <?php if (! empty($message)) : ?>
@@ -7,24 +20,69 @@
 <div data-swal="error" data-swal-title="Terjadi Kesalahan" data-swal-message="<?= esc($error) ?>" hidden></div>
 <?php endif; ?>
 
-<!-- Page Header -->
-<div class="page-header">
-    <div class="page-header-text">
-        <h2><i class="fa-solid fa-users me-2 text-primary"></i>Manajemen User</h2>
-        <p class="text-muted mb-0">Kelola data pengguna dan hak akses sistem</p>
+<ul class="nav nav-pills access-subnav gap-2 mb-3">
+    <li class="nav-item"><a class="nav-link active" href="<?= site_url('access/users') ?>"><i class="fa fa-users me-1"></i>Pengguna</a></li>
+    <li class="nav-item"><a class="nav-link" href="<?= site_url('access/roles') ?>"><i class="fa fa-user-shield me-1"></i>Role</a></li>
+    <li class="nav-item"><a class="nav-link" href="<?= site_url('access/permissions') ?>"><i class="fa fa-key me-1"></i>Hak Akses</a></li>
+</ul>
+
+<div class="row mb-3">
+    <div class="col-xl-4 col-md-4">
+        <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-info bg-gradient-to-blue overflow-hidden" data-bs-theme="dark">
+            <div class="card-body position-relative z-3">
+                <div class="mb-2 fw-bold text-white">Total User</div>
+                <div class="h2 mb-4"><?= esc((string) $totalUsers) ?></div>
+                <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:100%;"></div></div>
+                <div class="small fw-semibold text-white text-opacity-75 mb-n1">Semua pengguna terdaftar</div>
+            </div>
+            <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                <iconify-icon icon="solar:users-group-rounded-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
+            </div>
+        </div>
     </div>
-    <div class="page-actions">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createUserModal">
-            <i class="fa-solid fa-plus me-1"></i> Tambah User Baru
-        </button>
+    <div class="col-xl-4 col-md-4 mt-3 mt-md-0">
+        <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-teal bg-gradient-to-green overflow-hidden" data-bs-theme="dark">
+            <div class="card-body position-relative z-3">
+                <div class="mb-2 fw-bold text-white">Aktif</div>
+                <div class="h2 mb-4"><?= esc((string) $activeUsers) ?></div>
+                <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:<?= $totalUsers > 0 ? (int) round($activeUsers / $totalUsers * 100) : 0 ?>%;"></div></div>
+                <div class="small fw-semibold text-white text-opacity-75 mb-n1">User berstatus aktif</div>
+            </div>
+            <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                <iconify-icon icon="solar:check-circle-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 col-md-4 mt-3 mt-md-0">
+        <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-orange bg-gradient-to-pink overflow-hidden" data-bs-theme="dark">
+            <div class="card-body position-relative z-3">
+                <div class="mb-2 fw-bold text-white">Nonaktif</div>
+                <div class="h2 mb-4"><?= esc((string) $inactiveUsers) ?></div>
+                <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:<?= $totalUsers > 0 ? (int) round($inactiveUsers / $totalUsers * 100) : 0 ?>%;"></div></div>
+                <div class="small fw-semibold text-white text-opacity-75 mb-n1">User nonaktif</div>
+            </div>
+            <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                <iconify-icon icon="solar:close-circle-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
+            </div>
+        </div>
     </div>
 </div>
 
-<!-- Users Table -->
-<div class="card">
+<div class="card card-borderless table-card">
+    <div class="card-header bg-gray-900" data-bs-theme="dark">
+        <h4 class="card-header-title text-white mb-0">
+            <iconify-icon icon="solar:users-group-rounded-bold-duotone" class="me-1"></iconify-icon>
+            Daftar User
+        </h4>
+        <div class="card-header-btn">
+            <button type="button" class="btn btn-theme btn-sm" data-bs-toggle="modal" data-bs-target="#createUserModal">
+                <i class="fa fa-plus me-1"></i> Tambah User Baru
+            </button>
+        </div>
+    </div>
     <div class="card-body p-0">
         <div class="table-responsive">
-            <table id="usersTable" class="table table-hover align-middle mb-0">
+            <table id="usersTable" class="table table-hover table-striped align-middle mb-0">
                 <thead>
                     <tr>
                         <th style="width:50px;">No</th>
@@ -40,22 +98,27 @@
                     <?php foreach ($users as $index => $user) : ?>
                     <tr>
                         <td class="text-muted"><?= esc((string) ($index + 1)) ?></td>
-                        <td class="fw-semibold"><?= esc($user['username']) ?></td>
-                        <td><?= esc($user['full_name']) ?></td>
                         <td>
-                            <span class="badge" style="background:var(--info-bg);color:#075985;">
-                                <?= esc($user['role_name'] ?? '-') ?>
-                            </span>
+                            <div class="d-inline-flex align-items-center gap-1">
+                                <span class="badge bg-primary bg-opacity-15 text-primary py-6px font-monospace"><?= esc($user['username']) ?></span>
+                                <button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" data-clipboard="<?= esc($user['username']) ?>" title="Salin Username">
+                                    <i class="fa fa-copy"></i>
+                                </button>
+                            </div>
                         </td>
+                        <td class="fw-semibold"><?= esc($user['full_name']) ?></td>
+                        <td><span class="badge bg-info bg-opacity-15 text-info py-6px"><?= esc($user['role_name'] ?? '-') ?></span></td>
                         <td><?= esc($user['branch_name'] ?? '-') ?></td>
                         <td class="text-center">
-                            <span class="badge badge-<?= ! empty($user['is_active']) ? 'active' : 'inactive' ?>">
-                                <?= ! empty($user['is_active']) ? 'Aktif' : 'Nonaktif' ?>
-                            </span>
+                            <?php if (! empty($user['is_active'])) : ?>
+                                <span class="badge bg-success bg-opacity-15 text-success py-6px badge-active">Aktif</span>
+                            <?php else : ?>
+                                <span class="badge bg-secondary bg-opacity-15 text-secondary py-6px badge-inactive">Nonaktif</span>
+                            <?php endif; ?>
                         </td>
                         <td class="text-center">
                             <button type="button"
-                                    class="btn btn-sm btn-outline-primary btn-edit-user"
+                                    class="btn btn-default btn-xs btn-icon btn-edit-user"
                                     data-id="<?= esc($user['id']) ?>"
                                     data-full-name="<?= esc($user['full_name']) ?>"
                                     data-role-id="<?= esc($user['role_id'] ?? '') ?>"
@@ -63,20 +126,14 @@
                                     data-is-active="<?= ! empty($user['is_active']) ? '1' : '0' ?>"
                                     data-bs-toggle="modal" data-bs-target="#editUserModal"
                                     title="Edit User">
-                                <i class="fa-solid fa-pen-to-square"></i>
+                                <i class="fa fa-pen"></i>
                             </button>
                         </td>
                     </tr>
                     <?php endforeach; ?>
                     <?php if (empty($users)) : ?>
                     <tr>
-                        <td colspan="7">
-                            <div class="empty-state">
-                                <i class="fa-regular fa-user"></i>
-                                <h6>Belum Ada User</h6>
-                                <p>Klik "Tambah User Baru" untuk menambahkan pengguna pertama.</p>
-                            </div>
-                        </td>
+                        <td colspan="7" class="text-center text-muted py-4">Belum ada user. Klik "Tambah User Baru" untuk menambahkan.</td>
                     </tr>
                     <?php endif; ?>
                 </tbody>
@@ -85,15 +142,13 @@
     </div>
 </div>
 
-<!-- ============================================================
-     MODAL: Create User
-     ============================================================ -->
 <div class="modal fade" id="createUserModal" tabindex="-1" aria-labelledby="createUserModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="createUserModalLabel">
-                    <i class="fa-solid fa-user-plus me-2 text-primary"></i>Tambah User Baru
+                    <iconify-icon icon="solar:user-plus-bold-duotone" class="me-1 text-primary"></iconify-icon>
+                    Tambah User Baru
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
             </div>
@@ -102,23 +157,20 @@
                 <div class="modal-body">
                     <div class="row g-3">
                         <div class="col-12 col-md-6">
-                            <label class="form-label" for="new_username">Username <span class="required">*</span></label>
-                            <input id="new_username" name="username" type="text" class="form-control" required
-                                   placeholder="Contoh: john.doe">
+                            <label class="form-label" for="new_username">Username <span class="text-danger">*</span></label>
+                            <input id="new_username" name="username" type="text" class="form-control" required placeholder="Contoh: john.doe">
                         </div>
                         <div class="col-12 col-md-6">
-                            <label class="form-label" for="new_full_name">Nama Lengkap <span class="required">*</span></label>
-                            <input id="new_full_name" name="full_name" type="text" class="form-control" required
-                                   placeholder="Nama lengkap pengguna">
+                            <label class="form-label" for="new_full_name">Nama Lengkap <span class="text-danger">*</span></label>
+                            <input id="new_full_name" name="full_name" type="text" class="form-control" required placeholder="Nama lengkap pengguna">
                         </div>
                         <div class="col-12">
-                            <label class="form-label" for="new_password">Password Awal <span class="required">*</span></label>
-                            <input id="new_password" name="password" type="password" class="form-control"
-                                   minlength="12" required placeholder="Minimal 12 karakter">
-                            <div class="form-text">Password minimal 12 karakter. Pengguna dapat mengubah setelah login.</div>
+                            <label class="form-label" for="new_password">Password Awal <span class="text-danger">*</span></label>
+                            <input id="new_password" name="password" type="password" class="form-control" minlength="12" required placeholder="Minimal 12 karakter">
+                            <div class="form-text">Password minimal 12 karakter.</div>
                         </div>
                         <div class="col-12 col-md-6">
-                            <label class="form-label" for="new_role_id">Role <span class="required">*</span></label>
+                            <label class="form-label" for="new_role_id">Role <span class="text-danger">*</span></label>
                             <select id="new_role_id" name="role_id" class="select2" data-placeholder="Pilih role..." required>
                                 <option value=""></option>
                                 <?php foreach ($roles as $role) : ?>
@@ -129,7 +181,7 @@
                             </select>
                         </div>
                         <div class="col-12 col-md-6">
-                            <label class="form-label" for="new_branch_id">Cabang <span class="required">*</span></label>
+                            <label class="form-label" for="new_branch_id">Cabang <span class="text-danger">*</span></label>
                             <select id="new_branch_id" name="branch_id" class="select2" data-placeholder="Pilih cabang..." required>
                                 <option value=""></option>
                                 <?php foreach ($branches as $branch) : ?>
@@ -146,9 +198,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" id="btnCreateUser" class="btn btn-primary">
-                        <i class="fa-solid fa-floppy-disk me-1"></i> Simpan User
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" id="btnCreateUser" class="btn btn-theme">
+                        <i class="fa fa-floppy-disk me-1"></i> Simpan User
                     </button>
                 </div>
             </form>
@@ -156,15 +208,13 @@
     </div>
 </div>
 
-<!-- ============================================================
-     MODAL: Edit User
-     ============================================================ -->
 <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editUserModalLabel">
-                    <i class="fa-solid fa-pen-to-square me-2 text-primary"></i>Edit User
+                    <iconify-icon icon="solar:pen-bold-duotone" class="me-1 text-primary"></iconify-icon>
+                    Edit User
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
             </div>
@@ -173,12 +223,11 @@
                 <div class="modal-body">
                     <div class="row g-3">
                         <div class="col-12">
-                            <label class="form-label" for="edit_full_name">Nama Lengkap <span class="required">*</span></label>
-                            <input id="edit_full_name" name="full_name" type="text" class="form-control" required
-                                   placeholder="Nama lengkap pengguna">
+                            <label class="form-label" for="edit_full_name">Nama Lengkap <span class="text-danger">*</span></label>
+                            <input id="edit_full_name" name="full_name" type="text" class="form-control" required>
                         </div>
                         <div class="col-12 col-md-6">
-                            <label class="form-label" for="edit_role_id">Role <span class="required">*</span></label>
+                            <label class="form-label" for="edit_role_id">Role <span class="text-danger">*</span></label>
                             <select id="edit_role_id" name="role_id" class="select2" data-placeholder="Pilih role..." required>
                                 <option value=""></option>
                                 <?php foreach ($roles as $role) : ?>
@@ -187,7 +236,7 @@
                             </select>
                         </div>
                         <div class="col-12 col-md-6">
-                            <label class="form-label" for="edit_branch_id">Cabang <span class="required">*</span></label>
+                            <label class="form-label" for="edit_branch_id">Cabang <span class="text-danger">*</span></label>
                             <select id="edit_branch_id" name="branch_id" class="select2" data-placeholder="Pilih cabang..." required>
                                 <option value=""></option>
                                 <?php foreach ($branches as $branch) : ?>
@@ -197,8 +246,7 @@
                         </div>
                         <div class="col-12">
                             <label class="form-label" for="edit_password">Password Baru <span class="text-muted fw-normal">(opsional)</span></label>
-                            <input id="edit_password" name="password" type="password" class="form-control"
-                                   placeholder="Kosongkan jika tidak ingin mengubah password">
+                            <input id="edit_password" name="password" type="password" class="form-control" placeholder="Kosongkan jika tidak diubah">
                         </div>
                         <div class="col-12">
                             <div class="form-check">
@@ -209,9 +257,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" id="btnEditUser" class="btn btn-primary">
-                        <i class="fa-solid fa-floppy-disk me-1"></i> Perbarui User
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" id="btnEditUser" class="btn btn-theme">
+                        <i class="fa fa-floppy-disk me-1"></i> Perbarui User
                     </button>
                 </div>
             </form>
@@ -221,28 +269,26 @@
 
 <script>
 $(document).ready(function () {
-    // Init DataTable
-    App.initDT('#usersTable', {
-        order: [[2, 'asc']],
-        columnDefs: [
-            { orderable: false, targets: [0, 5, 6] },
-            { searchable: false, targets: [0, 5, 6] }
-        ]
-    });
+    if ($('#usersTable tbody tr td[colspan]').length === 0) {
+        App.initDT('#usersTable', {
+            order: [[2, 'asc']],
+            columnDefs: [
+                { orderable: false, targets: [0, 5, 6] },
+                { searchable: false, targets: [0, 5, 6] }
+            ]
+        });
+    }
 
-    // Init Select2 in Create Modal
     var $createModal = $('#createUserModal');
     $createModal.on('shown.bs.modal', function () {
         App.initSelect2InModal('#new_role_id', '#createUserModal', { placeholder: 'Pilih role...' });
         App.initSelect2InModal('#new_branch_id', '#createUserModal', { placeholder: 'Pilih cabang...' });
     });
-
     $createModal.on('hidden.bs.modal', function () {
         $('#createUserForm')[0].reset();
         $('#new_role_id, #new_branch_id').val('').trigger('change.select2');
     });
 
-    // Init Select2 in Edit Modal & populate data
     var $editModal = $('#editUserModal');
     $editModal.on('shown.bs.modal', function (e) {
         App.initSelect2InModal('#edit_role_id', '#editUserModal', { placeholder: 'Pilih role...' });
@@ -251,23 +297,20 @@ $(document).ready(function () {
         if (!$btn.hasClass('btn-edit-user')) return;
         var userId = $btn.data('id');
         $('#editUserForm').attr('action', '<?= site_url('access/users/') ?>' + userId);
-        $('#edit_full_name').val($btn.data('full-name'));
-        $('#edit_role_id').val($btn.data('role-id')).trigger('change.select2');
-        $('#edit_branch_id').val($btn.data('branch-id')).trigger('change.select2');
-        $('#edit_is_active').prop('checked', $btn.data('is-active') === 1 || $btn.data('is-active') === '1');
+        $('#edit_full_name').val($btn.attr('data-full-name') || $btn.data('fullName') || '');
+        $('#edit_role_id').val($btn.attr('data-role-id') || $btn.data('roleId') || '').trigger('change.select2');
+        $('#edit_branch_id').val($btn.attr('data-branch-id') || $btn.data('branchId') || '').trigger('change.select2');
+        var isActive = $btn.attr('data-is-active') || $btn.data('isActive');
+        $('#edit_is_active').prop('checked', isActive === 1 || isActive === '1');
         $('#edit_password').val('');
     });
-
     $editModal.on('hidden.bs.modal', function () {
         $('#editUserForm')[0].reset();
     });
 
-    // Create Form Submit
     $('#createUserForm').on('submit', function () {
         App.btnLoading($('#btnCreateUser'), 'Menyimpan...');
     });
-
-    // Edit Form Submit
     $('#editUserForm').on('submit', function () {
         App.btnLoading($('#btnEditUser'), 'Memperbarui...');
     });

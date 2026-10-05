@@ -1,0 +1,23 @@
+/* Phase 5 — Access Control (Color Admin cards) */
+
+#content .access-subnav .nav-link {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #6c757d;
+  border-radius: 0.5rem;
+}
+
+#content .access-subnav .nav-link.active {
+  background: var(--bs-theme, #0c83f0);
+  color: #fff;
+}
+
+#content .role-perm-card .form-check-label {
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+#content .role-perm-card .card-body {
+  max-height: 360px;
+  overflow: auto;
+}

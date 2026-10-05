@@ -24,6 +24,7 @@
 <link rel="stylesheet" href="<?= base_url('css/shell-phase1.css') ?>?v=<?= @filemtime(FCPATH . 'css/shell-phase1.css') ?: time() ?>">
 <link rel="stylesheet" href="<?= base_url('css/dash-phase3.css') ?>?v=<?= @filemtime(FCPATH . 'css/dash-phase3.css') ?: time() ?>">
 <link rel="stylesheet" href="<?= base_url('css/master-phase4.css') ?>?v=<?= @filemtime(FCPATH . 'css/master-phase4.css') ?: time() ?>">
+<link rel="stylesheet" href="<?= base_url('css/access-phase5.css') ?>?v=<?= @filemtime(FCPATH . 'css/access-phase5.css') ?: time() ?>">
 
 <!-- Iconify (Color Admin icons) -->
 <script src="<?= base_url('assets/color-admin/js/iconify/iconify-icon.min.js') ?>"></script>
