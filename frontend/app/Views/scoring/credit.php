@@ -182,19 +182,20 @@
                     <!-- Panel Hasil Analisa & Kelayakan Scoring -->
                     <div class="p-3 bg-light rounded-4 border mt-4">
                         <div class="row g-3 align-items-center">
-                            <!-- Input Batas Skor Kelayakan -->
+                            <!-- Batas skor dari konfigurasi produk (read-only) -->
                             <div class="col-12 col-md-4">
-                                <label for="cutoffPassingScore" class="form-label fw-bold text-dark mb-1 small d-flex align-items-center gap-1">
-                                    <i class="fa-solid fa-award text-primary"></i> Batas Skor Layak (Cutoff) <span class="text-danger">*</span>
+                                <label class="form-label fw-bold text-dark mb-1 small d-flex align-items-center gap-1">
+                                    <i class="fa-solid fa-award text-primary"></i> Batas Skor Layak
                                 </label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-white border-end-0 text-muted fw-bold">&ge;</span>
-                                    <input type="number" step="0.01" min="0" max="1000" class="form-control border-start-0 fw-bold fs-6" 
-                                           id="cutoffPassingScore" value="350.00" placeholder="350.00">
-                                    <span class="input-group-text bg-white text-muted small">Poin</span>
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 fw-bold fs-6" id="cutoffPassingScoreDisplay">
+                                        &ge; 350.00
+                                    </span>
+                                    <span class="text-muted small">Poin</span>
                                 </div>
+                                <input type="hidden" id="cutoffPassingScore" value="350.00">
                                 <div class="form-text text-muted small" style="font-size: 11px;">
-                                    Skor &ge; nilai ini = <strong>LAYAK</strong>, selain itu <strong>TIDAK LAYAK</strong>.
+                                    Dari konfigurasi mapping produk. Ubah di menu <strong>Mapping Produk</strong>.
                                 </div>
                             </div>
 
@@ -345,12 +346,12 @@ $(document).ready(function () {
             if (res.rcode === '00' && res.result && res.result.parameters) {
                 currentParameters = res.result.parameters;
                 currentMappingId = res.result.mapping_id;
-                // Pre-fill passing_score from mapping configuration (default 350.00)
-                if (res.result.passing_score) {
-                    $('#cutoffPassingScore').val(parseFloat(res.result.passing_score).toFixed(2));
-                } else {
-                    $('#cutoffPassingScore').val('350.00');
-                }
+                // Load passing_score from product mapping (read-only on transaction)
+                const cutoffVal = res.result.passing_score
+                    ? parseFloat(res.result.passing_score).toFixed(2)
+                    : '350.00';
+                $('#cutoffPassingScore').val(cutoffVal);
+                $('#cutoffPassingScoreDisplay').html('&ge; ' + cutoffVal);
                 renderParameters(res.result.parameters);
             } else {
                 $('#parameterContainer').html('<div class="alert alert-warning">Tidak ada parameter mapping aktif untuk produk ini.</div>');
@@ -461,12 +462,7 @@ $(document).ready(function () {
         return total;
     }
 
-    // Live update when cutoff passing score input changes
-    $('#cutoffPassingScore').on('input change', function () {
-        calculateTotalScore();
-    });
-
-    // Collect all data to save
+    // Collect all data to save (passing_score resolved server-side from product mapping)
     function collectData(sendToSupervisor, supervisorId) {
         const details = [];
         $('.param-radio:checked').each(function () {
@@ -481,7 +477,6 @@ $(document).ready(function () {
         });
 
         const total = calculateTotalScore();
-        const cutoff = parseFloat($('#cutoffPassingScore').val()) || 350.0;
 
         return {
             debtor_id: parseInt(currentDebtorId),
@@ -499,7 +494,6 @@ $(document).ready(function () {
             product_id: parseInt(currentProductId),
             mapping_id: currentMappingId ? parseInt(currentMappingId) : null,
             total_score: total,
-            passing_score: cutoff,
             details: details,
             send_to_supervisor: !!sendToSupervisor,
             supervisor_id: supervisorId ? parseInt(supervisorId) : null,

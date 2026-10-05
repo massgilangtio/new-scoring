@@ -817,6 +817,9 @@ CREATE TRIGGER trg_audit_logs_immutable
 INSERT INTO system_settings (setting_key, setting_value)
 VALUES ('duplicate_enabled', 'false');
 
+INSERT INTO system_settings (setting_key, setting_value)
+VALUES ('default_passing_score', '350.00');
+
 COMMENT ON TABLE scoring_snapshots IS
     'Official score and result written by the scoring engine. Rows are insert-only.';
 COMMENT ON TABLE audit_logs IS

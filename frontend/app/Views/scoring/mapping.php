@@ -4,6 +4,7 @@
 $products = $products ?? [];
 $parameters = $parameters ?? [];
 $mappings = $mappings ?? [];
+$defaultPassingScore = number_format((float) ($defaultPassingScore ?? 350), 2, '.', '');
 
 $totalMappings = count($mappings);
 $totalMasterProducts = count($products);
@@ -69,6 +70,49 @@ $distinctMappedCount = count($mappedProductIds);
                 <iconify-icon icon="solar:database-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
             </div>
         </div>
+    </div>
+</div>
+
+<div class="card card-borderless mb-3">
+    <div class="card-header bg-gray-900" data-bs-theme="dark">
+        <h4 class="card-header-title text-white mb-0 d-flex align-items-center gap-2">
+            <iconify-icon icon="solar:medal-ribbons-star-bold-duotone"></iconify-icon>
+            Batas Skor Layak — Semua Produk
+        </h4>
+    </div>
+    <div class="card-body">
+        <form id="globalPassingScoreForm" method="post" action="<?= site_url('scoring/passing-score-setting') ?>">
+            <?= csrf_field() ?>
+            <div class="row g-3 align-items-end">
+                <div class="col-12 col-md-4">
+                    <label class="form-label fw-semibold" for="globalPassingScore">
+                        Default Batas Skor Layak <span class="text-danger">*</span>
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-white text-muted fw-bold">&ge;</span>
+                        <input type="number" step="0.01" min="0" max="1000" class="form-control fw-bold"
+                               id="globalPassingScore" name="passing_score"
+                               value="<?= esc($defaultPassingScore) ?>" required>
+                        <span class="input-group-text bg-white text-muted small">Poin</span>
+                    </div>
+                    <div class="form-text small">Dipakai sebagai default saat membuat mapping produk baru.</div>
+                </div>
+                <div class="col-12 col-md-5">
+                    <div class="form-check mt-1">
+                        <input class="form-check-input" type="checkbox" name="apply_to_all" value="1" id="chkApplyAllPassingScore">
+                        <label class="form-check-label" for="chkApplyAllPassingScore">
+                            <strong>Terapkan ke semua produk</strong>
+                            <span class="text-muted d-block" style="font-size:12px;">Perbarui batas layak pada seluruh mapping produk yang sudah ada.</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-12 col-md-3">
+                    <button type="button" class="btn btn-theme w-100" id="btnSaveGlobalPassingScore">
+                        <i class="fa fa-floppy-disk me-1"></i> Simpan Pengaturan
+                    </button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -392,10 +436,10 @@ $dotColors = ['#ef4444', '#3b82f6', '#f59e0b', '#10b981', '#8b5cf6', '#06b6d4'];
                                 </label>
                                 <div class="mapping-input-icon-wrap">
                                     <i class="fa-solid fa-award text-success"></i>
-                                    <input type="number" step="0.01" min="0" max="1000" class="form-control fw-bold text-success" id="modalPassingScore" name="passing_score" value="350.00" placeholder="350.00" required>
+                                    <input type="number" step="0.01" min="0" max="1000" class="form-control fw-bold text-success" id="modalPassingScore" name="passing_score" value="<?= esc($defaultPassingScore) ?>" placeholder="<?= esc($defaultPassingScore) ?>" required>
                                 </div>
                             </div>
-                            <p class="mapping-card-hint mt-2">Batas minimal kelayakan debitur (default: 350.00). Skor &ge; nilai ini berstatus <strong>LAYAK</strong>, selain itu <strong>TIDAK LAYAK</strong>.</p>
+                            <p class="mapping-card-hint mt-2">Batas minimal kelayakan untuk produk ini (default global: <?= esc($defaultPassingScore) ?>). Skor &ge; nilai ini berstatus <strong>LAYAK</strong>, selain itu <strong>TIDAK LAYAK</strong>.</p>
                         </div>
                     </div>
 
@@ -1631,6 +1675,32 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    // Save global passing score setting
+    $('#btnSaveGlobalPassingScore').on('click', function () {
+        var score = parseFloat($('#globalPassingScore').val());
+        if (isNaN(score) || score < 0) {
+            if (typeof App !== 'undefined' && App.swalError) {
+                App.swalError('Batas skor tidak valid', 'Masukkan angka batas skor layak yang valid.');
+            } else {
+                Swal.fire({ icon: 'warning', title: 'Batas skor tidak valid', text: 'Masukkan angka batas skor layak yang valid.' });
+            }
+            return;
+        }
+        var applyAll = $('#chkApplyAllPassingScore').is(':checked');
+        var confirmText = applyAll
+            ? 'Nilai ini akan menjadi default global DAN diterapkan ke seluruh mapping produk yang sudah ada.'
+            : 'Nilai ini akan menjadi default global untuk mapping produk baru. Mapping yang sudah ada tidak diubah.';
+        App.confirmSave({
+            title: 'Simpan Batas Skor Layak',
+            text: confirmText
+        }).then(function (result) {
+            if (result.isConfirmed) {
+                App.btnLoading($('#btnSaveGlobalPassingScore'), 'Menyimpan...');
+                $('#globalPassingScoreForm').submit();
+            }
+        });
+    });
+
     // Reset modal on "Buat Mapping Baru" button click
     $('#btnTambahMappingTabel').on('click', function () {
         var form = document.getElementById('mappingForm');
@@ -1643,7 +1713,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Reset version & product
         document.getElementById('modalVersionName').value = 'Versi 1.0 - Kebijakan 2026';
         if (document.getElementById('modalPassingScore')) {
-            document.getElementById('modalPassingScore').value = '350.00';
+            document.getElementById('modalPassingScore').value = <?= json_encode($defaultPassingScore) ?>;
         }
         var pSelect = document.getElementById('modalProductSelect');
         if (pSelect) {

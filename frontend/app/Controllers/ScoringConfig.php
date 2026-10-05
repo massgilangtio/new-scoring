@@ -193,19 +193,43 @@ class ScoringConfig extends BaseController
         $prodRes = $this->client()->get('/api/v1/master/products', $this->token());
         $paramRes = $this->client()->get('/api/v1/scoring/parameters/master', $this->token());
         $mappingRes = $this->client()->get('/api/v1/scoring/parameters/mappings', $this->token());
+        $scoreSetting = $this->client()->get('/api/v1/scoring/parameters/passing-score-setting', $this->token());
 
         $products = array_filter($prodRes['result']['items'] ?? [], fn($p) => ! empty($p['is_active']));
         $parameters = $paramRes['result']['items'] ?? [];
         $mappings = $mappingRes['result']['items'] ?? [];
+        $defaultPassingScore = (float) ($scoreSetting['result']['passing_score'] ?? 350.0);
 
         return view('scoring/mapping', [
-            'profile'    => $profile,
-            'products'   => array_values($products),
-            'parameters' => $parameters,
-            'mappings'   => $mappings,
-            'error'      => session()->getFlashdata('error'),
-            'message'    => session()->getFlashdata('message'),
+            'profile'              => $profile,
+            'products'             => array_values($products),
+            'parameters'           => $parameters,
+            'mappings'             => $mappings,
+            'defaultPassingScore'  => $defaultPassingScore,
+            'error'                => session()->getFlashdata('error'),
+            'message'              => session()->getFlashdata('message'),
         ]);
+    }
+
+    public function passingScoreSetting()
+    {
+        [$denied] = $this->gate('scoring.configure');
+        if ($denied) {
+            return $denied;
+        }
+
+        $passingScore = (float) ($this->request->getPost('passing_score') ?: 350.0);
+        $applyToAll = $this->request->getPost('apply_to_all') === '1';
+
+        $result = $this->client()->put('/api/v1/scoring/parameters/passing-score-setting', [
+            'passing_score' => $passingScore,
+            'apply_to_all'  => $applyToAll,
+        ], $this->token());
+
+        return redirect()->to('/scoring/mapping')->with(
+            ($result['rcode'] ?? '') === '00' ? 'message' : 'error',
+            (string) $result['message']
+        );
     }
 
     public function storeMapping()

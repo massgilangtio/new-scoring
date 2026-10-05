@@ -218,6 +218,28 @@
 
             <div class="card card-borderless mb-3">
                 <div class="card-header bg-gray-900" data-bs-theme="dark">
+                    <h4 class="card-header-title text-white mb-0 d-flex align-items-center gap-2"><iconify-icon icon="solar:medal-ribbons-star-bold-duotone"></iconify-icon> Batas Skor Layak — Semua Produk</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">Default Batas Skor Layak <span class="text-danger">*</span></label>
+                            <div class="input-group"><span class="input-group-text">&ge;</span><input class="form-control fw-bold" value="350.00"><span class="input-group-text small">Poin</span></div>
+                            <div class="form-text small">Default saat membuat mapping produk baru.</div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-check mt-1">
+                                <input class="form-check-input" type="checkbox" id="prevApplyAll">
+                                <label class="form-check-label" for="prevApplyAll"><strong>Terapkan ke semua produk</strong><span class="text-muted d-block" style="font-size:12px;">Perbarui batas layak seluruh mapping yang sudah ada.</span></label>
+                            </div>
+                        </div>
+                        <div class="col-md-3"><button class="btn btn-theme w-100"><i class="fa fa-floppy-disk me-1"></i> Simpan Pengaturan</button></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-borderless mb-3">
+                <div class="card-header bg-gray-900" data-bs-theme="dark">
                     <h4 class="card-header-title text-white mb-0"><iconify-icon icon="solar:filter-bold-duotone" class="me-1"></iconify-icon> Filter Data Mapping</h4>
                 </div>
                 <div class="card-body">
@@ -330,7 +352,14 @@
                             </div>
                             <div class="p-3 bg-light rounded-3 border">
                                 <div class="row g-3 align-items-center">
-                                    <div class="col-md-4"><label class="form-label small fw-bold">Batas Skor Layak</label><div class="input-group"><span class="input-group-text">≥</span><input class="form-control fw-bold" value="350.00"></div></div>
+                                    <div class="col-md-4">
+                                        <label class="form-label small fw-bold">Batas Skor Layak</label>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 fw-bold fs-6">&ge; 350.00</span>
+                                            <span class="text-muted small">Poin</span>
+                                        </div>
+                                        <div class="form-text small">Dari konfigurasi mapping produk. Ubah di menu Mapping Produk.</div>
+                                    </div>
                                     <div class="col-md-4 text-center"><div class="text-muted small text-uppercase">Total Skor</div><div class="display-6 fw-bold text-primary mb-0">420.00</div><span class="badge bg-success text-white">LAYAK</span></div>
                                     <div class="col-md-4"><button class="btn btn-theme btn-lg w-100 py-3"><i class="fa fa-floppy-disk me-2"></i> Simpan Scoring Kredit</button></div>
                                 </div>

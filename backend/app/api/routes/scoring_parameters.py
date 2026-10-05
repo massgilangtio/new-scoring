@@ -25,12 +25,32 @@ from app.models.tables import (
     Role,
     RolePermission,
     Permission,
+    SystemSetting,
     User,
 )
 from app.services.audit import write_audit
 from app.services.authorization import has_permission
 
 router = APIRouter(prefix="/api/v1/scoring/parameters", tags=["scoring-parameters"])
+
+DEFAULT_PASSING_SCORE_KEY = "default_passing_score"
+DEFAULT_PASSING_SCORE_FALLBACK = Decimal("350.00")
+
+
+def _get_default_passing_score(db: Session) -> Decimal:
+    setting = db.get(SystemSetting, DEFAULT_PASSING_SCORE_KEY)
+    if setting is None or not str(setting.setting_value or "").strip():
+        return DEFAULT_PASSING_SCORE_FALLBACK
+    try:
+        return Decimal(str(setting.setting_value))
+    except Exception:
+        return DEFAULT_PASSING_SCORE_FALLBACK
+
+
+def _resolve_mapping_passing_score(db: Session, mapping: ProductParameterMapping | None) -> Decimal:
+    if mapping is not None and getattr(mapping, "passing_score", None) is not None:
+        return Decimal(str(mapping.passing_score))
+    return _get_default_passing_score(db)
 
 
 # --- Schemas ---
@@ -68,7 +88,7 @@ class MappingItem(BaseModel):
 class CreateMappingBody(BaseModel):
     product_id: int
     version_name: str = Field(min_length=1, max_length=150)
-    passing_score: Decimal = Decimal("350.00")
+    passing_score: Decimal | None = None
     attachment_name: str | None = None
     attachment_path: str | None = None
     items: list[MappingItem] = Field(min_length=1)
@@ -101,11 +121,16 @@ class SaveCreditScoringBody(BaseModel):
     product_id: int
     mapping_id: int | None = None
     total_score: Decimal
-    passing_score: Decimal | None = None
+    passing_score: Decimal | None = None  # ignored — resolved from product mapping / global setting
     details: list[ScoringChoiceItem] = Field(default_factory=list)
     send_to_supervisor: bool = False
     supervisor_id: int | None = None
     notes: str | None = None
+
+
+class PassingScoreSettingBody(BaseModel):
+    passing_score: Decimal = Field(ge=0, le=1000)
+    apply_to_all: bool = False
 
 
 # --- Helper ---
@@ -252,6 +277,75 @@ def delete_master_parameter(
 # 2. Mapping Parameter & Produk
 # ==========================================
 
+@router.get("/passing-score-setting")
+def get_passing_score_setting(
+    actor: User = Depends(current_user),
+    db: Session = Depends(get_db),
+) -> dict:
+    if not has_permission(db, actor, "scoring.configure"):
+        raise ApiError(403, "04", "Anda tidak memiliki hak akses")
+    score = _get_default_passing_score(db)
+    return {
+        "rcode": "00",
+        "message": "Data berhasil ditampilkan",
+        "result": {"passing_score": _number(score)},
+    }
+
+
+@router.put("/passing-score-setting")
+def update_passing_score_setting(
+    body: PassingScoreSettingBody,
+    actor: User = Depends(current_user),
+    db: Session = Depends(get_db),
+) -> dict:
+    if not has_permission(db, actor, "scoring.configure"):
+        raise ApiError(403, "04", "Anda tidak memiliki hak akses")
+
+    score = Decimal(str(body.passing_score)).quantize(Decimal("0.01"))
+    setting = db.get(SystemSetting, DEFAULT_PASSING_SCORE_KEY)
+    if setting is None:
+        setting = SystemSetting(setting_key=DEFAULT_PASSING_SCORE_KEY, setting_value=str(score))
+        db.add(setting)
+    else:
+        setting.setting_value = str(score)
+    setting.updated_by = actor.id
+
+    updated_mappings = 0
+    if body.apply_to_all:
+        mappings = db.scalars(select(ProductParameterMapping)).all()
+        for mapping in mappings:
+            mapping.passing_score = score
+            updated_mappings += 1
+
+    write_audit(
+        db,
+        actor,
+        "scoring.passing_score_setting_updated",
+        object_type="system_setting",
+        object_id=DEFAULT_PASSING_SCORE_KEY,
+        after_data={
+            "passing_score": str(score),
+            "apply_to_all": body.apply_to_all,
+            "updated_mappings": updated_mappings,
+        },
+    )
+    db.commit()
+
+    message = "Batas skor layak global berhasil disimpan"
+    if body.apply_to_all:
+        message = f"Batas skor layak global disimpan dan diterapkan ke {updated_mappings} mapping produk"
+
+    return {
+        "rcode": "00",
+        "message": message,
+        "result": {
+            "passing_score": _number(score),
+            "apply_to_all": body.apply_to_all,
+            "updated_mappings": updated_mappings,
+        },
+    }
+
+
 @router.get("/mappings")
 def list_mappings(
     actor: User = Depends(current_user),
@@ -362,10 +456,13 @@ def create_mapping(
             f"Nilai bobot parameter harus 100, tidak boleh kurang atau lebih! Saat ini total bobot adalah {total_weight} ({ket}).",
         )
 
+    resolved_score = (
+        body.passing_score if body.passing_score is not None else _get_default_passing_score(db)
+    )
     mapping = ProductParameterMapping(
         product_id=body.product_id,
         version_name=body.version_name.strip(),
-        passing_score=body.passing_score if body.passing_score is not None else Decimal("350.00"),
+        passing_score=resolved_score,
         attachment_name=body.attachment_name,
         attachment_path=body.attachment_path,
         created_by=actor.id,
@@ -625,7 +722,7 @@ def get_product_mapping_items(
         "result": {
             "mapping_id": mapping.id,
             "version_name": mapping.version_name,
-            "passing_score": _number(getattr(mapping, "passing_score", None) or Decimal("350.00")),
+            "passing_score": _number(_resolve_mapping_passing_score(db, mapping)),
             "parameters": parameters,
         },
     }
@@ -692,14 +789,18 @@ def save_credit_scoring(
             debtor.npwp = body.debtor_data.npwp.strip()
         debtor.updated_at = datetime.now()
 
-    # 2. Determine passing_score and eligibility_status
+    # 2. Determine passing_score from product mapping / global setting (ignore client override)
     mapping = db.get(ProductParameterMapping, body.mapping_id) if body.mapping_id else None
-    if body.passing_score is not None:
-        cutoff = body.passing_score
-    elif mapping and getattr(mapping, "passing_score", None) is not None:
-        cutoff = mapping.passing_score
-    else:
-        cutoff = Decimal("350.00")
+    if mapping is None:
+        mapping = db.scalars(
+            select(ProductParameterMapping)
+            .where(
+                ProductParameterMapping.product_id == body.product_id,
+                ProductParameterMapping.is_active.is_(True),
+            )
+            .order_by(ProductParameterMapping.id.desc())
+        ).first()
+    cutoff = _resolve_mapping_passing_score(db, mapping)
 
     eligibility_status = "LAYAK" if Decimal(str(body.total_score)) >= cutoff else "TIDAK LAYAK"
 

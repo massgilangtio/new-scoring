@@ -72,6 +72,7 @@ $routes->post('rescore', 'Rescore::create', ['filter' => 'sessionauth']);
 $routes->post('rescore/(:num)/approve', 'Rescore::approve/$1', ['filter' => 'sessionauth']);
 $routes->post('transactions/(:num)/duplicate', 'Transactions::duplicate/$1', ['filter' => 'sessionauth']);
 $routes->post('scoring/duplicate-setting', 'ScoringConfig::duplicateSetting', ['filter' => 'sessionauth']);
+$routes->post('scoring/passing-score-setting', 'ScoringConfig::passingScoreSetting', ['filter' => 'sessionauth']);
 $routes->get('reports/scoring', 'Reports::scoring', ['filter' => 'sessionauth']);
 $routes->get('reports/debtors', 'Reports::debtors', ['filter' => 'sessionauth']);
 $routes->get('reports/products', 'Reports::products', ['filter' => 'sessionauth']);
