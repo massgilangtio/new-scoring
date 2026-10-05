@@ -7,56 +7,49 @@
 <div data-swal="success" data-swal-message="<?= esc($message) ?>" hidden></div>
 <?php endif; ?>
 
-<!-- Breadcrumb -->
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="<?= site_url('transactions') ?>">Pengajuan Scoring</a></li>
-        <li class="breadcrumb-item active"><?= esc($item['transaction_no']) ?></li>
-    </ol>
-</nav>
+<ul class="nav nav-pills tx-stepper gap-2 mb-3">
+    <li class="nav-item"><span class="nav-link disabled"><i class="fa fa-check me-1 text-success"></i>1. Produk &amp; Debitur</span></li>
+    <li class="nav-item"><a class="nav-link" href="<?= site_url('transactions/' . $item['id']) ?>"><i class="fa fa-check me-1 text-success"></i>2. Input Scoring</a></li>
+    <li class="nav-item"><span class="nav-link active"><i class="fa fa-flag-checkered me-1"></i>3. Konfirmasi</span></li>
+</ul>
 
-<!-- Stepper -->
-<div class="d-flex align-items-center gap-3 mb-4">
-    <div class="d-flex align-items-center gap-2 text-muted">
-        <span class="d-inline-flex align-items-center justify-content-center rounded-circle fw-bold" style="width:32px;height:32px;background:var(--success-bg);color:var(--success);font-size:12px;"><i class="fa-solid fa-check"></i></span>
-        <span class="fw-semibold" style="font-size:13px;color:var(--success);">Pilih Produk & Debitur</span>
-    </div>
-    <div style="flex:1;height:2px;background:var(--secondary);"></div>
-    <div class="d-flex align-items-center gap-2 text-muted">
-        <span class="d-inline-flex align-items-center justify-content-center rounded-circle fw-bold" style="width:32px;height:32px;background:var(--success-bg);color:var(--success);font-size:12px;"><i class="fa-solid fa-check"></i></span>
-        <span class="fw-semibold" style="font-size:13px;color:var(--success);">Input Scoring</span>
-    </div>
-    <div style="flex:1;height:2px;background:var(--secondary);"></div>
-    <div class="d-flex align-items-center gap-2">
-        <span class="d-inline-flex align-items-center justify-content-center rounded-circle fw-bold" style="width:32px;height:32px;background:var(--secondary);color:#fff;font-size:14px;">3</span>
-        <span class="fw-bold" style="color:var(--primary);">Konfirmasi</span>
-    </div>
-</div>
-
-<div class="row g-4">
-    <!-- Preview / Score Card -->
+<div class="row g-3">
     <div class="col-12 col-lg-8">
         <?php if (! empty($preview)) : ?>
-        <div class="card mb-4">
-            <div class="card-header">
-                <h5 class="mb-0"><i class="fa-solid fa-star-half-stroke me-2 text-primary"></i>Hasil Scoring Sementara</h5>
-            </div>
-            <div class="card-body">
-                <div class="d-flex align-items-center gap-3 mb-4 p-3 rounded" style="background:var(--surface-2);border:1px solid var(--border);">
-                    <div class="text-center" style="flex:0 0 auto;">
-                        <div class="fw-black" style="font-size:3rem;color:var(--primary);line-height:1;"><?= esc((string) $preview['total_score']) ?></div>
-                        <div class="text-muted" style="font-size:12px;">Total Skor</div>
+        <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-blue bg-gradient-to-indigo overflow-hidden mb-3" data-bs-theme="dark">
+            <div class="card-body position-relative z-3">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <div class="text-white text-opacity-75 small fw-semibold mb-1">Total Skor</div>
+                        <div class="display-5 fw-bold text-white mb-0"><?= esc((string) $preview['total_score']) ?></div>
                     </div>
-                    <div style="width:1px;height:60px;background:var(--border);"></div>
-                    <div>
-                        <div class="fw-bold" style="font-size:1.1rem;color:var(--primary);"><?= esc($preview['result_label']) ?></div>
-                        <div class="text-muted" style="font-size:13px;"><?= esc($item['transaction_no']) ?> &mdash; <?= esc($item['debtor']['full_name'] ?? '') ?></div>
+                    <div class="col">
+                        <div class="fw-bold text-white fs-5"><?= esc($preview['result_label']) ?></div>
+                        <div class="d-inline-flex align-items-center gap-1 text-white text-opacity-75 small">
+                            <span class="font-monospace"><?= esc($item['transaction_no']) ?></span>
+                            <button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" data-clipboard="<?= esc($item['transaction_no']) ?>" title="Salin Nomor">
+                                <i class="fa fa-copy"></i>
+                            </button>
+                            <span>&mdash; <?= esc($item['debtor']['full_name'] ?? '') ?></span>
+                        </div>
                     </div>
                 </div>
+            </div>
+            <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                <iconify-icon icon="solar:chart-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
+            </div>
+        </div>
 
-                <!-- Parameter breakdown -->
+        <div class="card card-borderless mb-3">
+            <div class="card-header bg-gray-900" data-bs-theme="dark">
+                <h4 class="card-header-title text-white mb-0">
+                    <iconify-icon icon="solar:list-bold-duotone" class="me-1"></iconify-icon>
+                    Rincian Parameter
+                </h4>
+            </div>
+            <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table class="table table-sm mb-0">
+                    <table class="table table-hover table-striped align-middle mb-0">
                         <thead>
                             <tr>
                                 <th>Parameter</th>
@@ -68,7 +61,7 @@
                         <tbody>
                             <?php foreach ($preview['lines'] as $line) : ?>
                             <tr>
-                                <td><?= esc($line['parameter_name']) ?></td>
+                                <td class="fw-semibold"><?= esc($line['parameter_name']) ?></td>
                                 <td class="text-center"><?= esc($line['value'] ?? '-') ?></td>
                                 <td class="text-center"><?= esc($line['weight'] ?? '-') ?></td>
                                 <td class="text-center fw-bold"><?= esc($line['line_score']) ?></td>
@@ -76,9 +69,9 @@
                             <?php endforeach; ?>
                         </tbody>
                         <tfoot>
-                            <tr style="background:var(--surface-2);">
+                            <tr>
                                 <td colspan="3" class="fw-bold text-end">Total</td>
-                                <td class="text-center fw-bold" style="color:var(--secondary);"><?= esc((string) $preview['total_score']) ?></td>
+                                <td class="text-center fw-bold text-primary"><?= esc((string) $preview['total_score']) ?></td>
                             </tr>
                         </tfoot>
                     </table>
@@ -86,63 +79,70 @@
             </div>
         </div>
         <?php elseif (! empty($item['snapshot'])) : ?>
-        <div class="card mb-4">
-            <div class="card-header">
-                <h5 class="mb-0"><i class="fa-solid fa-chart-bar me-2 text-primary"></i>Skor Tersimpan</h5>
-            </div>
-            <div class="card-body">
-                <div class="d-flex align-items-center gap-3 p-3 rounded" style="background:var(--surface-2);border:1px solid var(--border);">
-                    <div class="fw-black text-center" style="font-size:3rem;color:var(--primary);line-height:1;"><?= esc((string) $item['snapshot']['total_score']) ?></div>
-                    <div style="width:1px;height:60px;background:var(--border);"></div>
-                    <div>
-                        <div class="fw-bold" style="font-size:1.1rem;color:var(--primary);"><?= esc($item['snapshot']['result_label']) ?></div>
-                        <div class="text-muted" style="font-size:13px;">Skor hasil scoring</div>
+        <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-teal bg-gradient-to-green overflow-hidden mb-3" data-bs-theme="dark">
+            <div class="card-body position-relative z-3">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <div class="text-white text-opacity-75 small fw-semibold mb-1">Skor Tersimpan</div>
+                        <div class="display-5 fw-bold text-white mb-0"><?= esc((string) $item['snapshot']['total_score']) ?></div>
+                    </div>
+                    <div class="col">
+                        <div class="fw-bold text-white fs-5"><?= esc($item['snapshot']['result_label']) ?></div>
+                        <div class="text-white text-opacity-75 small">Hasil scoring terkunci</div>
                     </div>
                 </div>
             </div>
         </div>
         <?php endif; ?>
 
-        <!-- Navigation buttons -->
         <div class="d-flex align-items-center justify-content-between">
-            <a href="<?= site_url('transactions/' . $item['id']) ?>" class="btn btn-light">
-                <i class="fa-solid fa-arrow-left me-1"></i> Kembali ke Input
+            <a href="<?= site_url('transactions/' . $item['id']) ?>" class="btn btn-default">
+                <i class="fa fa-arrow-left me-1"></i> Kembali ke Input
             </a>
             <?php if (! empty($item['editable']) && ! empty($preview)) : ?>
             <form id="submitForm" method="post" action="<?= site_url('transactions/' . $item['id'] . '/submit') ?>">
                 <?= csrf_field() ?>
-                <button type="button" id="btnSubmit" class="btn btn-primary">
-                    <i class="fa-solid fa-paper-plane me-1"></i> Submit & Kunci Pengajuan
+                <button type="button" id="btnSubmit" class="btn btn-theme">
+                    <i class="fa fa-paper-plane me-1"></i> Submit &amp; Kunci Pengajuan
                 </button>
             </form>
             <?php endif; ?>
         </div>
     </div>
 
-    <!-- Side Info Card -->
     <div class="col-12 col-lg-4">
-        <div class="card mb-3">
-            <div class="card-header">
-                <h6 class="mb-0"><i class="fa-solid fa-circle-info me-2 text-primary"></i>Informasi Pengajuan</h6>
+        <div class="card card-borderless mb-3">
+            <div class="card-header bg-gray-900" data-bs-theme="dark">
+                <h4 class="card-header-title text-white mb-0">
+                    <iconify-icon icon="solar:info-circle-bold-duotone" class="me-1"></iconify-icon>
+                    Informasi Pengajuan
+                </h4>
             </div>
-            <div class="card-body p-3">
-                <table class="table table-sm mb-0">
+            <div class="card-body p-0">
+                <table class="table table-sm align-middle mb-0">
                     <tbody>
                         <tr>
-                            <td class="text-muted" style="font-size:12px;">Nomor</td>
-                            <td class="fw-bold" style="font-size:12px;"><?= esc($item['transaction_no']) ?></td>
+                            <td class="text-muted small">Nomor</td>
+                            <td class="text-end">
+                                <div class="d-inline-flex align-items-center gap-1">
+                                    <span class="badge bg-primary bg-opacity-15 text-primary py-6px font-monospace"><?= esc($item['transaction_no']) ?></span>
+                                    <button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" data-clipboard="<?= esc($item['transaction_no']) ?>" title="Salin Nomor">
+                                        <i class="fa fa-copy"></i>
+                                    </button>
+                                </div>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="text-muted" style="font-size:12px;">Debitur</td>
-                            <td class="fw-bold" style="font-size:12px;"><?= esc($item['debtor']['full_name'] ?? '-') ?></td>
+                            <td class="text-muted small">Debitur</td>
+                            <td class="fw-semibold text-end small"><?= esc($item['debtor']['full_name'] ?? '-') ?></td>
                         </tr>
                         <tr>
-                            <td class="text-muted" style="font-size:12px;">Produk</td>
-                            <td class="fw-bold" style="font-size:12px;"><?= esc($item['product']['name'] ?? '-') ?></td>
+                            <td class="text-muted small">Produk</td>
+                            <td class="fw-semibold text-end small"><?= esc($item['product']['name'] ?? '-') ?></td>
                         </tr>
                         <tr>
-                            <td class="text-muted" style="font-size:12px;">Status</td>
-                            <td>
+                            <td class="text-muted small">Status</td>
+                            <td class="text-end">
                                 <span class="badge badge-<?= esc($item['status']) ?>"><?= esc($item['status']) ?></span>
                             </td>
                         </tr>
@@ -152,13 +152,13 @@
         </div>
 
         <?php if (in_array($item['status'], ['approved', 'rejected'], true)) : ?>
-        <div class="card">
-            <div class="card-body p-3">
-                <p class="text-muted mb-2" style="font-size:13px;">Buat pengajuan baru berdasarkan data yang sama.</p>
+        <div class="card card-borderless">
+            <div class="card-body">
+                <p class="text-muted small mb-3">Buat pengajuan baru berdasarkan data yang sama.</p>
                 <form id="dupForm" method="post" action="<?= site_url('transactions/' . $item['id'] . '/duplicate') ?>">
                     <?= csrf_field() ?>
-                    <button type="button" id="btnDuplicate" class="btn btn-outline-primary w-100">
-                        <i class="fa-solid fa-copy me-1"></i> Duplikasi Transaksi
+                    <button type="button" id="btnDuplicate" class="btn btn-default w-100">
+                        <i class="fa fa-copy me-1"></i> Duplikasi Transaksi
                     </button>
                 </form>
             </div>
@@ -169,7 +169,6 @@
 
 <script>
 $(document).ready(function () {
-    // Submit confirmation
     $('#btnSubmit').on('click', function () {
         App.confirmSave({
             title: 'Submit Pengajuan',
@@ -183,7 +182,6 @@ $(document).ready(function () {
         });
     });
 
-    // Duplicate confirmation
     $('#btnDuplicate').on('click', function () {
         App.confirm({
             title: 'Duplikasi Transaksi',

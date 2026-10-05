@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Phase 7 Preview — Transactions</title>
+    <link rel="icon" href="assets/images/favicon.png">
+    <link href="assets/color-admin/css/vendor.min.css" rel="stylesheet">
+    <link href="assets/color-admin/css/default/app.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/shell-phase1.css">
+    <link rel="stylesheet" href="css/transactions-phase7.css">
+    <script src="assets/color-admin/js/iconify/iconify-icon.min.js"></script>
+    <style>
+        .preview-page { display: none; }
+        .preview-page.is-on { display: block; }
+        .badge-draft { background: rgba(108,117,125,.15); color: #6c757d; }
+        .badge-submitted { background: rgba(13,202,240,.15); color: #0dcaf0; }
+        .badge-approved { background: rgba(25,135,84,.15); color: #198754; }
+        .badge-rejected { background: rgba(220,53,69,.15); color: #dc3545; }
+    </style>
+</head>
+<body>
+<div id="app" class="app app-header-fixed app-sidebar-fixed">
+    <div id="appHeader" class="app-header">
+        <div class="brand">
+            <div class="mobile-toggler">
+                <button type="button" class="menu-toggler" data-toggle-class="app-sidebar-mobile-toggled" data-toggle-target=".app">
+                    <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+                </button>
+            </div>
+            <a href="#" class="brand-logo"><img src="assets/images/logo-horizontal.png" alt="New Scoring" class="brand-logo-img"></a>
+        </div>
+        <div class="menu">
+            <div class="menu-item menu-item-form d-none d-md-flex">
+                <form action="#"><input type="text" class="form-control" placeholder="Cari..."><button class="btn btn-search" type="submit"><iconify-icon icon="octicon:search-16"></iconify-icon></button></form>
+            </div>
+            <div class="menu-item"><a href="#" class="menu-link"><iconify-icon icon="solar:bell-bing-bold-duotone"></iconify-icon><span class="badge">2</span></a></div>
+            <div class="menu-item"><a href="#" class="menu-link"><span class="rounded-circle bg-theme text-white d-inline-flex align-items-center justify-content-center" style="width:30px;height:30px;font-size:12px;font-weight:700;">AI</span></a></div>
+        </div>
+    </div>
+    <div id="sidebar" class="app-sidebar" data-bs-theme="dark">
+        <div class="app-sidebar-content" data-scrollbar="true" data-height="100%">
+            <div class="menu">
+                <div class="menu-profile"><a href="javascript:;" class="menu-link"><div class="menu-profile-cover with-shadow"></div><div class="menu-profile-image avatar-initials">AI</div><div class="menu-profile-info"><div class="d-flex align-items-center"><div class="flex-grow-1">Admin IT</div></div><small>ADMIN IT · KANTOR PUSAT</small></div></a></div>
+                <div class="menu-header">Navigation</div>
+                <div class="menu-item has-sub active">
+                    <a href="javascript:;" class="menu-link"><div class="menu-icon"><i class="fa fa-file-invoice"></i></div><div class="menu-text">Transaksi Scoring</div><div class="menu-caret"></div></a>
+                    <div class="menu-submenu">
+                        <div class="menu-item" data-preview-nav="list"><a href="#list" class="menu-link"><div class="menu-text">Daftar Scoring</div></a></div>
+                        <div class="menu-item" data-preview-nav="input"><a href="#input" class="menu-link"><div class="menu-text">Input Scoring</div></a></div>
+                        <div class="menu-item" data-preview-nav="review"><a href="#review" class="menu-link"><div class="menu-text">Konfirmasi</div></a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="app-sidebar-mobile-backdrop"><a href="#" data-dismiss="app-sidebar-mobile" class="stretched-link"></a></div>
+
+    <div id="content" class="app-content">
+        <!-- LIST -->
+        <div class="preview-page is-on" id="page-list" data-preview="list">
+            <ol class="breadcrumb float-xl-end"><li class="breadcrumb-item"><a href="#">Home</a></li><li class="breadcrumb-item active">Pengajuan Scoring</li></ol>
+            <h1 class="page-header">Pengajuan Scoring <small>daftar transaksi</small></h1>
+
+            <div class="row mb-3">
+                <div class="col-xl-4 col-md-4">
+                    <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-info bg-gradient-to-blue overflow-hidden" data-bs-theme="dark">
+                        <div class="card-body position-relative z-3">
+                            <div class="mb-2 fw-bold text-white">Total Pengajuan</div>
+                            <div class="h2 mb-4">24</div>
+                            <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:100%;"></div></div>
+                            <div class="small fw-semibold text-white text-opacity-75 mb-n1">Semua pengajuan scoring</div>
+                        </div>
+                        <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                            <iconify-icon icon="solar:document-text-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-md-4 mt-3 mt-md-0">
+                    <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-orange bg-gradient-to-pink overflow-hidden" data-bs-theme="dark">
+                        <div class="card-body position-relative z-3">
+                            <div class="mb-2 fw-bold text-white">Dalam Proses</div>
+                            <div class="h2 mb-4">9</div>
+                            <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:38%;"></div></div>
+                            <div class="small fw-semibold text-white text-opacity-75 mb-n1">Draft / menunggu approval</div>
+                        </div>
+                        <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                            <iconify-icon icon="solar:hourglass-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-md-4 mt-3 mt-md-0">
+                    <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-teal bg-gradient-to-green overflow-hidden" data-bs-theme="dark">
+                        <div class="card-body position-relative z-3">
+                            <div class="mb-2 fw-bold text-white">Selesai</div>
+                            <div class="h2 mb-4">15</div>
+                            <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:62%;"></div></div>
+                            <div class="small fw-semibold text-white text-opacity-75 mb-n1">Approved / rejected</div>
+                        </div>
+                        <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                            <iconify-icon icon="solar:check-circle-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-borderless table-card">
+                <div class="card-header bg-gray-900" data-bs-theme="dark">
+                    <h4 class="card-header-title text-white mb-0"><iconify-icon icon="solar:document-text-bold-duotone" class="me-1"></iconify-icon> Daftar Pengajuan Scoring</h4>
+                    <div class="card-header-btn"><a href="#" class="btn btn-theme btn-sm"><i class="fa fa-plus me-1"></i> Pengajuan Baru</a></div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped align-middle mb-0">
+                            <thead><tr><th>No</th><th>Nomor Pengajuan</th><th>Nama Debitur</th><th>Produk</th><th>Tanggal</th><th>Status</th><th class="text-center">Aksi</th></tr></thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-muted">1</td>
+                                    <td><div class="d-inline-flex align-items-center gap-1"><span class="badge bg-primary bg-opacity-15 text-primary py-6px font-monospace">TRX-2026-0041</span><button class="btn btn-default btn-xs btn-icon"><i class="fa fa-copy"></i></button></div></td>
+                                    <td class="fw-semibold">Budi Santoso</td>
+                                    <td>Kredit Multiguna</td>
+                                    <td>04 Apr 2026</td>
+                                    <td><span class="badge badge-submitted">Submitted</span></td>
+                                    <td class="text-center"><button class="btn btn-default btn-xs btn-icon"><i class="fa fa-eye"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">2</td>
+                                    <td><div class="d-inline-flex align-items-center gap-1"><span class="badge bg-primary bg-opacity-15 text-primary py-6px font-monospace">TRX-2026-0040</span><button class="btn btn-default btn-xs btn-icon"><i class="fa fa-copy"></i></button></div></td>
+                                    <td class="fw-semibold">Siti Rahayu</td>
+                                    <td>Kredit Pemilikan Rumah</td>
+                                    <td>03 Apr 2026</td>
+                                    <td><span class="badge badge-draft">Draft</span></td>
+                                    <td class="text-center"><button class="btn btn-default btn-xs btn-icon"><i class="fa fa-eye"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">3</td>
+                                    <td><div class="d-inline-flex align-items-center gap-1"><span class="badge bg-primary bg-opacity-15 text-primary py-6px font-monospace">TRX-2026-0039</span><button class="btn btn-default btn-xs btn-icon"><i class="fa fa-copy"></i></button></div></td>
+                                    <td class="fw-semibold">Andi Wijaya</td>
+                                    <td>Kredit Multiguna</td>
+                                    <td>01 Apr 2026</td>
+                                    <td><span class="badge badge-approved">Approved</span></td>
+                                    <td class="text-center"><button class="btn btn-default btn-xs btn-icon"><i class="fa fa-eye"></i></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- INPUT -->
+        <div class="preview-page" id="page-input" data-preview="input">
+            <ol class="breadcrumb float-xl-end"><li class="breadcrumb-item"><a href="#">Home</a></li><li class="breadcrumb-item active">Input Scoring</li></ol>
+            <h1 class="page-header">Input Scoring <small>langkah 2</small></h1>
+
+            <ul class="nav nav-pills tx-stepper gap-2 mb-3">
+                <li class="nav-item"><span class="nav-link disabled"><i class="fa fa-check me-1 text-success"></i>1. Produk &amp; Debitur</span></li>
+                <li class="nav-item"><span class="nav-link active"><i class="fa fa-pen me-1"></i>2. Input Scoring</span></li>
+                <li class="nav-item"><a class="nav-link" href="#review"><i class="fa fa-flag-checkered me-1"></i>3. Konfirmasi</a></li>
+            </ul>
+
+            <div class="card card-borderless mb-3">
+                <div class="card-header bg-gray-900" data-bs-theme="dark">
+                    <h4 class="card-header-title text-white mb-0"><iconify-icon icon="solar:document-text-bold-duotone" class="me-1"></iconify-icon> TRX-2026-0040</h4>
+                    <div class="d-flex align-items-center gap-2">
+                        <button class="btn btn-default btn-xs btn-icon"><i class="fa fa-copy"></i></button>
+                        <span class="badge badge-draft">draft</span>
+                    </div>
+                </div>
+                <div class="card-body py-3"><div class="text-muted small"><span class="fw-semibold text-dark">Siti Rahayu</span> — Kredit Pemilikan Rumah</div></div>
+            </div>
+
+            <div class="card card-borderless">
+                <div class="card-header bg-gray-900" data-bs-theme="dark">
+                    <h4 class="card-header-title text-white mb-0"><iconify-icon icon="solar:clipboard-list-bold-duotone" class="me-1"></iconify-icon> Langkah 2 — Input Parameter Scoring</h4>
+                    <span class="badge bg-theme">3 Parameter</span>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6"><label class="form-label">Karakter Debitur <span class="text-danger">*</span></label><select class="form-select"><option>Sangat Baik</option></select></div>
+                        <div class="col-md-6"><label class="form-label">Kapasitas Bayar <span class="text-danger">*</span></label><select class="form-select"><option>DSR &lt; 30%</option></select></div>
+                        <div class="col-md-6"><label class="form-label">Jaminan / Agunan <span class="text-danger">*</span></label><select class="form-select"><option>Sertifikat SHM</option></select></div>
+                    </div>
+                    <div class="d-flex justify-content-between border-top pt-3">
+                        <button class="btn btn-default"><i class="fa fa-arrow-left me-1"></i> Kembali</button>
+                        <button class="btn btn-theme">Lanjut ke Konfirmasi <i class="fa fa-arrow-right ms-1"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- REVIEW -->
+        <div class="preview-page" id="page-review" data-preview="review">
+            <ol class="breadcrumb float-xl-end"><li class="breadcrumb-item"><a href="#">Home</a></li><li class="breadcrumb-item active">Konfirmasi Scoring</li></ol>
+            <h1 class="page-header">Konfirmasi Scoring <small>langkah 3</small></h1>
+
+            <ul class="nav nav-pills tx-stepper gap-2 mb-3">
+                <li class="nav-item"><span class="nav-link disabled"><i class="fa fa-check me-1 text-success"></i>1. Produk &amp; Debitur</span></li>
+                <li class="nav-item"><a class="nav-link" href="#input"><i class="fa fa-check me-1 text-success"></i>2. Input Scoring</a></li>
+                <li class="nav-item"><span class="nav-link active"><i class="fa fa-flag-checkered me-1"></i>3. Konfirmasi</span></li>
+            </ul>
+
+            <div class="row g-3">
+                <div class="col-lg-8">
+                    <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-blue bg-gradient-to-indigo overflow-hidden mb-3" data-bs-theme="dark">
+                        <div class="card-body position-relative z-3">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <div class="text-white text-opacity-75 small fw-semibold mb-1">Total Skor</div>
+                                    <div class="display-5 fw-bold text-white mb-0">420</div>
+                                </div>
+                                <div class="col">
+                                    <div class="fw-bold text-white fs-5">LAYAK</div>
+                                    <div class="text-white text-opacity-75 small font-monospace">TRX-2026-0040 — Siti Rahayu</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                            <iconify-icon icon="solar:chart-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
+                        </div>
+                    </div>
+
+                    <div class="card card-borderless mb-3">
+                        <div class="card-header bg-gray-900" data-bs-theme="dark">
+                            <h4 class="card-header-title text-white mb-0"><iconify-icon icon="solar:list-bold-duotone" class="me-1"></iconify-icon> Rincian Parameter</h4>
+                        </div>
+                        <div class="card-body p-0">
+                            <table class="table table-hover table-striped align-middle mb-0">
+                                <thead><tr><th>Parameter</th><th class="text-center">Nilai</th><th class="text-center">Weight</th><th class="text-center">Skor</th></tr></thead>
+                                <tbody>
+                                    <tr><td class="fw-semibold">Karakter Debitur</td><td class="text-center">4</td><td class="text-center">25</td><td class="text-center fw-bold">100</td></tr>
+                                    <tr><td class="fw-semibold">Kapasitas Bayar</td><td class="text-center">4</td><td class="text-center">30</td><td class="text-center fw-bold">120</td></tr>
+                                    <tr><td class="fw-semibold">Jaminan / Agunan</td><td class="text-center">5</td><td class="text-center">40</td><td class="text-center fw-bold">200</td></tr>
+                                </tbody>
+                                <tfoot><tr><td colspan="3" class="fw-bold text-end">Total</td><td class="text-center fw-bold text-primary">420</td></tr></tfoot>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <button class="btn btn-default"><i class="fa fa-arrow-left me-1"></i> Kembali ke Input</button>
+                        <button class="btn btn-theme"><i class="fa fa-paper-plane me-1"></i> Submit &amp; Kunci Pengajuan</button>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card card-borderless">
+                        <div class="card-header bg-gray-900" data-bs-theme="dark">
+                            <h4 class="card-header-title text-white mb-0"><iconify-icon icon="solar:info-circle-bold-duotone" class="me-1"></iconify-icon> Informasi Pengajuan</h4>
+                        </div>
+                        <div class="card-body p-0">
+                            <table class="table table-sm align-middle mb-0">
+                                <tbody>
+                                    <tr><td class="text-muted small">Nomor</td><td class="text-end"><span class="badge bg-primary bg-opacity-15 text-primary py-6px font-monospace">TRX-2026-0040</span></td></tr>
+                                    <tr><td class="text-muted small">Debitur</td><td class="fw-semibold text-end small">Siti Rahayu</td></tr>
+                                    <tr><td class="text-muted small">Produk</td><td class="fw-semibold text-end small">Kredit Pemilikan Rumah</td></tr>
+                                    <tr><td class="text-muted small">Status</td><td class="text-end"><span class="badge badge-draft">draft</span></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="assets/color-admin/js/vendor.min.js"></script>
+<script src="assets/color-admin/js/app.min.js"></script>
+<script>
+function showPreview(name) {
+    document.querySelectorAll('.preview-page').forEach(function (el) {
+        el.classList.toggle('is-on', el.getAttribute('data-preview') === name);
+    });
+    document.querySelectorAll('[data-preview-nav]').forEach(function (el) {
+        el.classList.toggle('active', el.getAttribute('data-preview-nav') === name);
+    });
+}
+var hash = (location.hash || '#list').replace('#', '');
+if (['list', 'input', 'review'].indexOf(hash) === -1) hash = 'list';
+showPreview(hash);
+window.addEventListener('hashchange', function () {
+    var h = (location.hash || '#list').replace('#', '');
+    if (['list', 'input', 'review'].indexOf(h) !== -1) showPreview(h);
+});
+</script>
+</body>
+</html>

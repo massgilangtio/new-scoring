@@ -1,0 +1,22 @@
+/* Phase 7 — Transactions (Color Admin) */
+
+#content .tx-stepper .nav-link {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #6c757d;
+  border-radius: 0.5rem;
+  pointer-events: none;
+}
+
+#content .tx-stepper a.nav-link {
+  pointer-events: auto;
+}
+
+#content .tx-stepper .nav-link.active {
+  background: var(--bs-theme, #0c83f0);
+  color: #fff;
+}
+
+#content .tx-stepper .nav-link.disabled {
+  opacity: 0.85;
+}
