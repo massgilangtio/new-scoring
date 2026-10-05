@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Phase 3 Preview — Dashboard (Color Admin)</title>
+    <link rel="icon" href="assets/images/favicon.png">
+    <link href="assets/color-admin/css/vendor.min.css" rel="stylesheet">
+    <link href="assets/color-admin/css/default/app.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/shell-phase1.css">
+    <link rel="stylesheet" href="css/dash-phase3.css">
+    <script src="assets/color-admin/js/iconify/iconify-icon.min.js"></script>
+</head>
+<body>
+    <div id="loader" class="app-loader"><span class="spinner"></span></div>
+    <div id="app" class="app app-header-fixed app-sidebar-fixed">
+        <div id="appHeader" class="app-header">
+            <div class="brand">
+                <div class="mobile-toggler">
+                    <button type="button" class="menu-toggler" data-toggle-class="app-sidebar-mobile-toggled" data-toggle-target=".app">
+                        <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+                    </button>
+                </div>
+                <a href="#" class="brand-logo"><img src="assets/images/logo-horizontal.png" alt="New Scoring" class="brand-logo-img"></a>
+            </div>
+            <div class="menu">
+                <div class="menu-item menu-item-form d-none d-md-flex">
+                    <form action="#" method="get"><input type="text" class="form-control" name="q" placeholder="Cari debitur / produk...">
+                        <button type="submit" class="btn btn-search"><iconify-icon icon="octicon:search-16"></iconify-icon></button>
+                    </form>
+                </div>
+                <div class="menu-item dropdown">
+                    <a href="#" class="menu-link"><iconify-icon icon="solar:bell-bing-bold-duotone"></iconify-icon><span class="badge">3</span></a>
+                </div>
+                <div class="menu-item dropdown">
+                    <a href="#" class="menu-link dropdown-toggle" data-bs-toggle="dropdown">
+                        <span class="rounded-circle bg-theme text-white d-inline-flex align-items-center justify-content-center me-2" style="width:30px;height:30px;font-size:12px;font-weight:700;">AI</span>
+                        <span class="d-none d-md-inline">Admin IT</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="sidebar" class="app-sidebar" data-bs-theme="dark">
+            <div class="app-sidebar-content" data-scrollbar="true" data-height="100%">
+                <div class="menu">
+                    <div class="menu-profile">
+                        <a href="javascript:;" class="menu-link">
+                            <div class="menu-profile-cover with-shadow"></div>
+                            <div class="menu-profile-image avatar-initials">AI</div>
+                            <div class="menu-profile-info">
+                                <div class="d-flex align-items-center"><div class="flex-grow-1">Admin IT</div></div>
+                                <small>ADMIN IT · KANTOR PUSAT</small>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="menu-header">Navigation</div>
+                    <div class="menu-item active"><a href="#" class="menu-link"><div class="menu-icon"><i class="fa fa-home"></i></div><div class="menu-text">Dashboard</div></a></div>
+                    <div class="menu-item has-sub"><a href="javascript:;" class="menu-link"><div class="menu-icon"><i class="fa fa-file-invoice"></i></div><div class="menu-text">Transaksi Scoring</div><div class="menu-caret"></div></a>
+                        <div class="menu-submenu"><div class="menu-item"><a href="#" class="menu-link"><div class="menu-text">Pengajuan Scoring</div></a></div></div>
+                    </div>
+                    <div class="menu-item has-sub"><a href="javascript:;" class="menu-link"><div class="menu-icon"><i class="fa fa-database"></i></div><div class="menu-text">Master Data</div><div class="menu-caret"></div></a>
+                        <div class="menu-submenu"><div class="menu-item"><a href="#" class="menu-link"><div class="menu-text">Debitur</div></a></div></div>
+                    </div>
+                    <div class="menu-item"><a href="#" class="menu-link"><div class="menu-icon"><i class="fa fa-bell"></i></div><div class="menu-text">Notifikasi</div><span class="menu-label">3</span></a></div>
+                </div>
+            </div>
+        </div>
+        <div class="app-sidebar-mobile-backdrop"><a href="#" data-dismiss="app-sidebar-mobile" class="stretched-link"></a></div>
+
+        <div id="content" class="app-content">
+            <ol class="breadcrumb float-xl-end">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">Dasbor</li>
+            </ol>
+            <h1 class="page-header">Dasbor <small>ringkasan aktivitas scoring</small></h1>
+
+            <div class="row mb-3">
+                <div class="col-xl-3 col-md-6">
+                    <div class="card card-borderless rounded-3 overflow-hidden bg-blue" data-bs-theme="dark">
+                        <div class="card-body position-relative z-3">
+                            <div class="fw-bold text-white small mb-1 d-flex align-items-center gap-2"><iconify-icon icon="solar:document-bold-duotone" class="fs-6"></iconify-icon> Total Pengajuan</div>
+                            <div class="fw-bold fs-2 text-white">248</div>
+                            <div class="fw-semibold text-white text-opacity-75 small mb-3">+12% dibanding bulan lalu</div>
+                            <div class="text-end mb-n3 mx-n3"><a href="#" class="text-decoration-none link-white fw-semibold small d-block px-3 py-2 bg-black bg-opacity-50">Lihat detail <i class="fa fa-chevron-right"></i></a></div>
+                        </div>
+                        <div class="position-absolute top-0 end-0 mt-n5 ps-5 w-25">
+                            <div class="w-250px h-250px bg-black bg-opacity-25 rounded-circle ms-n5 position-absolute top-0 start-0"></div>
+                            <div class="w-250px h-250px bg-black bg-opacity-25 rounded-circle mt-n5 position-absolute top-0 start-0"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6 mt-3 mt-md-0">
+                    <div class="card card-borderless rounded-3 overflow-hidden bg-orange" data-bs-theme="dark">
+                        <div class="card-body position-relative z-3">
+                            <div class="fw-bold text-white small mb-1 d-flex align-items-center gap-2"><iconify-icon icon="solar:clock-circle-bold-duotone" class="fs-6"></iconify-icon> Dalam Proses</div>
+                            <div class="fw-bold fs-2 text-white">36</div>
+                            <div class="fw-semibold text-white text-opacity-75 small mb-3">-4% dibanding bulan lalu</div>
+                            <div class="text-end mb-n3 mx-n3"><a href="#" class="text-decoration-none link-white fw-semibold small d-block px-3 py-2 bg-black bg-opacity-50">Lihat detail <i class="fa fa-chevron-right"></i></a></div>
+                        </div>
+                        <div class="position-absolute top-0 end-0 mt-n5 ps-5 w-25">
+                            <div class="w-250px h-250px bg-black bg-opacity-25 rounded-circle ms-n5 position-absolute top-0 start-0"></div>
+                            <div class="w-250px h-250px bg-black bg-opacity-25 rounded-circle mt-n5 position-absolute top-0 start-0"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6 mt-3 mt-xl-0">
+                    <div class="card card-borderless rounded-3 overflow-hidden bg-teal" data-bs-theme="dark">
+                        <div class="card-body position-relative z-3">
+                            <div class="fw-bold text-white small mb-1 d-flex align-items-center gap-2"><iconify-icon icon="solar:check-circle-bold-duotone" class="fs-6"></iconify-icon> Disetujui</div>
+                            <div class="fw-bold fs-2 text-white">184</div>
+                            <div class="fw-semibold text-white text-opacity-75 small mb-3">+18% dibanding bulan lalu</div>
+                            <div class="text-end mb-n3 mx-n3"><a href="#" class="text-decoration-none link-white fw-semibold small d-block px-3 py-2 bg-black bg-opacity-50">Lihat detail <i class="fa fa-chevron-right"></i></a></div>
+                        </div>
+                        <div class="position-absolute top-0 end-0 mt-n5 ps-5 w-25">
+                            <div class="w-250px h-250px bg-black bg-opacity-25 rounded-circle ms-n5 position-absolute top-0 start-0"></div>
+                            <div class="w-250px h-250px bg-black bg-opacity-25 rounded-circle mt-n5 position-absolute top-0 start-0"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6 mt-3 mt-xl-0">
+                    <div class="card card-borderless rounded-3 overflow-hidden bg-red" data-bs-theme="dark">
+                        <div class="card-body position-relative z-3">
+                            <div class="fw-bold text-white small mb-1 d-flex align-items-center gap-2"><iconify-icon icon="solar:close-circle-bold-duotone" class="fs-6"></iconify-icon> Ditolak</div>
+                            <div class="fw-bold fs-2 text-white">28</div>
+                            <div class="fw-semibold text-white text-opacity-75 small mb-3">-2% dibanding bulan lalu</div>
+                            <div class="text-end mb-n3 mx-n3"><a href="#" class="text-decoration-none link-white fw-semibold small d-block px-3 py-2 bg-black bg-opacity-50">Lihat detail <i class="fa fa-chevron-right"></i></a></div>
+                        </div>
+                        <div class="position-absolute top-0 end-0 mt-n5 ps-5 w-25">
+                            <div class="w-250px h-250px bg-black bg-opacity-25 rounded-circle ms-n5 position-absolute top-0 start-0"></div>
+                            <div class="w-250px h-250px bg-black bg-opacity-25 rounded-circle mt-n5 position-absolute top-0 start-0"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-xl-8 d-flex flex-column gap-3">
+                    <div class="card card-borderless">
+                        <div class="card-header bg-gray-900" data-bs-theme="dark">
+                            <h4 class="card-header-title text-white d-flex align-items-center gap-3 mb-0">
+                                <span>Analitik Scoring</span>
+                                <select id="dashPeriod" class="form-select form-select-sm h-25px py-0 w-auto border-0 shadow-none my-n1 bg-dark text-white">
+                                    <option>Semua periode</option>
+                                    <option selected>Oktober 2026</option>
+                                </select>
+                            </h4>
+                            <div class="card-header-btn">
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="card-expand"><i class="fa fa-expand"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-warning" data-toggle="card-collapse"><i class="fa fa-minus"></i></a>
+                            </div>
+                        </div>
+                        <div class="card-body pb-0">
+                            <div class="row g-3">
+                                <div class="col-lg-3 col-md-6"><div class="rounded bg-primary bg-opacity-15 p-3 position-relative"><div class="small fw-semibold">Total</div><div class="fw-bold fs-4">248</div><div class="small fw-semibold text-muted">Pengajuan</div><div class="w-50px h-50px fs-2 d-flex align-items-center justify-content-center position-absolute top-0 end-0 text-primary"><iconify-icon icon="solar:document-bold-duotone"></iconify-icon></div></div></div>
+                                <div class="col-lg-3 col-md-6"><div class="rounded bg-warning bg-opacity-15 p-3 position-relative"><div class="small fw-semibold">Proses</div><div class="fw-bold fs-4">36</div><div class="small fw-semibold text-muted">Dalam antrean</div><div class="w-50px h-50px fs-2 d-flex align-items-center justify-content-center position-absolute top-0 end-0 text-warning"><iconify-icon icon="solar:clock-circle-bold-duotone"></iconify-icon></div></div></div>
+                                <div class="col-lg-3 col-md-6"><div class="rounded bg-success bg-opacity-15 p-3 position-relative"><div class="small fw-semibold">Disetujui</div><div class="fw-bold fs-4">184</div><div class="small fw-semibold text-muted">Lolos scoring</div><div class="w-50px h-50px fs-2 d-flex align-items-center justify-content-center position-absolute top-0 end-0 text-success"><iconify-icon icon="solar:check-circle-bold-duotone"></iconify-icon></div></div></div>
+                                <div class="col-lg-3 col-md-6"><div class="rounded bg-danger bg-opacity-15 p-3 position-relative"><div class="small fw-semibold">Ditolak</div><div class="fw-bold fs-4">28</div><div class="small fw-semibold text-muted">Tidak lolos</div><div class="w-50px h-50px fs-2 d-flex align-items-center justify-content-center position-absolute top-0 end-0 text-danger"><iconify-icon icon="solar:close-circle-bold-duotone"></iconify-icon></div></div></div>
+                            </div>
+                            <div class="d-flex align-items-center gap-3 mt-3 mb-1 small text-muted fw-semibold">
+                                <span><i class="fa fa-minus text-primary me-1"></i> Pengajuan</span>
+                                <span><i class="fa fa-square text-success me-1" style="font-size:8px;vertical-align:middle;"></i> Disetujui</span>
+                                <span class="ms-auto">6 bulan terakhir</span>
+                            </div>
+                        </div>
+                        <div class="px-3 pb-3">
+                            <svg class="w-100 ca-dash-chart" viewBox="0 0 340 168">
+                                <rect x="11" y="48" width="14" height="80" rx="4" fill="#00acac"></rect><text x="18" y="148" text-anchor="middle" fill="#6c757d" font-size="11">Mei</text>
+                                <rect x="71" y="38" width="14" height="90" rx="4" fill="#00acac"></rect><text x="78" y="148" text-anchor="middle" fill="#6c757d" font-size="11">Jun</text>
+                                <rect x="131" y="58" width="14" height="70" rx="4" fill="#00acac"></rect><text x="138" y="148" text-anchor="middle" fill="#6c757d" font-size="11">Jul</text>
+                                <rect x="191" y="28" width="14" height="100" rx="4" fill="#00acac"></rect><text x="198" y="148" text-anchor="middle" fill="#6c757d" font-size="11">Agu</text>
+                                <rect x="251" y="43" width="14" height="85" rx="4" fill="#00acac"></rect><text x="258" y="148" text-anchor="middle" fill="#6c757d" font-size="11">Sep</text>
+                                <rect x="311" y="33" width="14" height="95" rx="4" fill="#00acac"></rect><text x="318" y="148" text-anchor="middle" fill="#6c757d" font-size="11">Okt</text>
+                                <polyline points="18,40 78,30 138,55 198,22 258,35 318,28" fill="none" stroke="#0c83f0" stroke-width="3" stroke-linecap="round"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="card card-borderless dash-table">
+                        <ul class="nav nav-tabs nav-tabs-inverse nav-justified rounded-top border-0">
+                            <li class="nav-item"><button type="button" class="nav-link py-10px border-0 active is-on d-flex align-items-center justify-content-center gap-2 w-100" data-dash-tab="all"><iconify-icon icon="solar:clipboard-list-bold-duotone" class="fs-4 text-primary"></iconify-icon><span class="d-none d-md-inline">Terbaru</span></button></li>
+                            <li class="nav-item"><button type="button" class="nav-link py-10px border-0 d-flex align-items-center justify-content-center gap-2 w-100" data-dash-tab="pending"><iconify-icon icon="solar:hourglass-bold-duotone" class="fs-4 text-primary"></iconify-icon><span class="d-none d-md-inline">Menunggu</span></button></li>
+                            <li class="nav-item"><button type="button" class="nav-link py-10px border-0 d-flex align-items-center justify-content-center gap-2 w-100" data-dash-tab="returned"><iconify-icon icon="solar:restart-bold-duotone" class="fs-4 text-primary"></iconify-icon><span class="d-none d-md-inline">Dikembalikan</span></button></li>
+                            <li class="nav-item"><button type="button" class="nav-link py-10px border-0 d-flex align-items-center justify-content-center gap-2 w-100" data-dash-tab="approved"><iconify-icon icon="solar:check-circle-bold-duotone" class="fs-4 text-primary"></iconify-icon><span class="d-none d-md-inline">Disetujui</span></button></li>
+                            <li class="nav-item"><button type="button" class="nav-link py-10px border-0 d-flex align-items-center justify-content-center gap-2 w-100" data-dash-tab="rejected"><iconify-icon icon="solar:close-circle-bold-duotone" class="fs-4 text-primary"></iconify-icon><span class="d-none d-md-inline">Ditolak</span></button></li>
+                        </ul>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-card mb-0 text-nowrap">
+                                    <thead class="table-py-10px"><tr><th>Pengajuan</th><th>Debitur</th><th>Produk</th><th>Status</th><th>Tahap</th><th class="text-end">Aksi</th></tr></thead>
+                                    <tbody class="table-py-15px">
+                                        <tr data-status="pending"><td><div class="fw-semibold">05 Oct 2026 09:12</div><div class="fw-semibold fs-11px text-body text-opacity-50">SC-2026-0042</div></td><td><div class="fw-semibold">Budi Santoso</div></td><td><div class="fw-semibold">KPR</div></td><td><span class="badge bg-info bg-opacity-15 text-info py-6px">Diajukan</span></td><td><div class="fw-semibold small">Menunggu keputusan</div></td><td class="text-end"><a href="#" class="btn btn-default btn-xs btn-icon"><i class="fa fa-eye"></i></a></td></tr>
+                                        <tr data-status="approved"><td><div class="fw-semibold">04 Oct 2026 14:30</div><div class="fw-semibold fs-11px text-body text-opacity-50">SC-2026-0041</div></td><td><div class="fw-semibold">Siti Aminah</div></td><td><div class="fw-semibold">Kredit Usaha</div></td><td><span class="badge bg-success bg-opacity-15 text-success py-6px">Disetujui</span></td><td><div class="fw-semibold small">Selesai</div></td><td class="text-end"><a href="#" class="btn btn-default btn-xs btn-icon"><i class="fa fa-eye"></i></a></td></tr>
+                                        <tr data-status="returned"><td><div class="fw-semibold">03 Oct 2026 11:05</div><div class="fw-semibold fs-11px text-body text-opacity-50">SC-2026-0040</div></td><td><div class="fw-semibold">Andi Wijaya</div></td><td><div class="fw-semibold">Multiguna</div></td><td><span class="badge bg-warning bg-opacity-15 text-warning py-6px">Dikembalikan</span></td><td><div class="fw-semibold small">Perlu perbaikan</div></td><td class="text-end"><a href="#" class="btn btn-default btn-xs btn-icon"><i class="fa fa-eye"></i></a></td></tr>
+                                        <tr data-status="rejected"><td><div class="fw-semibold">02 Oct 2026 16:48</div><div class="fw-semibold fs-11px text-body text-opacity-50">SC-2026-0039</div></td><td><div class="fw-semibold">Rina Kartika</div></td><td><div class="fw-semibold">KPR</div></td><td><span class="badge bg-danger bg-opacity-15 text-danger py-6px">Ditolak</span></td><td><div class="fw-semibold small">Ditolak</div></td><td class="text-end"><a href="#" class="btn btn-default btn-xs btn-icon"><i class="fa fa-eye"></i></a></td></tr>
+                                        <tr data-status="pending"><td><div class="fw-semibold">01 Oct 2026 10:20</div><div class="fw-semibold fs-11px text-body text-opacity-50">SC-2026-0038</div></td><td><div class="fw-semibold">Hendra Gunawan</div></td><td><div class="fw-semibold">Kredit Usaha</div></td><td><span class="badge bg-info bg-opacity-15 text-info py-6px">Menunggu</span></td><td><div class="fw-semibold small">Belum ditugaskan</div></td><td class="text-end"><a href="#" class="btn btn-default btn-xs btn-icon"><i class="fa fa-eye"></i></a></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="px-3 py-2 border-top text-center"><a href="#" class="fw-semibold text-decoration-none small">Lihat semua pengajuan</a></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-4 d-flex flex-column gap-3">
+                    <div class="card card-borderless">
+                        <div class="card-header bg-gray-900" data-bs-theme="dark"><h4 class="card-header-title text-white mb-0">Distribusi Produk</h4></div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between small fw-semibold mb-1"><span>KPR</span><span class="text-muted">104 · 42%</span></div>
+                            <div class="progress h-5px rounded-pill mb-3"><div class="progress-bar" style="width:42%;background:#0c83f0;"></div></div>
+                            <div class="d-flex justify-content-between small fw-semibold mb-1"><span>Kredit Usaha</span><span class="text-muted">70 · 28%</span></div>
+                            <div class="progress h-5px rounded-pill mb-3"><div class="progress-bar" style="width:28%;background:#00acac;"></div></div>
+                            <div class="d-flex justify-content-between small fw-semibold mb-1"><span>Multiguna</span><span class="text-muted">45 · 18%</span></div>
+                            <div class="progress h-5px rounded-pill mb-3"><div class="progress-bar" style="width:18%;background:#f59c1a;"></div></div>
+                            <div class="d-flex justify-content-between small fw-semibold mb-1"><span>Lainnya</span><span class="text-muted">29 · 12%</span></div>
+                            <div class="progress h-5px rounded-pill"><div class="progress-bar" style="width:12%;background:#ff5b57;"></div></div>
+                        </div>
+                    </div>
+
+                    <div class="card card-borderless">
+                        <div class="card-header bg-gray-900" data-bs-theme="dark">
+                            <h4 class="card-header-title text-white mb-0">Notifikasi</h4>
+                            <a href="#" class="text-white text-opacity-50 small fw-semibold text-decoration-none">Semua</a>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="d-flex align-items-start gap-2 px-3 py-2 border-bottom">
+                                <div class="rounded-circle bg-primary bg-opacity-15 text-primary d-flex align-items-center justify-content-center" style="width:36px;height:36px;"><iconify-icon icon="solar:bell-bing-bold-duotone"></iconify-icon></div>
+                                <div><div class="fw-bold small">Pengajuan SC-2026-0042 menunggu approval</div><div class="fw-semibold small text-muted">12 menit lalu</div></div>
+                            </div>
+                            <div class="d-flex align-items-start gap-2 px-3 py-2 border-bottom">
+                                <div class="rounded-circle bg-primary bg-opacity-15 text-primary d-flex align-items-center justify-content-center" style="width:36px;height:36px;"><iconify-icon icon="solar:bell-bing-bold-duotone"></iconify-icon></div>
+                                <div><div class="fw-bold small">Parameter scoring diperbarui</div><div class="fw-semibold small text-muted">2 jam lalu</div></div>
+                            </div>
+                            <div class="d-flex align-items-start gap-2 px-3 py-2">
+                                <div class="rounded-circle bg-primary bg-opacity-15 text-primary d-flex align-items-center justify-content-center" style="width:36px;height:36px;"><iconify-icon icon="solar:bell-bing-bold-duotone"></iconify-icon></div>
+                                <div><div class="fw-bold small">Pengajuan SC-2026-0038 disetujui</div><div class="fw-semibold small text-muted">1 hari lalu</div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card card-borderless">
+                        <div class="card-header bg-gray-900" data-bs-theme="dark"><h4 class="card-header-title text-white mb-0">Quick Action</h4></div>
+                        <div class="list-group list-group-flush">
+                            <a href="#" class="list-group-item list-group-item-action d-flex align-items-center gap-2"><iconify-icon icon="solar:file-add-bold-duotone" class="fs-4 text-primary"></iconify-icon><span class="flex-1"><span class="d-block fw-bold small">Pengajuan Scoring</span><span class="d-block text-muted" style="font-size:11px;">Buat pengajuan baru</span></span><i class="fa fa-chevron-right text-muted"></i></a>
+                            <a href="#" class="list-group-item list-group-item-action d-flex align-items-center gap-2"><iconify-icon icon="solar:refresh-bold-duotone" class="fs-4 text-warning"></iconify-icon><span class="flex-1"><span class="d-block fw-bold small">Request Ulang</span><span class="d-block text-muted" style="font-size:11px;">Ajukan re-scoring</span></span><i class="fa fa-chevron-right text-muted"></i></a>
+                            <a href="#" class="list-group-item list-group-item-action d-flex align-items-center gap-2"><iconify-icon icon="solar:clipboard-check-bold-duotone" class="fs-4 text-teal"></iconify-icon><span class="flex-1"><span class="d-block fw-bold small">Cek Status</span><span class="d-block text-muted" style="font-size:11px;">Lihat status pengajuan</span></span><i class="fa fa-chevron-right text-muted"></i></a>
+                            <a href="#" class="list-group-item list-group-item-action d-flex align-items-center gap-2"><iconify-icon icon="solar:chart-bold-duotone" class="fs-4 text-info"></iconify-icon><span class="flex-1"><span class="d-block fw-bold small">Laporan Scoring</span><span class="d-block text-muted" style="font-size:11px;">Download laporan</span></span><i class="fa fa-chevron-right text-muted"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="javascript:;" class="btn btn-icon btn-circle btn-theme btn-scroll-to-top" data-toggle="scroll-to-top"><i class="fa fa-angle-up"></i></a>
+    </div>
+    <script src="assets/color-admin/js/vendor.min.js"></script>
+    <script src="assets/color-admin/js/app.min.js"></script>
+    <script>
+        document.querySelectorAll('[data-dash-tab]').forEach(function (button) {
+            button.addEventListener('click', function () {
+                document.querySelectorAll('[data-dash-tab]').forEach(function (item) { item.classList.remove('is-on', 'active'); });
+                button.classList.add('is-on', 'active');
+                var tab = button.getAttribute('data-dash-tab');
+                document.querySelectorAll('.dash-table tbody tr[data-status]').forEach(function (row) {
+                    row.hidden = tab !== 'all' && row.getAttribute('data-status') !== tab;
+                });
+            });
+        });
+    </script>
+</body>
+</html>

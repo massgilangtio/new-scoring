@@ -29,6 +29,11 @@ docs/phase1-screenshots/chrome-profile*/
 docs/phase1-screenshots/measure.js
 docs/phase1-screenshots/measure-dom.html
 docs/phase1-screenshots/measure-dom.html.err
+docs/phase3-screenshots/node_modules/
+docs/phase3-screenshots/package-lock.json
+docs/phase3-screenshots/package.json
+docs/phase3-screenshots/shot.js
+docs/phase3-screenshots/_extract_ca.py
 frontend/public/_phase1_shell_preview_mobile_open.html
 frontend/public/_phase1_measure.html
 

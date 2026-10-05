@@ -19,9 +19,10 @@
 <!-- SweetAlert2 CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.4/dist/sweetalert2.min.css">
 
-<!-- Legacy page styles (content only) + Phase 1 shell overrides -->
+<!-- Legacy page styles (content only) + Phase 1 shell + Phase 3 dashboard overrides -->
 <link rel="stylesheet" href="<?= base_url('css/app.css') ?>?v=<?= @filemtime(FCPATH . 'css/app.css') ?: time() ?>">
 <link rel="stylesheet" href="<?= base_url('css/shell-phase1.css') ?>?v=<?= @filemtime(FCPATH . 'css/shell-phase1.css') ?: time() ?>">
+<link rel="stylesheet" href="<?= base_url('css/dash-phase3.css') ?>?v=<?= @filemtime(FCPATH . 'css/dash-phase3.css') ?: time() ?>">
 
 <!-- Iconify (Color Admin icons) -->
 <script src="<?= base_url('assets/color-admin/js/iconify/iconify-icon.min.js') ?>"></script>

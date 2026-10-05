@@ -1,0 +1,40 @@
+/* Phase 3 — Dashboard overrides (Color Admin index pattern).
+   Prefer CA utility/component classes; keep this file thin. */
+
+/* Neutralize legacy dash chrome from app.css when it leaks into content */
+#content .dash-page > .dash-hero,
+#content .dash-hero,
+#content .dash-stats,
+#content .dash-grid {
+  all: unset;
+  display: contents;
+}
+
+#content .ca-dash-chart {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 220px;
+}
+
+#content .dash-table .nav-tabs .nav-link {
+  cursor: pointer;
+  background: transparent;
+}
+
+#content .dash-table .nav-tabs-inverse .nav-link.active,
+#content .dash-table .nav-tabs-inverse .nav-link.is-on {
+  background: var(--bs-component-bg, #fff);
+  color: inherit;
+}
+
+#content .list-group-item-action iconify-icon {
+  flex-shrink: 0;
+}
+
+@media (max-width: 767.98px) {
+  #content .dash-table .nav-tabs .nav-link {
+    padding-left: 0.35rem;
+    padding-right: 0.35rem;
+  }
+}
