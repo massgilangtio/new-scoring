@@ -1,6 +1,13 @@
 <?php
 $profile = $profile ?? [];
 $branches = $branches ?? [];
+$totalBranches = count($branches);
+$activeBranches = 0;
+foreach ($branches as $b) {
+    if (! empty($b['is_active'])) {
+        $activeBranches++;
+    }
+}
 ?>
 <?= view('partials/shell_start', ['profile' => $profile, 'title' => 'Master Cabang']) ?>
 
@@ -11,24 +18,72 @@ $branches = $branches ?? [];
 <div data-swal="error" data-swal-title="Terjadi Kesalahan" data-swal-message="<?= esc($error) ?>" hidden></div>
 <?php endif; ?>
 
-<!-- Page Header -->
-<div class="page-header d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3 mb-4">
-    <div class="page-header-text">
-        <h2 class="page-title mb-1"><i class="fa-solid fa-building me-2 text-primary"></i>Master Cabang</h2>
-        <p class="text-muted mb-0">Kelola data cabang yang terdaftar dalam sistem</p>
+<!-- BEGIN KPI -->
+<div class="row mb-3">
+    <div class="col-xl-4 col-md-6">
+        <div class="card card-borderless rounded-3 overflow-hidden bg-blue" data-bs-theme="dark">
+            <div class="card-body position-relative z-3">
+                <div class="fw-bold text-white small mb-1 d-flex align-items-center gap-2">
+                    <iconify-icon icon="solar:shop-bold-duotone" class="fs-6"></iconify-icon> Total Cabang
+                </div>
+                <div class="fw-bold fs-2 text-white"><?= esc((string) $totalBranches) ?></div>
+                <div class="fw-semibold text-white text-opacity-75 small mb-0">Semua cabang terdaftar</div>
+            </div>
+            <div class="position-absolute top-0 end-0 mt-n5 ps-5 w-25">
+                <div class="w-250px h-250px bg-black bg-opacity-25 rounded-circle ms-n5 position-absolute top-0 start-0"></div>
+                <div class="w-250px h-250px bg-black bg-opacity-25 rounded-circle mt-n5 position-absolute top-0 start-0"></div>
+            </div>
+        </div>
     </div>
-    <div class="page-actions w-100 w-sm-auto text-end">
-        <button type="button" class="btn btn-primary w-100 w-sm-auto" data-bs-toggle="modal" data-bs-target="#createBranchModal">
-            <i class="fa-solid fa-plus me-1"></i> Tambah Cabang
-        </button>
+    <div class="col-xl-4 col-md-6 mt-3 mt-md-0">
+        <div class="card card-borderless rounded-3 overflow-hidden bg-teal" data-bs-theme="dark">
+            <div class="card-body position-relative z-3">
+                <div class="fw-bold text-white small mb-1 d-flex align-items-center gap-2">
+                    <iconify-icon icon="solar:check-circle-bold-duotone" class="fs-6"></iconify-icon> Aktif
+                </div>
+                <div class="fw-bold fs-2 text-white"><?= esc((string) $activeBranches) ?></div>
+                <div class="fw-semibold text-white text-opacity-75 small mb-0">Cabang berstatus aktif</div>
+            </div>
+            <div class="position-absolute top-0 end-0 mt-n5 ps-5 w-25">
+                <div class="w-250px h-250px bg-black bg-opacity-25 rounded-circle ms-n5 position-absolute top-0 start-0"></div>
+                <div class="w-250px h-250px bg-black bg-opacity-25 rounded-circle mt-n5 position-absolute top-0 start-0"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 col-md-12 mt-3 mt-xl-0">
+        <div class="card card-borderless rounded-3 overflow-hidden bg-red" data-bs-theme="dark">
+            <div class="card-body position-relative z-3">
+                <div class="fw-bold text-white small mb-1 d-flex align-items-center gap-2">
+                    <iconify-icon icon="solar:close-circle-bold-duotone" class="fs-6"></iconify-icon> Nonaktif
+                </div>
+                <div class="fw-bold fs-2 text-white"><?= esc((string) max(0, $totalBranches - $activeBranches)) ?></div>
+                <div class="fw-semibold text-white text-opacity-75 small mb-0">Cabang nonaktif</div>
+            </div>
+            <div class="position-absolute top-0 end-0 mt-n5 ps-5 w-25">
+                <div class="w-250px h-250px bg-black bg-opacity-25 rounded-circle ms-n5 position-absolute top-0 start-0"></div>
+                <div class="w-250px h-250px bg-black bg-opacity-25 rounded-circle mt-n5 position-absolute top-0 start-0"></div>
+            </div>
+        </div>
     </div>
 </div>
+<!-- END KPI -->
 
-<!-- Branches Table -->
-<div class="card">
+<!-- BEGIN table card -->
+<div class="card card-borderless">
+    <div class="card-header bg-gray-900" data-bs-theme="dark">
+        <h4 class="card-header-title text-white mb-0">
+            <iconify-icon icon="solar:buildings-bold-duotone" class="me-1"></iconify-icon>
+            Daftar Cabang
+        </h4>
+        <div class="card-header-btn">
+            <button type="button" class="btn btn-theme btn-sm" data-bs-toggle="modal" data-bs-target="#createBranchModal">
+                <i class="fa fa-plus me-1"></i> Tambah Cabang
+            </button>
+        </div>
+    </div>
     <div class="card-body p-0">
         <div class="table-responsive">
-            <table id="branchesTable" class="table table-hover align-middle mb-0">
+            <table id="branchesTable" class="table table-hover table-striped align-middle mb-0">
                 <thead>
                     <tr>
                         <th style="width:50px;">No</th>
@@ -43,37 +98,40 @@ $branches = $branches ?? [];
                     <tr>
                         <td class="text-muted"><?= esc((string) ($index + 1)) ?></td>
                         <td>
-                            <span class="product-code"><?= esc($branch['code']) ?></span>
+                            <div class="d-inline-flex align-items-center gap-1">
+                                <span class="badge bg-primary bg-opacity-15 text-primary py-6px font-monospace"><?= esc($branch['code']) ?></span>
+                                <?php if (! empty($branch['code'])) : ?>
+                                    <button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" data-clipboard="<?= esc($branch['code']) ?>" title="Salin Kode Cabang">
+                                        <i class="fa fa-copy"></i>
+                                    </button>
+                                <?php endif; ?>
+                            </div>
                         </td>
-                        <td><?= esc($branch['name']) ?></td>
+                        <td class="fw-semibold"><?= esc($branch['name']) ?></td>
                         <td class="text-center">
-                            <span class="badge badge-<?= ! empty($branch['is_active']) ? 'active' : 'inactive' ?>">
-                                <?= ! empty($branch['is_active']) ? 'Aktif' : 'Nonaktif' ?>
-                            </span>
+                            <?php if (! empty($branch['is_active'])) : ?>
+                                <span class="badge bg-success bg-opacity-15 text-success py-6px badge-active">Aktif</span>
+                            <?php else : ?>
+                                <span class="badge bg-secondary bg-opacity-15 text-secondary py-6px badge-inactive">Nonaktif</span>
+                            <?php endif; ?>
                         </td>
                         <td class="text-center">
                             <button type="button"
-                                    class="btn btn-sm btn-outline-primary btn-edit-branch"
+                                    class="btn btn-default btn-xs btn-icon btn-edit-branch"
                                     data-id="<?= esc($branch['id']) ?>"
                                     data-code="<?= esc($branch['code']) ?>"
                                     data-name="<?= esc($branch['name']) ?>"
                                     data-is-active="<?= ! empty($branch['is_active']) ? '1' : '0' ?>"
                                     data-bs-toggle="modal" data-bs-target="#editBranchModal"
                                     title="Edit Cabang">
-                                <i class="fa-solid fa-pen-to-square"></i>
+                                <i class="fa fa-pen"></i>
                             </button>
                         </td>
                     </tr>
                     <?php endforeach; ?>
                     <?php if (empty($branches)) : ?>
                     <tr>
-                        <td colspan="5">
-                            <div class="empty-state">
-                                <i class="fa-regular fa-building"></i>
-                                <h6>Belum Ada Data Cabang</h6>
-                                <p>Klik "Tambah Cabang" untuk menambahkan cabang pertama.</p>
-                            </div>
-                        </td>
+                        <td colspan="5" class="text-center text-muted py-4">Belum ada data cabang. Klik "Tambah Cabang" untuk menambahkan.</td>
                     </tr>
                     <?php endif; ?>
                 </tbody>
@@ -81,6 +139,7 @@ $branches = $branches ?? [];
         </div>
     </div>
 </div>
+<!-- END table card -->
 
 <!-- MODAL: Create Branch -->
 <div class="modal fade" id="createBranchModal" tabindex="-1" aria-labelledby="createBranchLabel" aria-hidden="true">
@@ -88,7 +147,8 @@ $branches = $branches ?? [];
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="createBranchLabel">
-                    <i class="fa-solid fa-building-circle-check me-2 text-primary"></i>Tambah Cabang Baru
+                    <iconify-icon icon="solar:shop-bold-duotone" class="me-1 text-primary"></iconify-icon>
+                    Tambah Cabang Baru
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
             </div>
@@ -97,14 +157,12 @@ $branches = $branches ?? [];
                 <div class="modal-body">
                     <div class="row g-3">
                         <div class="col-12 col-md-6">
-                            <label class="form-label" for="branch_code">Kode Cabang <span class="required">*</span></label>
-                            <input id="branch_code" name="code" type="text" class="form-control" required
-                                   placeholder="Contoh: KCU-MDN">
+                            <label class="form-label" for="branch_code">Kode Cabang <span class="text-danger">*</span></label>
+                            <input id="branch_code" name="code" type="text" class="form-control" required placeholder="Contoh: KCU-MDN">
                         </div>
                         <div class="col-12 col-md-6">
-                            <label class="form-label" for="branch_name">Nama Cabang <span class="required">*</span></label>
-                            <input id="branch_name" name="name" type="text" class="form-control" required
-                                   placeholder="Nama lengkap cabang">
+                            <label class="form-label" for="branch_name">Nama Cabang <span class="text-danger">*</span></label>
+                            <input id="branch_name" name="name" type="text" class="form-control" required placeholder="Nama lengkap cabang">
                         </div>
                         <div class="col-12">
                             <div class="form-check">
@@ -115,9 +173,9 @@ $branches = $branches ?? [];
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" id="btnCreateBranch" class="btn btn-primary">
-                        <i class="fa-solid fa-floppy-disk me-1"></i> Simpan Cabang
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" id="btnCreateBranch" class="btn btn-theme">
+                        <i class="fa fa-floppy-disk me-1"></i> Simpan Cabang
                     </button>
                 </div>
             </form>
@@ -131,7 +189,8 @@ $branches = $branches ?? [];
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editBranchLabel">
-                    <i class="fa-solid fa-pen-to-square me-2 text-primary"></i>Edit Cabang
+                    <iconify-icon icon="solar:pen-bold-duotone" class="me-1 text-primary"></iconify-icon>
+                    Edit Cabang
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
             </div>
@@ -140,11 +199,11 @@ $branches = $branches ?? [];
                 <div class="modal-body">
                     <div class="row g-3">
                         <div class="col-12 col-md-6">
-                            <label class="form-label" for="edit_branch_code">Kode Cabang <span class="required">*</span></label>
+                            <label class="form-label" for="edit_branch_code">Kode Cabang <span class="text-danger">*</span></label>
                             <input id="edit_branch_code" name="code" type="text" class="form-control" required placeholder="Kode cabang">
                         </div>
                         <div class="col-12 col-md-6">
-                            <label class="form-label" for="edit_branch_name">Nama Cabang <span class="required">*</span></label>
+                            <label class="form-label" for="edit_branch_name">Nama Cabang <span class="text-danger">*</span></label>
                             <input id="edit_branch_name" name="name" type="text" class="form-control" required placeholder="Nama cabang">
                         </div>
                         <div class="col-12">
@@ -156,9 +215,9 @@ $branches = $branches ?? [];
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" id="btnEditBranch" class="btn btn-primary">
-                        <i class="fa-solid fa-floppy-disk me-1"></i> Perbarui Cabang
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" id="btnEditBranch" class="btn btn-theme">
+                        <i class="fa fa-floppy-disk me-1"></i> Perbarui Cabang
                     </button>
                 </div>
             </form>
@@ -176,7 +235,6 @@ $(document).ready(function () {
         ]
     });
 
-    // Populate Edit Modal
     $('#editBranchModal').on('shown.bs.modal', function (e) {
         var $btn = $(e.relatedTarget);
         if (!$btn.hasClass('btn-edit-branch')) return;

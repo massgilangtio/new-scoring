@@ -20,59 +20,87 @@ $inactiveCount = (int) ($stats['inactive'] ?? 0);
 <div data-swal="error" data-swal-title="Terjadi Kesalahan" data-swal-message="<?= esc($error) ?>" hidden></div>
 <?php endif; ?>
 
-<!-- 1. Page Title Header Card (Mockup Redesign Standard) -->
-<div class="module-header module-header-card">
-    <div class="module-header-panel-wrap">
-        <div class="module-header-content">
-            <div class="module-icon-cube">
-                <i class="fa-solid fa-cube"></i>
-            </div>
-            <div class="module-header-divider"></div>
-            <div class="module-title-box text-start">
-                <div class="d-flex align-items-center justify-content-start gap-2 flex-wrap text-start">
-                    <h2 class="module-title text-start mb-0">Master Produk</h2>
-                    <span class="module-badge-pill"><?= $totalProducts ?> Produk</span>
+<?php
+$activePct = $totalProducts > 0 ? (int) round(($activeCount / $totalProducts) * 100) : 0;
+$inactivePct = $totalProducts > 0 ? (int) round(($inactiveCount / $totalProducts) * 100) : 0;
+?>
+<!-- BEGIN KPI — Color Admin index_v2 gradient cards -->
+<div class="row mb-3">
+    <div class="col-xl-4 col-md-4">
+        <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-info bg-gradient-to-blue overflow-hidden" data-bs-theme="dark">
+            <div class="card-body position-relative z-3">
+                <div class="mb-2 fw-bold text-white">Total Produk</div>
+                <div class="h2 mb-4" id="kpiTotal"><?= esc((string) $totalProducts) ?></div>
+                <div class="progress h-5px bg-black mb-2">
+                    <div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width: 100%;"></div>
                 </div>
-                <p class="module-subtitle text-start mb-0">Kelola katalog produk kredit yang digunakan dalam engine perhitungan scoring.</p>
+                <div class="small fw-semibold text-white text-opacity-75 mb-n1">Katalog produk kredit</div>
+            </div>
+            <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                <iconify-icon icon="solar:box-bold-duotone" class="text-black text-opacity-30" style="font-size: 150px"></iconify-icon>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 col-md-4 mt-3 mt-md-0">
+        <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-teal bg-gradient-to-green overflow-hidden" data-bs-theme="dark">
+            <div class="card-body position-relative z-3">
+                <div class="mb-2 fw-bold text-white">Aktif</div>
+                <div class="h2 mb-4" id="kpiActive"><?= esc((string) $activeCount) ?></div>
+                <div class="progress h-5px bg-black mb-2">
+                    <div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width: <?= esc((string) $activePct) ?>%;"></div>
+                </div>
+                <div class="small fw-semibold text-white text-opacity-75 mb-n1"><?= esc((string) $activePct) ?>% dari total produk</div>
+            </div>
+            <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                <iconify-icon icon="solar:check-circle-bold-duotone" class="text-black text-opacity-30" style="font-size: 150px"></iconify-icon>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 col-md-4 mt-3 mt-md-0">
+        <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-orange bg-gradient-to-pink overflow-hidden" data-bs-theme="dark">
+            <div class="card-body position-relative z-3">
+                <div class="mb-2 fw-bold text-white">Nonaktif</div>
+                <div class="h2 mb-4" id="kpiInactive"><?= esc((string) $inactiveCount) ?></div>
+                <div class="progress h-5px bg-black mb-2">
+                    <div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width: <?= esc((string) $inactivePct) ?>%;"></div>
+                </div>
+                <div class="small fw-semibold text-white text-opacity-75 mb-n1"><?= esc((string) $inactivePct) ?>% dari total produk</div>
+            </div>
+            <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                <iconify-icon icon="solar:close-circle-bold-duotone" class="text-black text-opacity-30" style="font-size: 150px"></iconify-icon>
             </div>
         </div>
     </div>
 </div>
+<!-- END KPI -->
 
-<!-- 3. Filter Data Card -->
-<div class="filter-card">
-    <div class="filter-card-header">
-        <div class="filter-header-left">
-            <div class="filter-icon-badge">
-                <i class="fa-solid fa-filter"></i>
-            </div>
-            <div>
-                <h6 class="filter-title">Filter Data</h6>
-                <p class="filter-subtitle">Gunakan filter berikut untuk mencari data produk dengan lebih spesifik.</p>
-            </div>
-        </div>
-        <div>
-            <button type="button" class="filter-toggle-btn" id="btnToggleFilter" data-bs-toggle="collapse" data-bs-target="#filterCollapse" aria-expanded="true" aria-controls="filterCollapse">
+<!-- BEGIN Filter -->
+<div class="card card-borderless mb-3 filter-card">
+    <div class="card-header bg-gray-900" data-bs-theme="dark">
+        <h4 class="card-header-title text-white mb-0 d-flex align-items-center gap-2">
+            <iconify-icon icon="solar:filter-bold-duotone"></iconify-icon>
+            Filter Data
+        </h4>
+        <div class="card-header-btn">
+            <button type="button" class="btn btn-default btn-xs" id="btnToggleFilter" data-bs-toggle="collapse" data-bs-target="#filterCollapse" aria-expanded="true" aria-controls="filterCollapse">
                 <span id="filterToggleText">Sembunyikan Filter</span>
-                <i class="fa-solid fa-chevron-up" id="filterToggleIcon"></i>
+                <i class="fa fa-chevron-up ms-1" id="filterToggleIcon"></i>
             </button>
         </div>
     </div>
     <div class="collapse show" id="filterCollapse">
-        <div class="filter-card-body">
+        <div class="card-body filter-card-body">
             <div class="row g-3">
                 <div class="col-12 col-md-6 col-lg-3">
-                    <label class="filter-form-label" for="filterSearch">Search Produk</label>
-                    <div class="filter-input-wrap">
-                        <i class="fa-solid fa-magnifying-glass filter-input-icon"></i>
-                        <input type="text" class="form-control" id="filterSearch" placeholder="Cari kode atau nama produk..." style="padding-left: 42px !important;">
+                    <label class="form-label" for="filterSearch">Search Produk</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fa fa-search"></i></span>
+                        <input type="text" class="form-control" id="filterSearch" placeholder="Cari kode atau nama produk...">
                     </div>
                 </div>
                 <div class="col-12 col-md-6 col-lg-3">
-                    <label class="filter-form-label" for="filterCode">Kode Produk</label>
-                    <div class="filter-input-wrap">
-                        <i class="fa-solid fa-tag filter-input-icon"></i>
-                        <select class="form-select filter-select2" id="filterCode" data-placeholder="Semua Kode Produk">
+                    <label class="form-label" for="filterCode">Kode Produk</label>
+                    <select class="form-select filter-select2" id="filterCode" data-placeholder="Semua Kode Produk">
                             <option value=""></option>
                             <?php 
                             if (! empty($productOptions)) {
@@ -110,95 +138,79 @@ $inactiveCount = (int) ($stats['inactive'] ?? 0);
                                 <option value="<?= esc($optCode) ?>"><?= esc($label) ?></option>
                             <?php endforeach; ?>
                         </select>
-                    </div>
                 </div>
                 <div class="col-12 col-md-6 col-lg-2">
-                    <label class="filter-form-label" for="filterStatus">Status Produk</label>
-                    <div class="filter-input-wrap">
-                        <i class="fa-solid fa-layer-group filter-input-icon"></i>
-                        <select class="form-select filter-select2" id="filterStatus" data-placeholder="Semua Status">
-                            <option value=""></option>
-                            <option value="Aktif">Aktif</option>
-                            <option value="Nonaktif">Nonaktif</option>
-                        </select>
-                    </div>
+                    <label class="form-label" for="filterStatus">Status Produk</label>
+                    <select class="form-select filter-select2" id="filterStatus" data-placeholder="Semua Status">
+                        <option value=""></option>
+                        <option value="Aktif">Aktif</option>
+                        <option value="Nonaktif">Nonaktif</option>
+                    </select>
                 </div>
                 <div class="col-12 col-md-6 col-lg-2">
-                    <label class="filter-form-label" for="filterProductType">Jenis Produk</label>
-                    <div class="filter-input-wrap">
-                        <i class="fa-solid fa-shapes filter-input-icon"></i>
-                        <select class="form-select filter-select2" id="filterProductType" data-placeholder="Semua Jenis">
-                            <option value=""></option>
-                            <?php foreach ($types as $type) : ?>
-                                <option value="<?= esc($type['name']) ?>"><?= esc($type['name']) ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
+                    <label class="form-label" for="filterProductType">Jenis Produk</label>
+                    <select class="form-select filter-select2" id="filterProductType" data-placeholder="Semua Jenis">
+                        <option value=""></option>
+                        <?php foreach ($types as $type) : ?>
+                            <option value="<?= esc($type['name']) ?>"><?= esc($type['name']) ?></option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
                 <div class="col-12 col-md-6 col-lg-2">
-                    <label class="filter-form-label" for="filterBranch">Status Branch</label>
-                    <div class="filter-input-wrap">
-                        <i class="fa-solid fa-building filter-input-icon"></i>
-                        <select class="form-select filter-select2" id="filterBranch" data-placeholder="Semua Cabang">
-                            <option value=""></option>
-                            <option value="Konvensional">Konvensional</option>
-                            <option value="Syariah">Syariah</option>
-                        </select>
-                    </div>
+                    <label class="form-label" for="filterBranch">Status Branch</label>
+                    <select class="form-select filter-select2" id="filterBranch" data-placeholder="Semua Cabang">
+                        <option value=""></option>
+                        <option value="Konvensional">Konvensional</option>
+                        <option value="Syariah">Syariah</option>
+                    </select>
                 </div>
             </div>
 
-            <div class="filter-actions">
-                <button type="button" class="btn-apply-filter" id="btnApplyFilter">
-                    <i class="fa-solid fa-magnifying-glass"></i> Terapkan Filter
+            <div class="d-flex flex-wrap gap-2 mt-3">
+                <button type="button" class="btn btn-theme btn-sm" id="btnApplyFilter">
+                    <i class="fa fa-search me-1"></i> Terapkan Filter
                 </button>
-                <button type="button" class="btn-reset-filter" id="btnResetFilter">
-                    <i class="fa-solid fa-rotate-left"></i> Reset
+                <button type="button" class="btn btn-default btn-sm" id="btnResetFilter">
+                    <i class="fa fa-rotate-left me-1"></i> Reset
                 </button>
             </div>
         </div>
     </div>
 </div>
+<!-- END Filter -->
 
-
-
-<!-- 5. Products Table Card -->
-<div class="table-card">
-    <div class="table-card-header">
-        <h5 class="table-card-title">
-            <i class="fa-solid fa-list-check"></i> Daftar Produk Kredit
-        </h5>
-        <div class="table-card-actions d-flex align-items-center gap-2">
-            <!-- Dropdown Export Button -->
+<!-- BEGIN Products Table -->
+<div class="card card-borderless table-card">
+    <div class="card-header bg-gray-900" data-bs-theme="dark">
+        <h4 class="card-header-title text-white mb-0">
+            <iconify-icon icon="solar:checklist-minimalistic-bold-duotone" class="me-1"></iconify-icon>
+            Daftar Produk Kredit
+        </h4>
+        <div class="card-header-btn d-flex align-items-center gap-2 table-card-actions">
             <div class="dropdown">
-                <button type="button" class="btn-export dropdown-toggle" id="btnExportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa-solid fa-arrow-up-from-bracket"></i> Export
+                <button type="button" class="btn btn-default btn-sm dropdown-toggle" id="btnExportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa fa-upload me-1"></i> Export
                 </button>
-                <ul class="dropdown-menu dropdown-menu-end shadow-sm border" aria-labelledby="btnExportDropdown" style="font-size: 12px; min-width: 180px; border-radius: 10px;">
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="btnExportDropdown">
                     <li>
-                        <button type="button" class="dropdown-item d-flex align-items-center gap-2 py-2" id="btnExportExcel">
-                            <i class="fa-solid fa-file-excel text-success" style="font-size: 13px; width: 16px;"></i>
-                            <span>Export Excel (.xls)</span>
+                        <button type="button" class="dropdown-item" id="btnExportExcel">
+                            <i class="fa fa-file-excel text-success me-2"></i> Export Excel (.xls)
                         </button>
                     </li>
                     <li>
-                        <button type="button" class="dropdown-item d-flex align-items-center gap-2 py-2" id="btnExportPdf">
-                            <i class="fa-solid fa-file-pdf text-danger" style="font-size: 13px; width: 16px;"></i>
-                            <span>Export PDF</span>
+                        <button type="button" class="dropdown-item" id="btnExportPdf">
+                            <i class="fa fa-file-pdf text-danger me-2"></i> Export PDF
                         </button>
                     </li>
                     <li>
-                        <button type="button" class="dropdown-item d-flex align-items-center gap-2 py-2" id="btnExportCsv">
-                            <i class="fa-solid fa-file-csv text-info" style="font-size: 13px; width: 16px;"></i>
-                            <span>Export CSV (.csv)</span>
+                        <button type="button" class="dropdown-item" id="btnExportCsv">
+                            <i class="fa fa-file-csv text-info me-2"></i> Export CSV (.csv)
                         </button>
                     </li>
                 </ul>
             </div>
-
-            <!-- Tambah Produk Baru Action Button (Green / Hijau) -->
-            <button type="button" class="btn btn-success-gradient" id="btnTambahProdukBaru" data-bs-toggle="modal" data-bs-target="#createProductModal">
-                <i class="fa-solid fa-plus"></i> Tambah Produk Baru
+            <button type="button" class="btn btn-theme btn-sm" id="btnTambahProdukBaru" data-bs-toggle="modal" data-bs-target="#createProductModal">
+                <i class="fa fa-plus me-1"></i> Tambah Produk Baru
             </button>
         </div>
     </div>
@@ -551,8 +563,11 @@ $inactiveCount = (int) ($stats['inactive'] ?? 0);
                     <div class="detail-hero-info">
                         <h4 class="detail-hero-title mb-2" id="detail_name">-</h4>
                         <div class="d-flex align-items-center gap-2 flex-wrap">
-                            <span class="detail-code-badge" id="detail_code_badge">
+                            <span class="detail-code-badge d-inline-flex align-items-center gap-1" id="detail_code_badge">
                                 <i class="fa-solid fa-hashtag me-1"></i><span id="detail_code">-</span>
+                                <button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" id="btnCopyDetailCode" data-clipboard="" title="Salin Kode Produk">
+                                    <i class="fa fa-copy"></i>
+                                </button>
                             </span>
                             <span id="detail_status_badge"></span>
                         </div>
@@ -615,7 +630,12 @@ $inactiveCount = (int) ($stats['inactive'] ?? 0);
                                 </div>
                                 <div class="detail-attr-text">
                                     <span class="detail-attr-label">Suku Bunga</span>
-                                    <span class="detail-attr-val font-monospace" id="detail_rate">-</span>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span class="detail-attr-val font-monospace" id="detail_rate">-</span>
+                                        <button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" id="btnCopyDetailRate" data-clipboard="" title="Salin Suku Bunga">
+                                            <i class="fa fa-copy"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="detail-attr-watermark">
@@ -633,7 +653,12 @@ $inactiveCount = (int) ($stats['inactive'] ?? 0);
                                 </div>
                                 <div class="detail-attr-text">
                                     <span class="detail-attr-label">ID Produk</span>
-                                    <span class="detail-attr-val font-monospace" id="detail_id">-</span>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span class="detail-attr-val font-monospace" id="detail_id">-</span>
+                                        <button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" id="btnCopyDetailId" data-clipboard="" title="Salin ID Produk">
+                                            <i class="fa fa-copy"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="detail-attr-watermark">
@@ -707,16 +732,18 @@ $(document).ready(function () {
                     }
                 },
                 // 1. KODE PRODUK
-                // 1. KODE PRODUK
                 {
                     data: 'code',
                     name: 'code',
                     render: function (data, type, row) {
                         var safeCode = $('<div>').text(data || '').html();
+                        if (!safeCode) {
+                            return '<span class="text-muted">-</span>';
+                        }
                         return '<div class="d-inline-flex align-items-center gap-1">' +
-                               '<span class="badge-code-pill"><i class="fa-solid fa-tag me-1" style="font-size: 10px;"></i>' + safeCode + '</span>' +
-                               '<button type="button" class="btn-copy-inline" data-clipboard="' + safeCode + '" title="Salin Kode Produk">' +
-                               '<i class="fa-regular fa-copy"></i>' +
+                               '<span class="badge bg-primary bg-opacity-15 text-primary py-6px font-monospace">' + safeCode + '</span>' +
+                               '<button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" data-clipboard="' + safeCode + '" title="Salin Kode Produk">' +
+                               '<i class="fa fa-copy"></i>' +
                                '</button>' +
                                '</div>';
                     }
@@ -767,11 +794,9 @@ $(document).ready(function () {
                             var rawRate = parseFloat(data).toFixed(2);
                             var formatted = rawRate + '%';
                             return '<div class="d-inline-flex align-items-center justify-content-center gap-1">' +
-                                   '<span class="fw-bold font-monospace interest-rate-text">' +
-                                   '<i class="fa-solid fa-chart-line row-icon-themed me-1" style="font-size: 11px;"></i>' + formatted +
-                                   '</span>' +
-                                   '<button type="button" class="btn-copy-inline" data-clipboard="' + rawRate + '" title="Salin Suku Bunga">' +
-                                   '<i class="fa-regular fa-copy"></i>' +
+                                   '<span class="badge bg-success bg-opacity-15 text-success py-6px font-monospace">' + formatted + '</span>' +
+                                   '<button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" data-clipboard="' + rawRate + '" title="Salin Suku Bunga">' +
+                                   '<i class="fa fa-copy"></i>' +
                                    '</button>' +
                                    '</div>';
                         }
@@ -1024,11 +1049,15 @@ $(document).ready(function () {
         var status = $(this).data('status');
 
         $('#detail_id').text('#' + id);
+        $('#btnCopyDetailId').attr('data-clipboard', String(id || '')).prop('hidden', !id);
         $('#detail_code').text(code);
+        $('#btnCopyDetailCode').attr('data-clipboard', code || '').prop('hidden', !code);
         $('#detail_name').text(name);
         $('#detail_branch').text(branch);
         $('#detail_type').text(type || '-');
         $('#detail_rate').text(rate);
+        var rateCopy = (rate || '').toString().replace('%', '').trim();
+        $('#btnCopyDetailRate').attr('data-clipboard', rateCopy).prop('hidden', !rateCopy || rateCopy === '-');
 
         var badgeHtml = status === 'Aktif'
             ? '<span class="detail-status-pill-active"><i class="fa-solid fa-circle-check"></i> Aktif</span>'

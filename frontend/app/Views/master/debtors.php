@@ -3,6 +3,15 @@ $profile  = $profile ?? [];
 $debtors  = $debtors ?? [];
 $branches = $branches ?? [];
 $totalDebtors = count($debtors);
+$activeDebtors = 0;
+foreach ($debtors as $d) {
+    if (! empty($d['is_active'])) {
+        $activeDebtors++;
+    }
+}
+$inactiveDebtors = max(0, $totalDebtors - $activeDebtors);
+$activeDebtorPct = $totalDebtors > 0 ? (int) round(($activeDebtors / $totalDebtors) * 100) : 0;
+$inactiveDebtorPct = $totalDebtors > 0 ? (int) round(($inactiveDebtors / $totalDebtors) * 100) : 0;
 ?>
 <?= view('partials/shell_start', ['profile' => $profile, 'title' => 'Master Debitur']) ?>
 
@@ -19,154 +28,157 @@ $totalDebtors = count($debtors);
         hidden></div>
 <?php endif; ?>
 
-<!-- 1. Page Title Header Card (Matching Master Produk Standard) -->
-<div class="module-header module-header-card">
-    <div class="module-header-panel-wrap">
-        <div class="module-header-content">
-            <div class="module-icon-cube">
-                <i class="fa-solid fa-users"></i>
-            </div>
-            <div class="module-header-divider"></div>
-            <div class="module-title-box text-start">
-                <div class="d-flex align-items-center justify-content-start gap-2 flex-wrap text-start">
-                    <h2 class="module-title text-start mb-0">Master Debitur</h2>
-                    <span class="module-badge-pill"><?= $totalDebtors ?> Debitur</span>
+<!-- BEGIN KPI — Color Admin index_v2 gradient cards -->
+<div class="row mb-3">
+    <div class="col-xl-4 col-md-4">
+        <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-indigo bg-gradient-to-purple overflow-hidden" data-bs-theme="dark">
+            <div class="card-body position-relative z-3">
+                <div class="mb-2 fw-bold text-white">Total Debitur</div>
+                <div class="h2 mb-4"><?= esc((string) $totalDebtors) ?></div>
+                <div class="progress h-5px bg-black mb-2">
+                    <div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width: 100%;"></div>
                 </div>
-                <p class="module-subtitle text-start mb-0">Kelola katalog dan profil data debitur yang terdaftar dalam scoring engine.</p>
+                <div class="small fw-semibold text-white text-opacity-75 mb-n1">Semua debitur terdaftar</div>
+            </div>
+            <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                <iconify-icon icon="solar:users-group-rounded-bold-duotone" class="text-black text-opacity-30" style="font-size: 150px"></iconify-icon>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 col-md-4 mt-3 mt-md-0">
+        <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-teal bg-gradient-to-cyan overflow-hidden" data-bs-theme="dark">
+            <div class="card-body position-relative z-3">
+                <div class="mb-2 fw-bold text-white">Aktif</div>
+                <div class="h2 mb-4"><?= esc((string) $activeDebtors) ?></div>
+                <div class="progress h-5px bg-black mb-2">
+                    <div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width: <?= esc((string) $activeDebtorPct) ?>%;"></div>
+                </div>
+                <div class="small fw-semibold text-white text-opacity-75 mb-n1"><?= esc((string) $activeDebtorPct) ?>% dari total debitur</div>
+            </div>
+            <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                <iconify-icon icon="solar:check-circle-bold-duotone" class="text-black text-opacity-30" style="font-size: 150px"></iconify-icon>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 col-md-4 mt-3 mt-md-0">
+        <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-orange bg-gradient-to-pink overflow-hidden" data-bs-theme="dark">
+            <div class="card-body position-relative z-3">
+                <div class="mb-2 fw-bold text-white">Nonaktif</div>
+                <div class="h2 mb-4"><?= esc((string) $inactiveDebtors) ?></div>
+                <div class="progress h-5px bg-black mb-2">
+                    <div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width: <?= esc((string) $inactiveDebtorPct) ?>%;"></div>
+                </div>
+                <div class="small fw-semibold text-white text-opacity-75 mb-n1"><?= esc((string) $inactiveDebtorPct) ?>% dari total debitur</div>
+            </div>
+            <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                <iconify-icon icon="solar:close-circle-bold-duotone" class="text-black text-opacity-30" style="font-size: 150px"></iconify-icon>
             </div>
         </div>
     </div>
 </div>
+<!-- END KPI -->
 
-<!-- 2. Filter Data Card -->
-<div class="filter-card">
-    <div class="filter-card-header">
-        <div class="filter-header-left">
-            <div class="filter-icon-badge">
-                <i class="fa-solid fa-filter"></i>
-            </div>
-            <div>
-                <h6 class="filter-title">Filter Data</h6>
-                <p class="filter-subtitle">Gunakan filter berikut untuk mencari data debitur dengan lebih spesifik.</p>
-            </div>
-        </div>
-        <div>
-            <button type="button" class="filter-toggle-btn" id="btnToggleFilter" data-bs-toggle="collapse" data-bs-target="#filterCollapse" aria-expanded="true" aria-controls="filterCollapse">
+<!-- BEGIN Filter -->
+<div class="card card-borderless mb-3 filter-card">
+    <div class="card-header bg-gray-900" data-bs-theme="dark">
+        <h4 class="card-header-title text-white mb-0 d-flex align-items-center gap-2">
+            <iconify-icon icon="solar:filter-bold-duotone"></iconify-icon>
+            Filter Data
+        </h4>
+        <div class="card-header-btn">
+            <button type="button" class="btn btn-default btn-xs" id="btnToggleFilter" data-bs-toggle="collapse" data-bs-target="#filterCollapse" aria-expanded="true" aria-controls="filterCollapse">
                 <span id="filterToggleText">Sembunyikan Filter</span>
-                <i class="fa-solid fa-chevron-up" id="filterToggleIcon"></i>
+                <i class="fa fa-chevron-up ms-1" id="filterToggleIcon"></i>
             </button>
         </div>
     </div>
     <div class="collapse show" id="filterCollapse">
-        <div class="filter-card-body">
+        <div class="card-body filter-card-body">
             <div class="row g-3">
-                <!-- Search Input -->
                 <div class="col-12 col-md-6 col-lg-3">
-                    <label class="filter-form-label" for="filterSearchDebtor">Search Debitur</label>
-                    <div class="filter-input-wrap">
-                        <i class="fa-solid fa-magnifying-glass filter-input-icon"></i>
-                        <input type="text" class="form-control" id="filterSearchDebtor" placeholder="Cari NIK, nama, CIS, CIF..." style="padding-left: 42px !important;">
+                    <label class="form-label" for="filterSearchDebtor">Search Debitur</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fa fa-search"></i></span>
+                        <input type="text" class="form-control" id="filterSearchDebtor" placeholder="Cari NIK, nama, CIS, CIF...">
                     </div>
                 </div>
-
-                <!-- Filter Cabang -->
                 <div class="col-12 col-md-6 col-lg-3">
-                    <label class="filter-form-label" for="filterBranchDebtor">Cabang</label>
-                    <div class="filter-input-wrap">
-                        <i class="fa-solid fa-building filter-input-icon"></i>
-                        <select class="form-select filter-select2" id="filterBranchDebtor" data-placeholder="Semua Cabang">
-                            <option value=""></option>
-                            <?php foreach ($branches as $branch) : ?>
-                                <option value="<?= esc($branch['name']) ?>"><?= esc($branch['name']) ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
+                    <label class="form-label" for="filterBranchDebtor">Cabang</label>
+                    <select class="form-select filter-select2" id="filterBranchDebtor" data-placeholder="Semua Cabang">
+                        <option value=""></option>
+                        <?php foreach ($branches as $branch) : ?>
+                            <option value="<?= esc($branch['name']) ?>"><?= esc($branch['name']) ?></option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
-
-                <!-- Filter Status -->
                 <div class="col-12 col-md-6 col-lg-3">
-                    <label class="filter-form-label" for="filterStatusDebtor">Status Debitur</label>
-                    <div class="filter-input-wrap">
-                        <i class="fa-solid fa-layer-group filter-input-icon"></i>
-                        <select class="form-select filter-select2" id="filterStatusDebtor" data-placeholder="Semua Status">
-                            <option value=""></option>
-                            <option value="Aktif">Aktif</option>
-                            <option value="Nonaktif">Nonaktif</option>
-                        </select>
-                    </div>
+                    <label class="form-label" for="filterStatusDebtor">Status Debitur</label>
+                    <select class="form-select filter-select2" id="filterStatusDebtor" data-placeholder="Semua Status">
+                        <option value=""></option>
+                        <option value="Aktif">Aktif</option>
+                        <option value="Nonaktif">Nonaktif</option>
+                    </select>
                 </div>
-
-                <!-- Filter Gender -->
                 <div class="col-12 col-md-6 col-lg-3">
-                    <label class="filter-form-label" for="filterGenderDebtor">Jenis Kelamin</label>
-                    <div class="filter-input-wrap">
-                        <i class="fa-solid fa-venus-mars filter-input-icon"></i>
-                        <select class="form-select filter-select2" id="filterGenderDebtor" data-placeholder="Semua Gender">
-                            <option value=""></option>
-                            <option value="Laki-laki">Laki-laki</option>
-                            <option value="Perempuan">Perempuan</option>
-                        </select>
-                    </div>
+                    <label class="form-label" for="filterGenderDebtor">Jenis Kelamin</label>
+                    <select class="form-select filter-select2" id="filterGenderDebtor" data-placeholder="Semua Gender">
+                        <option value=""></option>
+                        <option value="Laki-laki">Laki-laki</option>
+                        <option value="Perempuan">Perempuan</option>
+                    </select>
                 </div>
             </div>
-
-            <!-- Filter Action Buttons -->
-            <div class="filter-actions">
-                <button type="button" class="btn-apply-filter" id="btnApplyFilter">
-                    <i class="fa-solid fa-magnifying-glass"></i> Terapkan Filter
+            <div class="d-flex flex-wrap gap-2 mt-3">
+                <button type="button" class="btn btn-theme btn-sm" id="btnApplyFilter">
+                    <i class="fa fa-search me-1"></i> Terapkan Filter
                 </button>
-                <button type="button" class="btn-reset-filter" id="btnResetFilter">
-                    <i class="fa-solid fa-rotate-left"></i> Reset
+                <button type="button" class="btn btn-default btn-sm" id="btnResetFilter">
+                    <i class="fa fa-rotate-left me-1"></i> Reset
                 </button>
             </div>
         </div>
     </div>
 </div>
+<!-- END Filter -->
 
-<!-- 3. Debtors Table Card -->
-<div class="table-card">
-    <div class="table-card-header">
-        <h5 class="table-card-title">
-            <i class="fa-solid fa-list-check"></i> Daftar Data Debitur
-        </h5>
-        <div class="table-card-actions d-flex align-items-center gap-2">
-            <!-- Dropdown Export Button (Purple Gradient) -->
+<!-- BEGIN Debtors Table -->
+<div class="card card-borderless table-card">
+    <div class="card-header bg-gray-900" data-bs-theme="dark">
+        <h4 class="card-header-title text-white mb-0">
+            <iconify-icon icon="solar:users-group-rounded-bold-duotone" class="me-1"></iconify-icon>
+            Daftar Data Debitur
+        </h4>
+        <div class="card-header-btn d-flex align-items-center gap-2 table-card-actions">
             <div class="dropdown">
-                <button type="button" class="btn-export dropdown-toggle" id="btnExportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa-solid fa-arrow-up-from-bracket"></i> Export
+                <button type="button" class="btn btn-default btn-sm dropdown-toggle" id="btnExportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa fa-upload me-1"></i> Export
                 </button>
-                <ul class="dropdown-menu dropdown-menu-end shadow-sm border" aria-labelledby="btnExportDropdown" style="font-size: 12px; min-width: 180px; border-radius: 10px;">
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="btnExportDropdown">
                     <li>
-                        <button type="button" class="dropdown-item d-flex align-items-center gap-2 py-2" id="btnExportExcel">
-                            <i class="fa-solid fa-file-excel text-success" style="font-size: 13px; width: 16px;"></i>
-                            <span>Export Excel (.xls)</span>
+                        <button type="button" class="dropdown-item" id="btnExportExcel">
+                            <i class="fa fa-file-excel text-success me-2"></i> Export Excel (.xls)
                         </button>
                     </li>
                     <li>
-                        <button type="button" class="dropdown-item d-flex align-items-center gap-2 py-2" id="btnExportPdf">
-                            <i class="fa-solid fa-file-pdf text-danger" style="font-size: 13px; width: 16px;"></i>
-                            <span>Export PDF</span>
+                        <button type="button" class="dropdown-item" id="btnExportPdf">
+                            <i class="fa fa-file-pdf text-danger me-2"></i> Export PDF
                         </button>
                     </li>
                     <li>
-                        <button type="button" class="dropdown-item d-flex align-items-center gap-2 py-2" id="btnExportCsv">
-                            <i class="fa-solid fa-file-csv text-info" style="font-size: 13px; width: 16px;"></i>
-                            <span>Export CSV (.csv)</span>
+                        <button type="button" class="dropdown-item" id="btnExportCsv">
+                            <i class="fa fa-file-csv text-info me-2"></i> Export CSV (.csv)
                         </button>
                     </li>
-                    <li><hr class="dropdown-divider my-1"></li>
+                    <li><hr class="dropdown-divider"></li>
                     <li>
-                        <button type="button" class="dropdown-item d-flex align-items-center gap-2 py-2" data-bs-toggle="modal" data-bs-target="#importModal">
-                            <i class="fa-solid fa-file-excel text-success" style="font-size: 13px; width: 16px;"></i>
-                            <span>Import Excel (.xlsx)</span>
+                        <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#importModal">
+                            <i class="fa fa-file-import text-success me-2"></i> Import Excel (.xlsx)
                         </button>
                     </li>
                 </ul>
             </div>
-
-            <!-- Tambah Debitur Baru Action Button (Green Gradient) -->
-            <button type="button" class="btn btn-success-gradient" id="btnTambahDebiturBaru" data-bs-toggle="modal" data-bs-target="#createDebtorModal">
-                <i class="fa-solid fa-plus"></i> Tambah Debitur Baru
+            <button type="button" class="btn btn-theme btn-sm" id="btnTambahDebiturBaru" data-bs-toggle="modal" data-bs-target="#createDebtorModal">
+                <i class="fa fa-plus me-1"></i> Tambah Debitur Baru
             </button>
         </div>
     </div>
@@ -192,22 +204,25 @@ $totalDebtors = count($debtors);
             <table id="debtorsTable" class="table table-striped table-hover align-middle mb-0 w-100">
                 <thead>
                     <tr>
-                        <th style="width: 55px;" class="text-center fw-bold">NO</th>
-                        <th style="width: 175px;" class="text-center fw-bold">NIK</th>
+                        <th style="width: 50px;" class="text-center fw-bold">NO</th>
+                        <th style="width: 170px;" class="text-center fw-bold">NIK</th>
+                        <th style="width: 130px;" class="text-center fw-bold">CIS ID</th>
                         <th class="text-center fw-bold">NAMA LENGKAP</th>
-                        <th style="width: 155px;" class="text-center fw-bold">CIS / CIF</th>
-                        <th style="width: 165px;" class="text-center fw-bold">CABANG</th>
-                        <th style="width: 140px;" class="text-center fw-bold">GENDER / TTL</th>
-                        <th style="width: 150px;" class="text-center fw-bold">TELEPON</th>
-                        <th class="text-center fw-bold" style="width: 110px;">STATUS</th>
+                        <th style="width: 120px;" class="text-center fw-bold">CIF ID</th>
+                        <th style="width: 150px;" class="text-center fw-bold">CABANG</th>
+                        <th style="width: 130px;" class="text-center fw-bold">GENDER / TTL</th>
+                        <th style="width: 140px;" class="text-center fw-bold">TELEPON</th>
+                        <th class="text-center fw-bold" style="width: 100px;">STATUS</th>
                         <th class="text-center fw-bold" style="width: 70px;">AKSI</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($debtors as $index => $debtor) : 
                         $isActive = !empty($debtor['is_active']);
-                        $cis = !empty($debtor['cis_id']) ? $debtor['cis_id'] : '-';
-                        $cif = !empty($debtor['cif_id']) ? $debtor['cif_id'] : '-';
+                        $cis = !empty($debtor['cis_id']) ? (string) $debtor['cis_id'] : '';
+                        $cif = !empty($debtor['cif_id']) ? (string) $debtor['cif_id'] : '';
+                        $nik = !empty($debtor['nik']) ? (string) $debtor['nik'] : '';
+                        $phone = !empty($debtor['phone']) ? (string) $debtor['phone'] : '';
                         $gender = !empty($debtor['gender']) ? $debtor['gender'] : '-';
                         $bdate = !empty($debtor['birth_date']) ? $debtor['birth_date'] : '-';
                         $bCode = $debtor['branch_code'] ?? ($branchMap[$debtor['branch_id']]['code'] ?? '');
@@ -220,55 +235,57 @@ $totalDebtors = count($debtors);
                                 <span class="cell-no-badge"><?= (int) ($index + 1) ?></span>
                             </td>
                             <td>
-                                <div class="d-inline-flex align-items-center gap-1">
-                                    <span class="badge-code-pill font-monospace">
-                                        <i class="fa-solid fa-id-card me-1" style="font-size: 10px;"></i><?= esc($debtor['nik']) ?>
-                                    </span>
-                                    <button type="button" class="btn-copy-inline" data-clipboard="<?= esc($debtor['nik']) ?>" title="Salin NIK">
-                                        <i class="fa-regular fa-copy"></i>
-                                    </button>
-                                </div>
+                                <?php if ($nik !== '') : ?>
+                                    <div class="d-inline-flex align-items-center gap-1">
+                                        <span class="badge bg-primary bg-opacity-15 text-primary py-6px font-monospace"><?= esc($nik) ?></span>
+                                        <button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" data-clipboard="<?= esc($nik) ?>" title="Salin NIK">
+                                            <i class="fa fa-copy"></i>
+                                        </button>
+                                    </div>
+                                <?php else : ?>
+                                    <span class="text-muted">-</span>
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <?php if ($cis !== '') : ?>
+                                    <div class="d-inline-flex align-items-center gap-1">
+                                        <span class="badge bg-info bg-opacity-15 text-info py-6px font-monospace"><?= esc($cis) ?></span>
+                                        <button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" data-clipboard="<?= esc($cis) ?>" title="Salin CIS ID">
+                                            <i class="fa fa-copy"></i>
+                                        </button>
+                                    </div>
+                                <?php else : ?>
+                                    <span class="text-muted">-</span>
+                                <?php endif; ?>
                             </td>
                             <td>
                                 <div class="d-flex align-items-center gap-2">
-                                    <div class="avatar-circle-sm bg-primary-subtle text-primary fw-bold" style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0;">
+                                    <div class="rounded-circle bg-primary bg-opacity-15 text-primary fw-bold d-flex align-items-center justify-content-center flex-shrink-0" style="width:28px;height:28px;font-size:11px;">
                                         <?= esc(strtoupper(substr($debtor['full_name'] ?? 'U', 0, 1))) ?>
                                     </div>
-                                    <span class="fw-bold product-name-text"><?= esc($debtor['full_name']) ?></span>
-                                </div>
-                            </td>
-                            <td style="font-size: 11.5px; line-height: 1.5;">
-                                <div class="d-flex align-items-center gap-1">
-                                    <span class="text-muted fw-medium" style="min-width: 26px;">CIS:</span>
-                                    <span class="fw-semibold text-dark font-monospace"><?= esc($cis) ?></span>
-                                    <?php if ($cis !== '-') : ?>
-                                        <button type="button" class="btn-copy-inline" data-clipboard="<?= esc($cis) ?>" title="Salin CIS ID">
-                                            <i class="fa-regular fa-copy"></i>
-                                        </button>
-                                    <?php endif; ?>
-                                </div>
-                                <div class="d-flex align-items-center gap-1">
-                                    <span class="text-muted fw-medium" style="min-width: 26px;">CIF:</span>
-                                    <span class="fw-semibold text-dark font-monospace"><?= esc($cif) ?></span>
-                                    <?php if ($cif !== '-') : ?>
-                                        <button type="button" class="btn-copy-inline" data-clipboard="<?= esc($cif) ?>" title="Salin CIF ID">
-                                            <i class="fa-regular fa-copy"></i>
-                                        </button>
-                                    <?php endif; ?>
+                                    <span class="fw-semibold"><?= esc($debtor['full_name']) ?></span>
                                 </div>
                             </td>
                             <td>
+                                <?php if ($cif !== '') : ?>
+                                    <div class="d-inline-flex align-items-center gap-1">
+                                        <span class="badge bg-teal bg-opacity-15 text-teal py-6px font-monospace"><?= esc($cif) ?></span>
+                                        <button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" data-clipboard="<?= esc($cif) ?>" title="Salin CIF ID">
+                                            <i class="fa fa-copy"></i>
+                                        </button>
+                                    </div>
+                                <?php else : ?>
+                                    <span class="text-muted">-</span>
+                                <?php endif; ?>
+                            </td>
+                            <td>
                                 <div class="d-flex flex-column align-items-start gap-1">
-                                    <span class="badge-branch-pill">
-                                        <i class="fa-solid fa-building me-1" style="font-size: 10px;"></i><?= esc($bName) ?>
-                                    </span>
-                                    <?php if (!empty($bCode)) : ?>
+                                    <span class="fw-semibold small"><?= esc($bName) ?></span>
+                                    <?php if (! empty($bCode)) : ?>
                                         <div class="d-inline-flex align-items-center gap-1">
-                                            <span class="badge-code-pill font-monospace" style="font-size: 10px; padding: 1px 6px;">
-                                                <i class="fa-solid fa-hashtag me-1" style="font-size: 8.5px;"></i><?= esc($bCode) ?>
-                                            </span>
-                                            <button type="button" class="btn-copy-inline" data-clipboard="<?= esc($bCode) ?>" title="Salin Kode Cabang">
-                                                <i class="fa-regular fa-copy"></i>
+                                            <span class="badge bg-secondary bg-opacity-15 text-secondary py-6px font-monospace"><?= esc($bCode) ?></span>
+                                            <button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" data-clipboard="<?= esc($bCode) ?>" title="Salin Kode Cabang">
+                                                <i class="fa fa-copy"></i>
                                             </button>
                                         </div>
                                     <?php endif; ?>
@@ -276,15 +293,14 @@ $totalDebtors = count($debtors);
                             </td>
                             <td style="font-size: 11.5px; line-height: 1.4;">
                                 <div class="text-dark fw-medium"><?= esc($gender) ?></div>
-                                <div class="text-muted small"><i class="fa-regular fa-calendar row-icon-themed me-1" style="font-size: 10.5px;"></i><?= esc($bdate) ?></div>
+                                <div class="text-muted small"><i class="fa fa-calendar me-1"></i><?= esc($bdate) ?></div>
                             </td>
                             <td>
-                                <?php if (!empty($debtor['phone']) && $debtor['phone'] !== '-') : ?>
+                                <?php if ($phone !== '' && $phone !== '-') : ?>
                                     <div class="d-inline-flex align-items-center gap-1 font-monospace" style="font-size: 12px;">
-                                        <i class="fa-solid fa-phone row-icon-themed me-1" style="font-size: 11px;"></i>
-                                        <span class="text-dark fw-medium"><?= esc($debtor['phone']) ?></span>
-                                        <button type="button" class="btn-copy-inline ms-1" data-clipboard="<?= esc($debtor['phone']) ?>" title="Salin Nomor Telepon">
-                                            <i class="fa-regular fa-copy"></i>
+                                        <span class="text-dark fw-medium"><?= esc($phone) ?></span>
+                                        <button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" data-clipboard="<?= esc($phone) ?>" title="Salin Nomor Telepon">
+                                            <i class="fa fa-copy"></i>
                                         </button>
                                     </div>
                                 <?php else : ?>
@@ -807,13 +823,20 @@ $totalDebtors = count($debtors);
                     <div class="debtor-hero-info">
                         <h3 class="debtor-hero-name" id="det_full_name">DESI RATNA SARI</h3>
                         
-                        <!-- Row 1: NIK & Status -->
+                        <!-- Row 1: NIK, CIS ID & Status -->
                         <div class="d-flex align-items-center gap-2 flex-wrap mb-2">
                             <div class="debtor-hero-pill">
                                 <i class="fa-regular fa-address-card text-muted"></i>
                                 <span>NIK <strong id="det_nik">-</strong></span>
-                                <button type="button" class="btn-copy-inline ms-1 p-0 border-0 bg-transparent text-muted" id="btnCopyNik" data-clipboard="" title="Salin NIK">
-                                    <i class="fa-regular fa-copy"></i>
+                                <button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline ms-1" id="btnCopyNik" data-clipboard="" title="Salin NIK">
+                                    <i class="fa fa-copy"></i>
+                                </button>
+                            </div>
+                            <div class="debtor-hero-pill">
+                                <i class="fa-solid fa-fingerprint text-muted"></i>
+                                <span>CIS <strong id="det_cis_hero">-</strong></span>
+                                <button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline ms-1" id="btnCopyCisHero" data-clipboard="" title="Salin CIS ID">
+                                    <i class="fa fa-copy"></i>
                                 </button>
                             </div>
                             <div id="det_status_badge">
@@ -826,6 +849,9 @@ $totalDebtors = count($debtors);
                             <div class="debtor-hero-pill">
                                 <i class="fa-solid fa-building text-primary"></i>
                                 <span id="det_hero_branch">[001] KANTOR PUSAT</span>
+                                <button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline ms-1" id="btnCopyBranchCode" data-clipboard="" title="Salin Kode Cabang" hidden>
+                                    <i class="fa fa-copy"></i>
+                                </button>
                             </div>
                             <div class="debtor-hero-pill">
                                 <i class="fa-solid fa-user text-primary"></i>
@@ -892,7 +918,12 @@ $totalDebtors = count($debtors);
                             </div>
                             <div class="debtor-attr-text">
                                 <span class="debtor-attr-label">Nomor Telepon</span>
-                                <span class="debtor-attr-val" id="det_phone">-</span>
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="debtor-attr-val" id="det_phone">-</span>
+                                    <button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" id="btnCopyPhone" data-clipboard="" title="Salin Nomor Telepon">
+                                        <i class="fa fa-copy"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -903,9 +934,25 @@ $totalDebtors = count($debtors);
                             <div class="debtor-attr-icon icon-ciscif">
                                 <i class="fa-solid fa-fingerprint"></i>
                             </div>
-                            <div class="debtor-attr-text">
+                            <div class="debtor-attr-text w-100">
                                 <span class="debtor-attr-label">CIS ID / CIF ID</span>
-                                <span class="debtor-attr-val" id="det_ciscif">-</span>
+                                <div class="d-flex flex-column gap-1">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span class="small text-muted">CIS</span>
+                                        <span class="debtor-attr-val font-monospace" id="det_cis">-</span>
+                                        <button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" id="btnCopyCis" data-clipboard="" title="Salin CIS ID">
+                                            <i class="fa fa-copy"></i>
+                                        </button>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span class="small text-muted">CIF</span>
+                                        <span class="debtor-attr-val font-monospace" id="det_cif">-</span>
+                                        <button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" id="btnCopyCif" data-clipboard="" title="Salin CIF ID">
+                                            <i class="fa fa-copy"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <span class="debtor-attr-val d-none" id="det_ciscif">-</span>
                             </div>
                         </div>
                     </div>
@@ -984,8 +1031,8 @@ $totalDebtors = count($debtors);
                                 <span class="debtor-attr-label">NPWP</span>
                                 <div class="d-flex align-items-center gap-2">
                                     <span class="debtor-attr-val" id="det_npwp">-</span>
-                                    <button type="button" class="btn-copy-inline p-0 border-0 bg-transparent text-muted" id="btnCopyNpwp" data-clipboard="" title="Salin NPWP">
-                                        <i class="fa-regular fa-copy"></i>
+                                    <button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" id="btnCopyNpwp" data-clipboard="" title="Salin NPWP">
+                                        <i class="fa fa-copy"></i>
                                     </button>
                                 </div>
                             </div>
@@ -1192,7 +1239,7 @@ $(document).ready(function () {
     var dataTable = $('#debtorsTable').DataTable({
         pageLength: 5,
         lengthMenu: [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
-        order: [[2, 'asc']], // Order by Full Name ASC
+        order: [[3, 'asc']], // Order by Full Name ASC
         autoWidth: false,
         responsive: true,
         dom: "<'products-table-wrapper't>" +
@@ -1213,8 +1260,8 @@ $(document).ready(function () {
             }
         },
         columnDefs: [
-            { orderable: false, targets: [0, 8] },
-            { searchable: false, targets: [0, 8] }
+            { orderable: false, targets: [0, 9] },
+            { searchable: false, targets: [0, 9] }
         ],
         drawCallback: function (settings) {
             var api = this.api();
@@ -1240,27 +1287,27 @@ $(document).ready(function () {
 
         dataTable.search(keyword); // Global search on NIK, name, etc.
 
-        // Column 4: Cabang
+        // Column 5: Cabang
         if (branch) {
-            dataTable.column(4).search(branch, true, false);
-        } else {
-            dataTable.column(4).search('');
-        }
-
-        // Column 7: Status
-        if (status === 'Aktif') {
-            dataTable.column(7).search('(^|\\s)Aktif(\\s|$)', true, false);
-        } else if (status === 'Nonaktif') {
-            dataTable.column(7).search('Nonaktif', true, false);
-        } else {
-            dataTable.column(7).search('');
-        }
-
-        // Column 5: Gender
-        if (gender) {
-            dataTable.column(5).search(gender, true, false);
+            dataTable.column(5).search(branch, true, false);
         } else {
             dataTable.column(5).search('');
+        }
+
+        // Column 8: Status
+        if (status === 'Aktif') {
+            dataTable.column(8).search('(^|\\s)Aktif(\\s|$)', true, false);
+        } else if (status === 'Nonaktif') {
+            dataTable.column(8).search('Nonaktif', true, false);
+        } else {
+            dataTable.column(8).search('');
+        }
+
+        // Column 6: Gender
+        if (gender) {
+            dataTable.column(6).search(gender, true, false);
+        } else {
+            dataTable.column(6).search('');
         }
 
         dataTable.draw();
@@ -1296,7 +1343,9 @@ $(document).ready(function () {
         var fullName = (data.full_name || '-').toUpperCase();
         $('#det_full_name').text(fullName);
         $('#det_nik').text(data.nik || '-');
-        $('#btnCopyNik').attr('data-clipboard', data.nik || '');
+        $('#btnCopyNik').attr('data-clipboard', data.nik || '').prop('hidden', !data.nik);
+        $('#det_cis_hero').text(data.cis_id || '-');
+        $('#btnCopyCisHero').attr('data-clipboard', data.cis_id || '').prop('hidden', !data.cis_id);
         
         var isActive = data.is_active == 1 || data.is_active === true;
         var badgeHtml = isActive 
@@ -1307,11 +1356,17 @@ $(document).ready(function () {
         var branchText = (data.branch_code ? '[' + data.branch_code + '] ' : '') + (data.branch_name || '-');
         $('#det_hero_branch').text(branchText);
         $('#det_branch_name').text(branchText);
+        $('#btnCopyBranchCode').attr('data-clipboard', data.branch_code || '').prop('hidden', !data.branch_code);
         $('#det_phone').text(data.phone || '-');
+        $('#btnCopyPhone').attr('data-clipboard', data.phone || '').prop('hidden', !data.phone);
         
         var cis = data.cis_id || '-';
         var cif = data.cif_id || '-';
+        $('#det_cis').text(cis);
+        $('#det_cif').text(cif);
         $('#det_ciscif').text(cis + ' / ' + cif);
+        $('#btnCopyCis').attr('data-clipboard', data.cis_id || '').prop('hidden', !data.cis_id);
+        $('#btnCopyCif').attr('data-clipboard', data.cif_id || '').prop('hidden', !data.cif_id);
 
         var birthPlace = data.birth_place ? data.birth_place.toUpperCase() : '';
         var birthDate = data.birth_date || '';
@@ -1335,7 +1390,7 @@ $(document).ready(function () {
         $('#det_religion').text(data.religion || '-');
 
         $('#det_npwp').text(data.npwp || '-');
-        $('#btnCopyNpwp').attr('data-clipboard', data.npwp || '');
+        $('#btnCopyNpwp').attr('data-clipboard', data.npwp || '').prop('hidden', !data.npwp);
         $('#det_address').text((data.address || '-').toUpperCase());
 
         var modal = new bootstrap.Modal(document.getElementById('detailDebtorModal'));

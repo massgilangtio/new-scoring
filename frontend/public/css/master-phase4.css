@@ -1,0 +1,63 @@
+/* Phase 4 — Master Data (Color Admin card/table pattern) */
+
+#content .filter-card .card-header,
+#content .table-card .card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+#content .table-card .dataTables_wrapper {
+  padding: 0.75rem 1rem 1rem;
+}
+
+#content .table-card table.dataTable {
+  margin-top: 0 !important;
+}
+
+#content .table-card .dataTables_filter,
+#content .table-card .dataTables_length {
+  margin-bottom: 0.5rem;
+}
+
+/* Keep functional class hooks used by page JS without old mockup look */
+#content .btn-success-gradient {
+  /* legacy alias — prefer btn-theme in markup */
+  --bs-btn-color: #fff;
+  --bs-btn-bg: var(--bs-theme, #0c83f0);
+  --bs-btn-border-color: var(--bs-theme, #0c83f0);
+}
+
+#content .select2-container {
+  width: 100% !important;
+}
+
+/* Copy buttons on ID / nomor fields */
+#content .btn-copy-inline.btn-icon {
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  padding: 0;
+  color: #6c757d;
+}
+
+#content .btn-copy-inline.btn-icon:hover {
+  color: var(--bs-theme, #0c83f0);
+}
+
+#content .btn-copy-inline.copied {
+  color: #00acac !important;
+}
+
+@media (max-width: 767.98px) {
+  #content .table-card .card-header-btn {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  #content .table-card .card-header-btn .btn {
+    flex: 1 1 auto;
+  }
+}

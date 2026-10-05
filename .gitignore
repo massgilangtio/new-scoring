@@ -34,6 +34,12 @@ docs/phase3-screenshots/package-lock.json
 docs/phase3-screenshots/package.json
 docs/phase3-screenshots/shot.js
 docs/phase3-screenshots/_extract_ca.py
+docs/phase4-screenshots/node_modules/
+docs/phase4-screenshots/package-lock.json
+docs/phase4-screenshots/package.json
+docs/phase4-screenshots/shot.js
+docs/phase4-screenshots/_extract_v2.py
+docs/phase4-screenshots/_v2_out.txt
 frontend/public/_phase1_shell_preview_mobile_open.html
 frontend/public/_phase1_measure.html
 
