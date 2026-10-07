@@ -76,6 +76,20 @@ class RolePermission(Base):
     )
 
 
+class JobGroup(Base):
+    """Kelompok Jabatan — dihubungkan ke Role untuk otorisasi user."""
+
+    __tablename__ = "job_groups"
+
+    id: Mapped[int] = _pk()
+    code: Mapped[str] = mapped_column(Text, unique=True, nullable=False)
+    name: Mapped[str] = mapped_column(Text, nullable=False)
+    role_id: Mapped[int] = mapped_column(ForeignKey("roles.id", ondelete="RESTRICT"), nullable=False)
+    is_active: Mapped[bool] = mapped_column(Boolean, nullable=False, server_default=text("true"))
+    created_at: Mapped[datetime] = _created_at()
+    updated_at: Mapped[datetime] = _updated_at()
+
+
 class User(Base):
     __tablename__ = "users"
     __table_args__ = (
@@ -90,6 +104,7 @@ class User(Base):
     password_hash: Mapped[str] = mapped_column(Text, nullable=False)
     full_name: Mapped[str] = mapped_column(Text, nullable=False)
     role_id: Mapped[int] = mapped_column(ForeignKey("roles.id", ondelete="RESTRICT"), nullable=False)
+    job_group_id: Mapped[int | None] = mapped_column(ForeignKey("job_groups.id", ondelete="RESTRICT"))
     branch_id: Mapped[int] = mapped_column(ForeignKey("branches.id", ondelete="RESTRICT"), nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean, nullable=False, server_default=text("true"))
     mfa_secret_encrypted: Mapped[str | None] = mapped_column(Text)
@@ -100,6 +115,30 @@ class User(Base):
     mfa_confirmed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     created_at: Mapped[datetime] = _created_at()
     updated_at: Mapped[datetime] = _updated_at()
+
+
+class UserHris(Base):
+    __tablename__ = "tbl_userhris"
+
+    userid: Mapped[str] = mapped_column(String(50), primary_key=True)
+    npp: Mapped[str | None] = mapped_column(String(50))
+    nrik: Mapped[str | None] = mapped_column(String(50))
+    nama: Mapped[str | None] = mapped_column(String(200))
+    no_hp: Mapped[str | None] = mapped_column(String(50))
+    user_email: Mapped[str | None] = mapped_column(String(150))
+    id_unit_kerja: Mapped[str | None] = mapped_column(String(50))
+    nm_unit_kerja: Mapped[str | None] = mapped_column(String(200))
+    branchid: Mapped[str | None] = mapped_column(String(50))
+    id_jabatan: Mapped[str | None] = mapped_column(String(50))
+    nm_jabatan: Mapped[str | None] = mapped_column(String(200))
+    id_kel_jabatan: Mapped[str | None] = mapped_column(String(50))
+    nama_kel_jabatan: Mapped[str | None] = mapped_column(String(200))
+    created_at: Mapped[datetime | None] = mapped_column(DateTime, server_default=text("CURRENT_TIMESTAMP"))
+    updated_at: Mapped[datetime | None] = mapped_column(DateTime, server_default=text("CURRENT_TIMESTAMP"))
+    stsauth: Mapped[int] = mapped_column(Integer, default=0, server_default=text("0"))
+    secret_key: Mapped[str | None] = mapped_column(Text)
+    stsbest: Mapped[int] = mapped_column(Integer, default=0, server_default=text("0"))
+    password: Mapped[str | None] = mapped_column(Text)
 
 
 class ProductType(Base):

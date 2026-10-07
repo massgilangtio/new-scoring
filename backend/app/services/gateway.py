@@ -109,3 +109,46 @@ def call_hris_auth_login(username: str, password: str, settings: Settings) -> di
         }
 
     return False
+
+
+def call_hris_inq_master_pegawai_by_kondisi(
+    settings: Settings,
+    userid: str = "",
+    kondisi: str = "",
+    id_unit_kerja: str = "",
+) -> list[dict] | None:
+    """
+    Panggil endpoint Gateway /hris/inqMasterPegawaiByKondisi (reqid: HR006).
+    """
+    host = settings.gateway_host_url.rstrip("/")
+    if not host or host == "http://change-me-gateway-host":
+        return None
+
+    headers = {
+        "Content-Type": "application/json",
+        "X-Api-Key": settings.gateway_api_key or "default-key",
+        "X-Client-Id": settings.gateway_client_id or "99",
+    }
+    if settings.gateway_client_secret and settings.gateway_client_secret != "-":
+        headers["X-Client-Secret"] = settings.gateway_client_secret
+    if settings.gateway_signature and settings.gateway_signature != "-":
+        headers["X-Signature"] = settings.gateway_signature
+
+    url = f"{host}/hris/inqMasterPegawaiByKondisi"
+    payload = {
+        "reqid": "HR006",
+        "userid": userid,
+        "kondisi": kondisi,
+    }
+    if id_unit_kerja:
+        payload["id_unit_kerja"] = id_unit_kerja
+
+    try:
+        resp = httpx.post(url, json=payload, headers=headers, timeout=15)
+        data = resp.json()
+        if data.get("rcode") == "00":
+            return data.get("data") or []
+    except Exception:
+        pass
+    return None
+
