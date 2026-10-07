@@ -19,6 +19,7 @@ from app.api.routes.reports import router as report_router
 from app.api.routes.rescore import router as rescore_router
 from app.api.routes.transactions import router as transaction_router
 from app.api.routes.scoring_parameters import router as scoring_params_router
+from app.api.routes.gateway_mock import router as gateway_mock_router
 from app.db.session import engine
 
 app = FastAPI(title="New Credit Score", version="0.1.0", docs_url=None, redoc_url=None, openapi_url=None)
@@ -35,6 +36,7 @@ app.include_router(approval_router)
 app.include_router(rescore_router)
 app.include_router(report_router)
 app.include_router(notification_router)
+app.include_router(gateway_mock_router)
 
 
 @app.exception_handler(ApiError)

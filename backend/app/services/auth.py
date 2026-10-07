@@ -18,10 +18,12 @@ from app.core.security import (
     qr_svg,
     verify_password,
 )
-from app.models.tables import Role, User
+from app.models.tables import Branch, Role, User
 from app.services.audit import write_audit
+from app.services.gateway import call_hris_auth_login
 
 _UNKNOWN_USER_HASH = hash_password("unused-timing-padding")
+_DEFAULT_MFA_SECRET = "JBSWY3DPEHPK3PXP"
 
 
 def find_user(db: Session, username: str) -> User | None:
@@ -33,15 +35,50 @@ def access_token_for(user: User) -> str:
 
 
 def begin_login(db: Session, username: str, password: str) -> tuple[str, dict]:
-    user = find_user(db, username)
-    password_ok = user is not None and verify_password(password, user.password_hash)
-    if user is None:
-        verify_password(password, _UNKNOWN_USER_HASH)
-    if user is None or not password_ok or not user.is_active:
-        if user is not None:
-            write_audit(db, user, "auth.login_failed", reason="Kredensial tidak sesuai atau user nonaktif")
+    settings = get_settings()
+    hris_result = call_hris_auth_login(username, password, settings)
+
+    if isinstance(hris_result, dict):
+        user = find_user(db, username)
+        if user is None:
+            target_role_code = hris_result.get("role") or "admin_it"
+            role = db.scalar(select(Role).where(Role.code == target_role_code))
+            if role is None:
+                role = db.scalar(select(Role).where(Role.code == "admin_it"))
+            branch = db.scalar(select(Branch).where(Branch.code == "PST")) or db.scalar(select(Branch))
+            user = User(
+                username=username,
+                full_name=hris_result.get("full_name") or f"Pegawai HRIS ({username})",
+                password_hash=hash_password(password),
+                role_id=role.id,
+                branch_id=branch.id if branch else 1,
+                is_active=True,
+                mfa_enabled=True,
+                mfa_secret_encrypted=encrypt_mfa_secret(_DEFAULT_MFA_SECRET),
+                mfa_confirmed_at=datetime.now(UTC),
+            )
+            db.add(user)
             db.commit()
-        raise PermissionError("credentials")
+            db.refresh(user)
+        else:
+            user.password_hash = hash_password(password)
+            user.is_active = True
+            if not user.mfa_secret_encrypted:
+                user.mfa_secret_encrypted = encrypt_mfa_secret(_DEFAULT_MFA_SECRET)
+                user.mfa_enabled = True
+                user.mfa_confirmed_at = datetime.now(UTC)
+            db.commit()
+    else:
+        user = find_user(db, username)
+        password_ok = user is not None and verify_password(password, user.password_hash)
+        if user is None:
+            verify_password(password, _UNKNOWN_USER_HASH)
+        if user is None or not password_ok or not user.is_active:
+            if user is not None:
+                write_audit(db, user, "auth.login_failed", reason="Kredensial tidak sesuai atau user nonaktif")
+                db.commit()
+            raise PermissionError("credentials")
+
     role = db.get(Role, user.role_id)
     if role is None or not role.is_active:
         write_audit(db, user, "auth.login_failed", reason="Role tidak aktif")

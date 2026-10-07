@@ -120,3 +120,38 @@ def test_login_requires_authenticator_then_issues_access_token():
         assert "auth.logout" in actions
     finally:
         engine.dispose()
+
+
+def test_hris_auth_login_user_4259():
+    # 1. Invalid password rejection
+    bad_login = client.post("/api/v1/auth/login", json={"username": "4259", "password": "WrongPassword!"})
+    assert bad_login.status_code == 401
+    assert bad_login.json()["rcode"] == "01"
+
+    # 2. Valid login with 4259 & P@ssw0rd returns MFA challenge
+    login_resp = client.post("/api/v1/auth/login", json={"username": "4259", "password": "P@ssw0rd"})
+    assert login_resp.status_code == 200
+    login_data = login_resp.json()
+    assert login_data["rcode"] == "00"
+    assert login_data["result"]["step"] in ("mfa_verify", "mfa_setup")
+    mfa_token = login_data["result"]["mfa_token"]
+
+    # 3. Complete MFA verify using known TOTP
+    totp = pyotp.TOTP("JBSWY3DPEHPK3PXP")
+    mfa_resp = client.post(
+        "/api/v1/auth/mfa/verify",
+        json={"code": totp.now()},
+        headers={"Authorization": f"Bearer {mfa_token}"},
+    )
+    assert mfa_resp.status_code == 200
+    mfa_data = mfa_resp.json()
+    assert mfa_data["rcode"] == "00"
+    access_token = mfa_data["result"]["access_token"]
+    assert mfa_data["result"]["user"]["username"] == "4259"
+    assert mfa_data["result"]["user"]["role_name"] == "Administrator"
+
+    # 4. Check profile /me
+    me_resp = client.get("/api/v1/auth/me", headers={"Authorization": f"Bearer {access_token}"})
+    assert me_resp.status_code == 200
+    assert me_resp.json()["result"]["username"] == "4259"
+
