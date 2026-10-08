@@ -1,4 +1,8 @@
 <?= view('partials/shell_start', ['profile' => $profile, 'title' => 'Konfirmasi Scoring']) ?>
+<?php
+helper('access');
+$canViewScoreDetails = can_view_score_details($profile ?? []);
+?>
 
 <?php if (! empty($error)) : ?>
 <div data-swal="error" data-swal-title="Terjadi Kesalahan" data-swal-message="<?= esc($error) ?>" hidden></div>
@@ -19,15 +23,16 @@
 <div class="row g-3">
     <div class="col-12 col-lg-8">
         <?php if (! empty($preview)) : ?>
-        <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-blue bg-gradient-to-indigo overflow-hidden mb-3" data-bs-theme="dark">
+        <?php if ($canViewScoreDetails) : ?>
+        <div class="card card-borderless rounded-3 overflow-hidden bg-blue mb-3" data-bs-theme="dark">
             <div class="card-body position-relative z-3">
                 <div class="row align-items-center">
                     <div class="col-auto">
                         <div class="text-white text-opacity-75 small fw-semibold mb-1">Total Skor</div>
-                        <div class="display-5 fw-bold text-white mb-0"><?= esc((string) $preview['total_score']) ?></div>
+                        <div class="display-5 fw-bold text-white mb-0"><?= esc((string) ($preview['total_score'] ?? '-')) ?></div>
                     </div>
                     <div class="col">
-                        <div class="fw-bold text-white fs-5"><?= esc($preview['result_label']) ?></div>
+                        <div class="fw-bold text-white fs-5"><?= esc($preview['result_label'] ?? '-') ?></div>
                         <div class="d-inline-flex align-items-center gap-1 text-white text-opacity-75 small">
                             <span class="font-monospace"><?= esc($item['transaction_no']) ?></span>
                             <button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" data-clipboard="<?= esc($item['transaction_no']) ?>" title="Salin Nomor">
@@ -38,10 +43,12 @@
                     </div>
                 </div>
             </div>
-            <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
-                <iconify-icon icon="solar:chart-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
+            <div class="position-absolute top-0 end-0 mt-n5 ps-5 w-25 d-none d-md-block">
+                <div class="w-250px h-250px bg-black bg-opacity-25 rounded-circle ms-n5 position-absolute top-0 start-0"></div>
+                <div class="w-250px h-250px bg-black bg-opacity-25 rounded-circle mt-n5 position-absolute top-0 start-0"></div>
             </div>
         </div>
+        <?php endif; ?>
 
         <div class="card card-borderless mb-3">
             <div class="card-header bg-gray-900" data-bs-theme="dark">
@@ -49,6 +56,7 @@
                     <iconify-icon icon="solar:list-bold-duotone" class="me-1"></iconify-icon>
                     Rincian Parameter
                 </h4>
+                <?= view('partials/card_widget_btn') ?>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
@@ -56,46 +64,92 @@
                         <thead>
                             <tr>
                                 <th>Parameter</th>
+                                <?php if ($canViewScoreDetails) : ?>
                                 <th class="text-center">Nilai</th>
                                 <th class="text-center">Weight</th>
                                 <th class="text-center">Skor</th>
+                                <?php else : ?>
+                                <th>Pilihan</th>
+                                <?php endif; ?>
                             </tr>
                         </thead>
                         <tbody>
                             <?php foreach ($preview['lines'] as $line) : ?>
                             <tr>
                                 <td class="fw-semibold"><?= esc($line['parameter_name']) ?></td>
+                                <?php if ($canViewScoreDetails) : ?>
                                 <td class="text-center"><?= esc($line['value'] ?? '-') ?></td>
                                 <td class="text-center"><?= esc($line['weight'] ?? '-') ?></td>
-                                <td class="text-center fw-bold"><?= esc($line['line_score']) ?></td>
+                                <td class="text-center fw-bold"><?= esc($line['line_score'] ?? '-') ?></td>
+                                <?php else : ?>
+                                <td><?= esc($line['option_label'] ?? '-') ?></td>
+                                <?php endif; ?>
                             </tr>
                             <?php endforeach; ?>
                         </tbody>
+                        <?php if ($canViewScoreDetails) : ?>
                         <tfoot>
                             <tr>
                                 <td colspan="3" class="fw-bold text-end">Total</td>
-                                <td class="text-center fw-bold text-primary"><?= esc((string) $preview['total_score']) ?></td>
+                                <td class="text-center fw-bold text-primary"><?= esc((string) ($preview['total_score'] ?? '-')) ?></td>
                             </tr>
                         </tfoot>
+                        <?php endif; ?>
                     </table>
                 </div>
             </div>
         </div>
         <?php elseif (! empty($item['snapshot'])) : ?>
-        <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-teal bg-gradient-to-green overflow-hidden mb-3" data-bs-theme="dark">
+        <?php if ($canViewScoreDetails) : ?>
+        <div class="card card-borderless rounded-3 overflow-hidden bg-teal mb-3" data-bs-theme="dark">
             <div class="card-body position-relative z-3">
                 <div class="row align-items-center">
                     <div class="col-auto">
                         <div class="text-white text-opacity-75 small fw-semibold mb-1">Skor Tersimpan</div>
-                        <div class="display-5 fw-bold text-white mb-0"><?= esc((string) $item['snapshot']['total_score']) ?></div>
+                        <div class="display-5 fw-bold text-white mb-0"><?= esc((string) ($item['snapshot']['total_score'] ?? '-')) ?></div>
                     </div>
                     <div class="col">
-                        <div class="fw-bold text-white fs-5"><?= esc($item['snapshot']['result_label']) ?></div>
+                        <div class="fw-bold text-white fs-5"><?= esc($item['snapshot']['result_label'] ?? '-') ?></div>
                         <div class="text-white text-opacity-75 small">Hasil scoring terkunci</div>
                     </div>
                 </div>
             </div>
+            <div class="position-absolute top-0 end-0 mt-n5 ps-5 w-25 d-none d-md-block">
+                <div class="w-250px h-250px bg-black bg-opacity-25 rounded-circle ms-n5 position-absolute top-0 start-0"></div>
+                <div class="w-250px h-250px bg-black bg-opacity-25 rounded-circle mt-n5 position-absolute top-0 start-0"></div>
+            </div>
         </div>
+        <?php elseif (! empty($item['snapshot']['lines'])) : ?>
+        <div class="card card-borderless mb-3">
+            <div class="card-header bg-gray-900" data-bs-theme="dark">
+                <h4 class="card-header-title text-white mb-0">
+                    <iconify-icon icon="solar:list-bold-duotone" class="me-1"></iconify-icon>
+                    Rincian Parameter
+                </h4>
+                <?= view('partials/card_widget_btn') ?>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Pilihan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($item['snapshot']['lines'] as $line) : ?>
+                            <tr>
+                                <td class="fw-semibold"><?= esc($line['parameter_name'] ?? '-') ?></td>
+                                <td><?= esc($line['option_label'] ?? '-') ?></td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
         <?php endif; ?>
 
         <div class="d-flex align-items-center justify-content-between">
@@ -120,6 +174,7 @@
                     <iconify-icon icon="solar:info-circle-bold-duotone" class="me-1"></iconify-icon>
                     Informasi Pengajuan
                 </h4>
+                <?= view('partials/card_widget_btn') ?>
             </div>
             <div class="card-body p-0">
                 <table class="table table-sm align-middle mb-0">

@@ -1,0 +1,586 @@
+{
+  "generated_at": "2026-10-05T08:10:04.326Z",
+  "base": "http://127.0.0.1:8080",
+  "steps": [
+    {
+      "file": "01-login-reviewer-dashboard.png",
+      "caption": "1. Login sebagai reviewer.scoring — Dashboard",
+      "name": "login-reviewer-dashboard"
+    },
+    {
+      "file": "02-scoring-credit-step1.png",
+      "caption": "2a. Pengajuan Scoring — pilih debitur",
+      "name": "scoring-credit-step1"
+    },
+    {
+      "file": "03-scoring-debtor-selected.png",
+      "caption": "2b. Debitur dipilih",
+      "name": "scoring-debtor-selected"
+    },
+    {
+      "file": "04-scoring-product-selected.png",
+      "caption": "2c. Produk dipilih",
+      "name": "scoring-product-selected"
+    },
+    {
+      "file": "05-scoring-parameters-filled.png",
+      "caption": "2d. Penilaian parameter diisi",
+      "name": "scoring-parameters-filled"
+    },
+    {
+      "file": "06-scoring-summary.png",
+      "caption": "2e. Ringkasan / konfirmasi sebelum simpan",
+      "name": "scoring-summary"
+    },
+    {
+      "file": "07-scoring-confirm-swal.png",
+      "caption": "2f. Konfirmasi kirim ke supervisi",
+      "name": "scoring-confirm-swal"
+    },
+    {
+      "file": "08-pick-approver-modal.png",
+      "caption": "4. Pilih Approver / Supervisi Scoring",
+      "name": "pick-approver-modal"
+    },
+    {
+      "file": "09-pick-approver-selected.png",
+      "caption": "4b. Approver dipilih — siap kirim",
+      "name": "pick-approver-selected"
+    },
+    {
+      "file": "10-scoring-saved-success.png",
+      "caption": "2g. Scoring berhasil disimpan & dikirim",
+      "name": "scoring-saved-success"
+    },
+    {
+      "file": "11-daftar-scoring.png",
+      "caption": "3. Daftar Scoring — pengajuan muncul di list",
+      "name": "daftar-scoring"
+    },
+    {
+      "file": "12-report-scoring-reviewer.png",
+      "caption": "5. Laporan Scoring (setelah pengajuan, sebagai reviewer)",
+      "name": "report-scoring-reviewer"
+    },
+    {
+      "file": "13-menu-reviewer-dashboard.png",
+      "caption": "Menu reviewer: Dashboard",
+      "name": "menu-reviewer-dashboard"
+    },
+    {
+      "file": "14-menu-reviewer-pengajuan_scoring.png",
+      "caption": "Menu reviewer: Pengajuan Scoring",
+      "name": "menu-reviewer-pengajuan_scoring"
+    },
+    {
+      "file": "15-menu-reviewer-daftar_scoring.png",
+      "caption": "Menu reviewer: Daftar Scoring",
+      "name": "menu-reviewer-daftar_scoring"
+    },
+    {
+      "file": "16-menu-reviewer-laporan_scoring.png",
+      "caption": "Menu reviewer: Laporan Scoring",
+      "name": "menu-reviewer-laporan_scoring"
+    },
+    {
+      "file": "17-menu-reviewer-notifikasi.png",
+      "caption": "Menu reviewer: Notifikasi",
+      "name": "menu-reviewer-notifikasi"
+    },
+    {
+      "file": "18-login-approver-dashboard.png",
+      "caption": "6. Login sebagai approval.scoring — Dashboard",
+      "name": "login-approver-dashboard"
+    },
+    {
+      "file": "19-approvals-inbox.png",
+      "caption": "7a. Inbox Approval — Menunggu Persetujuan",
+      "name": "approvals-inbox"
+    },
+    {
+      "file": "20-approval-detail.png",
+      "caption": "7b. Detail pengajuan untuk keputusan",
+      "name": "approval-detail"
+    },
+    {
+      "file": "21-approval-filled.png",
+      "caption": "7c. Keputusan Setujui + catatan diisi",
+      "name": "approval-filled"
+    },
+    {
+      "file": "22-approval-done.png",
+      "caption": "7d. Keputusan tersimpan",
+      "name": "approval-done"
+    },
+    {
+      "file": "23-report-scoring-approver.png",
+      "caption": "8. Laporan Scoring setelah approval",
+      "name": "report-scoring-approver"
+    },
+    {
+      "file": "24-login-admin-dashboard.png",
+      "caption": "Audit: login admin.ti2 — semua menu",
+      "name": "login-admin-dashboard"
+    },
+    {
+      "file": "25-menu-admin-dashboard.png",
+      "caption": "Menu admin: Dashboard",
+      "name": "menu-admin-dashboard"
+    },
+    {
+      "file": "26-menu-admin-pengajuan_scoring.png",
+      "caption": "Menu admin: Pengajuan Scoring",
+      "name": "menu-admin-pengajuan_scoring"
+    },
+    {
+      "file": "27-menu-admin-daftar_scoring.png",
+      "caption": "Menu admin: Daftar Scoring",
+      "name": "menu-admin-daftar_scoring"
+    },
+    {
+      "file": "28-menu-admin-menunggu_persetujuan.png",
+      "caption": "Menu admin: Menunggu Persetujuan",
+      "name": "menu-admin-menunggu_persetujuan"
+    },
+    {
+      "file": "29-menu-admin-debitur.png",
+      "caption": "Menu admin: Debitur",
+      "name": "menu-admin-debitur"
+    },
+    {
+      "file": "30-menu-admin-produk.png",
+      "caption": "Menu admin: Produk",
+      "name": "menu-admin-produk"
+    },
+    {
+      "file": "31-menu-admin-cabang.png",
+      "caption": "Menu admin: Cabang",
+      "name": "menu-admin-cabang"
+    },
+    {
+      "file": "32-menu-admin-konfigurasi_parameter.png",
+      "caption": "Menu admin: Konfigurasi Parameter",
+      "name": "menu-admin-konfigurasi_parameter"
+    },
+    {
+      "file": "33-menu-admin-mapping_produk.png",
+      "caption": "Menu admin: Mapping Produk",
+      "name": "menu-admin-mapping_produk"
+    },
+    {
+      "file": "34-menu-admin-laporan_scoring.png",
+      "caption": "Menu admin: Laporan Scoring",
+      "name": "menu-admin-laporan_scoring"
+    },
+    {
+      "file": "35-menu-admin-riwayat_debitur.png",
+      "caption": "Menu admin: Riwayat Debitur",
+      "name": "menu-admin-riwayat_debitur"
+    },
+    {
+      "file": "36-menu-admin-riwayat_produk.png",
+      "caption": "Menu admin: Riwayat Produk",
+      "name": "menu-admin-riwayat_produk"
+    },
+    {
+      "file": "37-menu-admin-perubahan_parameter.png",
+      "caption": "Menu admin: Perubahan Parameter",
+      "name": "menu-admin-perubahan_parameter"
+    },
+    {
+      "file": "38-menu-admin-audit_trail.png",
+      "caption": "Menu admin: Audit Trail",
+      "name": "menu-admin-audit_trail"
+    },
+    {
+      "file": "39-menu-admin-user.png",
+      "caption": "Menu admin: User",
+      "name": "menu-admin-user"
+    },
+    {
+      "file": "40-menu-admin-kelompok_jabatan.png",
+      "caption": "Menu admin: Kelompok Jabatan",
+      "name": "menu-admin-kelompok_jabatan"
+    },
+    {
+      "file": "41-menu-admin-role.png",
+      "caption": "Menu admin: Role",
+      "name": "menu-admin-role"
+    },
+    {
+      "file": "42-menu-admin-permission.png",
+      "caption": "Menu admin: Permission",
+      "name": "menu-admin-permission"
+    },
+    {
+      "file": "43-menu-admin-notifikasi.png",
+      "caption": "Menu admin: Notifikasi",
+      "name": "menu-admin-notifikasi"
+    }
+  ],
+  "menuAudit": {
+    "reviewer": [
+      {
+        "text": "Dashboard",
+        "href": "http://127.0.0.1:8080/"
+      },
+      {
+        "text": "Pengajuan Scoring",
+        "href": "http://127.0.0.1:8080/scoring/credit"
+      },
+      {
+        "text": "Daftar Scoring",
+        "href": "http://127.0.0.1:8080/transactions"
+      },
+      {
+        "text": "Laporan Scoring",
+        "href": "http://127.0.0.1:8080/reports/scoring"
+      },
+      {
+        "text": "Notifikasi",
+        "href": "http://127.0.0.1:8080/notifications"
+      }
+    ],
+    "approver": [
+      {
+        "text": "Dashboard",
+        "href": "http://127.0.0.1:8080/"
+      },
+      {
+        "text": "Menunggu Persetujuan",
+        "href": "http://127.0.0.1:8080/approvals"
+      },
+      {
+        "text": "Laporan Scoring",
+        "href": "http://127.0.0.1:8080/reports/scoring"
+      },
+      {
+        "text": "Notifikasi",
+        "href": "http://127.0.0.1:8080/notifications"
+      }
+    ],
+    "admin": [
+      {
+        "text": "Dashboard",
+        "href": "http://127.0.0.1:8080/"
+      },
+      {
+        "text": "Pengajuan Scoring",
+        "href": "http://127.0.0.1:8080/scoring/credit"
+      },
+      {
+        "text": "Daftar Scoring",
+        "href": "http://127.0.0.1:8080/transactions"
+      },
+      {
+        "text": "Menunggu Persetujuan",
+        "href": "http://127.0.0.1:8080/approvals"
+      },
+      {
+        "text": "Debitur",
+        "href": "http://127.0.0.1:8080/master/debtors"
+      },
+      {
+        "text": "Produk",
+        "href": "http://127.0.0.1:8080/master/products"
+      },
+      {
+        "text": "Cabang",
+        "href": "http://127.0.0.1:8080/master/branches"
+      },
+      {
+        "text": "Konfigurasi Parameter",
+        "href": "http://127.0.0.1:8080/scoring/parameters"
+      },
+      {
+        "text": "Mapping Produk",
+        "href": "http://127.0.0.1:8080/scoring/mapping"
+      },
+      {
+        "text": "Laporan Scoring",
+        "href": "http://127.0.0.1:8080/reports/scoring"
+      },
+      {
+        "text": "Riwayat Debitur",
+        "href": "http://127.0.0.1:8080/reports/debtors"
+      },
+      {
+        "text": "Riwayat Produk",
+        "href": "http://127.0.0.1:8080/reports/products"
+      },
+      {
+        "text": "Perubahan Parameter",
+        "href": "http://127.0.0.1:8080/reports/changes"
+      },
+      {
+        "text": "Audit Trail",
+        "href": "http://127.0.0.1:8080/audit"
+      },
+      {
+        "text": "User",
+        "href": "http://127.0.0.1:8080/access/users"
+      },
+      {
+        "text": "Kelompok Jabatan",
+        "href": "http://127.0.0.1:8080/access/job-groups"
+      },
+      {
+        "text": "Role",
+        "href": "http://127.0.0.1:8080/access/roles"
+      },
+      {
+        "text": "Permission",
+        "href": "http://127.0.0.1:8080/access/permissions"
+      },
+      {
+        "text": "Notifikasi",
+        "href": "http://127.0.0.1:8080/notifications"
+      }
+    ],
+    "notes": [
+      {
+        "role": "reviewer",
+        "text": "Dashboard",
+        "href": "http://127.0.0.1:8080/",
+        "title": "Dasbor — New Scoring Credit System",
+        "status": 200,
+        "broken": false
+      },
+      {
+        "role": "reviewer",
+        "text": "Pengajuan Scoring",
+        "href": "http://127.0.0.1:8080/scoring/credit",
+        "title": "Scoring Kredit — New Scoring Credit System",
+        "status": 200,
+        "broken": true
+      },
+      {
+        "role": "reviewer",
+        "text": "Daftar Scoring",
+        "href": "http://127.0.0.1:8080/transactions",
+        "title": "Pengajuan Scoring — New Scoring Credit System",
+        "status": 200,
+        "broken": false
+      },
+      {
+        "role": "reviewer",
+        "text": "Laporan Scoring",
+        "href": "http://127.0.0.1:8080/reports/scoring",
+        "title": "Laporan Scoring — New Scoring Credit System",
+        "status": 200,
+        "broken": false
+      },
+      {
+        "role": "reviewer",
+        "text": "Notifikasi",
+        "href": "http://127.0.0.1:8080/notifications",
+        "title": "Notifikasi — New Scoring Credit System",
+        "status": 200,
+        "broken": false
+      },
+      {
+        "role": "approver",
+        "text": "Dashboard",
+        "href": "http://127.0.0.1:8080/",
+        "title": "Dasbor — New Scoring Credit System",
+        "status": 200,
+        "broken": false
+      },
+      {
+        "role": "approver",
+        "text": "Menunggu Persetujuan",
+        "href": "http://127.0.0.1:8080/approvals",
+        "title": "Approval — New Scoring Credit System",
+        "status": 200,
+        "broken": false
+      },
+      {
+        "role": "approver",
+        "text": "Laporan Scoring",
+        "href": "http://127.0.0.1:8080/reports/scoring",
+        "title": "Laporan Scoring — New Scoring Credit System",
+        "status": 200,
+        "broken": false
+      },
+      {
+        "role": "approver",
+        "text": "Notifikasi",
+        "href": "http://127.0.0.1:8080/notifications",
+        "title": "Notifikasi — New Scoring Credit System",
+        "status": 200,
+        "broken": false
+      },
+      {
+        "role": "admin",
+        "text": "Dashboard",
+        "href": "http://127.0.0.1:8080/",
+        "title": "Dasbor — New Scoring Credit System",
+        "status": 200,
+        "broken": false,
+        "emptyTable": true
+      },
+      {
+        "role": "admin",
+        "text": "Pengajuan Scoring",
+        "href": "http://127.0.0.1:8080/scoring/credit",
+        "title": "Scoring Kredit — New Scoring Credit System",
+        "status": 200,
+        "broken": true,
+        "emptyTable": false
+      },
+      {
+        "role": "admin",
+        "text": "Daftar Scoring",
+        "href": "http://127.0.0.1:8080/transactions",
+        "title": "Pengajuan Scoring — New Scoring Credit System",
+        "status": 200,
+        "broken": false,
+        "emptyTable": false
+      },
+      {
+        "role": "admin",
+        "text": "Menunggu Persetujuan",
+        "href": "http://127.0.0.1:8080/approvals",
+        "title": "Approval — New Scoring Credit System",
+        "status": 200,
+        "broken": false,
+        "emptyTable": false
+      },
+      {
+        "role": "admin",
+        "text": "Debitur",
+        "href": "http://127.0.0.1:8080/master/debtors",
+        "title": "Master Debitur — New Scoring Credit System",
+        "status": 200,
+        "broken": true,
+        "emptyTable": false
+      },
+      {
+        "role": "admin",
+        "text": "Produk",
+        "href": "http://127.0.0.1:8080/master/products",
+        "title": "Master Produk — New Scoring Credit System",
+        "status": 200,
+        "broken": true,
+        "emptyTable": false
+      },
+      {
+        "role": "admin",
+        "text": "Cabang",
+        "href": "http://127.0.0.1:8080/master/branches",
+        "title": "Master Cabang — New Scoring Credit System",
+        "status": 200,
+        "broken": false,
+        "emptyTable": false
+      },
+      {
+        "role": "admin",
+        "text": "Konfigurasi Parameter",
+        "href": "http://127.0.0.1:8080/scoring/parameters",
+        "title": "Konfigurasi Parameter — New Scoring Credit System",
+        "status": 200,
+        "broken": false,
+        "emptyTable": false
+      },
+      {
+        "role": "admin",
+        "text": "Mapping Produk",
+        "href": "http://127.0.0.1:8080/scoring/mapping",
+        "title": "Mapping Produk — New Scoring Credit System",
+        "status": 200,
+        "broken": false,
+        "emptyTable": false
+      },
+      {
+        "role": "admin",
+        "text": "Laporan Scoring",
+        "href": "http://127.0.0.1:8080/reports/scoring",
+        "title": "Laporan Scoring — New Scoring Credit System",
+        "status": 200,
+        "broken": false,
+        "emptyTable": false
+      },
+      {
+        "role": "admin",
+        "text": "Riwayat Debitur",
+        "href": "http://127.0.0.1:8080/reports/debtors",
+        "title": "Riwayat Debitur — New Scoring Credit System",
+        "status": 200,
+        "broken": true,
+        "emptyTable": false
+      },
+      {
+        "role": "admin",
+        "text": "Riwayat Produk",
+        "href": "http://127.0.0.1:8080/reports/products",
+        "title": "Riwayat Produk — New Scoring Credit System",
+        "status": 200,
+        "broken": true,
+        "emptyTable": false
+      },
+      {
+        "role": "admin",
+        "text": "Perubahan Parameter",
+        "href": "http://127.0.0.1:8080/reports/changes",
+        "title": "Perubahan Parameter — New Scoring Credit System",
+        "status": 200,
+        "broken": false,
+        "emptyTable": false
+      },
+      {
+        "role": "admin",
+        "text": "Audit Trail",
+        "href": "http://127.0.0.1:8080/audit",
+        "title": "Jejak Audit — New Scoring Credit System",
+        "status": 200,
+        "broken": false,
+        "emptyTable": false
+      },
+      {
+        "role": "admin",
+        "text": "User",
+        "href": "http://127.0.0.1:8080/access/users",
+        "title": "Manajemen User — New Scoring Credit System",
+        "status": 200,
+        "broken": false,
+        "emptyTable": false
+      },
+      {
+        "role": "admin",
+        "text": "Kelompok Jabatan",
+        "href": "http://127.0.0.1:8080/access/job-groups",
+        "title": "Kelompok Jabatan — New Scoring Credit System",
+        "status": 200,
+        "broken": false,
+        "emptyTable": false
+      },
+      {
+        "role": "admin",
+        "text": "Role",
+        "href": "http://127.0.0.1:8080/access/roles",
+        "title": "Manajemen Role — New Scoring Credit System",
+        "status": 200,
+        "broken": false,
+        "emptyTable": false
+      },
+      {
+        "role": "admin",
+        "text": "Permission",
+        "href": "http://127.0.0.1:8080/access/permissions",
+        "title": "Hak Akses / Module — New Scoring Credit System",
+        "status": 200,
+        "broken": false,
+        "emptyTable": false
+      },
+      {
+        "role": "admin",
+        "text": "Notifikasi",
+        "href": "http://127.0.0.1:8080/notifications",
+        "title": "Notifikasi — New Scoring Credit System",
+        "status": 200,
+        "broken": false,
+        "emptyTable": true
+      }
+    ]
+  }
+}

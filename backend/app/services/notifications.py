@@ -7,6 +7,8 @@ TITLES = {
     "approved": "Pengajuan disetujui",
     "returned": "Pengajuan dikembalikan",
     "rejected": "Pengajuan ditolak",
+    "duplicate_approved": "Izin pengajuan ulang disetujui",
+    "duplicate_rejected": "Izin pengajuan ulang ditolak",
 }
 
 

@@ -28,7 +28,7 @@ from app.models.tables import (
     User,
 )
 from app.services.audit import write_audit
-from app.services.authorization import has_permission, visible_branch_id
+from app.services.authorization import can_view_score_details, has_permission, visible_branch_id
 from app.services.scoring_engine import ScoringError, calculate_version
 
 router = APIRouter(prefix="/api/v1/transactions", tags=["transactions"])
@@ -40,6 +40,8 @@ class CreateTransactionBody(BaseModel):
     model_config = ConfigDict(extra="forbid")
     product_id: int
     debtor_id: int
+    branchid: str | None = None
+    duplicate_reason: str | None = None
 
 
 class AnswerBody(BaseModel):
@@ -95,9 +97,12 @@ def transaction_options(actor: User = Depends(current_user), db: Session = Depen
         version = _lookup_version(db, product.id)
         if version is not None:
             available.append({"id": product.id, "code": product.code, "name": product.name, "version_no": version.version_no})
-    debtors = db.scalars(
-        select(Debtor).where(Debtor.branch_id == actor.branch_id, Debtor.is_active.is_(True)).order_by(Debtor.full_name)
-    ).all()
+    
+    scope = visible_branch_id(db, actor)
+    debtor_stmt = select(Debtor).where(Debtor.is_active.is_(True)).order_by(Debtor.full_name)
+    if scope is not None:
+        debtor_stmt = debtor_stmt.where(Debtor.branch_id == scope)
+    debtors = db.scalars(debtor_stmt).all()
     return {
         "rcode": "00",
         "message": "Data berhasil ditampilkan",
@@ -117,23 +122,39 @@ def list_transactions(actor: User = Depends(current_user), db: Session = Depends
     if not (has_permission(db, actor, "scoring.submit") or has_permission(db, actor, "branch.view_all")):
         raise ApiError(403, "04", "Anda tidak memiliki hak akses")
     statement = (
-        select(ScoringTransaction, Debtor, Product)
+        select(ScoringTransaction, Debtor, Product, Branch)
         .join(Debtor, Debtor.id == ScoringTransaction.debtor_id)
         .join(Product, Product.id == ScoringTransaction.product_id)
+        .outerjoin(Branch, Branch.id == ScoringTransaction.branch_id)
         .order_by(ScoringTransaction.id.desc())
     )
     scope = visible_branch_id(db, actor)
     if scope is not None:
         statement = statement.where(ScoringTransaction.branch_id == scope)
+    TX_STATUS_MAP = {
+        "draft": "Draft",
+        "waiting_duplicate_approval": "Menunggu Izin Pengajuan Ulang",
+        "submitted": "Submitted",
+        "waiting_for_approver_assignment": "Menunggu Penugasan",
+        "approved": "Approved",
+        "returned": "Dikembalikan",
+        "rejected": "Ditolak",
+    }
     items = []
-    for transaction, debtor, product in db.execute(statement).all():
+    for transaction, debtor, product, branch in db.execute(statement).all():
         items.append(
             {
                 "id": transaction.id,
                 "transaction_no": transaction.transaction_no,
                 "status": transaction.status,
+                "status_label": TX_STATUS_MAP.get(transaction.status, transaction.status),
+                "duplicate_reason": transaction.duplicate_reason,
                 "debtor_name": debtor.full_name,
                 "product_name": product.name,
+                "branch_id": transaction.branch_id,
+                "branch_code": branch.code if branch else "",
+                "branch_name": branch.name if branch else "",
+                "created_at": transaction.created_at.isoformat() if transaction.created_at else None,
             }
         )
     return {"rcode": "00", "message": "Data berhasil ditampilkan", "result": {"items": items}}
@@ -150,7 +171,8 @@ def create_transaction(
     debtor = db.get(Debtor, body.debtor_id)
     if product is None or not product.is_active or debtor is None or not debtor.is_active:
         raise ApiError(400, "01", "Produk atau debitur tidak tersedia")
-    if debtor.branch_id != actor.branch_id:
+    scope = visible_branch_id(db, actor)
+    if scope is not None and debtor.branch_id != scope:
         raise ApiError(403, "04", "Debitur berada di luar cabang Anda")
     version = _active_version(db, product.id)
     prior = db.scalar(
@@ -168,15 +190,26 @@ def create_transaction(
             RescoreRequest.consumed_transaction_id.is_(None),
         )
     )
+    tx_status = "draft"
+    dup_reason = (body.duplicate_reason or "").strip() or None
     if prior and request is None:
-        raise ApiError(400, "01", "NIK dan produk ini sudah memiliki scoring. Ajukan permintaan scoring ulang terlebih dahulu.")
+        if not dup_reason:
+            raise ApiError(400, "01", "NIK dan produk ini sudah memiliki scoring. Masukkan alasan pengajuan ulang.")
+        tx_status = "waiting_duplicate_approval"
+
+    # Ambil branchid dari body (session) atau dari cabang user login
+    actor_branch = db.get(Branch, actor.branch_id) if actor.branch_id else None
+    resolved_branchid = str(body.branchid or (actor_branch.code if actor_branch else "")).strip() or None
+
     transaction = ScoringTransaction(
         transaction_no=f"TMP-{uuid.uuid4().hex}",
         debtor_id=debtor.id,
         product_id=product.id,
         scoring_version_id=version.id,
-        branch_id=actor.branch_id,
-        status="draft",
+        branch_id=debtor.branch_id if debtor.branch_id else actor.branch_id,
+        branchid=resolved_branchid,
+        status=tx_status,
+        duplicate_reason=dup_reason,
         created_by=actor.id,
     )
     db.add(transaction)
@@ -186,7 +219,20 @@ def create_transaction(
         request.status = "consumed"
         request.consumed_at = datetime.now(UTC)
         request.consumed_transaction_id = transaction.id
-    write_audit(db, actor, "scoring.transaction_created", object_type="scoring_transaction", object_id=str(transaction.id))
+    write_audit(
+        db,
+        actor,
+        "scoring.transaction_created",
+        object_type="scoring_transaction",
+        object_id=str(transaction.id),
+        after_data={
+            "transaction_no": transaction.transaction_no,
+            "debtor_id": debtor.id,
+            "debtor_name": debtor.full_name,
+            "product_id": product.id,
+            "product_name": product.name,
+        },
+    )
     db.commit()
     return {
         "rcode": "00",
@@ -230,22 +276,44 @@ def get_transaction(transaction_id: int, actor: User = Depends(current_user), db
         .order_by(ScoringSnapshot.revision_no.desc())
         .limit(1)
     )
+    can_view = can_view_score_details(db, actor)
+    version_body = _detail(db, version) if version else None
+    if version_body is not None and not can_view:
+        for parameter in version_body.get("parameters") or []:
+            parameter.pop("weight", None)
+            for option in parameter.get("options") or []:
+                option.pop("value", None)
+
     snapshot_body = None
     if snapshot is not None:
         lines = db.scalars(select(ScoringSnapshotLine).where(ScoringSnapshotLine.snapshot_id == snapshot.id)).all()
-        snapshot_body = {
-            "revision_no": snapshot.revision_no,
-            "total_score": format(snapshot.total_score, "f"),
-            "result_label": snapshot.result_label,
-            "lines": [
-                {
-                    "parameter_name": line.parameter_name,
-                    "option_label": line.option_label,
-                    "line_score": format(line.line_score, "f"),
-                }
-                for line in lines
-            ],
-        }
+        if can_view:
+            snapshot_body = {
+                "revision_no": snapshot.revision_no,
+                "total_score": format(snapshot.total_score, "f"),
+                "result_label": snapshot.result_label,
+                "lines": [
+                    {
+                        "parameter_name": line.parameter_name,
+                        "option_label": line.option_label,
+                        "value": format(line.value, "f"),
+                        "weight": format(line.weight, "f"),
+                        "line_score": format(line.line_score, "f"),
+                    }
+                    for line in lines
+                ],
+            }
+        else:
+            snapshot_body = {
+                "revision_no": snapshot.revision_no,
+                "lines": [
+                    {
+                        "parameter_name": line.parameter_name,
+                        "option_label": line.option_label,
+                    }
+                    for line in lines
+                ],
+            }
     return {
         "rcode": "00",
         "message": "Data berhasil ditampilkan",
@@ -253,14 +321,17 @@ def get_transaction(transaction_id: int, actor: User = Depends(current_user), db
             "id": transaction.id,
             "transaction_no": transaction.transaction_no,
             "status": transaction.status,
+            "duplicate_reason": transaction.duplicate_reason,
+            "assigned_approver_id": transaction.assigned_approver_id,
             "editable": transaction.status in EDITABLE and transaction.created_by == actor.id,
             "duplicated_from_id": transaction.duplicated_from_id,
             "debtor": {"id": debtor.id, "nik": debtor.nik, "full_name": debtor.full_name} if debtor else None,
             "product": {"id": product.id, "name": product.name} if product else None,
-            "version": _detail(db, version) if version else None,
+            "version": version_body,
             "answers": [{"parameter_id": key, "option_id": value} for key, value in saved.items()],
             "field_answers": field_answers,
             "snapshot": snapshot_body,
+            "can_view_score_details": can_view,
         },
     }
 
@@ -308,6 +379,18 @@ def save_answers(
                 db.add(DynamicFieldInputChoice(dynamic_field_input_id=stored.id, dynamic_field_option_id=option.id))
             if field.field_type != "checkbox" and len(field_answer.option_ids) > 1:
                 raise ApiError(400, "01", "Field ini hanya boleh satu pilihan")
+    write_audit(
+        db,
+        actor,
+        "scoring.answers_saved",
+        object_type="scoring_transaction",
+        object_id=str(transaction.id),
+        after_data={
+            "transaction_no": transaction.transaction_no,
+            "answers_count": len(body.answers),
+            "fields_count": len(body.fields),
+        },
+    )
     db.commit()
     return {"rcode": "00", "message": "Jawaban berhasil disimpan", "result": {}}
 
@@ -407,10 +490,18 @@ def submit_transaction(transaction_id: int, actor: User = Depends(current_user),
         after_data={"total_score": result["total_score"], "result_label": result["result_label"]},
     )
     db.commit()
+    can_view = can_view_score_details(db, actor)
+    result_body = {
+        "transaction_no": transaction.transaction_no,
+        "can_view_score_details": can_view,
+    }
+    if can_view:
+        result_body["total_score"] = result["total_score"]
+        result_body["result_label"] = result["result_label"]
     return {
         "rcode": "00",
         "message": "Pengajuan berhasil dikunci",
-        "result": {"transaction_no": transaction.transaction_no, "total_score": result["total_score"],         "result_label": result["result_label"]},
+        "result": result_body,
     }
 
 

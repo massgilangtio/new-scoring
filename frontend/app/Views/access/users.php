@@ -1,5 +1,6 @@
 <?php
 helper('access');
+$profile = $profile ?? [];
 $userHris = $userHris ?? [];
 $users = $users ?? [];
 $displayItems = ! empty($userHris) ? $userHris : $users;
@@ -99,7 +100,7 @@ $totalKelJabatan = count($kelJabatanSet);
                 <thead>
                     <tr>
                         <th style="width:40px;">No</th>
-                        <th>User ID / NPP</th>
+                        <th>User ID</th>
                         <th>Nama Pegawai</th>
                         <th>NRIK</th>
                         <th>Jabatan</th>
@@ -133,20 +134,43 @@ $totalKelJabatan = count($kelJabatanSet);
                     <tr>
                         <td class="text-muted"><?= esc((string) ($index + 1)) ?></td>
                         <td>
-                            <div class="fw-bold font-monospace text-primary"><?= esc($npp) ?></div>
-                            <div class="small text-muted font-monospace"><?= esc($userid) ?></div>
+                            <div class="d-inline-flex align-items-center gap-1">
+                                <span class="fw-bold font-monospace text-primary"><?= esc($userid !== '' ? $userid : $npp) ?></span>
+                                <?php $valUserid = $userid !== '' ? $userid : $npp; ?>
+                                <?php if ($valUserid !== '') : ?>
+                                    <button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" data-clipboard="<?= esc($valUserid) ?>" title="Salin User ID">
+                                        <i class="fa fa-copy"></i>
+                                    </button>
+                                <?php endif; ?>
+                            </div>
+                            <?php if ($npp !== '' && $npp !== $userid) : ?>
+                                <div class="small text-muted font-monospace d-flex align-items-center gap-1 mt-1">
+                                    <span>NPP: <?= esc($npp) ?></span>
+                                    <button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" data-clipboard="<?= esc($npp) ?>" title="Salin NPP">
+                                        <i class="fa fa-copy"></i>
+                                    </button>
+                                </div>
+                            <?php endif; ?>
                         </td>
                         <td>
                             <div class="d-flex align-items-center gap-2">
-                                <span class="user-avatar <?= esc($tone) ?>"><?= esc(access_initials($nama !== '' ? $nama : $npp)) ?></span>
+                                <span class="user-avatar <?= esc($tone) ?>"><?= esc(access_initials($nama !== '' ? $nama : ($userid !== '' ? $userid : 'U'))) ?></span>
                                 <div class="min-w-0">
                                     <div class="user-meta-name text-truncate fw-semibold"><?= esc($nama !== '' ? $nama : '-') ?></div>
-                                    <div class="small text-muted font-monospace"><?= esc($npp) ?></div>
                                 </div>
                             </div>
                         </td>
                         <td>
-                            <div class="font-monospace small text-nowrap"><?= esc($nrik) ?></div>
+                            <?php if ($nrik !== '' && $nrik !== '-') : ?>
+                                <div class="d-inline-flex align-items-center gap-1">
+                                    <span class="font-monospace small text-nowrap"><?= esc($nrik) ?></span>
+                                    <button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" data-clipboard="<?= esc($nrik) ?>" title="Salin NRIK">
+                                        <i class="fa fa-copy"></i>
+                                    </button>
+                                </div>
+                            <?php else : ?>
+                                <span class="font-monospace small text-muted">-</span>
+                            <?php endif; ?>
                         </td>
                         <td>
                             <div class="fw-semibold text-truncate" style="max-width:220px;" title="<?= esc($nmJabatan) ?>"><?= esc($nmJabatan) ?></div>
@@ -167,17 +191,44 @@ $totalKelJabatan = count($kelJabatanSet);
                             <?php endif; ?>
                         </td>
                         <td class="text-center">
-                            <span class="badge bg-secondary font-monospace"><?= esc($branchid) ?></span>
+                            <?php if ($branchid !== '' && $branchid !== '-') : ?>
+                                <div class="d-inline-flex align-items-center gap-1">
+                                    <span class="badge bg-secondary font-monospace"><?= esc($branchid) ?></span>
+                                    <button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" data-clipboard="<?= esc($branchid) ?>" title="Salin Branch ID">
+                                        <i class="fa fa-copy"></i>
+                                    </button>
+                                </div>
+                            <?php else : ?>
+                                <span class="badge bg-secondary font-monospace">-</span>
+                            <?php endif; ?>
                         </td>
                         <td>
                             <div class="small"><i class="fa fa-envelope text-muted me-1"></i><?= esc($userEmail) ?></div>
-                            <div class="small text-muted"><i class="fa fa-phone text-muted me-1"></i><?= esc($noHp) ?></div>
+                            <div class="small text-muted d-flex align-items-center gap-1 mt-1">
+                                <i class="fa fa-phone text-muted me-1"></i>
+                                <span><?= esc($noHp) ?></span>
+                                <?php if ($noHp !== '' && $noHp !== '-') : ?>
+                                    <button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" data-clipboard="<?= esc($noHp) ?>" title="Salin No HP">
+                                        <i class="fa fa-copy"></i>
+                                    </button>
+                                <?php endif; ?>
+                            </div>
                         </td>
                         <td class="text-center">
                             <span class="badge bg-teal-subtle text-teal border border-teal-subtle">Aktif</span>
-                            <div class="small text-muted mt-1">Auth: <?= esc((string) $stsauth) ?></div>
+                            <div class="mt-1">
+                                <?php if ($stsauth === 1) : ?>
+                                <span class="badge bg-primary-subtle text-primary border border-primary-subtle" title="stsauth = 1 (Menggunakan MFA)">
+                                    <i class="fa fa-shield-halved me-1"></i>Pakai MFA (1)
+                                </span>
+                                <?php else : ?>
+                                <span class="badge bg-secondary-subtle text-muted border border-secondary-subtle" title="stsauth = 0 (Tidak menggunakan MFA)">
+                                    <i class="fa fa-shield me-1"></i>Tanpa MFA (0)
+                                </span>
+                                <?php endif; ?>
+                            </div>
                         </td>
-                        <td class="text-center">
+                        <td class="text-center text-nowrap">
                             <button type="button"
                                     class="btn btn-default btn-xs btn-detail-hris"
                                     data-userid="<?= esc($userid) ?>"
@@ -192,11 +243,38 @@ $totalKelJabatan = count($kelJabatanSet);
                                     data-keljabatan="<?= esc($namaKelJabatan) ?> (<?= esc($idKelJabatan) ?>)"
                                     data-stsauth="<?= esc((string) $stsauth) ?>"
                                     data-stsbest="<?= esc((string) $stsbest) ?>"
+                                    data-secretkey="<?= esc((string) ($item['secret_key'] ?? '')) ?>"
                                     data-created="<?= esc((string) ($item['created_at'] ?? '-')) ?>"
                                     data-updated="<?= esc((string) ($item['updated_at'] ?? '-')) ?>"
                                     title="Lihat Detail Kolom tbl_userhris">
                                 <i class="fa fa-eye text-primary"></i> Detail
                             </button>
+                            <?php if ($stsauth === 1) : ?>
+                            <button type="button"
+                                    class="btn btn-outline-danger btn-xs ms-1 btn-toggle-mfa"
+                                    data-userid="<?= esc($userid) ?>"
+                                    data-stsauth="0"
+                                    data-nama="<?= esc($nama) ?>"
+                                    title="Nonaktifkan MFA (Ubah stsauth jadi 0)">
+                                <i class="fa fa-ban text-danger"></i> Nonaktifkan
+                            </button>
+                            <button type="button"
+                                    class="btn btn-outline-warning btn-xs ms-1 btn-reset-mfa"
+                                    data-userid="<?= esc($userid) ?>"
+                                    data-nama="<?= esc($nama) ?>"
+                                    title="Reset Secret Key agar pegawai bisa scan barcode QR baru">
+                                <i class="fa fa-rotate-left text-warning"></i> Reset Key
+                            </button>
+                            <?php else : ?>
+                            <button type="button"
+                                    class="btn btn-outline-success btn-xs ms-1 btn-toggle-mfa"
+                                    data-userid="<?= esc($userid) ?>"
+                                    data-stsauth="1"
+                                    data-nama="<?= esc($nama) ?>"
+                                    title="Aktifkan MFA (Ubah stsauth jadi 1)">
+                                <i class="fa fa-shield-halved text-success"></i> Aktifkan MFA
+                            </button>
+                            <?php endif; ?>
                         </td>
                     </tr>
                     <?php endforeach; ?>
@@ -225,24 +303,48 @@ $totalKelJabatan = count($kelJabatanSet);
             <form method="post" action="<?= site_url('access/users/sync-hris') ?>" id="syncHrisForm">
                 <?= csrf_field() ?>
                 <div class="modal-body">
-                    <p class="text-muted small mb-3">
-                        Memanggil endpoint live gateway <code>/hris/inqMasterPegawaiByKondisi</code> (reqid: <code>HR006</code>) untuk mengambil data pegawai dan menyimpannya ke tabel <code>tbl_userhris</code>.
-                    </p>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold" for="sync_userid">User ID / NPP <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control font-monospace" id="sync_userid" name="userid" value="1776" required placeholder="Contoh: 1776">
-                        <div class="form-text">Contoh testing: <strong>1776</strong>, <strong>4259</strong>, atau <strong>2870</strong>.</div>
+                    <div class="alert alert-info py-2 small mb-3">
+                        <i class="fa fa-info-circle me-1"></i> Memanggil endpoint <code>/hris/inqMasterPegawaiByKondisi</code> (reqid: <code>HR006</code>).
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label" for="sync_kondisi">Kondisi (Opsional)</label>
-                        <input type="text" class="form-control font-monospace" id="sync_kondisi" name="kondisi" value="" placeholder="Default: kosong">
+
+                    <div class="card border mb-3">
+                        <div class="card-body p-3 bg-light rounded">
+                            <div class="fw-bold mb-1"><i class="fa fa-users text-warning me-1"></i> Tarik Semua Pegawai (Rekomendasi)</div>
+                            <p class="text-muted small mb-2">
+                                Mengirim payload default: <code>{"reqid": "HR006", "kondisi": ""}</code> untuk menarik seluruh data pegawai (~2.600+ pegawai).
+                            </p>
+                            <ul class="text-muted small ps-3 mb-3">
+                                <li><strong>Pegawai baru:</strong> Di-insert ke <code>tbl_userhris</code></li>
+                                <li><strong>Pegawai existing (NPP sama):</strong> Di-update otomatis tanpa menimpa secret key MFA</li>
+                            </ul>
+                            <button type="button" class="btn btn-warning text-dark fw-bold w-100" id="btnSyncAllNow">
+                                <i class="fa fa-bolt me-1"></i> Tarik Semua Pegawai HRIS Sekarang
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="border rounded p-2">
+                        <a class="text-decoration-none small fw-semibold text-secondary d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#syncFilterCollapse" role="button" aria-expanded="false">
+                            <span><i class="fa fa-sliders me-1"></i> Opsi Filter Tertentu (Opsional)</span>
+                            <i class="fa fa-chevron-down small"></i>
+                        </a>
+                        <div class="collapse mt-2" id="syncFilterCollapse">
+                            <div class="mb-2">
+                                <label class="form-label small mb-1" for="sync_userid">User ID / NPP Tertentu</label>
+                                <input type="text" class="form-control form-control-sm font-monospace" id="sync_userid" name="userid" value="" placeholder="Kosongkan jika menarik semua (contoh: 1776)">
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label small mb-1" for="sync_kondisi">Kondisi (Opsional)</label>
+                                <input type="text" class="form-control form-control-sm font-monospace" id="sync_kondisi" name="kondisi" value="" placeholder="Default: kosong">
+                            </div>
+                            <button type="submit" id="btnSyncSubmit" class="btn btn-outline-secondary btn-sm w-100">
+                                <i class="fa fa-filter me-1"></i> Tarik dengan Filter di Atas
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" id="btnSyncSubmit" class="btn btn-warning fw-bold text-dark">
-                        <i class="fa fa-bolt me-1"></i> Tarik &amp; Simpan ke tbl_userhris
-                    </button>
                 </div>
             </form>
         </div>
@@ -264,15 +366,36 @@ $totalKelJabatan = count($kelJabatanSet);
                     <tbody>
                         <tr>
                             <th class="w-35 bg-light">userid (Primary Key)</th>
-                            <td id="dt_userid" class="font-monospace fw-bold text-primary"></td>
+                            <td>
+                                <div class="d-inline-flex align-items-center gap-1">
+                                    <span id="dt_userid" class="font-monospace fw-bold text-primary"></span>
+                                    <button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" id="btnCopyDtUserid" data-clipboard="" title="Salin User ID">
+                                        <i class="fa fa-copy"></i>
+                                    </button>
+                                </div>
+                            </td>
                         </tr>
                         <tr>
                             <th class="bg-light">npp</th>
-                            <td id="dt_npp" class="font-monospace fw-bold"></td>
+                            <td>
+                                <div class="d-inline-flex align-items-center gap-1">
+                                    <span id="dt_npp" class="font-monospace fw-bold"></span>
+                                    <button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" id="btnCopyDtNpp" data-clipboard="" title="Salin NPP">
+                                        <i class="fa fa-copy"></i>
+                                    </button>
+                                </div>
+                            </td>
                         </tr>
                         <tr>
                             <th class="bg-light">nrik</th>
-                            <td id="dt_nrik" class="font-monospace"></td>
+                            <td>
+                                <div class="d-inline-flex align-items-center gap-1">
+                                    <span id="dt_nrik" class="font-monospace"></span>
+                                    <button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" id="btnCopyDtNrik" data-clipboard="" title="Salin NRIK">
+                                        <i class="fa fa-copy"></i>
+                                    </button>
+                                </div>
+                            </td>
                         </tr>
                         <tr>
                             <th class="bg-light">nama</th>
@@ -284,7 +407,14 @@ $totalKelJabatan = count($kelJabatanSet);
                         </tr>
                         <tr>
                             <th class="bg-light">no_hp</th>
-                            <td id="dt_nohp"></td>
+                            <td>
+                                <div class="d-inline-flex align-items-center gap-1">
+                                    <span id="dt_nohp"></span>
+                                    <button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" id="btnCopyDtNohp" data-clipboard="" title="Salin No HP">
+                                        <i class="fa fa-copy"></i>
+                                    </button>
+                                </div>
+                            </td>
                         </tr>
                         <tr>
                             <th class="bg-light">nm_unit_kerja (id_unit_kerja)</th>
@@ -292,7 +422,14 @@ $totalKelJabatan = count($kelJabatanSet);
                         </tr>
                         <tr>
                             <th class="bg-light">branchid</th>
-                            <td id="dt_branchid" class="font-monospace"></td>
+                            <td>
+                                <div class="d-inline-flex align-items-center gap-1">
+                                    <span id="dt_branchid" class="font-monospace"></span>
+                                    <button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" id="btnCopyDtBranchid" data-clipboard="" title="Salin Branch ID">
+                                        <i class="fa fa-copy"></i>
+                                    </button>
+                                </div>
+                            </td>
                         </tr>
                         <tr>
                             <th class="bg-light">nm_jabatan (id_jabatan)</th>
@@ -303,10 +440,17 @@ $totalKelJabatan = count($kelJabatanSet);
                             <td id="dt_keljabatan"></td>
                         </tr>
                         <tr>
-                            <th class="bg-light">stsauth / stsbest</th>
+                            <th class="bg-light">stsauth (Status MFA) / stsbest</th>
                             <td>
-                                <span class="badge bg-secondary me-1">stsauth: <span id="dt_stsauth"></span></span>
-                                <span class="badge bg-secondary">stsbest: <span id="dt_stsbest"></span></span>
+                                <span id="dt_stsauth_container"></span>
+                                <span class="badge bg-secondary ms-1">stsbest: <span id="dt_stsbest"></span></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="bg-light">secret_key</th>
+                            <td>
+                                <code id="dt_secretkey" class="user-select-all font-monospace text-wrap small bg-light p-1 rounded border"></code>
+                                <div id="dt_secretkey_empty" class="text-muted small fst-italic">Belum aktif / Kosong (Siap scan barcode baru)</div>
                             </td>
                         </tr>
                         <tr>
@@ -318,7 +462,10 @@ $totalKelJabatan = count($kelJabatanSet);
                     </tbody>
                 </table>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-outline-warning text-dark fw-bold btn-sm" id="btnDetailResetMfa">
+                    <i class="fa fa-rotate-left text-warning me-1"></i> Reset Secret Key &amp; Scan Ulang
+                </button>
                 <button type="button" class="btn btn-default" data-bs-dismiss="modal">Tutup</button>
             </div>
         </div>
@@ -418,21 +565,168 @@ $(document).ready(function () {
     // Detail Button Click handler
     $(document).on('click', '.btn-detail-hris', function () {
         var $btn = $(this);
-        $('#dt_userid').text($btn.data('userid') || '-');
-        $('#dt_npp').text($btn.data('npp') || '-');
-        $('#dt_nrik').text($btn.data('nrik') || '-');
+        var uId = String($btn.data('userid') || '');
+        var npp = String($btn.data('npp') || '');
+        var nrik = String($btn.data('nrik') || '');
+        var nohp = String($btn.data('nohp') || '');
+        var brid = String($btn.data('branchid') || '');
+
+        $('#dt_userid').text(uId || '-');
+        $('#dt_npp').text(npp || '-');
+        $('#dt_nrik').text(nrik || '-');
         $('#dt_nama').text($btn.data('nama') || '-');
         $('#dt_email').text($btn.data('email') || '-');
-        $('#dt_nohp').text($btn.data('nohp') || '-');
+        $('#dt_nohp').text(nohp || '-');
         $('#dt_unitkerja').text($btn.data('unitkerja') || '-');
-        $('#dt_branchid').text($btn.data('branchid') || '-');
+        $('#dt_branchid').text(brid || '-');
+
+        $('#btnCopyDtUserid').attr('data-clipboard', uId).prop('hidden', !uId || uId === '-');
+        $('#btnCopyDtNpp').attr('data-clipboard', npp).prop('hidden', !npp || npp === '-');
+        $('#btnCopyDtNrik').attr('data-clipboard', nrik).prop('hidden', !nrik || nrik === '-');
+        $('#btnCopyDtNohp').attr('data-clipboard', nohp).prop('hidden', !nohp || nohp === '-');
+        $('#btnCopyDtBranchid').attr('data-clipboard', brid).prop('hidden', !brid || brid === '-');
         $('#dt_jabatan').text($btn.data('jabatan') || '-');
         $('#dt_keljabatan').text($btn.data('keljabatan') || '-');
-        $('#dt_stsauth').text($btn.data('stsauth') !== undefined ? $btn.data('stsauth') : '0');
+        var stsauth = String($btn.data('stsauth') !== undefined ? $btn.data('stsauth') : '0');
+        if (stsauth === '1') {
+            $('#dt_stsauth_container').html('<span class="badge bg-primary text-white"><i class="fa fa-shield-halved me-1"></i>1 - Pakai MFA</span>');
+        } else {
+            $('#dt_stsauth_container').html('<span class="badge bg-secondary text-white"><i class="fa fa-shield me-1"></i>0 - Tidak Menggunakan MFA</span>');
+        }
         $('#dt_stsbest').text($btn.data('stsbest') !== undefined ? $btn.data('stsbest') : '0');
+        var secretKey = $btn.data('secretkey');
+        if (secretKey) {
+            $('#dt_secretkey').text(secretKey).show();
+            $('#dt_secretkey_empty').hide();
+        } else {
+            $('#dt_secretkey').text('').hide();
+            $('#dt_secretkey_empty').show();
+        }
         $('#dt_created').text($btn.data('created') || '-');
         $('#dt_updated').text($btn.data('updated') || '-');
+        $('#btnDetailResetMfa').data('userid', $btn.data('userid')).data('nama', $btn.data('nama'));
         $('#detailHrisModal').modal('show');
+    });
+
+    function triggerToggleMfa(userid, nama, targetStsauth) {
+        var isEnable = parseInt(targetStsauth, 10) === 1;
+        Swal.fire({
+            title: isEnable ? 'Aktifkan MFA untuk Pegawai?' : 'Nonaktifkan MFA untuk Pegawai?',
+            text: isEnable 
+                ? 'Pegawai ' + (nama || userid) + ' akan diwajibkan menggunakan MFA (Google Authenticator) saat login (stsauth = 1).' 
+                : 'Pegawai ' + (nama || userid) + ' dapat langsung login tanpa MFA (stsauth = 0).',
+            icon: isEnable ? 'question' : 'warning',
+            showCancelButton: true,
+            confirmButtonColor: isEnable ? '#20c997' : '#ff5b57',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: isEnable ? 'Ya, Aktifkan MFA' : 'Ya, Nonaktifkan MFA',
+            cancelButtonText: 'Batal'
+        }).then(function (result) {
+            if (result.isConfirmed) {
+                var form = $('<form>', {
+                    method: 'POST',
+                    action: '<?= site_url('access/users/toggle-mfa') ?>'
+                });
+                form.append($('<input>', {
+                    type: 'hidden',
+                    name: '<?= csrf_token() ?>',
+                    value: '<?= csrf_hash() ?>'
+                }));
+                form.append($('<input>', {
+                    type: 'hidden',
+                    name: 'userid',
+                    value: userid
+                }));
+                form.append($('<input>', {
+                    type: 'hidden',
+                    name: 'stsauth',
+                    value: targetStsauth
+                }));
+                $('body').append(form);
+                form.submit();
+            }
+        });
+    }
+
+    $(document).on('click', '.btn-toggle-mfa', function () {
+        var userid = $(this).data('userid');
+        var nama = $(this).data('nama');
+        var stsauth = $(this).data('stsauth');
+        triggerToggleMfa(userid, nama, stsauth);
+    });
+
+    function triggerResetMfa(userid, nama) {
+        Swal.fire({
+            title: 'Reset Secret Key?',
+            text: 'Secret Key untuk ' + (nama || userid) + ' akan dihapus. Pengguna dapat memindai barcode QR baru saat login berikutnya.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ff5b57',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, Reset Key',
+            cancelButtonText: 'Batal'
+        }).then(function (result) {
+            if (result.isConfirmed) {
+                var form = $('<form>', {
+                    method: 'POST',
+                    action: '<?= site_url('access/users/reset-mfa') ?>'
+                });
+                form.append($('<input>', {
+                    type: 'hidden',
+                    name: '<?= csrf_token() ?>',
+                    value: '<?= csrf_hash() ?>'
+                }));
+                form.append($('<input>', {
+                    type: 'hidden',
+                    name: 'userid',
+                    value: userid
+                }));
+                $('body').append(form);
+                form.submit();
+            }
+        });
+    }
+
+    $(document).on('click', '.btn-reset-mfa', function () {
+        var userid = $(this).data('userid');
+        var nama = $(this).data('nama');
+        triggerResetMfa(userid, nama);
+    });
+
+    $('#btnDetailResetMfa').on('click', function () {
+        var userid = $(this).data('userid');
+        var nama = $(this).data('nama');
+        $('#detailHrisModal').modal('hide');
+        triggerResetMfa(userid, nama);
+    });
+
+    $('#btnSyncAllNow').on('click', function () {
+        $('#sync_userid').val('');
+        $('#sync_kondisi').val('');
+        Swal.fire({
+            title: 'Tarik Semua Pegawai HRIS?',
+            text: 'Sistem akan memanggil live Gateway /hris/inqMasterPegawaiByKondisi dan meng-upsert ~2.600+ pegawai ke tbl_userhris. Proses memakan waktu beberapa detik.',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#ffc107',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: '<span class="text-dark fw-bold">Ya, Tarik Semua</span>',
+            cancelButtonText: 'Batal'
+        }).then(function (res) {
+            if (res.isConfirmed) {
+                $('#syncHrisModal').modal('hide');
+                Swal.fire({
+                    title: 'Sedang Menarik Data Pegawai...',
+                    text: 'Mengunduh dan menyinkronkan data pegawai dari HRIS Gateway ke database. Mohon tunggu...',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    didOpen: function () {
+                        Swal.showLoading();
+                    }
+                });
+                $('#syncHrisForm').submit();
+            }
+        });
     });
 
     $('#syncHrisForm').on('submit', function () {

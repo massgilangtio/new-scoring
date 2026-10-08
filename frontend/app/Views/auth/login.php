@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="id">
+<html lang="id" class="ca-ui">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -136,6 +136,12 @@
                             <iconify-icon icon="solar:shield-check-bold-duotone" class="fs-4"></iconify-icon>
                             <p class="mb-0"><strong>Tips:</strong> Pastikan waktu perangkat otomatis (network-provided time) agar kode selalu valid.</p>
                         </div>
+                        <div class="text-center my-3">
+                            <button type="button" class="btn btn-outline-warning text-dark fw-semibold btn-sm px-3 py-1 rounded-pill" id="btnResetMfa" title="Klik untuk memindai barcode QR baru jika belum terhubung atau berganti HP">
+                                <iconify-icon icon="solar:restart-bold-duotone" class="align-middle me-1 text-warning"></iconify-icon>
+                                Reset Secret Key &amp; Scan Barcode Ulang
+                            </button>
+                        </div>
                         <div class="mfa-actions">
                             <button class="mfa-ghost" type="button" id="mfaBack">Kembali</button>
                             <button class="mfa-next" type="submit">Verifikasi →</button>
@@ -235,6 +241,10 @@
                     document.getElementById('loginError').textContent = body.message || 'Login gagal';
                     return;
                 }
+                if (body.step === 'direct' || body.redirect) {
+                    window.location.href = body.redirect || '<?= site_url('/') ?>';
+                    return;
+                }
                 document.getElementById('loginError').hidden = true;
                 document.getElementById('mfaQr').innerHTML = body.qr || '';
                 fromSetup = body.step === 'mfa_setup';
@@ -271,6 +281,41 @@
                 stopTimer();
                 document.body.classList.remove('mfa-open');
                 mfaLayer.hidden = true;
+            });
+        }
+
+        var btnResetMfa = document.getElementById('btnResetMfa');
+        if (btnResetMfa) {
+            btnResetMfa.addEventListener('click', function () {
+                if (!confirm('Apakah Anda yakin ingin mereset Secret Key dan memindai barcode QR baru?')) {
+                    return;
+                }
+                var origText = btnResetMfa.innerHTML;
+                btnResetMfa.disabled = true;
+                btnResetMfa.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Mereset...';
+                var data = new FormData();
+                applyCsrf(data);
+                fetch('<?= site_url('login/reset-mfa') ?>', {
+                    method: 'POST',
+                    body: data,
+                    headers: {'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json'}
+                }).then(function (response) { return response.json(); }).then(function (body) {
+                    rememberCsrf(body);
+                    btnResetMfa.disabled = false;
+                    btnResetMfa.innerHTML = origText;
+                    if (!body.ok) {
+                        mfaError.hidden = false;
+                        mfaError.textContent = body.message || 'Gagal mereset secret key';
+                        return;
+                    }
+                    mfaError.hidden = true;
+                    document.getElementById('mfaQr').innerHTML = body.qr || '';
+                    fromSetup = true;
+                    showPanel(true);
+                }).catch(function () {
+                    btnResetMfa.disabled = false;
+                    btnResetMfa.innerHTML = origText;
+                });
             });
         }
 

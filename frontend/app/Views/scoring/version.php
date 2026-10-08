@@ -424,11 +424,23 @@ $isWeightValid = abs($totalWeight - 100.0) < 0.001;
                                         </td>
                                         <td class="text-end">
                                             <?php if ($editable && in_array($field['field_type'], ['dropdown', 'radio', 'checkbox'], true)) : ?>
-                                                <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2 btn-add-field-option" 
-                                                        data-field-id="<?= esc($field['id']) ?>" 
-                                                        data-field-label="<?= esc($field['label']) ?>">
-                                                    <i class="fa-solid fa-plus me-1"></i> Opsi
-                                                </button>
+                                                <?php
+                                                ob_start();
+                                                ?>
+                                                        <li>
+                                                            <button type="button" class="dropdown-action-item btn-add-field-option"
+                                                                    data-field-id="<?= esc($field['id']) ?>"
+                                                                    data-field-label="<?= esc($field['label']) ?>">
+                                                                <span class="action-icon-circle action-icon-blue"><i class="fa-solid fa-plus"></i></span>
+                                                                <div class="action-text-group">
+                                                                    <span class="action-title">Tambah Opsi</span>
+                                                                    <span class="action-desc">Tambah pilihan untuk field ini</span>
+                                                                </div>
+                                                            </button>
+                                                        </li>
+                                                <?php
+                                                echo view('partials/action_dropdown_btn', ['menuHtml' => ob_get_clean()]);
+                                                ?>
                                             <?php else : ?>
                                                 <span class="text-muted small">-</span>
                                             <?php endif; ?>
@@ -659,10 +671,14 @@ $isWeightValid = abs($totalWeight - 100.0) < 0.001;
 
 <script>
 $(document).ready(function () {
-    // Select2 untuk dropdown simulator
-    if ($.fn.select2) {
+    // Select2 untuk dropdown simulator (form-control-sm)
+    if (typeof App !== 'undefined' && App.initSelect2) {
+        App.initSelect2('.select2-simple', { width: '100%' });
+    } else if ($.fn.select2) {
         $('.select2-simple').select2({
             theme: 'bootstrap-5',
+            selectionCssClass: 'select2--small',
+            dropdownCssClass: 'select2--small',
             width: '100%'
         });
     }

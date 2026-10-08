@@ -8,6 +8,7 @@ from app.api.errors import ApiError
 from app.core.security import PURPOSE_ACCESS, PURPOSE_MFA_SETUP, PURPOSE_MFA_VERIFY, decode_token
 from app.db.session import SessionLocal
 from app.models.tables import Role, User
+from app.services.authorization import has_any_permission
 
 bearer = HTTPBearer(auto_error=False)
 
@@ -53,3 +54,24 @@ def mfa_verify_user(
     db: Session = Depends(get_db),
 ) -> User:
     return _user_from_token(db, credentials, PURPOSE_MFA_VERIFY)
+
+
+def mfa_any_user(
+    credentials: HTTPAuthorizationCredentials | None = Depends(bearer),
+    db: Session = Depends(get_db),
+) -> User:
+    try:
+        return _user_from_token(db, credentials, PURPOSE_MFA_VERIFY)
+    except ApiError:
+        return _user_from_token(db, credentials, PURPOSE_MFA_SETUP)
+
+
+def require_permissions(*codes: str):
+    """FastAPI dependency factory: require any of the given permission codes."""
+
+    def _checker(user: User = Depends(current_user), db: Session = Depends(get_db)) -> User:
+        if not has_any_permission(db, user, *codes):
+            raise ApiError(403, "04", "Anda tidak memiliki hak akses")
+        return user
+
+    return _checker

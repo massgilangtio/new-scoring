@@ -307,7 +307,14 @@ def add_parameter(version_id: int, body: ParameterBody, actor: User = Depends(re
     row = ScoringParameter(scoring_version_id=version_id, name=body.name.strip(), weight=body.weight, display_order=body.display_order)
     db.add(row)
     db.flush()
-    write_audit(db, actor, "scoring.parameter_created", object_type="scoring_parameter", object_id=str(row.id))
+    write_audit(
+        db,
+        actor,
+        "scoring.parameter_created",
+        object_type="scoring_parameter",
+        object_id=str(row.id),
+        after_data={"name": row.name, "weight": str(row.weight)},
+    )
     db.commit()
     return {"rcode": "00", "message": "Parameter berhasil disimpan", "result": {"id": row.id}}
 
@@ -321,7 +328,14 @@ def add_option(parameter_id: int, body: OptionBody, actor: User = Depends(requir
     row = ScoringParameterOption(scoring_parameter_id=parameter.id, label=body.label.strip(), value=body.value, display_order=body.display_order)
     db.add(row)
     db.flush()
-    write_audit(db, actor, "scoring.option_created", object_type="scoring_parameter_option", object_id=str(row.id))
+    write_audit(
+        db,
+        actor,
+        "scoring.option_created",
+        object_type="scoring_parameter_option",
+        object_id=str(row.id),
+        after_data={"label": row.label, "value": str(row.value)},
+    )
     db.commit()
     return {"rcode": "00", "message": "Nilai berhasil disimpan", "result": {"id": row.id}}
 
@@ -340,7 +354,14 @@ def add_threshold(version_id: int, body: ThresholdBody, actor: User = Depends(re
     )
     db.add(row)
     db.flush()
-    write_audit(db, actor, "scoring.threshold_created", object_type="scoring_threshold", object_id=str(row.id))
+    write_audit(
+        db,
+        actor,
+        "scoring.threshold_created",
+        object_type="scoring_threshold",
+        object_id=str(row.id),
+        after_data={"min_score": str(row.min_score), "result_label": row.result_label},
+    )
     db.commit()
     return {"rcode": "00", "message": "Threshold berhasil disimpan", "result": {"id": row.id}}
 
@@ -364,7 +385,14 @@ def add_field(version_id: int, body: DynamicFieldBody, actor: User = Depends(req
     )
     db.add(row)
     db.flush()
-    write_audit(db, actor, "scoring.field_created", object_type="dynamic_field", object_id=str(row.id))
+    write_audit(
+        db,
+        actor,
+        "scoring.field_created",
+        object_type="dynamic_field",
+        object_id=str(row.id),
+        after_data={"field_key": row.field_key, "label": row.label, "field_type": row.field_type},
+    )
     db.commit()
     return {"rcode": "00", "message": "Dynamic field berhasil disimpan", "result": {"id": row.id}}
 
@@ -380,7 +408,14 @@ def add_field_option(field_id: int, body: DynamicOptionBody, actor: User = Depen
     row = DynamicFieldOption(dynamic_field_id=field.id, label=body.label.strip(), value=body.value.strip(), display_order=body.display_order)
     db.add(row)
     db.flush()
-    write_audit(db, actor, "scoring.field_option_created", object_type="dynamic_field_option", object_id=str(row.id))
+    write_audit(
+        db,
+        actor,
+        "scoring.field_option_created",
+        object_type="dynamic_field_option",
+        object_id=str(row.id),
+        after_data={"label": row.label, "value": row.value},
+    )
     db.commit()
     return {"rcode": "00", "message": "Opsi field berhasil disimpan", "result": {"id": row.id}}
 
@@ -437,8 +472,16 @@ def delete_parameter(parameter_id: int, actor: User = Depends(require_configurer
     if parameter is None:
         raise ApiError(404, "01", "Parameter tidak ditemukan")
     _draft(db, parameter.scoring_version_id)
+    before_name = parameter.name
     db.execute(delete(ScoringParameterOption).where(ScoringParameterOption.scoring_parameter_id == parameter.id))
     db.delete(parameter)
-    write_audit(db, actor, "scoring.parameter_deleted", object_type="scoring_parameter", object_id=str(parameter_id))
+    write_audit(
+        db,
+        actor,
+        "scoring.parameter_deleted",
+        object_type="scoring_parameter",
+        object_id=str(parameter_id),
+        before_data={"name": before_name},
+    )
     db.commit()
     return {"rcode": "00", "message": "Parameter berhasil dihapus", "result": {}}

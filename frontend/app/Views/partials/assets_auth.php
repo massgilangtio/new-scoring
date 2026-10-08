@@ -1,5 +1,6 @@
 <?php
-// Phase 2 — Auth pages: Color Admin core only (no shell chrome / DataTables)
+// Auth pages: Color Admin core only + thin auth-phase2 (brand media / MFA overlay).
+// Do NOT load app.css / app-legacy.css — CA owns typography & form controls.
 ?>
 <link rel="icon" href="<?= base_url('assets/images/favicon.png') ?>">
 <link href="<?= base_url('assets/color-admin/css/vendor.min.css') ?>" rel="stylesheet">

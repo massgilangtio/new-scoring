@@ -42,4 +42,43 @@ abstract class BaseController extends Controller
         // Preload any models, libraries, etc, here.
         // $this->session = service('session');
     }
+
+    /**
+     * True if profile has any of the given permission codes.
+     *
+     * @param array<string,mixed> $profile
+     * @param string|list<string> $codes
+     */
+    protected function profileCan(array $profile, string|array $codes): bool
+    {
+        $owned = $profile['permissions'] ?? [];
+        if (! is_array($owned)) {
+            return false;
+        }
+        foreach ((array) $codes as $code) {
+            if (in_array($code, $owned, true)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Redirect when profile missing or lacking permission.
+     *
+     * @param array<string,mixed>|null $profile
+     * @param string|list<string>      $codes
+     */
+    protected function denyUnlessCan(?array $profile, string|array $codes)
+    {
+        if ($profile === null || $profile === []) {
+            return redirect()->to('/login');
+        }
+        if (! $this->profileCan($profile, $codes)) {
+            return redirect()->to('/')->with('error', 'Anda tidak memiliki hak akses');
+        }
+
+        return null;
+    }
 }

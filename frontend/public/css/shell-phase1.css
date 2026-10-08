@@ -9,7 +9,8 @@ body {
 
 body.app-body,
 body {
-  background: var(--bs-body-bg, #d9e0e7) !important;
+  /* CA --bs-body-bg: #dee2e6 */
+  background: var(--bs-body-bg, #dee2e6) !important;
 }
 
 /* Neutralize leftover legacy chrome classnames (not used by new shell) */
@@ -31,19 +32,96 @@ aside.app-sidebar.sidebar-card,
   overflow-x: hidden;
 }
 
-/* Logo only — do NOT restyle .menu / .menu-item-form (CA already handles BS5 flex) */
+/*
+ * Color Admin Ultimate — light top bar.
+ * Matches CA default --bs-app-header-* light tokens.
+ */
+#app .app-header {
+  --bs-app-header-bg: #ffffff;
+  --bs-app-header-bg-rgb: 255, 255, 255;
+  --bs-app-header-color: #2d353c;
+  --bs-app-header-color-rgb: 45, 53, 60;
+  --bs-app-header-input-bg: #f2f3f4;
+  --bs-app-header-input-border: 1px solid transparent;
+  --bs-app-header-box-shadow: 0 0 16px rgba(0, 0, 0, 0.15);
+  background: var(--bs-app-header-bg) !important;
+  color: var(--bs-app-header-color) !important;
+  box-shadow: var(--bs-app-header-box-shadow);
+}
+
+#app .app-header .menu .menu-item .menu-link,
+#app .app-header .menu .menu-link {
+  color: rgba(45, 53, 60, 0.75) !important;
+}
+
+#app .app-header .menu .menu-item .menu-link:hover,
+#app .app-header .menu .menu-item .menu-link:focus,
+#app .app-header .menu .menu-link:hover {
+  color: #2d353c !important;
+}
+
+#app .app-header .menu-item-form form {
+  position: relative;
+}
+
+#app .app-header .menu-item-form form .form-control {
+  background: var(--bs-app-header-input-bg) !important;
+  border: var(--bs-app-header-input-border) !important;
+  color: #2d353c !important;
+  border-radius: 30px !important;
+  box-shadow: none !important;
+  /* Color Admin: leave room for absolute .btn-search icon */
+  padding-top: 0.375rem !important;
+  padding-bottom: 0.375rem !important;
+  padding-inline-end: 1rem !important;
+  padding-inline-start: 3rem !important;
+}
+
+#app .app-header .menu-item-form form .form-control::placeholder {
+  color: rgba(45, 53, 60, 0.45) !important;
+}
+
+#app .app-header .menu-item-form form .btn-search {
+  position: absolute !important;
+  inset-inline-start: 0 !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  width: 3.25rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  z-index: 2;
+  opacity: 0.65;
+  color: rgba(45, 53, 60, 0.65) !important;
+}
+
+#app .app-header .menu-item-form form .btn-search iconify-icon {
+  color: inherit !important;
+  font-size: 1.1rem;
+}
+
+#app .app-header .menu-toggler .icon-bar {
+  background-color: rgba(45, 53, 60, 0.75) !important;
+}
+
+#app .app-header .menu .menu-item .menu-link .badge {
+  background-color: #0c83f0 !important;
+  color: #fff !important;
+}
+
+/* Brand: CA brand-icon + text — do NOT restyle .menu / .menu-item-form */
 #app .app-header .brand-logo {
   display: inline-flex !important;
   align-items: center;
   overflow: hidden;
+  white-space: nowrap;
 }
 
-#app .app-header .brand-logo-img {
-  display: block;
-  height: 26px;
-  width: auto;
-  max-width: 168px;
-  object-fit: contain;
+#app .app-header .brand-logo .brand-icon {
+  flex: 0 0 auto;
 }
 
 #app .app-sidebar .menu-profile-image.avatar-initials {
@@ -112,11 +190,7 @@ aside.app-sidebar.sidebar-card,
     height: 52px !important;
     padding: 0 0.35rem !important;
     margin: 0 !important;
-  }
-
-  #app .app-header .brand-logo-img {
-    height: 20px;
-    max-width: 112px;
+    font-size: 1rem;
   }
 
   #app .app-content {

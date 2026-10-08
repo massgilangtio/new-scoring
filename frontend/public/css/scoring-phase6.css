@@ -1,10 +1,13 @@
-/* Phase 6 — Scoring Config (Color Admin) */
+/*
+ * Phase 6 — Scoring Config (thin)
+ * CA Migration Phase 4: subnav + choice interaction only.
+ */
 
 #content .scoring-subnav .nav-link {
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: var(--bs-body-font-size, 0.875rem);
   color: #6c757d;
-  border-radius: 0.5rem;
+  border-radius: var(--bs-border-radius, 8px);
 }
 
 #content .scoring-subnav .nav-link.active {

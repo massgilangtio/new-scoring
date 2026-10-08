@@ -8,8 +8,10 @@
  */
 $steps   = $steps ?? [];
 $current = max(1, (int) ($current ?? 1));
-$variant = in_array((string) ($variant ?? '1'), ['1', '2', '3'], true) ? (string) $variant : '1';
-?>
+$variant = (string) ($variant ?? '1');
+if (! in_array($variant, ['1', '2', '3'], true)) {
+    $variant = '1';
+}?>
 <div class="nav-wizards-container mb-3">
     <nav class="nav nav-wizards-<?= esc($variant) ?>">
         <?php foreach ($steps as $i => $step) : ?>

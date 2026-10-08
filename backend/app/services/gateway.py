@@ -137,18 +137,58 @@ def call_hris_inq_master_pegawai_by_kondisi(
     url = f"{host}/hris/inqMasterPegawaiByKondisi"
     payload = {
         "reqid": "HR006",
-        "userid": userid,
         "kondisi": kondisi,
     }
-    if id_unit_kerja:
-        payload["id_unit_kerja"] = id_unit_kerja
+    if userid and userid.strip():
+        payload["userid"] = userid.strip()
+    if id_unit_kerja and id_unit_kerja.strip():
+        payload["id_unit_kerja"] = id_unit_kerja.strip()
 
     try:
-        resp = httpx.post(url, json=payload, headers=headers, timeout=15)
+        resp = httpx.post(url, json=payload, headers=headers, timeout=60)
         data = resp.json()
         if data.get("rcode") == "00":
             return data.get("data") or []
     except Exception:
         pass
     return None
+
+
+def call_gateway_inq_branch(settings: Settings) -> list[dict] | None:
+    """
+    Panggil endpoint Gateway /gateway/inqBranch (reqid: 00003).
+    Mengembalikan daftar cabang dari Core Banking Gateway.
+    """
+    host = settings.gateway_host_url.rstrip("/")
+    if not host or host == "http://change-me-gateway-host":
+        return None
+
+    headers = {
+        "Content-Type": "application/json",
+        "X-Api-Key": settings.gateway_api_key or "default-key",
+        "X-Client-Id": settings.gateway_client_id or "99",
+    }
+    if settings.gateway_client_secret and settings.gateway_client_secret != "-":
+        headers["X-Client-Secret"] = settings.gateway_client_secret
+    if settings.gateway_signature and settings.gateway_signature != "-":
+        headers["X-Signature"] = settings.gateway_signature
+    else:
+        headers["X-Signature"] = "CABUinapmSdD1j8lIqo8Qvvc+ksRK2g2qDEUlwUfzCM="
+
+    url = f"{host}/gateway/inqBranch"
+    payload = {
+        "reqid": "00003",
+        "channelId": "33",
+        "userGtw": "dtigw",
+    }
+
+    try:
+        resp = httpx.post(url, json=payload, headers=headers, timeout=30)
+        data = resp.json()
+        if data.get("rcode") == "00":
+            return data.get("result") or data.get("data") or []
+    except Exception:
+        pass
+    return None
+
 

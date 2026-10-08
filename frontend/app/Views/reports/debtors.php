@@ -3,34 +3,31 @@ $profile  = $profile ?? null;
 $history  = $history ?? [];
 $debtors  = $debtors ?? [];
 $selected = $selected ?? 0;
+$hasDebtor = ! empty($history['debtor']);
+helper('access');
+$canViewScoreDetails = can_view_score_details(is_array($profile) ? $profile : []);
 ?>
 <?= view('partials/shell_start', ['profile' => $profile, 'title' => 'Riwayat Debitur']) ?>
 
-<!-- Subnav -->
-<ul class="subnav mb-4">
-    <li><a href="<?= site_url('reports/scoring') ?>"><i class="fa-solid fa-chart-bar"></i> Scoring</a></li>
-    <li><a href="<?= site_url('reports/debtors') ?>" class="active"><i class="fa-solid fa-users"></i> Riwayat Debitur</a></li>
-    <li><a href="<?= site_url('reports/products') ?>"><i class="fa-solid fa-box-archive"></i> Riwayat Produk</a></li>
-    <li><a href="<?= site_url('reports/changes') ?>"><i class="fa-solid fa-sliders"></i> Perubahan Parameter</a></li>
-</ul>
+<?= view('partials/reports_subnav', ['active' => 'debtors']) ?>
 
-<!-- Page Header -->
-<div class="page-header">
-    <div class="page-header-text">
-        <h2><i class="fa-solid fa-user-clock me-2 text-primary"></i>Riwayat Debitur</h2>
-        <p class="text-muted mb-0">Lihat riwayat pengajuan scoring untuk debitur tertentu</p>
+<div class="card card-borderless mb-3 filter-card">
+    <div class="card-header bg-gray-900" data-bs-theme="dark">
+        <h4 class="card-header-title text-white mb-0">
+            <iconify-icon icon="solar:filter-bold-duotone" class="me-1"></iconify-icon>
+            Filter Debitur
+        </h4>
+        <div class="card-header-btn">
+            <button type="submit" class="btn btn-primary btn-xs" form="debtorFilterForm">
+                <i class="fa fa-search me-1"></i><span class="btn-label-full"> Tampilkan Riwayat</span>
+            </button>
+            <?= view('partials/card_widget_btn', ['wrap' => false]) ?>
+        </div>
     </div>
-</div>
-
-<!-- Filter Card -->
-<div class="card mb-4">
-    <div class="card-header">
-        <h6 class="mb-0"><i class="fa-solid fa-filter me-2 text-primary"></i>Filter Debitur</h6>
-    </div>
-    <div class="card-body">
-        <form method="get" action="<?= site_url('reports/debtors') ?>">
+    <div class="card-body filter-card-body">
+        <form method="get" action="<?= site_url('reports/debtors') ?>" id="debtorFilterForm">
             <div class="row g-3 align-items-end">
-                <div class="col-12 col-md-8">
+                <div class="col-12">
                     <label class="form-label" for="debtor_filter">Pilih Debitur</label>
                     <select id="debtor_filter" name="id" class="select2" data-placeholder="Cari nama atau NIK debitur...">
                         <option value=""></option>
@@ -41,88 +38,102 @@ $selected = $selected ?? 0;
                         <?php endforeach; ?>
                     </select>
                 </div>
-                <div class="col-12 col-md-4">
-                    <button type="submit" class="btn btn-primary w-100">
-                        <i class="fa-solid fa-magnifying-glass me-1"></i> Tampilkan Riwayat
-                    </button>
-                </div>
             </div>
         </form>
     </div>
 </div>
 
-<!-- Results -->
 <?php if (! empty($history['error'])) : ?>
-    <div class="alert alert-danger">
-        <i class="fa-solid fa-circle-exclamation me-2"></i><?= esc($history['error']) ?>
-    </div>
+    <div class="alert alert-danger"><i class="fa fa-circle-exclamation me-2"></i><?= esc($history['error']) ?></div>
 <?php endif; ?>
 
-<?php if (! empty($history['debtor'])) : ?>
-    <div class="card">
-        <div class="card-header">
-            <h5 class="mb-0">
-                <i class="fa-solid fa-user me-2 text-primary"></i>
-                <?= esc($history['debtor']['full_name']) ?>
-            </h5>
-        </div>
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table id="debtorHistoryTable" class="table table-hover align-middle mb-0">
-                    <thead>
-                        <tr>
-                            <th>Nomor Pengajuan</th>
-                            <th>Produk</th>
-                            <th class="text-center">Skor</th>
-                            <th>Hasil</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($history['items'] as $item) : ?>
-                            <tr>
-                                <td class="fw-semibold"><?= esc($item['transaction_no']) ?></td>
-                                <td><?= esc($item['product_name']) ?></td>
-                                <td class="text-center fw-bold" style="color:var(--secondary);"><?= esc($item['total_score'] ?? '-') ?></td>
-                                <td><?= esc($item['result_label'] ?? '-') ?></td>
-                                <td>
-                                    <span class="badge badge-<?= esc($item['status']) ?>"><?= esc($item['status']) ?></span>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                        <?php if (empty($history['items'])) : ?>
-                            <tr>
-                                <td colspan="5">
-                                    <div class="empty-state">
-                                        <i class="fa-regular fa-clock"></i>
-                                        <h6>Belum Ada Riwayat</h6>
-                                        <p>Debitur ini belum memiliki riwayat pengajuan.</p>
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
-            </div>
+<?php if ($hasDebtor) : ?>
+<div class="card card-borderless table-card">
+    <div class="card-header bg-gray-900" data-bs-theme="dark">
+        <h4 class="card-header-title text-white mb-0">
+            <iconify-icon icon="solar:user-bold-duotone" class="me-1"></iconify-icon>
+            <?= esc($history['debtor']['full_name']) ?>
+        </h4>
+        <div class="d-flex align-items-center gap-1">
+            <?= view('partials/export_header_btn', ['mode' => 'print']) ?>
+            <span class="badge bg-white bg-opacity-15 text-white" id="tblCountBadge">0 pengajuan</span>
+            <?= view('partials/card_widget_btn') ?>
         </div>
     </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table id="debtorHistoryTable" class="table table-hover table-striped align-middle mb-0 w-100">
+                <thead>
+                    <tr>
+                        <th>Nomor Pengajuan</th>
+                        <th>Produk</th>
+                        <?php if ($canViewScoreDetails) : ?>
+                        <th class="text-center">Skor</th>
+                        <th>Hasil</th>
+                        <?php endif; ?>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
 <?php endif; ?>
 
 <script>
-    $(document).ready(function() {
-        App.initSelect2('#debtor_filter', {
-            placeholder: 'Cari nama atau NIK debitur...',
-            allowClear: true
-        });
+$(document).ready(function () {
+    App.initSelect2('#debtor_filter', { placeholder: 'Cari nama atau NIK debitur...', allowClear: true });
 
-        <?php if (! empty($history['debtor'])) : ?>
-            App.initDT('#debtorHistoryTable', {
-                order: [
-                    [0, 'desc']
-                ]
-            });
-        <?php endif; ?>
+    <?php if ($hasDebtor) : ?>
+    var escHtml = function (v) {
+        return $('<div>').text(v == null ? '' : String(v)).html();
+    };
+
+    App.initDT('#debtorHistoryTable', {
+        serverSide: true,
+        processing: true,
+        order: [[0, 'desc']],
+        pageLength: 10,
+        lengthMenu: [[10, 25, 50, 100], [10, 25, 50, 100]],
+        ajax: {
+            url: '<?= site_url('reports/debtors/' . (int) $selected . '/datatables') ?>',
+            type: 'GET',
+            dataSrc: function (json) {
+                $('#tblCountBadge').text((json.recordsFiltered || 0) + ' pengajuan');
+                return json.data || [];
+            }
+        },
+        columns: [
+            {
+                data: 'transaction_no',
+                render: function (data) {
+                    var safe = escHtml(data);
+                    return '<div class="d-inline-flex align-items-center gap-1">' +
+                        '<span class="badge bg-primary bg-opacity-15 text-primary py-6px font-monospace">' + safe + '</span>' +
+                        '<button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" data-clipboard="' + safe + '" title="Salin Nomor"><i class="fa fa-copy"></i></button></div>';
+                }
+            },
+            { data: 'product_name', className: 'fw-semibold', render: function (d) { return escHtml(d); } },
+<?php if ($canViewScoreDetails) : ?>
+            {
+                data: 'total_score',
+                className: 'text-center fw-bold text-primary',
+                render: function (d) { return d == null || d === '' ? '-' : escHtml(d); }
+            },
+            { data: 'result_label', render: function (d) { return d ? escHtml(d) : '-'; } },
+<?php endif; ?>
+            {
+                data: 'status',
+                render: function (d) {
+                    var safe = escHtml(d || '-');
+                    return '<span class="badge badge-' + safe + '">' + safe + '</span>';
+                }
+            }
+        ]
     });
+    <?php endif; ?>
+});
 </script>
 
 <?= view('partials/shell_end') ?>

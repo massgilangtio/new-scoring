@@ -28,50 +28,50 @@ $inactiveDebtorPct = $totalDebtors > 0 ? (int) round(($inactiveDebtors / $totalD
         hidden></div>
 <?php endif; ?>
 
-<!-- BEGIN KPI — Color Admin index_v2 gradient cards -->
-<div class="row mb-3">
-    <div class="col-xl-4 col-md-4">
-        <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-indigo bg-gradient-to-purple overflow-hidden" data-bs-theme="dark">
+<!-- BEGIN KPI -->
+<div class="row g-2 mb-3">
+    <div class="col-4">
+        <div class="card card-borderless rounded-3 overflow-hidden bg-indigo h-100" data-bs-theme="dark">
             <div class="card-body position-relative z-3">
-                <div class="mb-2 fw-bold text-white">Total Debitur</div>
-                <div class="h2 mb-4"><?= esc((string) $totalDebtors) ?></div>
-                <div class="progress h-5px bg-black mb-2">
-                    <div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width: 100%;"></div>
+                <div class="fw-bold text-white small mb-1 d-flex align-items-center gap-2">
+                    <iconify-icon icon="solar:users-group-rounded-bold-duotone" class="fs-6"></iconify-icon> Total Debitur
                 </div>
-                <div class="small fw-semibold text-white text-opacity-75 mb-n1">Semua debitur terdaftar</div>
+                <div class="fw-bold fs-2 text-white"><?= esc((string) $totalDebtors) ?></div>
+                <div class="fw-semibold text-white text-opacity-75 small mb-0">Semua debitur terdaftar</div>
             </div>
-            <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
-                <iconify-icon icon="solar:users-group-rounded-bold-duotone" class="text-black text-opacity-30" style="font-size: 150px"></iconify-icon>
+            <div class="position-absolute top-0 end-0 mt-n5 ps-5 w-25 d-none d-md-block">
+                <div class="w-250px h-250px bg-black bg-opacity-25 rounded-circle ms-n5 position-absolute top-0 start-0"></div>
+                <div class="w-250px h-250px bg-black bg-opacity-25 rounded-circle mt-n5 position-absolute top-0 start-0"></div>
             </div>
         </div>
     </div>
-    <div class="col-xl-4 col-md-4 mt-3 mt-md-0">
-        <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-teal bg-gradient-to-cyan overflow-hidden" data-bs-theme="dark">
+    <div class="col-4">
+        <div class="card card-borderless rounded-3 overflow-hidden bg-teal h-100" data-bs-theme="dark">
             <div class="card-body position-relative z-3">
-                <div class="mb-2 fw-bold text-white">Aktif</div>
-                <div class="h2 mb-4"><?= esc((string) $activeDebtors) ?></div>
-                <div class="progress h-5px bg-black mb-2">
-                    <div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width: <?= esc((string) $activeDebtorPct) ?>%;"></div>
+                <div class="fw-bold text-white small mb-1 d-flex align-items-center gap-2">
+                    <iconify-icon icon="solar:check-circle-bold-duotone" class="fs-6"></iconify-icon> Aktif
                 </div>
-                <div class="small fw-semibold text-white text-opacity-75 mb-n1"><?= esc((string) $activeDebtorPct) ?>% dari total debitur</div>
+                <div class="fw-bold fs-2 text-white"><?= esc((string) $activeDebtors) ?></div>
+                <div class="fw-semibold text-white text-opacity-75 small mb-0">Debitur berstatus aktif</div>
             </div>
-            <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
-                <iconify-icon icon="solar:check-circle-bold-duotone" class="text-black text-opacity-30" style="font-size: 150px"></iconify-icon>
+            <div class="position-absolute top-0 end-0 mt-n5 ps-5 w-25 d-none d-md-block">
+                <div class="w-250px h-250px bg-black bg-opacity-25 rounded-circle ms-n5 position-absolute top-0 start-0"></div>
+                <div class="w-250px h-250px bg-black bg-opacity-25 rounded-circle mt-n5 position-absolute top-0 start-0"></div>
             </div>
         </div>
     </div>
-    <div class="col-xl-4 col-md-4 mt-3 mt-md-0">
-        <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-orange bg-gradient-to-pink overflow-hidden" data-bs-theme="dark">
+    <div class="col-4">
+        <div class="card card-borderless rounded-3 overflow-hidden bg-orange h-100" data-bs-theme="dark">
             <div class="card-body position-relative z-3">
-                <div class="mb-2 fw-bold text-white">Nonaktif</div>
-                <div class="h2 mb-4"><?= esc((string) $inactiveDebtors) ?></div>
-                <div class="progress h-5px bg-black mb-2">
-                    <div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width: <?= esc((string) $inactiveDebtorPct) ?>%;"></div>
+                <div class="fw-bold text-white small mb-1 d-flex align-items-center gap-2">
+                    <iconify-icon icon="solar:close-circle-bold-duotone" class="fs-6"></iconify-icon> Nonaktif
                 </div>
-                <div class="small fw-semibold text-white text-opacity-75 mb-n1"><?= esc((string) $inactiveDebtorPct) ?>% dari total debitur</div>
+                <div class="fw-bold fs-2 text-white"><?= esc((string) $inactiveDebtors) ?></div>
+                <div class="fw-semibold text-white text-opacity-75 small mb-0">Debitur nonaktif</div>
             </div>
-            <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
-                <iconify-icon icon="solar:close-circle-bold-duotone" class="text-black text-opacity-30" style="font-size: 150px"></iconify-icon>
+            <div class="position-absolute top-0 end-0 mt-n5 ps-5 w-25 d-none d-md-block">
+                <div class="w-250px h-250px bg-black bg-opacity-25 rounded-circle ms-n5 position-absolute top-0 start-0"></div>
+                <div class="w-250px h-250px bg-black bg-opacity-25 rounded-circle mt-n5 position-absolute top-0 start-0"></div>
             </div>
         </div>
     </div>
@@ -85,31 +85,17 @@ $inactiveDebtorPct = $totalDebtors > 0 ? (int) round(($inactiveDebtors / $totalD
             <iconify-icon icon="solar:filter-bold-duotone"></iconify-icon>
             Filter Data
         </h4>
-        <div class="card-header-btn">
-            <button type="button" class="btn btn-default btn-xs" id="btnToggleFilter" data-bs-toggle="collapse" data-bs-target="#filterCollapse" aria-expanded="true" aria-controls="filterCollapse">
-                <span id="filterToggleText">Sembunyikan Filter</span>
-                <i class="fa fa-chevron-up ms-1" id="filterToggleIcon"></i>
-            </button>
-        </div>
+        <?= view('partials/filter_header_btn') ?>
     </div>
     <div class="collapse show" id="filterCollapse">
         <div class="card-body filter-card-body">
             <div class="row g-3">
-                <div class="col-12 col-md-6 col-lg-3">
+                <div class="col-12 col-md-6 col-lg-6">
                     <label class="form-label" for="filterSearchDebtor">Search Debitur</label>
-                    <div class="input-group">
+                    <div class="input-group flex-nowrap">
                         <span class="input-group-text"><i class="fa fa-search"></i></span>
                         <input type="text" class="form-control" id="filterSearchDebtor" placeholder="Cari NIK, nama, CIS, CIF...">
                     </div>
-                </div>
-                <div class="col-12 col-md-6 col-lg-3">
-                    <label class="form-label" for="filterBranchDebtor">Cabang</label>
-                    <select class="form-select filter-select2" id="filterBranchDebtor" data-placeholder="Semua Cabang">
-                        <option value=""></option>
-                        <?php foreach ($branches as $branch) : ?>
-                            <option value="<?= esc($branch['name']) ?>"><?= esc($branch['name']) ?></option>
-                        <?php endforeach; ?>
-                    </select>
                 </div>
                 <div class="col-12 col-md-6 col-lg-3">
                     <label class="form-label" for="filterStatusDebtor">Status Debitur</label>
@@ -128,11 +114,11 @@ $inactiveDebtorPct = $totalDebtors > 0 ? (int) round(($inactiveDebtors / $totalD
                     </select>
                 </div>
             </div>
-            <div class="d-flex flex-wrap gap-2 mt-3">
-                <button type="button" class="btn btn-theme btn-sm" id="btnApplyFilter">
+            <div class="d-flex flex-wrap gap-1 mt-3">
+                <button type="button" class="btn btn-primary btn-xs" id="btnApplyFilter">
                     <i class="fa fa-search me-1"></i> Terapkan Filter
                 </button>
-                <button type="button" class="btn btn-default btn-sm" id="btnResetFilter">
+                <button type="button" class="btn btn-default btn-xs" id="btnResetFilter">
                     <i class="fa fa-rotate-left me-1"></i> Reset
                 </button>
             </div>
@@ -148,38 +134,12 @@ $inactiveDebtorPct = $totalDebtors > 0 ? (int) round(($inactiveDebtors / $totalD
             <iconify-icon icon="solar:users-group-rounded-bold-duotone" class="me-1"></iconify-icon>
             Daftar Data Debitur
         </h4>
-        <div class="card-header-btn d-flex align-items-center gap-2 table-card-actions">
-            <div class="dropdown">
-                <button type="button" class="btn btn-default btn-sm dropdown-toggle" id="btnExportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa fa-upload me-1"></i> Export
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="btnExportDropdown">
-                    <li>
-                        <button type="button" class="dropdown-item" id="btnExportExcel">
-                            <i class="fa fa-file-excel text-success me-2"></i> Export Excel (.xls)
-                        </button>
-                    </li>
-                    <li>
-                        <button type="button" class="dropdown-item" id="btnExportPdf">
-                            <i class="fa fa-file-pdf text-danger me-2"></i> Export PDF
-                        </button>
-                    </li>
-                    <li>
-                        <button type="button" class="dropdown-item" id="btnExportCsv">
-                            <i class="fa fa-file-csv text-info me-2"></i> Export CSV (.csv)
-                        </button>
-                    </li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li>
-                        <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#importModal">
-                            <i class="fa fa-file-import text-success me-2"></i> Import Excel (.xlsx)
-                        </button>
-                    </li>
-                </ul>
-            </div>
-            <button type="button" class="btn btn-theme btn-sm" id="btnTambahDebiturBaru" data-bs-toggle="modal" data-bs-target="#createDebtorModal">
+        <div class="d-flex align-items-center gap-1">
+            <?= view('partials/export_header_btn', ['mode' => 'table', 'importModalTarget' => '#importModal']) ?>
+            <button type="button" class="btn btn-theme btn-xs" id="btnTambahDebiturBaru" data-bs-toggle="modal" data-bs-target="#createDebtorModal">
                 <i class="fa fa-plus me-1"></i> Tambah Debitur Baru
             </button>
+            <?= view('partials/card_widget_btn') ?>
         </div>
     </div>
     <div class="card-body p-0">
@@ -315,11 +275,9 @@ $inactiveDebtorPct = $totalDebtors > 0 ? (int) round(($inactiveDebtors / $totalD
                                 <?php endif; ?>
                             </td>
                             <td class="text-center">
-                                <div class="dropdown">
-                                    <button class="btn-action-trigger" type="button" data-bs-toggle="dropdown" data-bs-popper-config='{"strategy":"fixed"}' aria-expanded="false" title="Menu Aksi">
-                                        <i class="fa-solid fa-ellipsis"></i>
-                                    </button>
-                                    <ul class="dropdown-menu dropdown-menu-end dropdown-action-menu shadow-lg">
+                                <?php
+                                ob_start();
+                                ?>
                                         <li>
                                             <button type="button" class="dropdown-action-item btn-view-debtor">
                                                 <span class="action-icon-circle action-icon-green"><i class="fa-solid fa-circle-info"></i></span>
@@ -332,8 +290,9 @@ $inactiveDebtorPct = $totalDebtors > 0 ? (int) round(($inactiveDebtors / $totalD
                                                 <div class="action-text-group"><span class="action-title">Edit Debitur</span><span class="action-desc">Ubah data identitas & alamat</span></div>
                                             </button>
                                         </li>
-                                    </ul>
-                                </div>
+                                <?php
+                                echo view('partials/action_dropdown_btn', ['menuHtml' => ob_get_clean()]);
+                                ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -368,7 +327,7 @@ $inactiveDebtorPct = $totalDebtors > 0 ? (int) round(($inactiveDebtors / $totalD
                                 </div>
                                 <ul class="product-tips-list">
                                     <li><i class="fa-solid fa-circle-check"></i> <span>Pastikan 16 digit NIK valid sesuai KTP fisik.</span></li>
-                                    <li><i class="fa-solid fa-circle-check"></i> <span>Pilih unit kerja cabang pemroses yang tepat.</span></li>
+                                    <li><i class="fa-solid fa-circle-check"></i> <span>Cabang pemroses otomatis mengikuti unit kerja pengguna login.</span></li>
                                     <li><i class="fa-solid fa-circle-check"></i> <span>Debitur berstatus aktif dapat langsung digunakan untuk kalkulasi scoring.</span></li>
                                 </ul>
                             </div>
@@ -424,20 +383,7 @@ $inactiveDebtorPct = $totalDebtors > 0 ? (int) round(($inactiveDebtors / $totalD
                                                    placeholder="Nama lengkap debitur" maxlength="150" required>
                                         </div>
                                     </div>
-                                    <div class="col-12">
-                                        <label class="modal-form-label" for="create_branch_id">Cabang Pemroses <span class="text-danger">*</span></label>
-                                        <div class="modal-input-wrap">
-                                            <i class="fa-solid fa-building modal-input-icon"></i>
-                                            <select class="form-select modal-select2" id="create_branch_id" name="branch_id" data-placeholder="Pilih cabang..." required>
-                                                <option value=""></option>
-                                                <?php foreach ($branches as $branch) : ?>
-                                                    <option value="<?= esc($branch['id']) ?>">
-                                                        <?= esc(!empty($branch['code']) ? '[' . $branch['code'] . '] ' . $branch['name'] : $branch['name']) ?>
-                                                    </option>
-                                                <?php endforeach; ?>
-                                            </select>
-                                        </div>
-                                    </div>
+                                    <input type="hidden" id="create_branch_id" name="branch_id" value="<?= esc($profile['branch_id'] ?? (session()->get('branch_id') ?? '')) ?>">
                                     <div class="col-12 col-md-6">
                                         <label class="modal-form-label" for="create_birth_date">Tanggal Lahir</label>
                                         <div class="modal-input-wrap">
@@ -603,7 +549,7 @@ $inactiveDebtorPct = $totalDebtors > 0 ? (int) round(($inactiveDebtors / $totalD
                                 </div>
                                 <ul class="product-tips-list">
                                     <li><i class="fa-solid fa-circle-check"></i> <span>Pastikan perubahan NIK dan nama sesuai data kependudukan.</span></li>
-                                    <li><i class="fa-solid fa-circle-check"></i> <span>Perubahan cabang mempengaruhi delegasi persetujuan limit.</span></li>
+                                    <li><i class="fa-solid fa-circle-check"></i> <span>Cabang debitur terikat langsung pada unit kerja pemroses.</span></li>
                                 </ul>
                             </div>
                         </div>
@@ -656,20 +602,7 @@ $inactiveDebtorPct = $totalDebtors > 0 ? (int) round(($inactiveDebtors / $totalD
                                             <input type="text" class="form-control modal-input-control" id="edit_full_name" name="full_name" required maxlength="150">
                                         </div>
                                     </div>
-                                    <div class="col-12">
-                                        <label class="modal-form-label" for="edit_branch_id">Cabang Pemroses <span class="text-danger">*</span></label>
-                                        <div class="modal-input-wrap">
-                                            <i class="fa-solid fa-building modal-input-icon"></i>
-                                            <select class="form-select modal-select2" id="edit_branch_id" name="branch_id" data-placeholder="Pilih cabang..." required>
-                                                <option value=""></option>
-                                                <?php foreach ($branches as $branch) : ?>
-                                                    <option value="<?= esc($branch['id']) ?>">
-                                                        <?= esc(!empty($branch['code']) ? '[' . $branch['code'] . '] ' . $branch['name'] : $branch['name']) ?>
-                                                    </option>
-                                                <?php endforeach; ?>
-                                            </select>
-                                        </div>
-                                    </div>
+                                    <input type="hidden" id="edit_branch_id" name="branch_id" value="">
                                     <div class="col-12 col-md-6">
                                         <label class="modal-form-label" for="edit_birth_date">Tanggal Lahir</label>
                                         <div class="modal-input-wrap">
@@ -1138,11 +1071,6 @@ $inactiveDebtorPct = $totalDebtors > 0 ? (int) round(($inactiveDebtors / $totalD
 <script>
 $(document).ready(function () {
     // 1. Initialize Select2 on Filter and Modals
-    App.initSelect2('#filterBranchDebtor', {
-        placeholder: 'Semua Cabang',
-        allowClear: true,
-        width: '100%'
-    });
     App.initSelect2('#filterStatusDebtor', {
         placeholder: 'Semua Status',
         allowClear: true,
@@ -1181,7 +1109,6 @@ $(document).ready(function () {
         var rows = [
             ['NIK', debtorFieldVal(prefix, 'nik')],
             ['Nama Lengkap', debtorFieldVal(prefix, 'full_name')],
-            ['Cabang', debtorFieldVal(prefix, 'branch_id', true)],
             ['Tanggal Lahir', debtorFieldVal(prefix, 'birth_date')],
             ['Tempat Lahir', debtorFieldVal(prefix, 'birth_place')],
             ['Telepon', debtorFieldVal(prefix, 'phone')],
@@ -1208,7 +1135,6 @@ $(document).ready(function () {
     });
 
     $('#createDebtorModal').on('shown.bs.modal', function () {
-        App.initSelect2InModal('#create_branch_id', '#createDebtorModal', { placeholder: 'Pilih cabang...', width: '100%' });
         App.initSelect2InModal('#create_gender', '#createDebtorModal', { placeholder: 'Pilih Gender', minimumResultsForSearch: Infinity, width: '100%' });
         App.initSelect2InModal('#create_religion', '#createDebtorModal', { placeholder: 'Pilih Agama', minimumResultsForSearch: Infinity, width: '100%' });
         var go = $('#createDebtorForm').data('wizardGo');
@@ -1216,7 +1142,6 @@ $(document).ready(function () {
     });
 
     $('#editDebtorModal').on('shown.bs.modal', function () {
-        App.initSelect2InModal('#edit_branch_id', '#editDebtorModal', { placeholder: 'Pilih cabang...', width: '100%' });
         App.initSelect2InModal('#edit_gender', '#editDebtorModal', { placeholder: 'Pilih Gender', minimumResultsForSearch: Infinity, width: '100%' });
         App.initSelect2InModal('#edit_religion', '#editDebtorModal', { placeholder: 'Pilih Agama', minimumResultsForSearch: Infinity, width: '100%' });
         var go = $('#editDebtorForm').data('wizardGo');
@@ -1250,7 +1175,7 @@ $(document).ready(function () {
                     if (d.address) $(prefix + 'address').val(d.address);
                     if (d.gender) $(prefix + 'gender').val(d.gender).trigger('change');
                     if (d.religion) $(prefix + 'religion').val(d.religion).trigger('change');
-                    if (d.branch_id) $(prefix + 'branch_id').val(d.branch_id).trigger('change');
+                    if (d.branch_id) $(prefix + 'branch_id').val(d.branch_id);
                     if (d.cis_id) $(prefix + 'cis_id').val(d.cis_id);
 
                     if (res.result.source === 'gateway') {
@@ -1298,18 +1223,7 @@ $(document).ready(function () {
         }
     });
 
-    // 2. Filter Collapse Button Animation
-    $('#filterCollapse').on('show.bs.collapse', function () {
-        $('#filterToggleText').text('Sembunyikan Filter');
-        $('#filterToggleIcon').removeClass('fa-chevron-down').addClass('fa-chevron-up');
-    });
-
-    $('#filterCollapse').on('hide.bs.collapse', function () {
-        $('#filterToggleText').text('Tampilkan Filter');
-        $('#filterToggleIcon').removeClass('fa-chevron-up').addClass('fa-chevron-down');
-    });
-
-    // 3. Initialize DataTables
+    // 2. Initialize DataTables
     var dataTable = $('#debtorsTable').DataTable({
         pageLength: 5,
         lengthMenu: [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
@@ -1355,18 +1269,10 @@ $(document).ready(function () {
     // 4. Custom Filter Handler
     function applyDebtorFilter() {
         var keyword = $('#filterSearchDebtor').val().trim();
-        var branch  = $('#filterBranchDebtor').val();
         var status  = $('#filterStatusDebtor').val();
         var gender  = $('#filterGenderDebtor').val();
 
         dataTable.search(keyword); // Global search on NIK, name, etc.
-
-        // Column 5: Cabang
-        if (branch) {
-            dataTable.column(5).search(branch, true, false);
-        } else {
-            dataTable.column(5).search('');
-        }
 
         // Column 8: Status
         if (status === 'Aktif') {
@@ -1400,7 +1306,6 @@ $(document).ready(function () {
 
     $('#btnResetFilter').on('click', function () {
         $('#filterSearchDebtor').val('');
-        $('#filterBranchDebtor').val('').trigger('change');
         $('#filterStatusDebtor').val('').trigger('change');
         $('#filterGenderDebtor').val('').trigger('change');
 
@@ -1482,7 +1387,7 @@ $(document).ready(function () {
 
         $('#edit_nik').val(data.nik || '');
         $('#edit_full_name').val(data.full_name || '');
-        $('#edit_branch_id').val(data.branch_id || '').trigger('change');
+        $('#edit_branch_id').val(data.branch_id || '');
         $('#edit_birth_date').val(data.birth_date || '');
         $('#edit_birth_place').val(data.birth_place || '');
         $('#edit_phone').val(data.phone || '');
@@ -1542,7 +1447,7 @@ $(document).ready(function () {
         App.toastSuccess('Data debitur berhasil diekspor ke CSV.');
     });
 
-    $('#btnExportExcel').on('click', function () {
+    $('#btnExportQuick, #btnExportExcel').on('click', function () {
         exportDebtorTableToCSV('daftar_debitur.xls');
         App.toastSuccess('Data debitur berhasil diekspor ke Excel.');
     });

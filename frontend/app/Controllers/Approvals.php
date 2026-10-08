@@ -47,13 +47,18 @@ class Approvals extends BaseController
         $waiting = in_array('scoring.assign', $permissions, true)
             ? ($this->client()->get('/api/v1/approvals/unassigned', $token)['result']['items'] ?? [])
             : [];
+        $duplicates = (in_array('scoring.approve', $permissions, true) || in_array('scoring.assign', $permissions, true))
+            ? ($this->client()->get('/api/v1/approvals/duplicate-requests', $token)['result']['items'] ?? [])
+            : [];
 
         return view('approvals/index', [
-            'profile' => $profile,
-            'inbox'   => $inbox,
-            'waiting' => $waiting,
-            'error'   => session()->getFlashdata('error'),
-            'message' => session()->getFlashdata('message'),
+            'profile'        => $profile,
+            'inbox'          => $inbox,
+            'waiting'        => $waiting,
+            'duplicates'     => $duplicates,
+            'duplicateCount' => count($duplicates),
+            'error'          => session()->getFlashdata('error'),
+            'message'        => session()->getFlashdata('message'),
         ]);
     }
 
@@ -114,6 +119,38 @@ class Approvals extends BaseController
         return redirect()->to('/approvals/' . $id)->with(
             ($result['rcode'] ?? '') === '00' ? 'message' : 'error',
             (string) $result['message']
+        );
+    }
+
+    public function duplicateApprove(int $id)
+    {
+        [$denied] = $this->gate();
+        if ($denied) {
+            return $denied;
+        }
+        $result = $this->client()->post('/api/v1/approvals/' . $id . '/duplicate-approve', [], $this->token());
+        return redirect()->to('/approvals')->with(
+            ($result['rcode'] ?? '') === '00' ? 'message' : 'error',
+            (string) ($result['message'] ?? 'Keputusan izin pengajuan ulang berhasil diproses')
+        );
+    }
+
+    public function duplicateReject(int $id)
+    {
+        [$denied] = $this->gate();
+        if ($denied) {
+            return $denied;
+        }
+        $note = trim((string) $this->request->getPost('note'));
+        if (! $note) {
+            return redirect()->to('/approvals')->with('error', 'Alasan penolakan izin pengajuan ulang wajib diisi');
+        }
+        $result = $this->client()->post('/api/v1/approvals/' . $id . '/duplicate-reject', [
+            'note' => $note,
+        ], $this->token());
+        return redirect()->to('/approvals')->with(
+            ($result['rcode'] ?? '') === '00' ? 'message' : 'error',
+            (string) ($result['message'] ?? 'Izin pengajuan ulang ditolak')
         );
     }
 }

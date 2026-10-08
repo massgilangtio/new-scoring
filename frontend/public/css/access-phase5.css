@@ -1,10 +1,35 @@
-/* Phase 5 — Access Control (Color Admin cards) */
+/*
+ * Phase 5 — Access Control (thin)
+ * CA Migration Phase 4: no card-header / btn-icon restyle.
+ * Keep access-domain UI only (subnav, KPI labels, perm panels, avatars).
+ */
+
+#content .access-nav-card {
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: none;
+}
+
+#content .access-subnav {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 2px;
+}
 
 #content .access-subnav .nav-link {
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: var(--bs-body-font-size, 0.875rem);
   color: #6c757d;
-  border-radius: 0.5rem;
+  border-radius: var(--bs-border-radius, 8px);
+  padding: 0.45rem 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+#content .access-subnav .nav-link:hover {
+  color: var(--bs-theme, #0c83f0);
+  background: rgba(12, 131, 240, 0.08);
 }
 
 #content .access-subnav .nav-link.active {
@@ -12,12 +37,402 @@
   color: #fff;
 }
 
-#content .role-perm-card .form-check-label {
-  font-size: 12px;
-  line-height: 1.35;
+#content .access-subnav .nav-link.active:hover {
+  color: #fff;
+  background: var(--bs-theme, #0c83f0);
+}
+
+/* Compact KPI labels (solid card colors from quarantine) */
+#content .access-kpi .card-body {
+  padding: 0.9rem 1rem;
+}
+
+#content .access-kpi .kpi-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #fff;
+  opacity: 0.95;
+  margin-bottom: 0.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+#content .access-kpi .kpi-value {
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.15;
+  margin-bottom: 0.15rem;
+}
+
+#content .access-kpi .kpi-sub {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.75);
+  margin: 0;
+}
+
+/* Table card — layout only, no header/btn chrome */
+#content .table-card {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+#content .table-card > .card-header .card-header-title {
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#content .table-card table.dataTable {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  width: 100% !important;
+}
+
+#content .table-card thead th {
+  white-space: nowrap;
+  vertical-align: middle;
+  color: #1f2937 !important;
+  font-weight: 700;
+}
+
+#content .table-card thead th.sorting,
+#content .table-card thead th.sorting_asc,
+#content .table-card thead th.sorting_desc {
+  padding-right: 1.5rem !important;
+}
+
+#content .user-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+  color: #fff;
+  background: var(--bs-theme, #0c83f0);
+}
+
+#content .user-avatar.tone-1 { background: #0c83f0; }
+#content .user-avatar.tone-2 { background: #00acac; }
+#content .user-avatar.tone-3 { background: #8753de; }
+#content .user-avatar.tone-4 { background: #f59c1a; }
+#content .user-avatar.tone-5 { background: #ff5b57; }
+#content .user-avatar.tone-6 { background: #31b6dd; }
+
+#content .user-meta-name {
+  font-weight: 600;
+  line-height: 1.25;
+  font-size: var(--bs-body-font-size, 0.875rem);
+}
+
+#content .user-meta-user {
+  font-size: 0.8125rem;
+  color: #343a40;
+  font-weight: 600;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+#content .table-card .badge.access-badge {
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  border: 0;
+  padding: 0.35em 0.7em;
+  color: #fff !important;
+}
+
+#content .table-card .badge.access-badge-role,
+#content .table-card .badge.access-badge-code {
+  background-color: #0b4f9c !important;
+}
+
+#content .table-card .badge.access-badge-active {
+  background-color: #0f766e !important;
+}
+
+#content .table-card .badge.access-badge-inactive {
+  background-color: #4b5563 !important;
+}
+
+/* Permission matrix (role form) */
+#content .role-perm-card {
+  margin-bottom: 1rem;
 }
 
 #content .role-perm-card .card-body {
-  max-height: 360px;
+  padding: 0;
+}
+
+#content .perm-group {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+#content .perm-group:last-child {
+  border-bottom: 0;
+}
+
+#content .perm-group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.7rem 1rem;
+  background: #f8f9fa;
+  cursor: pointer;
+  user-select: none;
+}
+
+#content .perm-group-header:hover {
+  background: #f1f3f5;
+}
+
+#content .perm-group-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  font-size: var(--bs-body-font-size, 0.875rem);
+  color: #2d353c;
+  margin: 0;
+}
+
+#content .perm-group-title .group-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--bs-border-radius, 8px);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
+#content .perm-group-title .group-icon.bg-dashboard { background: #0c83f0; }
+#content .perm-group-title .group-icon.bg-scoring { background: #00acac; }
+#content .perm-group-title .group-icon.bg-master { background: #8753de; }
+#content .perm-group-title .group-icon.bg-report { background: #ff5b57; }
+#content .perm-group-title .group-icon.bg-audit { background: #2d353c; }
+#content .perm-group-title .group-icon.bg-access { background: #f59c1a; }
+#content .perm-group-title .group-icon.bg-other { background: #6c757d; }
+
+#content .perm-group-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+#content .perm-group-body {
+  padding: 0.75rem 1rem 1rem;
+}
+
+#content .perm-item {
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: var(--bs-border-radius, 8px);
+  padding: 0.55rem 0.7rem;
+  height: 100%;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+#content .perm-item:hover {
+  border-color: rgba(12, 131, 240, 0.35);
+  background: rgba(12, 131, 240, 0.03);
+}
+
+#content .perm-item .form-check {
+  margin: 0;
+  min-height: 0;
+  display: flex;
+  gap: 0.55rem;
+  align-items: flex-start;
+}
+
+#content .perm-item .form-check-input {
+  margin-top: 0.2rem;
+  flex-shrink: 0;
+}
+
+#content .perm-item .form-check-label {
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  cursor: pointer;
+}
+
+#content .perm-item .perm-name {
+  font-weight: 600;
+  color: #2d353c;
+  display: block;
+}
+
+#content .perm-item .perm-code {
+  font-size: 0.75rem;
+  color: #adb5bd;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+#content .access-note {
+  border: 0;
+  border-left: 3px solid var(--bs-theme, #0c83f0);
+  background: rgba(12, 131, 240, 0.06);
+  border-radius: var(--bs-border-radius, 8px);
+}
+
+#content .module-pill {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.55rem;
+  border-radius: var(--bs-border-radius, 8px);
+  white-space: nowrap;
+}
+
+#content .module-pill.mod-dashboard { background: rgba(12, 131, 240, 0.12); color: #0c83f0; }
+#content .module-pill.mod-scoring { background: rgba(0, 172, 172, 0.12); color: #008a8a; }
+#content .module-pill.mod-master { background: rgba(135, 83, 222, 0.12); color: #6b3fc4; }
+#content .module-pill.mod-report { background: rgba(255, 91, 87, 0.12); color: #d63c38; }
+#content .module-pill.mod-audit { background: rgba(45, 53, 60, 0.12); color: #2d353c; }
+#content .module-pill.mod-access { background: rgba(245, 156, 26, 0.15); color: #c07810; }
+#content .module-pill.mod-other { background: rgba(108, 117, 125, 0.12); color: #6c757d; }
+
+#content .btn-copy-inline.btn-icon {
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  padding: 0;
+  color: #6c757d;
+}
+
+#content .btn-copy-inline.btn-icon:hover {
+  color: var(--bs-theme, #0c83f0);
+}
+
+#content .btn-copy-inline.copied {
+  color: #00acac !important;
+}
+
+#content .select2-container {
+  width: 100% !important;
+}
+
+#content .role-maps-text {
+  display: inline-block;
+  max-width: 420px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.8125rem;
+  color: #495057;
+}
+
+#content .module-perm-panel {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: var(--bs-border-radius, 8px);
+  overflow: hidden;
+  background: #fff;
+}
+
+#content .module-perm-toolbar {
+  background: #f8f9fa;
+}
+
+#content .module-perm-list {
+  max-height: 480px;
   overflow: auto;
+}
+
+#content .module-group-label {
+  padding: 0.55rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #6c757d;
+  background: #f1f3f5;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+#content .module-perm-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0;
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+
+#content .module-perm-row:nth-child(even) {
+  background: rgba(12, 131, 240, 0.02);
+}
+
+#content .module-perm-row:hover {
+  background: rgba(12, 131, 240, 0.06);
+}
+
+#content .module-perm-caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem;
+  min-width: 0;
+  font-size: var(--bs-body-font-size, 0.875rem);
+  color: #2d353c;
+}
+
+#content .module-perm-code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-weight: 700;
+  color: #0b4f9c;
+}
+
+#content .module-perm-sep {
+  color: #adb5bd;
+}
+
+#content .module-perm-name {
+  font-weight: 500;
+}
+
+#content .module-perm-check {
+  flex-shrink: 0;
+  width: 1.15rem;
+  height: 1.15rem;
+  margin: 0;
+  cursor: pointer;
+}
+
+@media (max-width: 575.98px) {
+  #content .access-kpi .kpi-value {
+    font-size: 1.25rem;
+  }
+
+  #content .access-kpi .kpi-sub {
+    display: none;
+  }
+
+  #content .role-maps-text {
+    max-width: 180px;
+  }
+
+  #content .module-perm-row {
+    align-items: flex-start;
+  }
 }

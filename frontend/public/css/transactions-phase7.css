@@ -1,10 +1,13 @@
-/* Phase 7 — Transactions (Color Admin) */
+/*
+ * Phase 7 — Transactions (thin)
+ * CA Migration Phase 5: stepper only; cards/forms from Color Admin.
+ */
 
 #content .tx-stepper .nav-link {
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: var(--bs-body-font-size, 0.875rem);
   color: #6c757d;
-  border-radius: 0.5rem;
+  border-radius: var(--bs-border-radius, 8px);
   pointer-events: none;
 }
 

@@ -1,0 +1,117 @@
+/*
+ * Phase 9 — Reports & Audit (thin)
+ * CA Migration Phase 5: no DataTables padding restyle (ca-widgets owns that).
+ * Keep overflow helpers + audit JSON domain styles.
+ */
+
+#content .filter-card .select2-container {
+  width: 100% !important;
+}
+
+/* Wide tables: shrink flex children so horizontal scroll stays in card */
+#content .table-card {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+#content .table-card > .card-header,
+#content .table-card > .card-body {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0 !important;
+}
+
+#content .table-card .table-responsive {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0 !important;
+  overflow-x: auto !important;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+#content .table-card .table-responsive > table {
+  width: max-content;
+  max-width: none;
+  min-width: 100%;
+  margin-bottom: 0;
+}
+
+#content .report-json-before,
+#content .report-json-after {
+  display: inline-block;
+  max-width: 140px;
+  max-height: 72px;
+  overflow: auto;
+  font-size: 0.75rem;
+  padding: 4px 6px;
+  border-radius: var(--bs-border-radius, 8px);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+#content .audit-mobile-list {
+  overflow-x: hidden;
+}
+
+#content .audit-mobile-list .audit-mobile-item {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+#content .audit-mobile-list .audit-mobile-item:last-child {
+  border-bottom: 0;
+}
+
+#content .audit-mobile-list .report-json-before,
+#content .audit-mobile-list .report-json-after {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  max-height: 120px;
+  box-sizing: border-box;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+#content .report-json-before {
+  background: rgba(255, 91, 87, 0.08);
+  color: #c0392b;
+}
+
+#content .report-json-after {
+  background: rgba(25, 135, 84, 0.1);
+  color: #198754;
+}
+
+@media (max-width: 767.98px) {
+  #content .table-card .table-responsive > table,
+  #content .table-card .table-responsive > table.audit-table {
+    min-width: 720px;
+  }
+
+  #content .table-card .table-responsive > table th,
+  #content .table-card .table-responsive > table td {
+    white-space: nowrap;
+  }
+
+  #content #auditTable .report-json-before,
+  #content #auditTable .report-json-after,
+  #content .audit-table .report-json-before,
+  #content .audit-table .report-json-after {
+    max-width: 120px;
+    max-height: 56px;
+    white-space: pre-wrap;
+  }
+
+  #content .table-card .table-responsive {
+    background:
+      linear-gradient(to right, #fff 30%, rgba(255, 255, 255, 0)) left center / 24px 100% no-repeat,
+      linear-gradient(to left, #fff 30%, rgba(255, 255, 255, 0)) right center / 24px 100% no-repeat;
+    background-attachment: local, local;
+  }
+}

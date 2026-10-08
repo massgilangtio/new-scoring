@@ -1,37 +1,21 @@
-/* Phase 4 — Master Data (Color Admin card/table pattern) */
+/*
+ * Phase 4 — Master Data (thin)
+ * CA Migration Phase 4: Color Admin owns card-header / btn-icon / form-control.
+ * Keep only functional hooks used by master pages.
+ */
 
-#content .filter-card .card-header,
-#content .table-card .card-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  flex-wrap: wrap;
+/* KPI solid colors → ca-phase3-quarantine.css + ca-widgets.css */
+
+/* Select2 full width in forms/modals */
+#content .select2-container {
+  width: 100% !important;
 }
 
-#content .table-card .dataTables_wrapper {
-  padding: 0.75rem 1rem 1rem;
-}
-
-#content .table-card table.dataTable {
-  margin-top: 0 !important;
-}
-
-#content .table-card .dataTables_filter,
-#content .table-card .dataTables_length {
-  margin-bottom: 0.5rem;
-}
-
-/* Keep functional class hooks used by page JS without old mockup look */
+/* Legacy alias still referenced by some JS/markup */
 #content .btn-success-gradient {
-  /* legacy alias — prefer btn-theme in markup */
   --bs-btn-color: #fff;
   --bs-btn-bg: var(--bs-theme, #0c83f0);
   --bs-btn-border-color: var(--bs-theme, #0c83f0);
-}
-
-#content .select2-container {
-  width: 100% !important;
 }
 
 /* Copy buttons on ID / nomor fields */
@@ -51,13 +35,7 @@
   color: #00acac !important;
 }
 
-@media (max-width: 767.98px) {
-  #content .table-card .card-header-btn {
-    width: 100%;
-    justify-content: stretch;
-  }
-
-  #content .table-card .card-header-btn .btn {
-    flex: 1 1 auto;
-  }
+/* DataTables: only kill top margin clash — sizing from CA / DT BS5 */
+#content .table-card table.dataTable {
+  margin-top: 0 !important;
 }

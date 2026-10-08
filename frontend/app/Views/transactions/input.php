@@ -1,4 +1,5 @@
 <?= view('partials/shell_start', ['profile' => $profile, 'title' => 'Input Scoring']) ?>
+<?php helper('access'); ?>
 
 <?php if (! empty($message)) : ?>
 <div data-swal="success" data-swal-message="<?= esc($message) ?>" hidden></div>
@@ -27,6 +28,7 @@
                 <i class="fa fa-copy"></i>
             </button>
             <span class="badge badge-<?= esc($item['status']) ?>"><?= esc($item['status']) ?></span>
+            <?= view('partials/card_widget_btn') ?>
         </div>
     </div>
     <div class="card-body py-3">
@@ -57,7 +59,10 @@ foreach ($item['answers'] as $answer) {
             <iconify-icon icon="solar:clipboard-list-bold-duotone" class="me-1"></iconify-icon>
             Langkah 2 — Input Parameter Scoring
         </h4>
-        <span class="badge bg-theme"><?= count($item['version']['parameters']) ?> Parameter</span>
+        <div class="d-flex align-items-center gap-2">
+            <span class="badge bg-theme"><?= count($item['version']['parameters']) ?> Parameter</span>
+            <?= view('partials/card_widget_btn') ?>
+        </div>
     </div>
     <div class="card-body">
         <form id="inputForm" method="post" action="<?= site_url('transactions/' . $item['id'] . '/answers') ?>">
@@ -72,7 +77,9 @@ foreach ($item['answers'] as $answer) {
                 <div class="col-12 col-md-6">
                     <label class="form-label" for="option-<?= esc($parameter['id']) ?>">
                         <?= esc($parameter['name']) ?> <span class="text-danger">*</span>
+                        <?php if (can_view_score_details($profile ?? []) && isset($parameter['weight'])) : ?>
                         <small class="text-muted fw-normal">(weight: <?= esc($parameter['weight']) ?>)</small>
+                        <?php endif; ?>
                     </label>
                     <select id="option-<?= esc($parameter['id']) ?>"
                             name="option[<?= esc($parameter['id']) ?>]"

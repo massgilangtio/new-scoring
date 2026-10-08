@@ -60,6 +60,7 @@ class Transactions extends BaseController
         $result = $this->client()->post('/api/v1/transactions', [
             'product_id' => (int) $this->request->getPost('product_id'),
             'debtor_id'  => (int) $this->request->getPost('debtor_id'),
+            'branchid'   => (string) (session()->get('branchid') ?? ''),
         ], $this->token());
         if (($result['rcode'] ?? '') !== '00') {
             return redirect()->to('/transactions/new')->with('error', (string) $result['message']);
@@ -154,18 +155,24 @@ class Transactions extends BaseController
 
     public function submit(int $id)
     {
-        [$denied] = $this->gate();
+        [$denied, $profile] = $this->gate();
         if ($denied) {
             return $denied;
         }
         $result = $this->client()->post('/api/v1/transactions/' . $id . '/submit', ['submit' => true], $this->token());
+        $ok = ($result['rcode'] ?? '') === '00';
+        if ($ok) {
+            helper('access');
+            if (can_view_score_details($profile) && isset($result['result']['total_score'])) {
+                $msg = 'Skor ' . $result['result']['total_score'] . ' — ' . ($result['result']['result_label'] ?? '');
+            } else {
+                $msg = 'Pengajuan berhasil dikunci';
+            }
+        } else {
+            $msg = (string) ($result['message'] ?? 'Gagal submit');
+        }
 
-        return redirect()->to('/transactions/' . $id . '/review')->with(
-            ($result['rcode'] ?? '') === '00' ? 'message' : 'error',
-            (string) ($result['rcode'] === '00'
-                ? 'Skor ' . $result['result']['total_score'] . ' — ' . $result['result']['result_label']
-                : $result['message'])
-        );
+        return redirect()->to('/transactions/' . $id . '/review')->with($ok ? 'message' : 'error', $msg);
     }
 
     public function duplicate(int $id)

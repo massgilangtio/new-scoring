@@ -141,10 +141,7 @@ $productBar = ['#0c83f0', '#00acac', '#f59c1a', '#ff5b57', '#8753de'];
                         </select>
                     </form>
                 </h4>
-                <div class="card-header-btn">
-                    <a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="card-expand"><i class="fa fa-expand"></i></a>
-                    <a href="javascript:;" class="btn btn-xs btn-icon btn-warning" data-toggle="card-collapse"><i class="fa fa-minus"></i></a>
-                </div>
+                <?= view('partials/card_widget_btn') ?>
             </div>
             <div class="card-body pb-0">
                 <div class="row g-3">
@@ -299,9 +296,21 @@ $productBar = ['#0c83f0', '#00acac', '#f59c1a', '#ff5b57', '#8753de'];
                                         <div class="fw-semibold small"><?= esc($stages[$status] ?? $item['status_label']) ?></div>
                                     </td>
                                     <td class="text-end">
-                                        <a href="<?= esc($href) ?>" class="btn btn-default btn-xs btn-icon" aria-label="Lihat pengajuan">
-                                            <i class="fa fa-eye"></i>
-                                        </a>
+                                        <?php
+                                        ob_start();
+                                        ?>
+                                                <li>
+                                                    <a href="<?= esc($href) ?>" class="dropdown-action-item">
+                                                        <span class="action-icon-circle action-icon-green"><i class="fa-solid fa-eye"></i></span>
+                                                        <div class="action-text-group">
+                                                            <span class="action-title">Lihat</span>
+                                                            <span class="action-desc">Buka detail pengajuan</span>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                        <?php
+                                        echo view('partials/action_dropdown_btn', ['menuHtml' => ob_get_clean()]);
+                                        ?>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -322,13 +331,11 @@ $productBar = ['#0c83f0', '#00acac', '#f59c1a', '#ff5b57', '#8753de'];
         <div class="card card-borderless">
             <div class="card-header bg-gray-900" data-bs-theme="dark">
                 <h4 class="card-header-title text-white mb-0">Distribusi Produk</h4>
-                <div class="card-header-btn">
-                    <a href="javascript:;" class="btn btn-xs btn-icon btn-warning" data-toggle="card-collapse"><i class="fa fa-minus"></i></a>
-                </div>
+                <?= view('partials/card_widget_btn') ?>
             </div>
             <div class="card-body">
                 <?php if ($products === []) : ?>
-                    <p class="text-muted mb-0 small">Belum ada pengajuan pada periode ini.</p>
+                    <p class="text-muted mb-0">Belum ada pengajuan pada periode ini.</p>
                 <?php else : ?>
                     <?php foreach ($products as $index => $product) : ?>
                         <?php $share = max(0, min(100, (int) $product['share'])); ?>
@@ -350,11 +357,14 @@ $productBar = ['#0c83f0', '#00acac', '#f59c1a', '#ff5b57', '#8753de'];
         <div class="card card-borderless">
             <div class="card-header bg-gray-900" data-bs-theme="dark">
                 <h4 class="card-header-title text-white mb-0">Notifikasi</h4>
-                <a href="<?= site_url('notifications') ?>" class="text-white text-opacity-50 small fw-semibold text-decoration-none">Semua</a>
+                <div class="d-flex align-items-center gap-2">
+                    <a href="<?= site_url('notifications') ?>" class="text-white text-opacity-50 small fw-semibold text-decoration-none">Semua</a>
+                    <?= view('partials/card_widget_btn') ?>
+                </div>
             </div>
             <div class="card-body p-0">
                 <?php if ($notes === []) : ?>
-                    <p class="text-muted small px-3 py-3 mb-0">Belum ada notifikasi.</p>
+                    <p class="text-muted px-3 py-3 mb-0">Belum ada notifikasi.</p>
                 <?php else : ?>
                     <div class="h-280px" data-scrollbar="true" data-wheel-propagation="true">
                         <?php foreach (array_slice($notes, 0, 8) as $note) : ?>
@@ -377,6 +387,7 @@ $productBar = ['#0c83f0', '#00acac', '#f59c1a', '#ff5b57', '#8753de'];
         <div class="card card-borderless">
             <div class="card-header bg-gray-900" data-bs-theme="dark">
                 <h4 class="card-header-title text-white mb-0">Quick Action</h4>
+                <?= view('partials/card_widget_btn') ?>
             </div>
             <div class="list-group list-group-flush">
                 <?php if ($can('scoring.submit')) : ?>
@@ -384,7 +395,7 @@ $productBar = ['#0c83f0', '#00acac', '#f59c1a', '#ff5b57', '#8753de'];
                         <iconify-icon icon="solar:file-add-bold-duotone" class="fs-4 text-primary"></iconify-icon>
                         <span class="flex-1">
                             <span class="d-block fw-bold small">Pengajuan Scoring</span>
-                            <span class="d-block text-muted" style="font-size:11px;">Buat pengajuan baru</span>
+                            <span class="d-block text-muted opacity-75">Buat pengajuan baru</span>
                         </span>
                         <i class="fa fa-chevron-right text-muted"></i>
                     </a>
@@ -393,7 +404,7 @@ $productBar = ['#0c83f0', '#00acac', '#f59c1a', '#ff5b57', '#8753de'];
                     <iconify-icon icon="solar:clipboard-check-bold-duotone" class="fs-4 text-teal"></iconify-icon>
                     <span class="flex-1">
                         <span class="d-block fw-bold small">Cek Status</span>
-                        <span class="d-block text-muted" style="font-size:11px;">Lihat status pengajuan</span>
+                        <span class="d-block text-muted opacity-75">Lihat status pengajuan</span>
                     </span>
                     <i class="fa fa-chevron-right text-muted"></i>
                 </a>
@@ -401,7 +412,7 @@ $productBar = ['#0c83f0', '#00acac', '#f59c1a', '#ff5b57', '#8753de'];
                     <iconify-icon icon="solar:chart-bold-duotone" class="fs-4 text-info"></iconify-icon>
                     <span class="flex-1">
                         <span class="d-block fw-bold small">Laporan Scoring</span>
-                        <span class="d-block text-muted" style="font-size:11px;">Download laporan</span>
+                        <span class="d-block text-muted opacity-75">Download laporan</span>
                     </span>
                     <i class="fa fa-chevron-right text-muted"></i>
                 </a>
@@ -410,22 +421,23 @@ $productBar = ['#0c83f0', '#00acac', '#f59c1a', '#ff5b57', '#8753de'];
 
         <!-- Related -->
         <div class="card card-borderless">
-            <div class="card-header">
-                <h4 class="card-header-title mb-0">Link Terkait</h4>
+            <div class="card-header bg-gray-900" data-bs-theme="dark">
+                <h4 class="card-header-title text-white mb-0">Link Terkait</h4>
+                <?= view('partials/card_widget_btn') ?>
             </div>
             <div class="list-group list-group-flush">
                 <a href="<?= site_url('reports/scoring') ?>" class="list-group-item list-group-item-action d-flex align-items-center gap-2">
                     <iconify-icon icon="solar:book-bold-duotone" class="fs-4 text-secondary"></iconify-icon>
                     <span class="flex-1">
                         <span class="d-block fw-bold small">User Guide</span>
-                        <span class="d-block text-muted" style="font-size:11px;">Panduan penggunaan</span>
+                        <span class="d-block text-muted opacity-75">Panduan penggunaan</span>
                     </span>
                 </a>
                 <a href="<?= site_url('notifications') ?>" class="list-group-item list-group-item-action d-flex align-items-center gap-2">
                     <iconify-icon icon="solar:question-circle-bold-duotone" class="fs-4 text-secondary"></iconify-icon>
                     <span class="flex-1">
                         <span class="d-block fw-bold small">FAQ</span>
-                        <span class="d-block text-muted" style="font-size:11px;">Pertanyaan umum</span>
+                        <span class="d-block text-muted opacity-75">Pertanyaan umum</span>
                     </span>
                 </a>
             </div>

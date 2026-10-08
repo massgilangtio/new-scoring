@@ -1,4 +1,6 @@
 <?php
+helper('access');
+$profile = $profile ?? [];
 $permissions = $permissions ?? [];
 $totalPerms = count($permissions);
 $activePerms = 0;
@@ -9,126 +11,115 @@ foreach ($permissions as $p) {
 }
 $inactivePerms = max(0, $totalPerms - $activePerms);
 ?>
-<?= view('partials/shell_start', ['profile' => $profile, 'title' => 'Hak Akses']) ?>
+<?= view('partials/shell_start', ['profile' => $profile, 'title' => 'Hak Akses / Module']) ?>
 
-<ul class="nav nav-pills access-subnav gap-2 mb-3">
-    <li class="nav-item"><a class="nav-link" href="<?= site_url('access/users') ?>"><i class="fa fa-users me-1"></i>Pengguna</a></li>
-    <li class="nav-item"><a class="nav-link" href="<?= site_url('access/roles') ?>"><i class="fa fa-user-shield me-1"></i>Role</a></li>
-    <li class="nav-item"><a class="nav-link active" href="<?= site_url('access/permissions') ?>"><i class="fa fa-key me-1"></i>Hak Akses</a></li>
-</ul>
+<?= view('partials/access_subnav', ['active' => 'permissions']) ?>
 
-<div class="row mb-3">
-    <div class="col-xl-4 col-md-4">
-        <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-indigo bg-gradient-to-purple overflow-hidden" data-bs-theme="dark">
+<div class="row g-2 mb-3 access-kpi">
+    <div class="col-4">
+        <div class="card card-borderless rounded-3 overflow-hidden bg-indigo h-100" data-bs-theme="dark">
             <div class="card-body position-relative z-3">
-                <div class="mb-2 fw-bold text-white">Total Permission</div>
-                <div class="h2 mb-4"><?= esc((string) $totalPerms) ?></div>
-                <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:100%;"></div></div>
-                <div class="small fw-semibold text-white text-opacity-75 mb-n1">Katalog hak akses</div>
-            </div>
-            <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
-                <iconify-icon icon="solar:key-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
+                <div class="kpi-label"><iconify-icon icon="solar:key-bold-duotone"></iconify-icon> Total Module</div>
+                <div class="kpi-value"><?= esc((string) $totalPerms) ?></div>
+                <p class="kpi-sub">Katalog permission</p>
             </div>
         </div>
     </div>
-    <div class="col-xl-4 col-md-4 mt-3 mt-md-0">
-        <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-teal bg-gradient-to-cyan overflow-hidden" data-bs-theme="dark">
+    <div class="col-4">
+        <div class="card card-borderless rounded-3 overflow-hidden bg-teal h-100" data-bs-theme="dark">
             <div class="card-body position-relative z-3">
-                <div class="mb-2 fw-bold text-white">Aktif</div>
-                <div class="h2 mb-4"><?= esc((string) $activePerms) ?></div>
-                <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:<?= $totalPerms > 0 ? (int) round($activePerms / $totalPerms * 100) : 0 ?>%;"></div></div>
-                <div class="small fw-semibold text-white text-opacity-75 mb-n1">Permission aktif</div>
-            </div>
-            <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
-                <iconify-icon icon="solar:check-circle-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
+                <div class="kpi-label"><iconify-icon icon="solar:check-circle-bold-duotone"></iconify-icon> Aktif</div>
+                <div class="kpi-value"><?= esc((string) $activePerms) ?></div>
+                <p class="kpi-sub">Module aktif</p>
             </div>
         </div>
     </div>
-    <div class="col-xl-4 col-md-4 mt-3 mt-md-0">
-        <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-orange bg-gradient-to-pink overflow-hidden" data-bs-theme="dark">
+    <div class="col-4">
+        <div class="card card-borderless rounded-3 overflow-hidden bg-orange h-100" data-bs-theme="dark">
             <div class="card-body position-relative z-3">
-                <div class="mb-2 fw-bold text-white">Nonaktif</div>
-                <div class="h2 mb-4"><?= esc((string) $inactivePerms) ?></div>
-                <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:<?= $totalPerms > 0 ? (int) round($inactivePerms / $totalPerms * 100) : 0 ?>%;"></div></div>
-                <div class="small fw-semibold text-white text-opacity-75 mb-n1">Permission nonaktif</div>
-            </div>
-            <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
-                <iconify-icon icon="solar:close-circle-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
+                <div class="kpi-label"><iconify-icon icon="solar:close-circle-bold-duotone"></iconify-icon> Nonaktif</div>
+                <div class="kpi-value"><?= esc((string) $inactivePerms) ?></div>
+                <p class="kpi-sub">Nonaktif</p>
             </div>
         </div>
     </div>
 </div>
 
-<div class="alert alert-info d-flex align-items-start gap-2 mb-3">
-    <i class="fa fa-circle-info mt-1"></i>
+<div class="alert access-note d-flex align-items-start gap-2 mb-3">
+    <i class="fa fa-circle-info mt-1 text-primary"></i>
     <div class="small mb-0">
-        <strong>Catatan:</strong> Katalog ini bersifat terpusat. Penugasan permission ke role dikonfigurasi melalui menu Role.
+        <strong>Catatan:</strong> Katalog module bersifat terpusat (read-only). Mapping ke role dilakukan di menu
+        <a href="<?= site_url('access/roles') ?>" class="fw-semibold">Role</a> → Edit.
     </div>
 </div>
 
 <div class="card card-borderless table-card">
     <div class="card-header bg-gray-900" data-bs-theme="dark">
         <h4 class="card-header-title text-white mb-0">
-            <iconify-icon icon="solar:shield-keyhole-bold-duotone" class="me-1"></iconify-icon>
-            Daftar Hak Akses
+            <i class="fa fa-list me-1"></i> List Module
         </h4>
+        <?= view('partials/card_widget_btn') ?>
     </div>
-    <div class="card-body p-0">
-        <div class="table-responsive">
-            <table class="table table-hover table-striped align-middle mb-0 datatable-permissions" id="permissionsTable">
-                <thead>
-                    <tr>
-                        <th style="width: 60px;" class="text-center">No</th>
-                        <th style="width: 280px;">Kode Permission</th>
-                        <th>Nama Hak Akses</th>
-                        <th style="width: 140px;" class="text-center">Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (! empty($permissions)) : ?>
-                        <?php $no = 1; foreach ($permissions as $permission) : ?>
-                            <tr>
-                                <td class="text-center text-muted"><?= $no++ ?></td>
-                                <td>
-                                    <div class="d-inline-flex align-items-center gap-1">
-                                        <span class="badge bg-primary bg-opacity-15 text-primary py-6px font-monospace"><?= esc($permission['code']) ?></span>
-                                        <button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" data-clipboard="<?= esc($permission['code']) ?>" title="Salin Kode Permission">
-                                            <i class="fa fa-copy"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                                <td class="fw-semibold"><?= esc($permission['name']) ?></td>
-                                <td class="text-center">
-                                    <?php if (! empty($permission['is_active'])) : ?>
-                                        <span class="badge bg-success bg-opacity-15 text-success py-6px">Aktif</span>
-                                    <?php else : ?>
-                                        <span class="badge bg-secondary bg-opacity-15 text-secondary py-6px">Nonaktif</span>
-                                    <?php endif; ?>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php else : ?>
+    <div class="card-body">
+        <table class="table table-hover table-striped align-middle w-100 mb-0" id="permissionsTable">
+            <thead>
+                <tr>
+                    <th style="width:56px;">No.</th>
+                    <th style="width:160px;">Module ID</th>
+                    <th>Module Name</th>
+                    <th style="width:140px;">Grup</th>
+                    <th style="width:110px;" class="text-center">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (! empty($permissions)) : ?>
+                    <?php $no = 1; foreach ($permissions as $permission) :
+                        $module = access_perm_module((string) ($permission['code'] ?? ''));
+                        ?>
                         <tr>
-                            <td colspan="4" class="text-center text-muted py-4">Belum ada data permission.</td>
+                            <td class="text-muted"><?= $no++ ?></td>
+                            <td>
+                                <span class="badge access-badge access-badge-code font-monospace"><?= esc($permission['code']) ?></span>
+                            </td>
+                            <td class="fw-semibold"><?= esc($permission['name']) ?></td>
+                            <td><span class="module-pill mod-<?= esc($module['tone']) ?>"><?= esc($module['label']) ?></span></td>
+                            <td class="text-center">
+                                <?php if (! empty($permission['is_active'])) : ?>
+                                    <span class="badge access-badge access-badge-active">Aktif</span>
+                                <?php else : ?>
+                                    <span class="badge access-badge access-badge-inactive">Nonaktif</span>
+                                <?php endif; ?>
+                            </td>
                         </tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
-        </div>
+                    <?php endforeach; ?>
+                <?php else : ?>
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-4">Belum ada data module.</td>
+                    </tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
     </div>
 </div>
 
 <script>
 $(document).ready(function () {
     if ($('#permissionsTable tbody tr td[colspan]').length === 0) {
-        App.initDT('#permissionsTable', {
+        var dt = App.initDT('#permissionsTable', {
             pageLength: 25,
             order: [[1, 'asc']],
             columnDefs: [
-                { orderable: false, targets: [0, 3] },
-                { searchable: false, targets: [0, 3] }
+                { orderable: false, targets: [0, 4] },
+                { searchable: false, targets: [0, 4] }
             ]
         });
+        if (dt) {
+            dt.on('order.dt search.dt draw.dt', function () {
+                dt.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                    cell.innerHTML = '<span class="text-muted">' + (i + 1) + '</span>';
+                });
+            }).draw(false);
+        }
     }
 });
 </script>

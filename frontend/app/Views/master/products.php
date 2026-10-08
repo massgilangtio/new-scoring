@@ -20,54 +20,50 @@ $inactiveCount = (int) ($stats['inactive'] ?? 0);
 <div data-swal="error" data-swal-title="Terjadi Kesalahan" data-swal-message="<?= esc($error) ?>" hidden></div>
 <?php endif; ?>
 
-<?php
-$activePct = $totalProducts > 0 ? (int) round(($activeCount / $totalProducts) * 100) : 0;
-$inactivePct = $totalProducts > 0 ? (int) round(($inactiveCount / $totalProducts) * 100) : 0;
-?>
-<!-- BEGIN KPI — Color Admin index_v2 gradient cards -->
-<div class="row mb-3">
-    <div class="col-xl-4 col-md-4">
-        <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-info bg-gradient-to-blue overflow-hidden" data-bs-theme="dark">
+<!-- BEGIN KPI -->
+<div class="row g-2 mb-3">
+    <div class="col-4">
+        <div class="card card-borderless rounded-3 overflow-hidden bg-blue h-100" data-bs-theme="dark">
             <div class="card-body position-relative z-3">
-                <div class="mb-2 fw-bold text-white">Total Produk</div>
-                <div class="h2 mb-4" id="kpiTotal"><?= esc((string) $totalProducts) ?></div>
-                <div class="progress h-5px bg-black mb-2">
-                    <div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width: 100%;"></div>
+                <div class="fw-bold text-white small mb-1 d-flex align-items-center gap-2">
+                    <iconify-icon icon="solar:box-bold-duotone" class="fs-6"></iconify-icon> Total Produk
                 </div>
-                <div class="small fw-semibold text-white text-opacity-75 mb-n1">Katalog produk kredit</div>
+                <div class="fw-bold fs-2 text-white" id="kpiTotal"><?= esc((string) $totalProducts) ?></div>
+                <div class="fw-semibold text-white text-opacity-75 small mb-0">Katalog produk kredit</div>
             </div>
-            <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
-                <iconify-icon icon="solar:box-bold-duotone" class="text-black text-opacity-30" style="font-size: 150px"></iconify-icon>
+            <div class="position-absolute top-0 end-0 mt-n5 ps-5 w-25 d-none d-md-block">
+                <div class="w-250px h-250px bg-black bg-opacity-25 rounded-circle ms-n5 position-absolute top-0 start-0"></div>
+                <div class="w-250px h-250px bg-black bg-opacity-25 rounded-circle mt-n5 position-absolute top-0 start-0"></div>
             </div>
         </div>
     </div>
-    <div class="col-xl-4 col-md-4 mt-3 mt-md-0">
-        <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-teal bg-gradient-to-green overflow-hidden" data-bs-theme="dark">
+    <div class="col-4">
+        <div class="card card-borderless rounded-3 overflow-hidden bg-teal h-100" data-bs-theme="dark">
             <div class="card-body position-relative z-3">
-                <div class="mb-2 fw-bold text-white">Aktif</div>
-                <div class="h2 mb-4" id="kpiActive"><?= esc((string) $activeCount) ?></div>
-                <div class="progress h-5px bg-black mb-2">
-                    <div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width: <?= esc((string) $activePct) ?>%;"></div>
+                <div class="fw-bold text-white small mb-1 d-flex align-items-center gap-2">
+                    <iconify-icon icon="solar:check-circle-bold-duotone" class="fs-6"></iconify-icon> Aktif
                 </div>
-                <div class="small fw-semibold text-white text-opacity-75 mb-n1"><?= esc((string) $activePct) ?>% dari total produk</div>
+                <div class="fw-bold fs-2 text-white" id="kpiActive"><?= esc((string) $activeCount) ?></div>
+                <div class="fw-semibold text-white text-opacity-75 small mb-0">Produk berstatus aktif</div>
             </div>
-            <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
-                <iconify-icon icon="solar:check-circle-bold-duotone" class="text-black text-opacity-30" style="font-size: 150px"></iconify-icon>
+            <div class="position-absolute top-0 end-0 mt-n5 ps-5 w-25 d-none d-md-block">
+                <div class="w-250px h-250px bg-black bg-opacity-25 rounded-circle ms-n5 position-absolute top-0 start-0"></div>
+                <div class="w-250px h-250px bg-black bg-opacity-25 rounded-circle mt-n5 position-absolute top-0 start-0"></div>
             </div>
         </div>
     </div>
-    <div class="col-xl-4 col-md-4 mt-3 mt-md-0">
-        <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-orange bg-gradient-to-pink overflow-hidden" data-bs-theme="dark">
+    <div class="col-4">
+        <div class="card card-borderless rounded-3 overflow-hidden bg-red h-100" data-bs-theme="dark">
             <div class="card-body position-relative z-3">
-                <div class="mb-2 fw-bold text-white">Nonaktif</div>
-                <div class="h2 mb-4" id="kpiInactive"><?= esc((string) $inactiveCount) ?></div>
-                <div class="progress h-5px bg-black mb-2">
-                    <div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width: <?= esc((string) $inactivePct) ?>%;"></div>
+                <div class="fw-bold text-white small mb-1 d-flex align-items-center gap-2">
+                    <iconify-icon icon="solar:close-circle-bold-duotone" class="fs-6"></iconify-icon> Nonaktif
                 </div>
-                <div class="small fw-semibold text-white text-opacity-75 mb-n1"><?= esc((string) $inactivePct) ?>% dari total produk</div>
+                <div class="fw-bold fs-2 text-white" id="kpiInactive"><?= esc((string) $inactiveCount) ?></div>
+                <div class="fw-semibold text-white text-opacity-75 small mb-0">Produk nonaktif</div>
             </div>
-            <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
-                <iconify-icon icon="solar:close-circle-bold-duotone" class="text-black text-opacity-30" style="font-size: 150px"></iconify-icon>
+            <div class="position-absolute top-0 end-0 mt-n5 ps-5 w-25 d-none d-md-block">
+                <div class="w-250px h-250px bg-black bg-opacity-25 rounded-circle ms-n5 position-absolute top-0 start-0"></div>
+                <div class="w-250px h-250px bg-black bg-opacity-25 rounded-circle mt-n5 position-absolute top-0 start-0"></div>
             </div>
         </div>
     </div>
@@ -81,19 +77,14 @@ $inactivePct = $totalProducts > 0 ? (int) round(($inactiveCount / $totalProducts
             <iconify-icon icon="solar:filter-bold-duotone"></iconify-icon>
             Filter Data
         </h4>
-        <div class="card-header-btn">
-            <button type="button" class="btn btn-default btn-xs" id="btnToggleFilter" data-bs-toggle="collapse" data-bs-target="#filterCollapse" aria-expanded="true" aria-controls="filterCollapse">
-                <span id="filterToggleText">Sembunyikan Filter</span>
-                <i class="fa fa-chevron-up ms-1" id="filterToggleIcon"></i>
-            </button>
-        </div>
+        <?= view('partials/filter_header_btn') ?>
     </div>
     <div class="collapse show" id="filterCollapse">
         <div class="card-body filter-card-body">
             <div class="row g-3">
                 <div class="col-12 col-md-6 col-lg-3">
                     <label class="form-label" for="filterSearch">Search Produk</label>
-                    <div class="input-group">
+                    <div class="input-group flex-nowrap">
                         <span class="input-group-text"><i class="fa fa-search"></i></span>
                         <input type="text" class="form-control" id="filterSearch" placeholder="Cari kode atau nama produk...">
                     </div>
@@ -166,11 +157,11 @@ $inactivePct = $totalProducts > 0 ? (int) round(($inactiveCount / $totalProducts
                 </div>
             </div>
 
-            <div class="d-flex flex-wrap gap-2 mt-3">
-                <button type="button" class="btn btn-theme btn-sm" id="btnApplyFilter">
+            <div class="d-flex flex-wrap gap-1 mt-3">
+                <button type="button" class="btn btn-primary btn-xs" id="btnApplyFilter">
                     <i class="fa fa-search me-1"></i> Terapkan Filter
                 </button>
-                <button type="button" class="btn btn-default btn-sm" id="btnResetFilter">
+                <button type="button" class="btn btn-default btn-xs" id="btnResetFilter">
                     <i class="fa fa-rotate-left me-1"></i> Reset
                 </button>
             </div>
@@ -186,32 +177,12 @@ $inactivePct = $totalProducts > 0 ? (int) round(($inactiveCount / $totalProducts
             <iconify-icon icon="solar:checklist-minimalistic-bold-duotone" class="me-1"></iconify-icon>
             Daftar Produk Kredit
         </h4>
-        <div class="card-header-btn d-flex align-items-center gap-2 table-card-actions">
-            <div class="dropdown">
-                <button type="button" class="btn btn-default btn-sm dropdown-toggle" id="btnExportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa fa-upload me-1"></i> Export
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="btnExportDropdown">
-                    <li>
-                        <button type="button" class="dropdown-item" id="btnExportExcel">
-                            <i class="fa fa-file-excel text-success me-2"></i> Export Excel (.xls)
-                        </button>
-                    </li>
-                    <li>
-                        <button type="button" class="dropdown-item" id="btnExportPdf">
-                            <i class="fa fa-file-pdf text-danger me-2"></i> Export PDF
-                        </button>
-                    </li>
-                    <li>
-                        <button type="button" class="dropdown-item" id="btnExportCsv">
-                            <i class="fa fa-file-csv text-info me-2"></i> Export CSV (.csv)
-                        </button>
-                    </li>
-                </ul>
-            </div>
-            <button type="button" class="btn btn-theme btn-sm" id="btnTambahProdukBaru" data-bs-toggle="modal" data-bs-target="#createProductModal">
+        <div class="d-flex align-items-center gap-1">
+            <?= view('partials/export_header_btn', ['mode' => 'table']) ?>
+            <button type="button" class="btn btn-theme btn-xs" id="btnTambahProdukBaru" data-bs-toggle="modal" data-bs-target="#createProductModal">
                 <i class="fa fa-plus me-1"></i> Tambah Produk Baru
             </button>
+            <?= view('partials/card_widget_btn') ?>
         </div>
     </div>
     <div class="card-body p-0">
@@ -389,10 +360,10 @@ $inactivePct = $totalProducts > 0 ? (int) round(($inactiveCount / $totalProducts
                                 <i class="fa-solid fa-xmark me-1"></i> Batal
                             </button>
                             <div class="d-flex align-items-center gap-2 ms-auto">
-                                <button type="button" class="btn btn-default" data-wizard-prev>
+                                <button type="button" class="btn btn-default btn-sm" data-wizard-prev>
                                     <i class="fa fa-arrow-left me-1"></i> Sebelumnya
                                 </button>
-                                <button type="button" class="btn btn-theme" data-wizard-next>
+                                <button type="button" class="btn btn-theme btn-sm" data-wizard-next>
                                     Berikutnya <i class="fa fa-arrow-right ms-1"></i>
                                 </button>
                                 <button type="submit" class="btn-modal-submit d-none" data-wizard-finish>
@@ -555,10 +526,10 @@ $inactivePct = $totalProducts > 0 ? (int) round(($inactiveCount / $totalProducts
                                 <i class="fa-solid fa-xmark me-1"></i> Batal
                             </button>
                             <div class="d-flex align-items-center gap-2 ms-auto">
-                                <button type="button" class="btn btn-default" data-wizard-prev>
+                                <button type="button" class="btn btn-default btn-sm" data-wizard-prev>
                                     <i class="fa fa-arrow-left me-1"></i> Sebelumnya
                                 </button>
-                                <button type="button" class="btn btn-theme" data-wizard-next>
+                                <button type="button" class="btn btn-theme btn-sm" data-wizard-next>
                                     Berikutnya <i class="fa fa-arrow-right ms-1"></i>
                                 </button>
                                 <button type="submit" class="btn-modal-submit d-none" data-wizard-finish>
@@ -607,7 +578,7 @@ $inactivePct = $totalProducts > 0 ? (int) round(($inactiveCount / $totalProducts
                         <div class="d-flex align-items-center gap-2 flex-wrap">
                             <span class="detail-code-badge d-inline-flex align-items-center gap-1" id="detail_code_badge">
                                 <i class="fa-solid fa-hashtag me-1"></i><span id="detail_code">-</span>
-                                <button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" id="btnCopyDetailCode" data-clipboard="" title="Salin Kode Produk">
+                                <button type="button" class="btn btn-default btn-sm btn-icon btn-copy-inline" id="btnCopyDetailCode" data-clipboard="" title="Salin Kode Produk">
                                     <i class="fa fa-copy"></i>
                                 </button>
                             </span>
@@ -674,7 +645,7 @@ $inactivePct = $totalProducts > 0 ? (int) round(($inactiveCount / $totalProducts
                                     <span class="detail-attr-label">Suku Bunga</span>
                                     <div class="d-flex align-items-center gap-2">
                                         <span class="detail-attr-val font-monospace" id="detail_rate">-</span>
-                                        <button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" id="btnCopyDetailRate" data-clipboard="" title="Salin Suku Bunga">
+                                        <button type="button" class="btn btn-default btn-sm btn-icon btn-copy-inline" id="btnCopyDetailRate" data-clipboard="" title="Salin Suku Bunga">
                                             <i class="fa fa-copy"></i>
                                         </button>
                                     </div>
@@ -697,7 +668,7 @@ $inactivePct = $totalProducts > 0 ? (int) round(($inactiveCount / $totalProducts
                                     <span class="detail-attr-label">ID Produk</span>
                                     <div class="d-flex align-items-center gap-2">
                                         <span class="detail-attr-val font-monospace" id="detail_id">-</span>
-                                        <button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" id="btnCopyDetailId" data-clipboard="" title="Salin ID Produk">
+                                        <button type="button" class="btn btn-default btn-sm btn-icon btn-copy-inline" id="btnCopyDetailId" data-clipboard="" title="Salin ID Produk">
                                             <i class="fa fa-copy"></i>
                                         </button>
                                     </div>
@@ -784,7 +755,7 @@ $(document).ready(function () {
                         }
                         return '<div class="d-inline-flex align-items-center gap-1">' +
                                '<span class="badge bg-primary bg-opacity-15 text-primary py-6px font-monospace">' + safeCode + '</span>' +
-                               '<button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" data-clipboard="' + safeCode + '" title="Salin Kode Produk">' +
+                               '<button type="button" class="btn btn-default btn-sm btn-icon btn-copy-inline" data-clipboard="' + safeCode + '" title="Salin Kode Produk">' +
                                '<i class="fa fa-copy"></i>' +
                                '</button>' +
                                '</div>';
@@ -837,7 +808,7 @@ $(document).ready(function () {
                             var formatted = rawRate + '%';
                             return '<div class="d-inline-flex align-items-center justify-content-center gap-1">' +
                                    '<span class="badge bg-success bg-opacity-15 text-success py-6px font-monospace">' + formatted + '</span>' +
-                                   '<button type="button" class="btn btn-default btn-xs btn-icon btn-copy-inline" data-clipboard="' + rawRate + '" title="Salin Suku Bunga">' +
+                                   '<button type="button" class="btn btn-default btn-sm btn-icon btn-copy-inline" data-clipboard="' + rawRate + '" title="Salin Suku Bunga">' +
                                    '<i class="fa fa-copy"></i>' +
                                    '</button>' +
                                    '</div>';
@@ -883,9 +854,12 @@ $(document).ready(function () {
                         var toggleDesc = row.is_active ? 'Ubah status menjadi nonaktif' : 'Aktifkan kembali produk';
                         var updateUrl = '<?= site_url('master/products/') ?>' + id;
 
-                        return '<div class="dropdown">' +
-                               '<button class="btn-action-trigger" type="button" data-bs-toggle="dropdown" data-bs-popper-config=\'{"strategy":"fixed"}\' aria-expanded="false" title="Menu Aksi">' +
-                               '<i class="fa-solid fa-ellipsis"></i>' +
+                        return '<div class="btn-group btn-action-group">' +
+                               '<button type="button" class="btn btn-xs btn-action-yellow btn-action-yellow-icon" title="Aksi" aria-label="Aksi" onclick="this.nextElementSibling.click()">' +
+                               '<i class="fa-solid fa-ellipsis-vertical"></i>' +
+                               '</button>' +
+                               '<button type="button" class="btn btn-xs btn-action-yellow dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" data-bs-popper-config=\'{"strategy":"fixed"}\' aria-expanded="false" title="Menu Aksi" aria-label="Menu Aksi">' +
+                               '<span class="visually-hidden">Toggle Dropdown</span><b class="caret"></b>' +
                                '</button>' +
                                '<ul class="dropdown-menu dropdown-menu-end dropdown-action-menu shadow-lg">' +
                                '<li>' +
@@ -1092,16 +1066,7 @@ $(document).ready(function () {
         }
     });
 
-    // 4. Toggle Filter Card Header Animation
-    $('#filterCollapse').on('show.bs.collapse', function () {
-        $('#filterToggleText').text('Sembunyikan Filter');
-        $('#filterToggleIcon').removeClass('fa-chevron-down').addClass('fa-chevron-up');
-    }).on('hide.bs.collapse', function () {
-        $('#filterToggleText').text('Tampilkan Filter');
-        $('#filterToggleIcon').removeClass('fa-chevron-up').addClass('fa-chevron-down');
-    });
-
-    // 5. Modal Edit Handler
+    // 4. Modal Edit Handler
     $(document).on('click', '.btn-edit-product', function () {
         var id = $(this).data('id');
         var code = $(this).data('code');
@@ -1227,7 +1192,7 @@ $(document).ready(function () {
         App.toastSuccess('Data berhasil diekspor ke CSV.');
     });
 
-    $('#btnExportExcel').on('click', function () {
+    $('#btnExportQuick, #btnExportExcel').on('click', function () {
         exportTableToCSV('daftar_produk_kredit.xls');
         App.toastSuccess('Data berhasil diekspor ke Excel.');
     });

@@ -1,0 +1,55 @@
+/*
+ * CA Migration Phase 3 — quarantine reset for Color Admin shell.
+ * Loaded only with html.ca-ui. Neutralizes leftover legacy app.css chrome.
+ * See docs/CA_CSS_MIGRATION_PHASES.md
+ */
+
+/* KPI solid colors must not be painted white by legacy .card */
+html.ca-ui #content .card.bg-blue,
+html.ca-ui #content .card.bg-teal,
+html.ca-ui #content .card.bg-red,
+html.ca-ui #content .card.bg-indigo,
+html.ca-ui #content .card.bg-orange,
+html.ca-ui #content .card.bg-cyan,
+html.ca-ui #content .card.bg-purple {
+  background-color: inherit; /* utility / ca-widgets sets the color */
+  color: #fff;
+  border: 0;
+}
+
+html.ca-ui #content .card.bg-blue   { background-color: #0c83f0 !important; }
+html.ca-ui #content .card.bg-teal   { background-color: #00acac !important; }
+html.ca-ui #content .card.bg-red    { background-color: #ff5b57 !important; }
+html.ca-ui #content .card.bg-indigo { background-color: #8753de !important; }
+html.ca-ui #content .card.bg-orange { background-color: #f59c1a !important; }
+html.ca-ui #content .card.bg-cyan   { background-color: #31b6dd !important; }
+html.ca-ui #content .card.bg-purple { background-color: #5a69bb !important; }
+
+/* Cards: use CA border-radius / no forced white surface */
+html.ca-ui #app .card {
+  border-radius: var(--bs-card-border-radius, 8px);
+}
+
+html.ca-ui #app .card.card-borderless {
+  border: 0;
+}
+
+/* Kill leftover 32px control heights inside CA shell */
+html.ca-ui #app .btn,
+html.ca-ui #app .form-control,
+html.ca-ui #app .form-select,
+html.ca-ui #app input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):not([type="file"]),
+html.ca-ui #app select,
+html.ca-ui #app textarea {
+  min-height: unset;
+}
+
+/* Badge: prefer CA defaults over pill redesign */
+html.ca-ui #app .badge {
+  text-transform: none;
+}
+
+/* Alert: body size, not legacy forced scale */
+html.ca-ui #app .alert {
+  font-size: var(--bs-body-font-size, 0.875rem);
+}

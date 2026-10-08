@@ -62,7 +62,7 @@ class ApiClient
             $base = rtrim((string) env('api.baseURL', 'http://127.0.0.1:8000'), '/') . '/';
             $response = \Config\Services::curlrequest([
                 'baseURI' => $base,
-                'timeout' => 10,
+                'timeout' => 60,
             ], null, null, false)->request($method, ltrim($path, '/'), $options);
             $decoded = json_decode((string) $response->getBody(), true);
         } catch (Throwable $error) {

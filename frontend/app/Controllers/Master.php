@@ -16,7 +16,7 @@ class Master extends BaseController
         return (string) session()->get('access_token');
     }
 
-    private function gate()
+    private function gate(string|array $permission = 'master.manage')
     {
         $result = $this->client()->get('/api/v1/auth/me', $this->token());
         if (($result['rcode'] ?? '') !== '00') {
@@ -25,7 +25,8 @@ class Master extends BaseController
             return [redirect()->to('/login'), []];
         }
         $profile = $result['result'];
-        if (! in_array('master.manage', $profile['permissions'] ?? [], true)) {
+        $needed = is_array($permission) ? $permission : [$permission, 'master.manage'];
+        if (! $this->profileCan($profile, $needed)) {
             return [redirect()->to('/')->with('error', 'Anda tidak memiliki hak akses'), []];
         }
 
@@ -34,7 +35,7 @@ class Master extends BaseController
 
     public function branches()
     {
-        [$denied, $profile] = $this->gate();
+        [$denied, $profile] = $this->gate('master.branches');
         if ($denied) {
             return $denied;
         }
@@ -50,7 +51,7 @@ class Master extends BaseController
 
     public function storeBranch()
     {
-        [$denied] = $this->gate();
+        [$denied] = $this->gate('master.branches');
         if ($denied) {
             return $denied;
         }
@@ -60,7 +61,7 @@ class Master extends BaseController
 
     public function updateBranch(int $id)
     {
-        [$denied] = $this->gate();
+        [$denied] = $this->gate('master.branches');
         if ($denied) {
             return $denied;
         }
@@ -68,9 +69,26 @@ class Master extends BaseController
         return $this->save('/api/v1/master/branches/' . $id, $this->branchPayload(), '/master/branches', true);
     }
 
+    public function syncBranches()
+    {
+        [$denied] = $this->gate('master.branches');
+        if ($denied) {
+            return $denied;
+        }
+
+        $result = $this->client()->post('/api/v1/master/branches/sync', [], $this->token());
+        $isOk = ($result['rcode'] ?? '') === '00';
+        $msg = $result['message'] ?? ($isOk ? 'Sinkronisasi cabang berhasil' : 'Gagal sinkronisasi cabang dari Core Gateway');
+
+        return redirect()->to('/master/branches')->with(
+            $isOk ? 'message' : 'error',
+            $msg
+        );
+    }
+
     public function products()
     {
-        [$denied, $profile] = $this->gate();
+        [$denied, $profile] = $this->gate('master.products');
         if ($denied) {
             return $denied;
         }
@@ -91,7 +109,7 @@ class Master extends BaseController
 
     public function productsDatatables()
     {
-        [$denied] = $this->gate();
+        [$denied] = $this->gate('master.products');
         if ($denied) {
             return $this->response->setStatusCode(403)->setJSON([
                 'draw'            => (int) $this->request->getGet('draw'),
@@ -177,7 +195,7 @@ class Master extends BaseController
 
     public function storeProduct()
     {
-        [$denied] = $this->gate();
+        [$denied] = $this->gate('master.products');
         if ($denied) {
             return $denied;
         }
@@ -187,7 +205,7 @@ class Master extends BaseController
 
     public function updateProduct(int $id)
     {
-        [$denied] = $this->gate();
+        [$denied] = $this->gate('master.products');
         if ($denied) {
             return $denied;
         }
@@ -197,7 +215,7 @@ class Master extends BaseController
 
     public function debtors()
     {
-        [$denied, $profile] = $this->gate();
+        [$denied, $profile] = $this->gate('master.debtors');
         if ($denied) {
             return $denied;
         }
@@ -217,7 +235,7 @@ class Master extends BaseController
 
     public function storeDebtor()
     {
-        [$denied] = $this->gate();
+        [$denied] = $this->gate('master.debtors');
         if ($denied) {
             return $denied;
         }
@@ -227,7 +245,7 @@ class Master extends BaseController
 
     public function updateDebtor(int $id)
     {
-        [$denied] = $this->gate();
+        [$denied] = $this->gate('master.debtors');
         if ($denied) {
             return $denied;
         }
@@ -237,7 +255,7 @@ class Master extends BaseController
 
     public function nextCisId()
     {
-        [$denied] = $this->gate();
+        [$denied] = $this->gate('master.debtors');
         if ($denied) {
             return $denied;
         }
@@ -248,7 +266,7 @@ class Master extends BaseController
 
     public function inquiryCif(string $cif)
     {
-        [$denied] = $this->gate();
+        [$denied] = $this->gate('master.debtors');
         if ($denied) {
             return $denied;
         }
@@ -259,7 +277,7 @@ class Master extends BaseController
 
     public function importDebtors()
     {
-        [$denied] = $this->gate();
+        [$denied] = $this->gate('master.debtors');
         if ($denied) {
             return $denied;
         }
@@ -324,7 +342,7 @@ class Master extends BaseController
         return [
             'nik'         => trim((string) $this->request->getPost('nik')),
             'full_name'   => trim((string) $this->request->getPost('full_name')),
-            'branch_id'   => (int) $this->request->getPost('branch_id'),
+            'branch_id'   => (int) ($this->request->getPost('branch_id') ?: session()->get('branch_id') ?: 1),
             'is_active'   => $this->request->getPost('is_active') === '1',
             'cis_id'      => $this->optional('cis_id'),
             'cif_id'      => $this->optional('cif_id'),

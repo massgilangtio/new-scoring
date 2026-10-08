@@ -47,7 +47,7 @@ class ScoringConfig extends BaseController
 
     public function parameters()
     {
-        [$denied, $profile] = $this->gate('scoring.configure');
+        [$denied, $profile] = $this->gate(['scoring.parameters', 'scoring.configure']);
         if ($denied) {
             return $denied;
         }
@@ -71,7 +71,7 @@ class ScoringConfig extends BaseController
 
     public function storeMasterParameter()
     {
-        [$denied] = $this->gate('scoring.configure');
+        [$denied] = $this->gate(['scoring.parameters', 'scoring.configure']);
         if ($denied) {
             return $denied;
         }
@@ -123,7 +123,7 @@ class ScoringConfig extends BaseController
 
     public function updateMasterParameter(int $id)
     {
-        [$denied] = $this->gate('scoring.configure');
+        [$denied] = $this->gate(['scoring.parameters', 'scoring.configure']);
         if ($denied) {
             return $denied;
         }
@@ -167,7 +167,7 @@ class ScoringConfig extends BaseController
 
     public function deleteMasterParameter(int $id)
     {
-        [$denied] = $this->gate('scoring.configure');
+        [$denied] = $this->gate(['scoring.parameters', 'scoring.configure']);
         if ($denied) {
             return $denied;
         }
@@ -185,7 +185,7 @@ class ScoringConfig extends BaseController
 
     public function mapping()
     {
-        [$denied, $profile] = $this->gate('scoring.configure');
+        [$denied, $profile] = $this->gate(['scoring.mapping', 'scoring.configure']);
         if ($denied) {
             return $denied;
         }
@@ -213,7 +213,7 @@ class ScoringConfig extends BaseController
 
     public function passingScoreSetting()
     {
-        [$denied] = $this->gate('scoring.configure');
+        [$denied] = $this->gate(['scoring.mapping', 'scoring.configure']);
         if ($denied) {
             return $denied;
         }
@@ -234,7 +234,7 @@ class ScoringConfig extends BaseController
 
     public function storeMapping()
     {
-        [$denied] = $this->gate('scoring.configure');
+        [$denied] = $this->gate(['scoring.mapping', 'scoring.configure']);
         if ($denied) {
             return $denied;
         }
@@ -318,7 +318,7 @@ class ScoringConfig extends BaseController
 
     public function updateMapping(int $id)
     {
-        [$denied] = $this->gate('scoring.configure');
+        [$denied] = $this->gate(['scoring.mapping', 'scoring.configure']);
         if ($denied) {
             return $denied;
         }
@@ -402,7 +402,7 @@ class ScoringConfig extends BaseController
 
     public function uploadMappingAttachment()
     {
-        [$denied] = $this->gate('scoring.configure');
+        [$denied] = $this->gate(['scoring.mapping', 'scoring.configure']);
         if ($denied) {
             return $this->response->setJSON(['rcode' => '04', 'message' => 'Akses ditolak']);
         }
@@ -433,7 +433,7 @@ class ScoringConfig extends BaseController
 
     public function mappingDetail(int $mappingId)
     {
-        [$denied] = $this->gate('scoring.configure');
+        [$denied] = $this->gate(['scoring.mapping', 'scoring.configure']);
         if ($denied) {
             return $this->response->setJSON(['rcode' => '04', 'message' => 'Akses ditolak']);
         }
@@ -444,7 +444,7 @@ class ScoringConfig extends BaseController
 
     public function deleteMapping(int $mappingId)
     {
-        [$denied] = $this->gate('scoring.configure');
+        [$denied] = $this->gate(['scoring.mapping', 'scoring.configure']);
         if ($denied) {
             return redirect()->to('/scoring/mapping')->with('error', 'Akses ditolak');
         }
@@ -496,6 +496,34 @@ class ScoringConfig extends BaseController
         return $this->response->setJSON($result);
     }
 
+    public function checkDuplicate()
+    {
+        [$denied] = $this->gate(['scoring.submit', 'scoring.configure']);
+        if ($denied) {
+            return $this->response->setJSON(['rcode' => '04', 'message' => 'Akses ditolak']);
+        }
+
+        $debtorId = (int) $this->request->getGet('debtor_id');
+        $productId = (int) $this->request->getGet('product_id');
+        if (! $debtorId || ! $productId) {
+            return $this->response->setJSON(['rcode' => '01', 'message' => 'debtor_id dan product_id wajib diisi', 'result' => ['is_duplicate' => false]]);
+        }
+
+        $result = $this->client()->get('/api/v1/scoring/parameters/credit/check-duplicate?debtor_id=' . $debtorId . '&product_id=' . $productId, $this->token());
+        return $this->response->setJSON($result);
+    }
+
+    public function debtorHistory(int $debtorId)
+    {
+        [$denied] = $this->gate(['scoring.submit', 'scoring.configure']);
+        if ($denied) {
+            return $this->response->setJSON(['rcode' => '04', 'message' => 'Akses ditolak']);
+        }
+
+        $result = $this->client()->get('/api/v1/scoring/parameters/credit/debtor-history/' . $debtorId, $this->token());
+        return $this->response->setJSON($result);
+    }
+
     public function saveCreditScoring()
     {
         [$denied] = $this->gate(['scoring.submit', 'scoring.configure']);
@@ -504,13 +532,16 @@ class ScoringConfig extends BaseController
         }
 
         $raw = $this->request->getJSON(true) ?? $this->request->getPost();
+        if (is_array($raw)) {
+            $raw['branchid'] = (string) (session()->get('branchid') ?? '');
+        }
         $result = $this->client()->post('/api/v1/scoring/parameters/credit/save', $raw, $this->token());
         return $this->response->setJSON($result);
     }
 
     public function duplicateSetting()
     {
-        [$denied] = $this->gate();
+        [$denied] = $this->gate(['scoring.parameters', 'scoring.configure', 'scoring.mapping']);
         if ($denied) {
             return $denied;
         }
@@ -526,7 +557,7 @@ class ScoringConfig extends BaseController
 
     public function products()
     {
-        [$denied, $profile] = $this->gate();
+        [$denied, $profile] = $this->gate(['scoring.parameters', 'scoring.configure', 'scoring.mapping']);
         if ($denied) {
             return $denied;
         }
@@ -544,7 +575,7 @@ class ScoringConfig extends BaseController
 
     public function versions(int $productId)
     {
-        [$denied, $profile] = $this->gate();
+        [$denied, $profile] = $this->gate(['scoring.parameters', 'scoring.configure', 'scoring.mapping']);
         if ($denied) {
             return $denied;
         }
@@ -564,7 +595,7 @@ class ScoringConfig extends BaseController
 
     public function createVersion(int $productId)
     {
-        [$denied] = $this->gate();
+        [$denied] = $this->gate(['scoring.parameters', 'scoring.configure', 'scoring.mapping']);
         if ($denied) {
             return $denied;
         }
@@ -578,7 +609,7 @@ class ScoringConfig extends BaseController
 
     public function show(int $versionId)
     {
-        [$denied, $profile] = $this->gate();
+        [$denied, $profile] = $this->gate(['scoring.parameters', 'scoring.configure', 'scoring.mapping']);
         if ($denied) {
             return $denied;
         }
@@ -653,7 +684,7 @@ class ScoringConfig extends BaseController
 
     public function activate(int $versionId)
     {
-        [$denied] = $this->gate();
+        [$denied] = $this->gate(['scoring.parameters', 'scoring.configure', 'scoring.mapping']);
         if ($denied) {
             return $denied;
         }
@@ -667,7 +698,7 @@ class ScoringConfig extends BaseController
 
     public function copyVersion(int $versionId)
     {
-        [$denied] = $this->gate();
+        [$denied] = $this->gate(['scoring.parameters', 'scoring.configure', 'scoring.mapping']);
         if ($denied) {
             return $denied;
         }
@@ -681,7 +712,7 @@ class ScoringConfig extends BaseController
 
     public function calculate(int $versionId)
     {
-        [$denied] = $this->gate();
+        [$denied] = $this->gate(['scoring.parameters', 'scoring.configure', 'scoring.mapping']);
         if ($denied) {
             return $denied;
         }
@@ -701,7 +732,7 @@ class ScoringConfig extends BaseController
 
     private function postVersion(int $versionId, string $path, array $payload)
     {
-        [$denied] = $this->gate();
+        [$denied] = $this->gate(['scoring.parameters', 'scoring.configure', 'scoring.mapping']);
         if ($denied) {
             return $denied;
         }
@@ -713,3 +744,4 @@ class ScoringConfig extends BaseController
         );
     }
 }
+

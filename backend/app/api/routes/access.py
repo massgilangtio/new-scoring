@@ -1,6 +1,7 @@
+from datetime import datetime
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel, Field
-from sqlalchemy import delete, select, update
+from sqlalchemy import delete, func, select, text, update
 from sqlalchemy.orm import Session
 
 from app.api.deps import current_user, get_db
@@ -22,7 +23,7 @@ router = APIRouter(prefix="/api/v1/access", tags=["access"])
 
 
 class RoleBody(BaseModel):
-    code: str = Field(pattern=r"^[a-z0-9_]{2,50}$")
+    code: str = Field(pattern=r"^[A-Za-z0-9_]{2,50}$")
     name: str = Field(min_length=1, max_length=100)
     is_active: bool = True
 
@@ -37,16 +38,16 @@ class PermissionAssignment(BaseModel):
 
 
 class JobGroupBody(BaseModel):
-    code: str = Field(pattern=r"^[a-z0-9_]{2,50}$")
-    name: str = Field(min_length=1, max_length=100)
-    role_id: int
+    id_kel_jabatan: str = Field(min_length=1, max_length=50)
+    nama_kel_jabatan: str = Field(min_length=1, max_length=200)
+    role_id: int | None = None
     is_active: bool = True
 
 
 class JobGroupUpdate(BaseModel):
-    name: str = Field(min_length=1, max_length=100)
-    role_id: int
-    is_active: bool
+    nama_kel_jabatan: str | None = Field(default=None, max_length=200)
+    role_id: int | None = None
+    is_active: bool = True
 
 
 class UserCreate(BaseModel):
@@ -93,6 +94,12 @@ def _active_job_group(db: Session, job_group_id: int) -> JobGroup:
     group = db.get(JobGroup, job_group_id)
     if group is None or not group.is_active:
         raise ApiError(400, "01", "Kelompok jabatan tidak tersedia")
+    if group.role_id is None:
+        raise ApiError(
+            400,
+            "01",
+            f"Kelompok jabatan '{group.nama_kel_jabatan or group.id_kel_jabatan}' belum dipetakan ke role manapun. Harap petakan role terlebih dahulu di menu Kelompok Jabatan.",
+        )
     _active_role(db, group.role_id)
     return group
 
@@ -146,6 +153,17 @@ def list_roles(
             .where(RolePermission.role_id == role.id)
             .order_by(Permission.id)
         ).all()
+        # Ambil kelompok jabatan yang terhubung ke role ini
+        jgs = db.execute(
+            select(JobGroup.id, JobGroup.id_kel_jabatan, JobGroup.nama_kel_jabatan)
+            .where(JobGroup.role_id == role.id)
+            .order_by(JobGroup.id_kel_jabatan)
+        ).all()
+        job_groups = [
+            {"id": int(r[0]), "code": str(r[1]), "name": str(r[2] or r[1])}
+            for r in jgs
+        ]
+        unique_codes = list(dict.fromkeys([jg["code"] for jg in job_groups]))
         items.append(
             {
                 "id": role.id,
@@ -154,6 +172,9 @@ def list_roles(
                 "is_active": role.is_active,
                 "permission_ids": [int(row[0]) for row in perms],
                 "permissions": [str(row[1]) for row in perms],
+                "job_groups": job_groups,
+                "job_group_codes": unique_codes,
+                "job_group_map": ", ".join(unique_codes) if unique_codes else "-",
             }
         )
     return {"rcode": "00", "message": "Data berhasil ditampilkan", "result": {"items": items}}
@@ -259,8 +280,8 @@ def _user_item(user: User, role: Role, branch: Branch, job_group: JobGroup | Non
         "role_id": user.role_id,
         "role_name": role.name,
         "job_group_id": user.job_group_id,
-        "job_group_code": job_group.code if job_group else None,
-        "job_group_name": job_group.name if job_group else None,
+        "job_group_code": job_group.id_kel_jabatan if job_group else None,
+        "job_group_name": job_group.nama_kel_jabatan if job_group else None,
         "branch_id": user.branch_id,
         "branch_name": branch.name,
         "is_active": user.is_active,
@@ -274,21 +295,63 @@ def list_job_groups(
     db: Session = Depends(get_db),
 ) -> dict:
     rows = db.execute(
-        select(JobGroup, Role).join(Role, Role.id == JobGroup.role_id).order_by(JobGroup.name)
+        select(JobGroup, Role)
+        .outerjoin(Role, Role.id == JobGroup.role_id)
+        .order_by(JobGroup.id_kel_jabatan, JobGroup.nama_kel_jabatan)
     ).all()
     items = [
         {
             "id": group.id,
-            "code": group.code,
-            "name": group.name,
+            "id_kel_jabatan": group.id_kel_jabatan,
+            "nama_kel_jabatan": group.nama_kel_jabatan or "-",
+            "code": group.id_kel_jabatan,
+            "name": group.nama_kel_jabatan or group.id_kel_jabatan,
+            "total_pegawai": group.total_pegawai or 0,
             "role_id": group.role_id,
-            "role_code": role.code,
-            "role_name": role.name,
+            "role_code": role.code if role else None,
+            "role_name": role.name if role else "Belum Dipetakan",
             "is_active": group.is_active,
         }
         for group, role in rows
     ]
     return {"rcode": "00", "message": "Data berhasil ditampilkan", "result": {"items": items}}
+
+
+def _sync_kel_jabatan_internal(db: Session) -> int:
+    """Sinkronisasi / update tbl_kel_jabatan dari data terbaru tbl_userhris."""
+    sync_sql = text("""
+        INSERT INTO tbl_kel_jabatan (id_kel_jabatan, nama_kel_jabatan, total_pegawai, is_active, created_at, updated_at)
+        SELECT 
+            h.id_kel_jabatan,
+            COALESCE(NULLIF(h.nama_kel_jabatan, ''), h.nm_jabatan, 'Kelompok ' || h.id_kel_jabatan) AS nama_kel_jabatan,
+            COUNT(*) AS total_pegawai,
+            true,
+            now(),
+            now()
+        FROM tbl_userhris h
+        WHERE h.id_kel_jabatan IS NOT NULL AND TRIM(h.id_kel_jabatan) != ''
+        GROUP BY h.id_kel_jabatan, COALESCE(NULLIF(h.nama_kel_jabatan, ''), h.nm_jabatan, 'Kelompok ' || h.id_kel_jabatan)
+        ON CONFLICT (id_kel_jabatan, nama_kel_jabatan) 
+        DO UPDATE SET 
+            total_pegawai = EXCLUDED.total_pegawai,
+            updated_at = now();
+    """)
+    db.execute(sync_sql)
+    db.flush()
+    total_count = db.scalar(select(func.count(JobGroup.id))) or 0
+    return int(total_count)
+
+
+@router.post("/job-groups/sync")
+def sync_job_groups_from_hris(
+    actor: User = Depends(require_access_manager),
+    db: Session = Depends(get_db),
+) -> dict:
+    """Sinkronisasi / refresh data tbl_kel_jabatan dari tbl_userhris."""
+    total_count = _sync_kel_jabatan_internal(db)
+    write_audit(db, actor, "access.job_groups_synced", after_data={"synced_from": "tbl_userhris", "total": total_count})
+    db.commit()
+    return {"rcode": "00", "message": f"Sinkronisasi kelompok jabatan selesai. Total: {total_count} data.", "result": {"total": total_count}}
 
 
 @router.post("/job-groups")
@@ -297,12 +360,11 @@ def create_job_group(
     actor: User = Depends(require_access_manager),
     db: Session = Depends(get_db),
 ) -> dict:
-    if db.scalar(select(JobGroup.id).where(JobGroup.code == body.code)) is not None:
-        raise ApiError(400, "01", "Kode kelompok jabatan sudah digunakan")
-    _active_role(db, body.role_id)
+    if body.role_id is not None:
+        _active_role(db, body.role_id)
     group = JobGroup(
-        code=body.code,
-        name=body.name.strip(),
+        id_kel_jabatan=body.id_kel_jabatan.strip(),
+        nama_kel_jabatan=body.nama_kel_jabatan.strip(),
         role_id=body.role_id,
         is_active=body.is_active,
     )
@@ -312,7 +374,7 @@ def create_job_group(
         db,
         actor,
         "access.job_group_created",
-        after_data={"job_group_id": group.id, "code": group.code, "role_id": group.role_id},
+        after_data={"job_group_id": group.id, "id_kel_jabatan": group.id_kel_jabatan, "role_id": group.role_id},
     )
     db.commit()
     return {"rcode": "00", "message": "Kelompok jabatan berhasil disimpan", "result": {"id": group.id}}
@@ -328,20 +390,23 @@ def update_job_group(
     group = db.get(JobGroup, job_group_id)
     if group is None:
         raise ApiError(404, "01", "Kelompok jabatan tidak ditemukan")
-    _active_role(db, body.role_id)
-    before = {"name": group.name, "role_id": group.role_id, "is_active": group.is_active}
-    group.name = body.name.strip()
+    if body.role_id is not None:
+        _active_role(db, body.role_id)
+    before = {"nama_kel_jabatan": group.nama_kel_jabatan, "role_id": group.role_id, "is_active": group.is_active}
+    if body.nama_kel_jabatan is not None:
+        group.nama_kel_jabatan = body.nama_kel_jabatan.strip()
     group.role_id = body.role_id
     group.is_active = body.is_active
-    # Sinkron role user yang memakai kelompok ini
-    db.execute(update(User).where(User.job_group_id == group.id).values(role_id=group.role_id))
+    # Sinkron role user yang memakai kelompok ini jika role_id tidak kosong
+    if group.role_id is not None:
+        db.execute(update(User).where(User.job_group_id == group.id).values(role_id=group.role_id))
     write_audit(
         db,
         actor,
         "access.job_group_updated",
         object_id=str(group.id),
         before_data=before,
-        after_data={"name": group.name, "role_id": group.role_id, "is_active": group.is_active},
+        after_data={"nama_kel_jabatan": group.nama_kel_jabatan, "role_id": group.role_id, "is_active": group.is_active},
     )
     db.commit()
     return {"rcode": "00", "message": "Kelompok jabatan berhasil diperbarui", "result": {"id": group.id}}
@@ -490,46 +555,245 @@ def sync_userhris(
     actor: User = Depends(require_access_manager),
     db: Session = Depends(get_db),
 ) -> dict:
-    userid = (body or {}).get("userid", "1776")
+    userid = ((body or {}).get("userid") or "").strip()
     kondisi = (body or {}).get("kondisi", "")
     settings = get_settings()
     data = call_hris_inq_master_pegawai_by_kondisi(settings, userid=userid, kondisi=kondisi)
     if not data:
         raise ApiError(400, "01", "Gagal mengambil data dari HRIS Gateway")
 
-    synced = []
+    existing_all = db.query(UserHris).all()
+    existing_by_npp = {str(u.npp).strip(): u for u in existing_all if u.npp}
+    existing_by_uid = {str(u.userid).strip(): u for u in existing_all if u.userid}
+
+    inserted_count = 0
+    updated_count = 0
+    now = datetime.now()
+
     for item in data:
-        npp = item.get("nama_login") or userid
-        uid = f"u{npp}" if not npp.startswith("u") else npp
-        existing = db.get(UserHris, uid)
-        if not existing:
-            existing = UserHris(userid=uid)
-            db.add(existing)
+        raw_npp = str(item.get("nama_login") or item.get("npp") or item.get("userid") or "").strip()
+        if not raw_npp:
+            continue
 
-        existing.npp = npp
-        existing.nrik = item.get("nrik")
-        existing.nama = item.get("nama")
-        existing.no_hp = item.get("no_hp") or item.get("no_whatsap")
-        existing.user_email = item.get("user_email")
-        existing.id_unit_kerja = item.get("id_unit_kerja")
-        existing.nm_unit_kerja = item.get("nm_unit_kerja")
-        existing.branchid = item.get("kd_unit_penempatan") or "001"
-        existing.id_jabatan = item.get("id_jabatan")
-        existing.nm_jabatan = item.get("nm_jabatan")
-        existing.id_kel_jabatan = item.get("id_kel_jabatan")
-        existing.nama_kel_jabatan = item.get("nama_kel_jabatan")
-        existing.password = item.get("password")
-        existing.stsauth = 0
-        existing.stsbest = 0
-        synced.append(uid)
+        uid = f"u{raw_npp}" if not raw_npp.startswith("u") else raw_npp
 
-    db.commit()
+        existing = existing_by_npp.get(raw_npp) or existing_by_uid.get(uid) or existing_by_uid.get(raw_npp)
+
+        nrik = item.get("nrik")
+        nama = item.get("nama")
+        no_hp = item.get("no_hp") or item.get("no_whatsap")
+        user_email = item.get("user_email")
+        id_unit_kerja = str(item.get("id_unit_kerja") or "")
+        nm_unit_kerja = item.get("nm_unit_kerja") or item.get("ukerdef")
+        branchid = str(item.get("kd_unit_penempatan") or "001")
+        id_jabatan = str(item.get("id_jabatan") or "")
+        nm_jabatan = item.get("nm_jabatan") or item.get("jabdef")
+        id_kel_jabatan = str(item.get("id_kel_jabatan") or "")
+        nama_kel_jabatan = item.get("nama_kel_jabatan")
+        password = item.get("password")
+
+        if existing:
+            existing.npp = raw_npp
+            existing.nrik = nrik
+            existing.nama = nama
+            existing.no_hp = no_hp
+            existing.user_email = user_email
+            existing.id_unit_kerja = id_unit_kerja
+            existing.nm_unit_kerja = nm_unit_kerja
+            existing.branchid = branchid
+            existing.id_jabatan = id_jabatan
+            existing.nm_jabatan = nm_jabatan
+            existing.id_kel_jabatan = id_kel_jabatan
+            existing.nama_kel_jabatan = nama_kel_jabatan
+            if password:
+                existing.password = password
+            existing.updated_at = now
+            updated_count += 1
+        else:
+            new_user = UserHris(
+                userid=uid,
+                npp=raw_npp,
+                nrik=nrik,
+                nama=nama,
+                no_hp=no_hp,
+                user_email=user_email,
+                id_unit_kerja=id_unit_kerja,
+                nm_unit_kerja=nm_unit_kerja,
+                branchid=branchid,
+                id_jabatan=id_jabatan,
+                nm_jabatan=nm_jabatan,
+                id_kel_jabatan=id_kel_jabatan,
+                nama_kel_jabatan=nama_kel_jabatan,
+                password=password,
+                stsauth=0,
+                stsbest=0,
+                secret_key=None,
+                created_at=now,
+                updated_at=now,
+            )
+            db.add(new_user)
+            existing_by_npp[raw_npp] = new_user
+            existing_by_uid[uid] = new_user
+            inserted_count += 1
+
+    # Sinkronisasi / update tabel kelompok jabatan (tbl_kel_jabatan) secara otomatis
+    total_groups = _sync_kel_jabatan_internal(db)
+
     write_audit(
         db,
         actor,
         "access.userhris_synced",
-        after_data={"count": len(synced), "synced": synced},
+        after_data={
+            "total": len(data),
+            "inserted": inserted_count,
+            "updated": updated_count,
+            "job_groups_total": total_groups,
+        },
     )
     db.commit()
-    return {"rcode": "00", "message": f"Berhasil sinkronisasi {len(synced)} data pegawai HRIS", "result": {"synced": synced}}
+    return {
+        "rcode": "00",
+        "message": (
+            f"Berhasil sinkronisasi {len(data)} pegawai HRIS ({inserted_count} baru, {updated_count} diperbarui) "
+            f"dan tabel kelompok jabatan ikut terupdate ({total_groups} kelompok)"
+        ),
+        "result": {
+            "total": len(data),
+            "inserted": inserted_count,
+            "updated": updated_count,
+            "job_groups_total": total_groups,
+        },
+    }
+
+
+@router.post("/userhris/{userid}/reset-mfa")
+def reset_userhris_mfa(
+    userid: str,
+    actor: User = Depends(require_access_manager),
+    db: Session = Depends(get_db),
+) -> dict:
+    hris = db.get(UserHris, userid)
+    if not hris:
+        alt = f"u{userid}" if not userid.startswith("u") else userid[1:]
+        hris = db.get(UserHris, alt)
+    if not hris:
+        raise ApiError(404, "01", "Pegawai HRIS tidak ditemukan")
+
+    hris.secret_key = None
+    hris.stsauth = 1
+    hris.updated_at = datetime.now()
+
+    npp = hris.npp or userid.lstrip("u")
+    matched_user = db.scalar(
+        select(User).where((User.username == npp) | (User.username == hris.userid))
+    )
+    if matched_user:
+        matched_user.mfa_enabled = True
+        matched_user.mfa_secret_encrypted = None
+        matched_user.mfa_last_step = None
+        matched_user.mfa_confirmed_at = None
+
+    write_audit(
+        db,
+        actor,
+        "access.mfa_reset",
+        object_id=hris.userid,
+        after_data={"userid": hris.userid, "npp": hris.npp, "mfa_reset": True},
+    )
+    db.commit()
+    return {
+        "rcode": "00",
+        "message": f"Secret key untuk {hris.nama or hris.userid} berhasil direset (scan QR baru saat login)",
+        "result": {"userid": hris.userid, "stsauth": 1},
+    }
+
+
+class ToggleMfaBody(BaseModel):
+    stsauth: int = Field(ge=0, le=1)
+
+
+@router.post("/userhris/{userid}/toggle-mfa")
+def toggle_userhris_mfa(
+    userid: str,
+    body: ToggleMfaBody,
+    actor: User = Depends(require_access_manager),
+    db: Session = Depends(get_db),
+) -> dict:
+    hris = db.get(UserHris, userid)
+    if not hris:
+        alt = f"u{userid}" if not userid.startswith("u") else userid[1:]
+        hris = db.get(UserHris, alt)
+    if not hris:
+        raise ApiError(404, "01", "Pegawai HRIS tidak ditemukan")
+
+    hris.stsauth = body.stsauth
+    if body.stsauth == 0:
+        hris.secret_key = None
+    hris.updated_at = datetime.now()
+
+    npp = hris.npp or userid.lstrip("u")
+    matched_user = db.scalar(
+        select(User).where((User.username == npp) | (User.username == hris.userid))
+    )
+    if matched_user:
+        matched_user.mfa_enabled = (body.stsauth == 1)
+        if body.stsauth == 0:
+            matched_user.mfa_secret_encrypted = None
+            matched_user.mfa_last_step = None
+            matched_user.mfa_confirmed_at = None
+
+    action_label = "diaktifkan (pakai MFA)" if body.stsauth == 1 else "dinonaktifkan (tanpa MFA)"
+    write_audit(
+        db,
+        actor,
+        "access.mfa_toggle",
+        object_id=hris.userid,
+        after_data={"userid": hris.userid, "npp": hris.npp, "stsauth": body.stsauth},
+    )
+    db.commit()
+    return {
+        "rcode": "00",
+        "message": f"MFA untuk {hris.nama or hris.userid} berhasil {action_label}",
+        "result": {"userid": hris.userid, "stsauth": body.stsauth},
+    }
+
+
+@router.post("/users/{user_id}/reset-mfa")
+def reset_user_mfa_by_id(
+    user_id: int,
+    actor: User = Depends(require_access_manager),
+    db: Session = Depends(get_db),
+) -> dict:
+    target = db.get(User, user_id)
+    if not target:
+        raise ApiError(404, "01", "User tidak ditemukan")
+
+    target.mfa_enabled = True
+    target.mfa_secret_encrypted = None
+    target.mfa_last_step = None
+    target.mfa_confirmed_at = None
+
+    hris = db.scalar(
+        select(UserHris).where(
+            (UserHris.npp == target.username) | (UserHris.userid == target.username) | (UserHris.userid == f"u{target.username}")
+        )
+    )
+    if hris:
+        hris.secret_key = None
+        hris.stsauth = 1
+        hris.updated_at = datetime.now()
+
+    write_audit(
+        db,
+        actor,
+        "access.mfa_reset",
+        object_id=str(target.id),
+        after_data={"user_id": target.id, "username": target.username, "mfa_reset": True},
+    )
+    db.commit()
+    return {
+        "rcode": "00",
+        "message": f"Secret key untuk user {target.username} berhasil direset",
+        "result": {"id": target.id},
+    }
 

@@ -18,7 +18,9 @@ if (is_string($token) && $token !== '') {
     $unreadNav = (int) ($notes['result']['unread_count'] ?? 0);
 }
 
-// --- Navigation Groups (functionality preserved) ---
+// --- Navigation Groups (otorisasi per-menu) ---
+// Umbrella permissions (master.manage / scoring.configure / access.manage)
+// sudah di-expand di /auth/me, jadi cukup cek kode menu.
 $groups = [];
 $tx = [];
 if ($can('scoring.submit')) {
@@ -33,52 +35,95 @@ if ($can('scoring.approve') || $can('scoring.assign')) {
         ['label' => 'Menunggu Persetujuan', 'href' => site_url('approvals'), 'active' => $path === 'approvals' || str_starts_with($path, 'approvals/'), 'icon' => 'fa-solid fa-clock-rotate-left'],
     ]];
 }
-if ($can('master.manage')) {
-    $groups[] = ['label' => 'Master Data', 'icon' => 'fa-solid fa-database', 'theme' => 'purple', 'items' => [
-        ['label' => 'Debitur', 'href' => site_url('master/debtors'),   'active' => $path === 'master/debtors', 'icon' => 'fa-regular fa-file-lines'],
-        ['label' => 'Produk',  'href' => site_url('master/products'),  'active' => $path === 'master/products', 'icon' => 'fa-solid fa-box'],
-        ['label' => 'Cabang',  'href' => site_url('master/branches'), 'active' => $path === 'master/branches', 'icon' => 'fa-solid fa-shop'],
-    ]];
+$master = [];
+if ($can('master.debtors') || $can('master.manage')) {
+    $master[] = ['label' => 'Debitur', 'href' => site_url('master/debtors'),   'active' => $path === 'master/debtors', 'icon' => 'fa-regular fa-file-lines'];
 }
-if ($can('scoring.configure')) {
-    $groups[] = ['label' => 'Parameter Scoring', 'icon' => 'fa-solid fa-sliders', 'theme' => 'orange', 'items' => [
-        ['label' => 'Konfigurasi Parameter', 'href' => site_url('scoring/parameters'), 'active' => $path === 'scoring/parameters' || str_starts_with($path, 'scoring/parameters'), 'icon' => 'fa-solid fa-sliders'],
-        ['label' => 'Mapping Produk',         'href' => site_url('scoring/mapping'),    'active' => $path === 'scoring/mapping' || str_starts_with($path, 'scoring/mapping'), 'icon' => 'fa-solid fa-diagram-project'],
-    ]];
+if ($can('master.products') || $can('master.manage')) {
+    $master[] = ['label' => 'Produk',  'href' => site_url('master/products'),  'active' => $path === 'master/products', 'icon' => 'fa-solid fa-box'];
 }
-$groups[] = ['label' => 'Laporan', 'icon' => 'fa-solid fa-file-lines', 'theme' => 'red', 'items' => [
-    ['label' => 'Laporan Scoring',    'href' => site_url('reports/scoring'),  'active' => $path === 'reports/scoring', 'icon' => 'fa-solid fa-chart-pie'],
-    ['label' => 'Riwayat Debitur',    'href' => site_url('reports/debtors'),  'active' => $path === 'reports/debtors', 'icon' => 'fa-solid fa-user-clock'],
-    ['label' => 'Riwayat Produk',     'href' => site_url('reports/products'), 'active' => $path === 'reports/products', 'icon' => 'fa-solid fa-box-archive'],
-    ['label' => 'Perubahan Parameter','href' => site_url('reports/changes'),  'active' => $path === 'reports/changes', 'icon' => 'fa-solid fa-code-compare'],
-    ['label' => 'Audit Trail',        'href' => site_url('audit'),            'active' => $path === 'audit' || str_starts_with($path, 'audit/'), 'icon' => 'fa-solid fa-shield-halved'],
-]];
-if ($can('access.manage')) {
-    $groups[] = ['label' => 'User & Access', 'icon' => 'fa-solid fa-user-group', 'theme' => 'indigo', 'items' => [
-        ['label' => 'User',       'href' => site_url('access/users'),       'active' => $path === 'access/users', 'icon' => 'fa-solid fa-user'],
-        ['label' => 'Role',       'href' => site_url('access/roles'),       'active' => $path === 'access/roles', 'icon' => 'fa-solid fa-id-badge'],
-        ['label' => 'Permission', 'href' => site_url('access/permissions'), 'active' => $path === 'access/permissions', 'icon' => 'fa-solid fa-key'],
-    ]];
+if ($can('master.branches') || $can('master.manage')) {
+    $master[] = ['label' => 'Cabang',  'href' => site_url('master/branches'), 'active' => $path === 'master/branches', 'icon' => 'fa-solid fa-shop'];
+}
+if ($master !== []) {
+    $groups[] = ['label' => 'Master Data', 'icon' => 'fa-solid fa-database', 'theme' => 'purple', 'items' => $master];
+}
+$param = [];
+if ($can('scoring.parameters') || $can('scoring.configure')) {
+    $param[] = ['label' => 'Konfigurasi Parameter', 'href' => site_url('scoring/parameters'), 'active' => $path === 'scoring/parameters' || str_starts_with($path, 'scoring/parameters'), 'icon' => 'fa-solid fa-sliders'];
+}
+if ($can('scoring.mapping') || $can('scoring.configure')) {
+    $param[] = ['label' => 'Mapping Produk', 'href' => site_url('scoring/mapping'), 'active' => $path === 'scoring/mapping' || str_starts_with($path, 'scoring/mapping'), 'icon' => 'fa-solid fa-diagram-project'];
+}
+if ($param !== []) {
+    $groups[] = ['label' => 'Parameter Scoring', 'icon' => 'fa-solid fa-sliders', 'theme' => 'orange', 'items' => $param];
+}
+$reports = [];
+if ($can('report.scoring')) {
+    $reports[] = ['label' => 'Laporan Scoring', 'href' => site_url('reports/scoring'), 'active' => $path === 'reports/scoring', 'icon' => 'fa-solid fa-chart-pie'];
+}
+if ($can('report.debtors')) {
+    $reports[] = ['label' => 'Riwayat Debitur', 'href' => site_url('reports/debtors'), 'active' => $path === 'reports/debtors', 'icon' => 'fa-solid fa-user-clock'];
+}
+if ($can('report.products')) {
+    $reports[] = ['label' => 'Riwayat Produk', 'href' => site_url('reports/products'), 'active' => $path === 'reports/products', 'icon' => 'fa-solid fa-box-archive'];
+}
+if ($can('report.changes')) {
+    $reports[] = ['label' => 'Perubahan Parameter', 'href' => site_url('reports/changes'), 'active' => $path === 'reports/changes', 'icon' => 'fa-solid fa-code-compare'];
+}
+if ($can('audit.view')) {
+    $reports[] = ['label' => 'Audit Trail', 'href' => site_url('audit'), 'active' => $path === 'audit' || str_starts_with($path, 'audit/'), 'icon' => 'fa-solid fa-shield-halved'];
+}
+if ($reports !== []) {
+    $groups[] = ['label' => 'Laporan', 'icon' => 'fa-solid fa-file-lines', 'theme' => 'red', 'items' => $reports];
+}
+$access = [];
+if ($can('access.users') || $can('access.manage')) {
+    $access[] = ['label' => 'User', 'href' => site_url('access/users'), 'active' => $path === 'access/users', 'icon' => 'fa-solid fa-user'];
+    $access[] = ['label' => 'Kelompok Jabatan', 'href' => site_url('access/job-groups'), 'active' => $path === 'access/job-groups' || str_starts_with($path, 'access/job-groups/'), 'icon' => 'fa-solid fa-briefcase'];
+}
+if ($can('access.roles') || $can('access.manage')) {
+    $access[] = ['label' => 'Role', 'href' => site_url('access/roles'), 'active' => $path === 'access/roles' || str_starts_with($path, 'access/roles/'), 'icon' => 'fa-solid fa-id-badge'];
+}
+if ($can('access.permissions') || $can('access.manage')) {
+    $access[] = ['label' => 'Permission', 'href' => site_url('access/permissions'), 'active' => $path === 'access/permissions', 'icon' => 'fa-solid fa-key'];
+}
+if ($access !== []) {
+    $groups[] = ['label' => 'User & Access', 'icon' => 'fa-solid fa-user-group', 'theme' => 'indigo', 'items' => $access];
 }
 
-$roleLine   = trim((string) ($profile['role_name']   ?? ''));
-$branchLine = trim((string) ($profile['branch_name'] ?? ''));
+$roleLine   = trim((string) ($profile['rolenm'] ?? $profile['role_name'] ?? session()->get('rolenm') ?? ''));
+$branchLine = trim((string) ($profile['branch_name'] ?? session()->get('branch_name') ?? ''));
+$branchId   = trim((string) ($profile['branchid'] ?? session()->get('branchid') ?? ''));
+$jabatanLine = trim((string) ($profile['jabatan'] ?? session()->get('jabatan') ?? ''));
+$nppVal     = trim((string) ($profile['npp'] ?? session()->get('npp') ?? ''));
 $subtitle   = $roleLine;
 if ($branchLine !== '') {
     $subtitle = trim($roleLine . ($roleLine !== '' ? ' · ' : '') . $branchLine);
 }
-$displayName = $name !== '' ? $name : 'Admin IT';
-$displayRole = $subtitle !== '' ? $subtitle : 'ADMIN IT - KANTOR PUSAT';
-$displayInitials = $initials !== '' ? $initials : 'AI';
+$displayName = $name !== '' ? $name : (session()->get('nama') ?: 'Administrator');
+$displayRole = $subtitle !== '' ? $subtitle : 'Administrator';
+$displayInitials = $initials !== '' ? $initials : 'AD';
 $badgeCount = $unreadNav > 0 ? $unreadNav : 0;
 ?>
 <!doctype html>
-<html lang="id">
+<html lang="id" class="ca-ui">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title><?= esc($title) ?> — New Scoring Credit System</title>
     <?= view('partials/assets') ?>
+    <script>
+    window.AppAuth = {
+        permissions: <?= json_encode(array_values(array_map('strval', $permissions)), JSON_UNESCAPED_UNICODE) ?>,
+        can: function (code) {
+            return Array.isArray(this.permissions) && this.permissions.indexOf(code) !== -1;
+        },
+        canViewScoreDetails: function () {
+            return this.can('scoring.view_score_details');
+        }
+    };
+    </script>
 </head>
 <body>
     <!-- BEGIN #loader -->
@@ -99,7 +144,8 @@ $badgeCount = $unreadNav > 0 ? $unreadNav : 0;
                     </button>
                 </div>
                 <a href="<?= site_url('/') ?>" class="brand-logo" title="New Scoring Credit System">
-                    <img src="<?= base_url('assets/images/logo-horizontal.png') ?>?v=<?= @filemtime(FCPATH . 'assets/images/logo-horizontal.png') ?: time() ?>" alt="New Scoring Credit System" class="brand-logo-img">
+                    <span class="brand-icon"></span>
+                    <b class="me-1">New</b> Scoring
                 </a>
             </div>
 
@@ -138,9 +184,20 @@ $badgeCount = $unreadNav > 0 ? $unreadNav : 0;
                     </a>
                     <div class="dropdown-menu dropdown-menu-end me-1">
                         <div class="px-3 py-2 border-bottom mb-1">
-                            <div class="fw-bold"><?= esc($displayName) ?></div>
-                            <div class="small text-muted"><?= esc($displayRole) ?></div>
+                            <div class="fw-bold d-flex align-items-center gap-1 mb-1">
+                                <span><?= esc($displayName) ?></span>
+                                <?php if ($nppVal !== '') : ?>
+                                    <span class="badge bg-secondary font-monospace" style="font-size:10px;"><?= esc($nppVal) ?></span>
+                                <?php endif; ?>
+                            </div>
+                            <div class="small text-muted" style="font-size:11px; line-height: 1.35;"><?= esc($roleLine ?: 'Administrator') ?></div>
+                            <?php if ($branchLine !== '') : ?>
+                                <div class="small text-theme fw-semibold mt-1 pt-1" style="font-size:11px; line-height: 1.35;">
+                                    <i class="fa fa-building me-1 opacity-75"></i><?= esc($branchLine) ?><?= $branchId !== '' ? ' (' . esc($branchId) . ')' : '' ?>
+                                </div>
+                            <?php endif; ?>
                         </div>
+
                         <a href="<?= site_url('notifications') ?>" class="dropdown-item">Notifikasi</a>
                         <div class="dropdown-divider"></div>
                         <form method="post" action="<?= site_url('logout') ?>" class="header-logout-form">
@@ -162,12 +219,18 @@ $badgeCount = $unreadNav > 0 ? $unreadNav : 0;
                             <div class="menu-profile-cover with-shadow"></div>
                             <div class="menu-profile-image avatar-initials"><?= esc($displayInitials) ?></div>
                             <div class="menu-profile-info">
-                                <div class="d-flex align-items-center">
-                                    <div class="flex-grow-1"><?= esc($displayName) ?></div>
+                                <div class="d-flex align-items-center mb-1">
+                                    <div class="flex-grow-1 text-truncate fw-bold"><?= esc($displayName) ?></div>
                                     <div class="menu-caret ms-auto"></div>
                                 </div>
-                                <small><?= esc($displayRole) ?></small>
+                                <small class="d-block text-truncate text-white-50" style="line-height: 1.4; margin-bottom: 3px;"><?= esc($roleLine ?: 'Administrator') ?></small>
+                                <?php if ($branchLine !== '') : ?>
+                                    <small class="d-block text-theme text-truncate mt-1" style="font-size: 10px; font-weight: 600; line-height: 1.4; padding-top: 1px;">
+                                        <i class="fa fa-building me-1 opacity-75"></i><?= esc($branchLine) ?><?= $branchId !== '' ? ' (' . esc($branchId) . ')' : '' ?>
+                                    </small>
+                                <?php endif; ?>
                             </div>
+
                         </a>
                         <div class="dropdown-menu w-100 mt-1">
                             <a href="<?= site_url('notifications') ?>" class="dropdown-item d-flex align-items-center gap-2 py-2">

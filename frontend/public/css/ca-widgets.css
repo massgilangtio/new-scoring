@@ -1,0 +1,580 @@
+/* Color Admin Ultimate — widget boxes / card-header-btn / solid KPI */
+
+/* ---- Solid KPI cards (override legacy .card white bg) ---- */
+#content .card.bg-blue,
+#content .card.bg-teal,
+#content .card.bg-red,
+#content .card.bg-indigo,
+#content .card.bg-orange,
+#content .card.bg-cyan,
+#content .card.bg-purple {
+  color: #fff !important;
+  border: 0 !important;
+}
+#content .card.bg-blue   { background-color: #0c83f0 !important; }
+#content .card.bg-teal   { background-color: #00acac !important; }
+#content .card.bg-red    { background-color: #ff5b57 !important; }
+#content .card.bg-indigo { background-color: #8753de !important; }
+#content .card.bg-orange { background-color: #f59c1a !important; }
+#content .card.bg-cyan   { background-color: #31b6dd !important; }
+#content .card.bg-purple { background-color: #5a69bb !important; }
+
+#content .card.bg-blue .card-body,
+#content .card.bg-teal .card-body,
+#content .card.bg-red .card-body,
+#content .card.bg-indigo .card-body,
+#content .card.bg-orange .card-body,
+#content .card.bg-cyan .card-body,
+#content .card.bg-purple .card-body {
+  color: #fff;
+}
+
+/* ---- Widget card header (ui_widget_boxes) — match CA app.min.css ---- */
+#content .card > .card-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between;
+  flex-wrap: nowrap !important;
+  gap: 0.5rem;
+  /* CA: --bs-card-cap-padding-y/x = 0.8rem / 1rem */
+  padding: var(--bs-card-cap-padding-y, 0.8rem) var(--bs-card-cap-padding-x, 1rem);
+  border-bottom: 0;
+}
+
+#content .card > .card-header.bg-gray-900,
+#content .card > .card-header[data-bs-theme="dark"] {
+  background-color: var(--bs-gray-900, #20252a) !important;
+  color: #fff;
+}
+
+#content .card > .card-header .card-header-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+/* CA: .card-header-btn { gap:.35rem; margin-top/bottom:-.8rem } */
+#content .card > .card-header .card-header-btn {
+  display: flex !important;
+  align-items: center;
+  flex: 0 0 auto !important;
+  width: auto !important;
+  gap: 0.35rem;
+  margin-top: -0.8rem;
+  margin-bottom: -0.8rem;
+  margin-inline: 0;
+}
+
+#content .card > .card-header .card-header-btn .btn {
+  flex: 0 0 auto !important;
+  white-space: nowrap;
+}
+
+/*
+ * CA owns .btn-icon.btn-xs (18×18 / 8px / radius 100px).
+ * Only neutralize hostile leftovers from legacy app.css.
+ */
+#content .card > .card-header .card-header-btn .btn.btn-icon,
+#content .card > .card-header .card-header-btn .btn.btn-icon.btn-xs {
+  min-height: 0 !important;
+  gap: 0 !important;
+}
+
+#content .card > .card-header .card-header-btn .btn.btn-icon i {
+  font-size: inherit !important;
+  line-height: 1;
+}
+
+/*
+ * CA demo ui_widget_boxes: expand = light gray + dark icon
+ * even on bg-gray-900 (not the dark-theme btn-default gray).
+ */
+#content .card > .card-header .card-header-btn .btn-default {
+  --bs-btn-color: #2d353c;
+  --bs-btn-bg: #e9ecef;
+  --bs-btn-border-color: #e9ecef;
+  --bs-btn-hover-color: #000;
+  --bs-btn-hover-bg: #dde1e5;
+  --bs-btn-hover-border-color: #dde1e5;
+  background-color: #e9ecef !important;
+  border-color: #e9ecef !important;
+  color: #2d353c !important;
+}
+
+#content .card > .card-header .d-flex > .card-header-btn {
+  margin-inline-start: 0.15rem;
+}
+
+/* ui_widget_boxes code-3 — Action btn-group in card-header */
+#content .card > .card-header > .btn-group.my-n1,
+#content .card > .card-header > .d-flex > .btn-group.my-n1 {
+  flex: 0 0 auto;
+  align-self: center;
+}
+
+#content .card > .card-header > .d-flex {
+  flex: 0 0 auto;
+}
+
+#content .card > .card-header .btn-group.my-n1 > .btn,
+#content .card > .card-header > .d-flex > .btn.btn-xs {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+/* Keep dropdown light even when card-header is data-bs-theme=dark */
+#content .card > .card-header .btn-group.my-n1 > .dropdown-menu[data-bs-theme="light"],
+#content .card > .card-header .btn-group.my-n1 > .dropdown-menu {
+  --bs-dropdown-bg: #fff;
+  --bs-dropdown-color: #212529;
+  --bs-dropdown-link-color: #212529;
+  --bs-dropdown-link-hover-bg: #f8f9fa;
+  --bs-dropdown-link-hover-color: #16181b;
+  --bs-dropdown-divider-bg: #dee2e6;
+  color: #212529;
+  background-color: #fff;
+}
+
+#content .card > .card-header .btn-group.my-n1 > .dropdown-menu .dropdown-item {
+  color: #212529;
+}
+
+/*
+ * Table column "Aksi" — Export-style split btn-group, yellow gradient.
+ */
+#content .btn-group.btn-action-group {
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+#content .btn-group.btn-action-group > .btn.btn-action-yellow {
+  --bs-btn-color: #212529;
+  --bs-btn-bg: #f59c1a;
+  --bs-btn-border-color: #d97706;
+  --bs-btn-hover-color: #212529;
+  --bs-btn-hover-bg: #fbbf24;
+  --bs-btn-hover-border-color: #b45309;
+  --bs-btn-active-color: #212529;
+  --bs-btn-active-bg: #d97706;
+  --bs-btn-active-border-color: #b45309;
+  background-image: linear-gradient(135deg, #fde68a 0%, #fbbf24 42%, #f59c1a 78%, #d97706 100%) !important;
+  background-color: #f59c1a !important;
+  border-color: #d97706 !important;
+  color: #212529 !important;
+  font-weight: 600;
+  box-shadow: 0 1px 2px rgba(217, 119, 6, 0.28);
+}
+
+#content .btn-group.btn-action-group > .btn.btn-action-yellow:hover,
+#content .btn-group.btn-action-group > .btn.btn-action-yellow:focus,
+#content .btn-group.btn-action-group > .btn.btn-action-yellow:active,
+#content .btn-group.btn-action-group > .btn.btn-action-yellow.show,
+#content .btn-group.btn-action-group > .btn.btn-action-yellow[aria-expanded="true"] {
+  background-image: linear-gradient(135deg, #fcd34d 0%, #f59c1a 55%, #b45309 100%) !important;
+  border-color: #b45309 !important;
+  color: #111827 !important;
+}
+
+#content .btn-group.btn-action-group > .btn.btn-action-yellow.dropdown-toggle {
+  padding-left: 0.35rem;
+  padding-right: 0.35rem;
+}
+
+#content .btn-group.btn-action-group > .btn.btn-action-yellow-icon {
+  padding-left: 0.45rem;
+  padding-right: 0.45rem;
+  min-width: 1.75rem;
+}
+
+#content .btn-group.btn-action-group > .btn.btn-action-yellow-icon > i {
+  font-size: 0.8rem;
+  line-height: 1;
+}
+
+#content .btn-group.btn-action-group > .dropdown-menu.dropdown-action-menu {
+  --bs-dropdown-bg: #fff;
+  --bs-dropdown-color: #212529;
+  --bs-dropdown-link-color: #212529;
+  --bs-dropdown-link-hover-bg: #fffbeb;
+  --bs-dropdown-link-hover-color: #92400e;
+  min-width: 230px;
+  padding: 8px;
+  border: 1px solid #fde68a;
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(180, 83, 9, 0.16);
+  z-index: 1070;
+}
+
+/* Legacy ellipsis trigger → same yellow look if still referenced */
+#content .btn-action-trigger {
+  width: auto;
+  min-width: 26px;
+  height: auto;
+  min-height: 24px;
+  padding: 0.15rem 0.55rem;
+  border-radius: var(--bs-border-radius-sm, 0.25rem);
+  border: 1px solid #d97706;
+  background-image: linear-gradient(135deg, #fde68a 0%, #fbbf24 42%, #f59c1a 78%, #d97706 100%);
+  background-color: #f59c1a;
+  color: #212529;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 1px 2px rgba(217, 119, 6, 0.28);
+}
+
+#content .btn-action-trigger:hover,
+#content .btn-action-trigger:focus,
+#content .btn-action-trigger[aria-expanded="true"] {
+  background-image: linear-gradient(135deg, #fcd34d 0%, #f59c1a 55%, #b45309 100%);
+  border-color: #b45309;
+  color: #111827;
+}
+
+
+/* ---- Table cards + DataTables (CA Migration Phase 4 — thin) ---- */
+#content .table-card.card-borderless {
+  background: var(--bs-card-bg, #fff);
+  border: 0;
+  border-radius: var(--bs-card-border-radius, 8px);
+  box-shadow: var(--bs-box-shadow-sm, 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075));
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+#content .card.card-borderless:has(table.dataTable),
+#content .card.card-borderless:has(.dataTables_wrapper) {
+  overflow: hidden;
+}
+
+#content .table-card > .card-body,
+#content .card > .card-body:has(> .dataTables_wrapper),
+#content .card > .card-body:has(> table) {
+  padding: var(--bs-card-spacer-y, 1rem) var(--bs-card-spacer-x, 1rem);
+}
+
+#content .card .dataTables_wrapper > .row {
+  margin-left: 0;
+  margin-right: 0;
+  --bs-gutter-x: 0.75rem;
+  --bs-gutter-y: 0.5rem;
+}
+
+#content .card .dataTables_filter {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#content .card .dataTables_filter label,
+#content .card .dataTables_length label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  font-size: var(--bs-body-font-size, 0.875rem);
+}
+
+#content .card .dataTables_filter input {
+  margin: 0 !important;
+  width: 180px !important;
+  max-width: 100%;
+  /* CA form-control height — no forced 31px */
+  height: auto;
+  min-height: calc(1.5em + 0.75rem + 2px);
+  font-size: var(--bs-body-font-size, 0.875rem);
+}
+
+#content .card .dataTables_length select {
+  width: auto !important;
+  min-width: 70px;
+  height: auto;
+  min-height: calc(1.5em + 0.75rem + 2px);
+  font-size: var(--bs-body-font-size, 0.875rem);
+}
+
+#content .card table.dataTable {
+  margin-top: 0 !important;
+  width: 100% !important;
+}
+
+/* Soft readable status / code badges in tables */
+#content .badge.bg-opacity-15.text-primary,
+#content .badge.bg-primary.bg-opacity-15 {
+  color: #084298 !important;
+  background-color: #cfe2ff !important;
+}
+#content .badge.bg-opacity-15.text-success,
+#content .badge.bg-success.bg-opacity-15,
+#content .badge.badge-active {
+  color: #0a5c44 !important;
+  background-color: #bbf7d0 !important;
+}
+#content .badge.bg-opacity-15.text-secondary,
+#content .badge.bg-secondary.bg-opacity-15,
+#content .badge.badge-inactive {
+  color: #1f2937 !important;
+  background-color: #e5e7eb !important;
+}
+
+/* ---- Filter card (Color Admin form-elements + widget boxes) ---- */
+#content .filter-card.card,
+#content .filter-card {
+  background: var(--bs-card-bg, #fff);
+  border: 0;
+  border-radius: var(--bs-border-radius, 0.375rem);
+  box-shadow: var(--bs-box-shadow-sm, 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075));
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+#content .filter-card > .card-body,
+#content .filter-card .filter-card-body {
+  padding: 1rem 1.25rem;
+}
+
+#content .filter-card .form-label {
+  font-size: var(--bs-body-font-size, 0.875rem);
+  font-weight: 600;
+  color: #575d63;
+  margin-bottom: 0.35rem;
+}
+
+/*
+ * Color Admin form-elements code-13 — keep input-group horizontal.
+ * Legacy app.css sets .form-control { width:100% } which forces wrap.
+ */
+#content .input-group.flex-nowrap {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: stretch;
+  width: 100%;
+}
+
+#content .input-group.flex-nowrap > .form-control,
+#content .input-group.flex-nowrap > .form-select {
+  width: 1% !important;
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  position: relative;
+  z-index: 1;
+}
+
+#content .input-group.flex-nowrap > .input-group-text {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: auto !important;
+  flex: 0 0 auto !important;
+  white-space: nowrap;
+  background-color: #e9ecef;
+  border: 1px solid #ced4da;
+  color: #6c757d;
+  font-size: var(--bs-body-font-size, 0.875rem);
+  padding: 0.375rem 0.75rem;
+  line-height: 1.5;
+}
+
+#content .input-group.flex-nowrap > .form-control {
+  height: calc(1.5em + 0.75rem + 2px);
+  min-height: calc(1.5em + 0.75rem + 2px);
+  padding: 0.375rem 0.75rem !important;
+  font-size: var(--bs-body-font-size, 0.875rem);
+  line-height: 1.5;
+  background-color: #fff !important;
+  border: 1px solid #ced4da;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+#content .input-group.flex-nowrap > .input-group-text:first-child {
+  border-top-left-radius: 0.375rem;
+  border-bottom-left-radius: 0.375rem;
+  border-right-width: 0;
+}
+
+#content .input-group.flex-nowrap > .input-group-text:last-child {
+  border-top-right-radius: 0.375rem;
+  border-bottom-right-radius: 0.375rem;
+  border-left-width: 0;
+}
+
+#content .input-group.flex-nowrap > .form-control:not(:first-child):not(:last-child) {
+  border-radius: 0;
+}
+
+#content .input-group.flex-nowrap > .form-control:focus {
+  z-index: 3;
+  border-color: #86b7fe;
+  box-shadow: 0 0 0 0.25rem rgba(12, 131, 240, 0.15);
+}
+
+#content .passing-score-card > .card-body {
+  padding: 1rem 1.25rem;
+}
+
+#content .passing-score-card .form-label {
+  font-size: var(--bs-body-font-size, 0.875rem);
+  font-weight: 600;
+  color: #575d63;
+  margin-bottom: 0.35rem;
+}
+
+/* form-elements code-13: seamless input-group (filter cards) */
+#content .filter-card .input-group,
+#content .filter-card .input-group.flex-nowrap {
+  flex-wrap: nowrap !important;
+  align-items: stretch;
+  width: 100%;
+}
+
+#content .filter-card .input-group > .input-group-text {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5rem;
+  padding: 0.375rem 0.75rem;
+  background-color: #e9ecef;
+  border: 1px solid #ced4da;
+  color: #6c757d;
+  font-size: var(--bs-body-font-size, 0.875rem);
+  line-height: 1.5;
+}
+
+#content .filter-card .input-group > .form-control {
+  height: calc(1.5em + 0.75rem + 2px);
+  min-height: calc(1.5em + 0.75rem + 2px);
+  padding: 0.375rem 0.75rem !important;
+  font-size: var(--bs-body-font-size, 0.875rem);
+  line-height: 1.5;
+  background-color: #fff !important;
+  border: 1px solid #ced4da;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+#content .filter-card .input-group > .input-group-text:first-child {
+  border-top-left-radius: 0.375rem;
+  border-bottom-left-radius: 0.375rem;
+  border-right: 0;
+}
+
+#content .filter-card .input-group > .form-control:not(:first-child) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+#content .filter-card .input-group > .form-control:last-child {
+  border-top-right-radius: 0.375rem;
+  border-bottom-right-radius: 0.375rem;
+}
+
+#content .filter-card .input-group > .form-control:focus {
+  z-index: 3;
+  border-color: #86b7fe;
+  box-shadow: 0 0 0 0.25rem rgba(12, 131, 240, 0.15);
+}
+
+/* Kill legacy #filterSearch overlay-icon padding inside CA input-group */
+#content .filter-card .input-group > #filterSearch,
+#content .filter-card .input-group > .form-control#filterSearch,
+#content .filter-card .input-group > input.form-control {
+  padding-left: 0.75rem !important;
+}
+
+#content .filter-card .form-select,
+#content .filter-card .select2-container .select2-selection--single {
+  height: calc(1.5em + 0.5rem + 2px) !important;
+  min-height: calc(1.5em + 0.5rem + 2px) !important;
+  font-size: 0.875rem !important;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+/*
+ * Global Select2 = form-control-sm / form-select-sm
+ * Beats leftover app.css heights (40/38/44px) under html.ca-ui.
+ */
+html.ca-ui #app .select2-container--bootstrap-5 .select2-selection,
+html.ca-ui #content .select2-container--bootstrap-5 .select2-selection,
+html.ca-ui .modal .select2-container--bootstrap-5 .select2-selection {
+  font-size: 0.875rem !important;
+  min-height: calc(1.5em + 0.5rem + 2px) !important;
+  border-radius: var(--bs-border-radius-sm, 0.25rem) !important;
+}
+
+html.ca-ui #app .select2-container--bootstrap-5 .select2-selection--single,
+html.ca-ui #content .select2-container--bootstrap-5 .select2-selection--single,
+html.ca-ui .modal .select2-container--bootstrap-5 .select2-selection--single {
+  height: calc(1.5em + 0.5rem + 2px) !important;
+  min-height: calc(1.5em + 0.5rem + 2px) !important;
+  padding: 0.25rem 2rem 0.25rem 0.5rem !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+html.ca-ui #app .select2-container--bootstrap-5 .select2-selection--single .select2-selection__rendered,
+html.ca-ui #content .select2-container--bootstrap-5 .select2-selection--single .select2-selection__rendered,
+html.ca-ui .modal .select2-container--bootstrap-5 .select2-selection--single .select2-selection__rendered {
+  padding: 0 !important;
+  line-height: 1.5 !important;
+  font-size: 0.875rem !important;
+}
+
+html.ca-ui #app .select2-container--bootstrap-5 .select2-selection--single .select2-selection__arrow,
+html.ca-ui #content .select2-container--bootstrap-5 .select2-selection--single .select2-selection__arrow,
+html.ca-ui .modal .select2-container--bootstrap-5 .select2-selection--single .select2-selection__arrow {
+  height: 100% !important;
+  top: 0 !important;
+  right: 0.5rem !important;
+  transform: none !important;
+}
+
+html.ca-ui #app .select2-container--bootstrap-5 .select2-dropdown,
+html.ca-ui .select2-container--bootstrap-5 .select2-dropdown {
+  font-size: 0.875rem !important;
+}
+
+html.ca-ui .select2-container--bootstrap-5 .select2-dropdown .select2-results__option {
+  font-size: 0.875rem !important;
+  padding: 0.25rem 0.5rem !important;
+}
+
+html.ca-ui .select2-container--bootstrap-5 .select2-search--dropdown .select2-search__field {
+  font-size: 0.875rem !important;
+  padding: 0.25rem 0.5rem !important;
+  min-height: calc(1.5em + 0.5rem + 2px) !important;
+}
+
+#content .filter-card .filter-actions,
+#content .filter-card .d-flex.flex-wrap.gap-2.mt-3 {
+  margin-top: 1rem !important;
+  gap: 0.35rem !important;
+}
+
+#content .filter-card .btn.btn-xs {
+  white-space: nowrap;
+}
+
+/* Breadcrumb cleanup */
+#content > .breadcrumb {
+  --bs-breadcrumb-divider: '/';
+}
+#content > .breadcrumb .breadcrumb-item a[href*="seantheme"] {
+  display: none !important;
+}
+
+@media (max-width: 575.98px) {
+  #content .card > .card-header .card-header-btn .btn .btn-label-full {
+    display: none;
+  }
+  #content .card .dataTables_filter input {
+    width: 100% !important;
+  }
+}

@@ -18,72 +18,35 @@ foreach ($branches as $b) {
 <div data-swal="error" data-swal-title="Terjadi Kesalahan" data-swal-message="<?= esc($error) ?>" hidden></div>
 <?php endif; ?>
 
-<!-- BEGIN KPI -->
-<div class="row mb-3">
-    <div class="col-xl-4 col-md-6">
-        <div class="card card-borderless rounded-3 overflow-hidden bg-blue" data-bs-theme="dark">
-            <div class="card-body position-relative z-3">
-                <div class="fw-bold text-white small mb-1 d-flex align-items-center gap-2">
-                    <iconify-icon icon="solar:shop-bold-duotone" class="fs-6"></iconify-icon> Total Cabang
-                </div>
-                <div class="fw-bold fs-2 text-white"><?= esc((string) $totalBranches) ?></div>
-                <div class="fw-semibold text-white text-opacity-75 small mb-0">Semua cabang terdaftar</div>
-            </div>
-            <div class="position-absolute top-0 end-0 mt-n5 ps-5 w-25">
-                <div class="w-250px h-250px bg-black bg-opacity-25 rounded-circle ms-n5 position-absolute top-0 start-0"></div>
-                <div class="w-250px h-250px bg-black bg-opacity-25 rounded-circle mt-n5 position-absolute top-0 start-0"></div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-4 col-md-6 mt-3 mt-md-0">
-        <div class="card card-borderless rounded-3 overflow-hidden bg-teal" data-bs-theme="dark">
-            <div class="card-body position-relative z-3">
-                <div class="fw-bold text-white small mb-1 d-flex align-items-center gap-2">
-                    <iconify-icon icon="solar:check-circle-bold-duotone" class="fs-6"></iconify-icon> Aktif
-                </div>
-                <div class="fw-bold fs-2 text-white"><?= esc((string) $activeBranches) ?></div>
-                <div class="fw-semibold text-white text-opacity-75 small mb-0">Cabang berstatus aktif</div>
-            </div>
-            <div class="position-absolute top-0 end-0 mt-n5 ps-5 w-25">
-                <div class="w-250px h-250px bg-black bg-opacity-25 rounded-circle ms-n5 position-absolute top-0 start-0"></div>
-                <div class="w-250px h-250px bg-black bg-opacity-25 rounded-circle mt-n5 position-absolute top-0 start-0"></div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-4 col-md-12 mt-3 mt-xl-0">
-        <div class="card card-borderless rounded-3 overflow-hidden bg-red" data-bs-theme="dark">
-            <div class="card-body position-relative z-3">
-                <div class="fw-bold text-white small mb-1 d-flex align-items-center gap-2">
-                    <iconify-icon icon="solar:close-circle-bold-duotone" class="fs-6"></iconify-icon> Nonaktif
-                </div>
-                <div class="fw-bold fs-2 text-white"><?= esc((string) max(0, $totalBranches - $activeBranches)) ?></div>
-                <div class="fw-semibold text-white text-opacity-75 small mb-0">Cabang nonaktif</div>
-            </div>
-            <div class="position-absolute top-0 end-0 mt-n5 ps-5 w-25">
-                <div class="w-250px h-250px bg-black bg-opacity-25 rounded-circle ms-n5 position-absolute top-0 start-0"></div>
-                <div class="w-250px h-250px bg-black bg-opacity-25 rounded-circle mt-n5 position-absolute top-0 start-0"></div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- END KPI -->
+<?= view('partials/kpi_solid', ['items' => [
+    ['label' => 'Total Cabang', 'value' => $totalBranches, 'sub' => 'Semua cabang terdaftar', 'tone' => 'blue', 'icon' => 'solar:shop-bold-duotone'],
+    ['label' => 'Aktif', 'value' => $activeBranches, 'sub' => 'Cabang berstatus aktif', 'tone' => 'teal', 'icon' => 'solar:check-circle-bold-duotone'],
+    ['label' => 'Nonaktif', 'value' => max(0, $totalBranches - $activeBranches), 'sub' => 'Cabang nonaktif', 'tone' => 'red', 'icon' => 'solar:close-circle-bold-duotone'],
+]]) ?>
 
 <!-- BEGIN table card -->
-<div class="card card-borderless">
+<div class="card card-borderless table-card">
     <div class="card-header bg-gray-900" data-bs-theme="dark">
         <h4 class="card-header-title text-white mb-0">
             <iconify-icon icon="solar:buildings-bold-duotone" class="me-1"></iconify-icon>
             Daftar Cabang
         </h4>
-        <div class="card-header-btn">
-            <button type="button" class="btn btn-theme btn-sm" data-bs-toggle="modal" data-bs-target="#createBranchModal">
-                <i class="fa fa-plus me-1"></i> Tambah Cabang
+        <div class="card-header-btn d-flex align-items-center gap-2">
+            <form method="post" action="<?= site_url('master/branches/sync') ?>" class="d-inline m-0" id="syncBranchForm">
+                <?= csrf_field() ?>
+                <button type="submit" class="btn btn-warning btn-xs text-dark fw-semibold" id="btnSyncBranch" title="Tarik dan perbarui data cabang dari Core Banking Gateway">
+                    <i class="fa fa-rotate me-1"></i><span class="btn-label-full"> Sinkronkan dari Core Gateway</span>
+                </button>
+            </form>
+            <button type="button" class="btn btn-theme btn-xs" data-bs-toggle="modal" data-bs-target="#createBranchModal">
+                <i class="fa fa-plus me-1"></i><span class="btn-label-full"> Tambah Cabang</span>
             </button>
+            <?= view('partials/card_widget_btn', ['wrap' => false]) ?>
         </div>
+
     </div>
-    <div class="card-body p-0">
-        <div class="table-responsive">
-            <table id="branchesTable" class="table table-hover table-striped align-middle mb-0">
+    <div class="card-body">
+            <table id="branchesTable" class="table table-hover table-striped align-middle mb-0 w-100">
                 <thead>
                     <tr>
                         <th style="width:50px;">No</th>
@@ -116,16 +79,27 @@ foreach ($branches as $b) {
                             <?php endif; ?>
                         </td>
                         <td class="text-center">
-                            <button type="button"
-                                    class="btn btn-default btn-xs btn-icon btn-edit-branch"
-                                    data-id="<?= esc($branch['id']) ?>"
-                                    data-code="<?= esc($branch['code']) ?>"
-                                    data-name="<?= esc($branch['name']) ?>"
-                                    data-is-active="<?= ! empty($branch['is_active']) ? '1' : '0' ?>"
-                                    data-bs-toggle="modal" data-bs-target="#editBranchModal"
-                                    title="Edit Cabang">
-                                <i class="fa fa-pen"></i>
-                            </button>
+                            <?php
+                            ob_start();
+                            ?>
+                                    <li>
+                                        <button type="button"
+                                                class="dropdown-action-item btn-edit-branch"
+                                                data-id="<?= esc($branch['id']) ?>"
+                                                data-code="<?= esc($branch['code']) ?>"
+                                                data-name="<?= esc($branch['name']) ?>"
+                                                data-is-active="<?= ! empty($branch['is_active']) ? '1' : '0' ?>"
+                                                data-bs-toggle="modal" data-bs-target="#editBranchModal">
+                                            <span class="action-icon-circle action-icon-blue"><i class="fa-solid fa-pen"></i></span>
+                                            <div class="action-text-group">
+                                                <span class="action-title">Edit Cabang</span>
+                                                <span class="action-desc">Ubah kode, nama, atau status</span>
+                                            </div>
+                                        </button>
+                                    </li>
+                            <?php
+                            echo view('partials/action_dropdown_btn', ['menuHtml' => ob_get_clean()]);
+                            ?>
                         </td>
                     </tr>
                     <?php endforeach; ?>
@@ -136,7 +110,6 @@ foreach ($branches as $b) {
                     <?php endif; ?>
                 </tbody>
             </table>
-        </div>
     </div>
 </div>
 <!-- END table card -->
@@ -242,6 +215,10 @@ $(document).ready(function () {
         $('#edit_branch_code').val($btn.data('code'));
         $('#edit_branch_name').val($btn.data('name'));
         $('#edit_branch_is_active').prop('checked', $btn.data('is-active') === 1 || $btn.data('is-active') === '1');
+    });
+
+    $('#syncBranchForm').on('submit', function () {
+        App.btnLoading($('#btnSyncBranch'), 'Menyinkronkan...');
     });
 
     $('#createBranchForm').on('submit', function () {

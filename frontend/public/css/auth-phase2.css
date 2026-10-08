@@ -1,4 +1,8 @@
-/* Phase 2 — Auth (Color Admin auth_with_image) + MFA overlay */
+/*
+ * Auth — Color Admin auth_with_image + MFA overlay
+ * CA Migration Phase 6: brand media + MFA logic chrome only.
+ * Typography/buttons/forms from CA app.min.css (Noto Sans / 0.875rem).
+ */
 
 .auth-brand-logo {
   display: block;
@@ -70,7 +74,7 @@
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
   background: var(--bs-component-bg, #fff);
-  border-radius: 0.75rem;
+  border-radius: var(--bs-border-radius-lg, 12px);
   box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.35);
 }
 
@@ -137,7 +141,7 @@
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  font-size: 0.85rem;
+  font-size: var(--bs-body-font-size, 0.875rem);
   font-weight: 600;
   color: rgba(var(--bs-body-color-rgb), 0.45);
 }
@@ -206,7 +210,7 @@
   grid-template-columns: 1.5rem 28px 1fr;
   gap: 0.55rem;
   align-items: start;
-  font-size: 0.875rem;
+  font-size: var(--bs-body-font-size, 0.875rem);
 }
 
 .mfa-guide li span {
@@ -233,7 +237,7 @@
   display: flex;
   gap: 0.6rem;
   align-items: flex-start;
-  font-size: 0.85rem;
+  font-size: var(--bs-body-font-size, 0.875rem);
   color: rgba(var(--bs-body-color-rgb), 0.7);
   margin: 1rem 0;
 }
@@ -249,9 +253,10 @@
 
 .mfa-ghost,
 .mfa-next {
-  border-radius: 0.5rem;
+  border-radius: var(--bs-border-radius, 8px);
   padding: 0.65rem 1rem;
   font-weight: 600;
+  font-size: var(--bs-body-font-size, 0.875rem);
   border: 1px solid transparent;
 }
 
@@ -291,8 +296,9 @@
   text-align: center;
   font-size: 1.35rem;
   font-weight: 700;
+  font-family: var(--bs-font-sans-serif, "Noto Sans", sans-serif);
   border: 1px solid rgba(var(--bs-body-color-rgb), 0.18);
-  border-radius: 0.55rem;
+  border-radius: var(--bs-border-radius, 8px);
   background: #fff;
 }
 
@@ -307,7 +313,7 @@
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  font-size: 0.85rem;
+  font-size: var(--bs-body-font-size, 0.875rem);
   margin-bottom: 0.4rem;
 }
 

@@ -71,16 +71,84 @@ class Access extends BaseController
         if ($denied = $this->allowed($profile, 'access.users')) {
             return $denied;
         }
-        $userid = trim((string) $this->request->getPost('userid') ?: '1776');
+        $userid = trim((string) $this->request->getPost('userid'));
         $kondisi = trim((string) $this->request->getPost('kondisi') ?: '');
-        $result = $this->client()->post('/api/v1/access/userhris/sync', [
-            'userid' => $userid,
+        $payload = [
             'kondisi' => $kondisi,
-        ], $this->token());
+        ];
+        if ($userid !== '') {
+            $payload['userid'] = $userid;
+        }
+        $result = $this->client()->post('/api/v1/access/userhris/sync', $payload, $this->token());
 
         return redirect()->to('/access/users')->with(
             ($result['rcode'] ?? '') === '00' ? 'message' : 'error',
             (string) ($result['message'] ?? 'Sinkronisasi selesai')
+        );
+    }
+
+    public function resetUserMfa()
+    {
+        $profile = $this->profile();
+        if ($denied = $this->allowed($profile, 'access.users')) {
+            return $denied;
+        }
+        $userId = trim((string) $this->request->getPost('user_id'));
+        $userid = trim((string) $this->request->getPost('userid'));
+
+        if ($userId !== '' && ctype_digit($userId)) {
+            $endpoint = '/api/v1/access/users/' . $userId . '/reset-mfa';
+        } elseif ($userid !== '') {
+            $endpoint = '/api/v1/access/userhris/' . urlencode($userid) . '/reset-mfa';
+        } else {
+            return redirect()->to('/access/users')->with('error', 'ID pengguna tidak valid');
+        }
+
+        $result = $this->client()->post($endpoint, [], $this->token());
+        $isOk = ($result['rcode'] ?? '') === '00';
+        $msg = (string) ($result['message'] ?? ($isOk ? 'Secret key berhasil direset' : 'Gagal mereset secret key'));
+
+        if ($this->request->isAJAX()) {
+            return $this->response->setJSON([
+                'ok'      => $isOk,
+                'message' => $msg,
+            ]);
+        }
+
+        return redirect()->to('/access/users')->with(
+            $isOk ? 'message' : 'error',
+            $msg
+        );
+    }
+
+    public function toggleUserMfa()
+    {
+        $profile = $this->profile();
+        if ($denied = $this->allowed($profile, 'access.users')) {
+            return $denied;
+        }
+        $userid = trim((string) $this->request->getPost('userid'));
+        $stsauth = (int) $this->request->getPost('stsauth');
+
+        if ($userid === '') {
+            return redirect()->to('/access/users')->with('error', 'ID pengguna tidak valid');
+        }
+
+        $endpoint = '/api/v1/access/userhris/' . urlencode($userid) . '/toggle-mfa';
+        $result = $this->client()->post($endpoint, ['stsauth' => $stsauth], $this->token());
+        $isOk = ($result['rcode'] ?? '') === '00';
+        $msg = (string) ($result['message'] ?? ($isOk ? 'Status MFA berhasil diubah' : 'Gagal mengubah status MFA'));
+
+        if ($this->request->isAJAX()) {
+            return $this->response->setJSON([
+                'ok'      => $isOk,
+                'message' => $msg,
+            ]);
+        }
+
+        return redirect()->to('/access/users')->with(
+            $isOk ? 'message' : 'error',
+            $msg
         );
     }
 
@@ -148,18 +216,36 @@ class Access extends BaseController
         ]);
     }
 
+    public function syncJobGroups()
+    {
+        $profile = $this->profile();
+        if ($denied = $this->allowed($profile, 'access.users')) {
+            return $denied;
+        }
+        $result = $this->client()->post('/api/v1/access/job-groups/sync', [], $this->token());
+
+        return redirect()->to('/access/job-groups')->with(
+            ($result['rcode'] ?? '') === '00' ? 'message' : 'error',
+            (string) ($result['message'] ?? 'Sinkronisasi kelompok jabatan selesai')
+        );
+    }
+
     public function storeJobGroup()
     {
         $profile = $this->profile();
         if ($denied = $this->allowed($profile, 'access.users')) {
             return $denied;
         }
-        $result = $this->client()->post('/api/v1/access/job-groups', [
-            'code'      => trim((string) $this->request->getPost('code')),
-            'name'      => trim((string) $this->request->getPost('name')),
-            'role_id'   => (int) $this->request->getPost('role_id'),
-            'is_active' => $this->request->getPost('is_active') === '1',
-        ], $this->token());
+        $roleId = trim((string) $this->request->getPost('role_id'));
+        $payload = [
+            'id_kel_jabatan'   => trim((string) $this->request->getPost('id_kel_jabatan')),
+            'nama_kel_jabatan' => trim((string) $this->request->getPost('nama_kel_jabatan')),
+            'is_active'        => $this->request->getPost('is_active') === '1',
+        ];
+        if ($roleId !== '') {
+            $payload['role_id'] = (int) $roleId;
+        }
+        $result = $this->client()->post('/api/v1/access/job-groups', $payload, $this->token());
 
         return redirect()->to('/access/job-groups')->with(
             ($result['rcode'] ?? '') === '00' ? 'message' : 'error',
@@ -173,11 +259,14 @@ class Access extends BaseController
         if ($denied = $this->allowed($profile, 'access.users')) {
             return $denied;
         }
-        $result = $this->client()->patch('/api/v1/access/job-groups/' . $id, [
-            'name'      => trim((string) $this->request->getPost('name')),
-            'role_id'   => (int) $this->request->getPost('role_id'),
-            'is_active' => $this->request->getPost('is_active') === '1',
-        ], $this->token());
+        $roleId = trim((string) $this->request->getPost('role_id'));
+        $payload = [
+            'nama_kel_jabatan' => trim((string) $this->request->getPost('nama_kel_jabatan')),
+            'is_active'        => $this->request->getPost('is_active') === '1',
+        ];
+        $payload['role_id'] = $roleId !== '' ? (int) $roleId : null;
+
+        $result = $this->client()->patch('/api/v1/access/job-groups/' . $id, $payload, $this->token());
 
         return redirect()->to('/access/job-groups')->with(
             ($result['rcode'] ?? '') === '00' ? 'message' : 'error',

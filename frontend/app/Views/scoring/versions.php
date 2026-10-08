@@ -53,18 +53,34 @@
                         </td>
                         <td class="text-muted" style="font-size:13px;"><?= esc($item['activated_at'] ?? '-') ?></td>
                         <td class="text-center">
-                            <div class="table-actions justify-content-center">
-                                <a href="<?= site_url('scoring/versions/' . $item['id']) ?>"
-                                   class="btn btn-sm btn-outline-primary">
-                                    <i class="fa-solid fa-eye me-1"></i> Detail
-                                </a>
-                                <form class="form-copy" method="post" action="<?= site_url('scoring/versions/' . $item['id'] . '/copy') ?>">
-                                    <?= csrf_field() ?>
-                                    <button type="button" class="btn btn-sm btn-light btn-copy" title="Salin ke Draft Baru">
-                                        <i class="fa-solid fa-copy"></i>
-                                    </button>
-                                </form>
-                            </div>
+                            <?php
+                            ob_start();
+                            ?>
+                                    <li>
+                                        <a href="<?= site_url('scoring/versions/' . $item['id']) ?>" class="dropdown-action-item">
+                                            <span class="action-icon-circle action-icon-green"><i class="fa-solid fa-eye"></i></span>
+                                            <div class="action-text-group">
+                                                <span class="action-title">Detail</span>
+                                                <span class="action-desc">Lihat konfigurasi versi</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider my-1"></li>
+                                    <li>
+                                        <form class="form-copy m-0 p-0" method="post" action="<?= site_url('scoring/versions/' . $item['id'] . '/copy') ?>">
+                                            <?= csrf_field() ?>
+                                            <button type="button" class="dropdown-action-item btn-copy">
+                                                <span class="action-icon-circle action-icon-orange"><i class="fa-solid fa-copy"></i></span>
+                                                <div class="action-text-group">
+                                                    <span class="action-title">Salin Draft</span>
+                                                    <span class="action-desc">Salin ke versi draft baru</span>
+                                                </div>
+                                            </button>
+                                        </form>
+                                    </li>
+                            <?php
+                            echo view('partials/action_dropdown_btn', ['menuHtml' => ob_get_clean()]);
+                            ?>
                         </td>
                     </tr>
                     <?php endforeach; ?>

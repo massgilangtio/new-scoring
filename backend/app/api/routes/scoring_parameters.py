@@ -12,6 +12,7 @@ from sqlalchemy.orm import Session
 from app.api.deps import current_user, get_db
 from app.api.errors import ApiError
 from app.models.tables import (
+    ApproverAssignment,
     Branch,
     CreditScoring,
     CreditScoringDetail,
@@ -25,11 +26,15 @@ from app.models.tables import (
     Role,
     RolePermission,
     Permission,
+    ScoringSnapshot,
+    ScoringSnapshotLine,
+    ScoringTransaction,
+    ScoringVersion,
     SystemSetting,
     User,
 )
 from app.services.audit import write_audit
-from app.services.authorization import has_permission
+from app.services.authorization import can_view_score_details, has_permission
 
 router = APIRouter(prefix="/api/v1/scoring/parameters", tags=["scoring-parameters"])
 
@@ -45,6 +50,116 @@ def _get_default_passing_score(db: Session) -> Decimal:
         return Decimal(str(setting.setting_value))
     except Exception:
         return DEFAULT_PASSING_SCORE_FALLBACK
+
+
+def _ensure_active_version(db: Session, product_id: int, actor: User) -> ScoringVersion:
+    """Ensure product has an active ScoringVersion so credit flow can bridge into list/approvals/reports."""
+    version = db.scalar(
+        select(ScoringVersion).where(
+            ScoringVersion.product_id == product_id,
+            ScoringVersion.status == "active",
+        )
+    )
+    if version is not None:
+        return version
+    max_no = db.scalar(
+        select(func.coalesce(func.max(ScoringVersion.version_no), 0)).where(
+            ScoringVersion.product_id == product_id
+        )
+    ) or 0
+    version = ScoringVersion(
+        product_id=product_id,
+        version_no=int(max_no) + 1,
+        status="active",
+        activated_at=datetime.now(),
+        created_by=actor.id,
+    )
+    db.add(version)
+    db.flush()
+    return version
+
+
+def _bridge_credit_to_transaction(
+    db: Session,
+    *,
+    actor: User,
+    scoring: CreditScoring,
+    details: list[dict[str, Any]],
+    send_to_supervisor: bool,
+) -> ScoringTransaction:
+    """Mirror credit_scorings into scoring_transactions so Daftar/Approval/Laporan stay usable."""
+    version = _ensure_active_version(db, scoring.product_id, actor)
+    branch_id = scoring.branch_id or actor.branch_id
+    if branch_id is None:
+        raise ApiError(400, "01", "Cabang transaksi tidak dapat ditentukan")
+
+    if scoring.status == "waiting_duplicate_approval":
+        status = "waiting_duplicate_approval"
+        assigned = scoring.supervisor_id
+        revision = 1
+    elif send_to_supervisor and scoring.supervisor_id:
+        status = "submitted"
+        assigned = scoring.supervisor_id
+        revision = 1
+    else:
+        status = "draft"
+        assigned = None
+        revision = 0
+
+    transaction = ScoringTransaction(
+        transaction_no=f"TMP-{uuid.uuid4().hex}",
+        debtor_id=scoring.debtor_id,
+        product_id=scoring.product_id,
+        scoring_version_id=version.id,
+        branch_id=branch_id,
+        branchid=scoring.branchid,
+        status=status,
+        duplicate_reason=scoring.duplicate_reason,
+        created_by=actor.id,
+        assigned_approver_id=assigned,
+        current_revision=revision,
+    )
+    db.add(transaction)
+    db.flush()
+    transaction.transaction_no = scoring.scoring_no
+
+    if revision >= 1:
+        snapshot = ScoringSnapshot(
+            transaction_id=transaction.id,
+            revision_no=revision,
+            scoring_version_id=version.id,
+            total_score=scoring.total_score,
+            threshold_id=None,
+            result_label=scoring.eligibility_status,
+            threshold_min=scoring.passing_score,
+            threshold_max=None,
+            calculated_by=actor.id,
+        )
+        db.add(snapshot)
+        db.flush()
+        for idx, item in enumerate(details):
+            db.add(
+                ScoringSnapshotLine(
+                    snapshot_id=snapshot.id,
+                    parameter_name=item["parameter_name"],
+                    option_label=item["sub_parameter_desc"] or item["sub_parameter_code"],
+                    value=item["value"],
+                    weight=item["weight"],
+                    line_score=item["total"],
+                    display_order=idx + 1,
+                )
+            )
+        if assigned:
+            db.add(
+                ApproverAssignment(
+                    transaction_id=transaction.id,
+                    revision_no=revision,
+                    approver_id=assigned,
+                    reason="Ditugaskan saat pengajuan scoring kredit",
+                    assigned_by=actor.id,
+                )
+            )
+    return transaction
 
 
 def _resolve_mapping_passing_score(db: Session, mapping: ProductParameterMapping | None) -> Decimal:
@@ -109,10 +224,11 @@ class DebtorUpdateData(BaseModel):
 class ScoringChoiceItem(BaseModel):
     parameter_name: str
     sub_parameter_code: str
-    sub_parameter_desc: str
-    weight: Decimal
-    value: Decimal
-    total: Decimal
+    sub_parameter_desc: str = ""
+    # Optional — server resolves trusted values from product mapping items.
+    weight: Decimal | None = None
+    value: Decimal | None = None
+    total: Decimal | None = None
 
 
 class SaveCreditScoringBody(BaseModel):
@@ -120,12 +236,14 @@ class SaveCreditScoringBody(BaseModel):
     debtor_data: DebtorUpdateData | None = None
     product_id: int
     mapping_id: int | None = None
-    total_score: Decimal
+    total_score: Decimal | None = None  # ignored — recalculated server-side from mapping items
     passing_score: Decimal | None = None  # ignored — resolved from product mapping / global setting
     details: list[ScoringChoiceItem] = Field(default_factory=list)
     send_to_supervisor: bool = False
     supervisor_id: int | None = None
     notes: str | None = None
+    branchid: str | None = None
+    duplicate_reason: str | None = None
 
 
 class PassingScoreSettingBody(BaseModel):
@@ -211,7 +329,14 @@ def create_master_parameter(
             )
         )
 
-    write_audit(db, actor, "scoring.master_parameter_created", object_type="master_parameter", object_id=str(param.id))
+    write_audit(
+        db,
+        actor,
+        "scoring.master_parameter_created",
+        object_type="master_parameter",
+        object_id=str(param.id),
+        after_data={"name": param.name, "sub_parameters_count": len(body.sub_parameters)},
+    )
     db.commit()
 
     return {"rcode": "00", "message": "Konfigurasi parameter berhasil disimpan", "result": {"id": param.id}}
@@ -228,6 +353,7 @@ def update_master_parameter(
     if param is None:
         raise ApiError(404, "01", "Parameter tidak ditemukan")
 
+    before_name = param.name
     param.name = body.name.strip()
     param.updated_at = datetime.now()
 
@@ -249,7 +375,15 @@ def update_master_parameter(
             )
         )
 
-    write_audit(db, actor, "scoring.master_parameter_updated", object_type="master_parameter", object_id=str(param.id))
+    write_audit(
+        db,
+        actor,
+        "scoring.master_parameter_updated",
+        object_type="master_parameter",
+        object_id=str(param.id),
+        before_data={"name": before_name},
+        after_data={"name": param.name, "sub_parameters_count": len(body.sub_parameters)},
+    )
     db.commit()
 
     return {"rcode": "00", "message": "Konfigurasi parameter berhasil diperbarui", "result": {"id": param.id}}
@@ -267,7 +401,14 @@ def delete_master_parameter(
 
     param.is_active = False
     param.updated_at = datetime.now()
-    write_audit(db, actor, "scoring.master_parameter_deleted", object_type="master_parameter", object_id=str(param.id))
+    write_audit(
+        db,
+        actor,
+        "scoring.master_parameter_deleted",
+        object_type="master_parameter",
+        object_id=str(param.id),
+        before_data={"name": param.name},
+    )
     db.commit()
 
     return {"rcode": "00", "message": "Parameter berhasil dihapus", "result": {}}
@@ -485,7 +626,18 @@ def create_mapping(
             )
         )
 
-    write_audit(db, actor, "scoring.mapping_created", object_type="product_parameter_mapping", object_id=str(mapping.id))
+    write_audit(
+        db,
+        actor,
+        "scoring.mapping_created",
+        object_type="product_parameter_mapping",
+        object_id=str(mapping.id),
+        after_data={
+            "product_id": mapping.product_id,
+            "version_name": mapping.version_name,
+            "items_count": len(body.items),
+        },
+    )
     db.commit()
 
     return {"rcode": "00", "message": "Mapping Parameter & Produk berhasil disimpan", "result": {"id": mapping.id}}
@@ -526,9 +678,17 @@ def delete_mapping(
     if mapping is None:
         raise ApiError(404, "01", "Mapping tidak ditemukan")
 
+    before_info = {"product_id": mapping.product_id, "version_name": mapping.version_name}
     db.execute(delete(ProductParameterMappingItem).where(ProductParameterMappingItem.mapping_id == mapping.id))
     db.delete(mapping)
-    write_audit(db, actor, "scoring.mapping_deleted", object_type="product_parameter_mapping", object_id=str(mapping.id))
+    write_audit(
+        db,
+        actor,
+        "scoring.mapping_deleted",
+        object_type="product_parameter_mapping",
+        object_id=str(mapping.id),
+        before_data=before_info,
+    )
     db.commit()
 
     return {"rcode": "00", "message": "Mapping berhasil dihapus", "result": {}}
@@ -594,7 +754,18 @@ def update_mapping(
             )
         )
 
-    write_audit(db, actor, "scoring.mapping_updated", object_type="product_parameter_mapping", object_id=str(mapping.id))
+    write_audit(
+        db,
+        actor,
+        "scoring.mapping_updated",
+        object_type="product_parameter_mapping",
+        object_id=str(mapping.id),
+        after_data={
+            "product_id": mapping.product_id,
+            "version_name": mapping.version_name,
+            "items_count": len(body.items),
+        },
+    )
     db.commit()
 
     return {"rcode": "00", "message": "Mapping Parameter & Produk berhasil diperbarui", "result": {"id": mapping.id}}
@@ -698,33 +869,40 @@ def get_product_mapping_items(
     ).all()
 
     # Group sub parameters by parameter_name
+    can_view = can_view_score_details(db, actor)
     grouped: dict[str, list] = {}
     for item in items:
         if item.parameter_name not in grouped:
             grouped[item.parameter_name] = []
-        grouped[item.parameter_name].append({
+        row = {
             "id": item.id,
             "code": item.code,
             "description": item.description,
-            "weight": _number(item.weight),
-            "value": _number(item.value),
-            "total": _number(item.total),
-        })
+        }
+        if can_view:
+            row["weight"] = _number(item.weight)
+            row["value"] = _number(item.value)
+            row["total"] = _number(item.total)
+        grouped[item.parameter_name].append(row)
 
     parameters = [
         {"name": name, "sub_parameters": subs}
         for name, subs in grouped.items()
     ]
 
+    result_body: dict[str, Any] = {
+        "mapping_id": mapping.id,
+        "version_name": mapping.version_name,
+        "parameters": parameters,
+        "can_view_score_details": can_view,
+    }
+    if can_view:
+        result_body["passing_score"] = _number(_resolve_mapping_passing_score(db, mapping))
+
     return {
         "rcode": "00",
         "message": "Parameter mapping berhasil ditampilkan",
-        "result": {
-            "mapping_id": mapping.id,
-            "version_name": mapping.version_name,
-            "passing_score": _number(_resolve_mapping_passing_score(db, mapping)),
-            "parameters": parameters,
-        },
+        "result": result_body,
     }
 
 
@@ -733,10 +911,7 @@ def list_supervisors(
     actor: User = Depends(current_user),
     db: Session = Depends(get_db),
 ) -> dict:
-    # Query users that have role approver or permissions for approval
-    roles = db.scalars(select(Role).where(Role.code.in_(["approver", "supervisor", "pimunit"]))).all()
-    role_ids = [r.id for r in roles]
-
+    # Approver candidates only (permission scoring.approve)
     users = db.scalars(
         select(User)
         .where(User.is_active.is_(True))
@@ -745,20 +920,154 @@ def list_supervisors(
 
     items = []
     for u in users:
-        # Include users that have approver role or permission
-        r = db.get(Role, u.role_id)
-        has_appr = (u.role_id in role_ids) or has_permission(db, u, "scoring.approve") or has_permission(db, u, "scoring.assign")
-        if has_appr:
+        # Only users who can approve (Approver) — not assign-only Administrator
+        if has_permission(db, u, "scoring.approve"):
+            r = db.get(Role, u.role_id)
             b = db.get(Branch, u.branch_id)
+            role_name = (r.name if r else "Approver") or "Approver"
+            branch_name = b.name if b else "-"
             items.append({
                 "id": u.id,
                 "full_name": u.full_name,
                 "username": u.username,
-                "role_name": r.name if r else "Supervisi",
-                "branch_name": b.name if b else "-",
+                "role_name": role_name,
+                "branch_name": branch_name,
+                "label": f"{u.full_name} — {role_name} · {branch_name}",
             })
 
-    return {"rcode": "00", "message": "Daftar supervisi berhasil ditampilkan", "result": {"items": items}}
+    return {"rcode": "00", "message": "Daftar Approver berhasil ditampilkan", "result": {"items": items}}
+
+
+@router.get("/credit/debtor-history/{debtor_id}")
+def debtor_scoring_history(
+    debtor_id: int,
+    actor: User = Depends(current_user),
+    db: Session = Depends(get_db),
+) -> dict:
+    statement = (
+        select(CreditScoring, Product)
+        .join(Product, Product.id == CreditScoring.product_id)
+        .where(CreditScoring.debtor_id == debtor_id)
+        .order_by(CreditScoring.id.desc())
+    )
+    rows = db.execute(statement).all()
+    items = []
+    seen_nos = set()
+    for cs, prod in rows:
+        formatted_score = str(int(round(float(cs.total_score)))) if cs.total_score is not None else "-"
+        seen_nos.add(cs.scoring_no)
+        items.append({
+            "id": cs.id,
+            "scoring_no": cs.scoring_no,
+            "product_id": prod.id,
+            "product_code": prod.code,
+            "product_name": prod.name,
+            "total_score": formatted_score,
+            "eligibility_status": cs.eligibility_status,
+            "status": cs.status,
+            "created_at": cs.created_at.strftime("%d-%m-%Y %H:%M") if cs.created_at else "-",
+        })
+
+    # Include ScoringTransaction rows for this debtor
+    tx_rows = db.execute(
+        select(ScoringTransaction, Product, ScoringSnapshot)
+        .join(Product, Product.id == ScoringTransaction.product_id)
+        .outerjoin(ScoringSnapshot, ScoringSnapshot.transaction_id == ScoringTransaction.id)
+        .where(ScoringTransaction.debtor_id == debtor_id)
+        .order_by(ScoringTransaction.id.desc())
+    ).all()
+    for tx, prod, sn in tx_rows:
+        if tx.transaction_no not in seen_nos:
+            score_val = "-"
+            if sn and sn.total_score is not None:
+                score_val = str(int(round(float(sn.total_score))))
+            items.append({
+                "id": tx.id,
+                "scoring_no": tx.transaction_no,
+                "product_id": prod.id,
+                "product_code": prod.code,
+                "product_name": prod.name,
+                "total_score": score_val,
+                "eligibility_status": sn.result_label if sn and sn.result_label else ("LAYAK" if score_val != "-" and int(score_val) >= 350 else "-"),
+                "status": tx.status,
+                "created_at": tx.created_at.strftime("%d-%m-%Y %H:%M") if tx.created_at else "-",
+            })
+
+    return {"rcode": "00", "message": "Riwayat scoring debitur berhasil ditampilkan", "result": items}
+
+
+@router.get("/credit/check-duplicate")
+def check_duplicate(
+    debtor_id: int,
+    product_id: int,
+    actor: User = Depends(current_user),
+    db: Session = Depends(get_db),
+) -> dict:
+    priors_cs = db.scalars(
+        select(CreditScoring)
+        .where(CreditScoring.debtor_id == debtor_id, CreditScoring.product_id == product_id)
+        .order_by(CreditScoring.id.desc())
+    ).all()
+
+    prior_items = []
+    for cs in priors_cs:
+        formatted_score = str(int(round(float(cs.total_score)))) if cs.total_score is not None else "-"
+        prior_items.append({
+            "id": cs.id,
+            "scoring_no": cs.scoring_no,
+            "total_score": formatted_score,
+            "eligibility_status": cs.eligibility_status,
+            "status": cs.status,
+            "created_at": cs.created_at.strftime("%d-%m-%Y %H:%M") if cs.created_at else "-",
+        })
+
+    if not prior_items:
+        priors_tx = db.scalars(
+            select(ScoringTransaction)
+            .where(ScoringTransaction.debtor_id == debtor_id, ScoringTransaction.product_id == product_id)
+            .order_by(ScoringTransaction.id.desc())
+        ).all()
+        for tx in priors_tx:
+            prior_items.append({
+                "id": tx.id,
+                "scoring_no": tx.transaction_no,
+                "total_score": "-",
+                "eligibility_status": "-",
+                "status": tx.status,
+                "created_at": tx.created_at.strftime("%d-%m-%Y %H:%M") if tx.created_at else "-",
+            })
+
+    # Also fetch all other products the debtor has ever applied for
+    other_scorings = db.execute(
+        select(CreditScoring, Product)
+        .join(Product, Product.id == CreditScoring.product_id)
+        .where(CreditScoring.debtor_id == debtor_id)
+        .order_by(CreditScoring.id.desc())
+    ).all()
+    all_history = []
+    for cs, prod in other_scorings:
+        all_history.append({
+            "scoring_no": cs.scoring_no,
+            "product_name": prod.name,
+            "product_code": prod.code,
+            "total_score": str(int(round(float(cs.total_score)))) if cs.total_score is not None else "-",
+            "eligibility_status": cs.eligibility_status,
+            "status": cs.status,
+            "created_at": cs.created_at.strftime("%d-%m-%Y") if cs.created_at else "-",
+        })
+
+    is_duplicate = len(prior_items) > 0
+    return {
+        "rcode": "00",
+        "message": "Cek duplikasi berhasil",
+        "result": {
+            "is_duplicate": is_duplicate,
+            "count": len(prior_items),
+            "prior_scoring": prior_items[0] if prior_items else None,
+            "prior_scorings": prior_items,
+            "debtor_all_history": all_history,
+        },
+    }
 
 
 @router.post("/credit/save")
@@ -800,9 +1109,41 @@ def save_credit_scoring(
             )
             .order_by(ProductParameterMapping.id.desc())
         ).first()
+    if mapping is None:
+        raise ApiError(400, "01", "Produk belum memiliki mapping parameter aktif")
     cutoff = _resolve_mapping_passing_score(db, mapping)
 
-    eligibility_status = "LAYAK" if Decimal(str(body.total_score)) >= cutoff else "TIDAK LAYAK"
+    # Resolve trusted weight/value/total from mapping items (ignore client score fields)
+    mapping_items = db.scalars(
+        select(ProductParameterMappingItem).where(ProductParameterMappingItem.mapping_id == mapping.id)
+    ).all()
+    item_by_code = {(row.parameter_name, row.code): row for row in mapping_items}
+
+    resolved_details: list[dict[str, Any]] = []
+    total_score = Decimal("0")
+    for choice in body.details:
+        key = (choice.parameter_name, choice.sub_parameter_code)
+        mapped = item_by_code.get(key)
+        if mapped is None:
+            raise ApiError(
+                400,
+                "01",
+                f"Pilihan parameter tidak valid: {choice.parameter_name} / {choice.sub_parameter_code}",
+            )
+        line_total = Decimal(str(mapped.total))
+        total_score += line_total
+        resolved_details.append(
+            {
+                "parameter_name": mapped.parameter_name,
+                "sub_parameter_code": mapped.code,
+                "sub_parameter_desc": mapped.description or choice.sub_parameter_desc,
+                "weight": Decimal(str(mapped.weight)),
+                "value": Decimal(str(mapped.value)),
+                "total": line_total,
+            }
+        )
+
+    eligibility_status = "LAYAK" if total_score >= cutoff else "TIDAK LAYAK"
 
     # 3. Generate scoring transaction number
     today_str = datetime.now().strftime("%Y%m%d")
@@ -812,37 +1153,75 @@ def save_credit_scoring(
     ) or 0
     scoring_no = f"SCR-{today_str}-{(count_today + 1):04d}"
 
-    status = "submitted_to_supervisor" if body.send_to_supervisor else "draft"
+    # Check for duplicate scoring history on same debtor & product
+    prior_count = db.scalar(
+        select(func.count(CreditScoring.id)).where(
+            CreditScoring.debtor_id == debtor.id,
+            CreditScoring.product_id == body.product_id,
+        )
+    ) or 0
+    if prior_count == 0:
+        prior_count = db.scalar(
+            select(func.count(ScoringTransaction.id)).where(
+                ScoringTransaction.debtor_id == debtor.id,
+                ScoringTransaction.product_id == body.product_id,
+            )
+        ) or 0
+
+    is_duplicate = prior_count > 0
+    dup_reason = (body.duplicate_reason or "").strip() or None
+
+    # If duplicate detected, transaction enters waiting_duplicate_approval
+    if is_duplicate:
+        status = "waiting_duplicate_approval"
+    elif body.send_to_supervisor:
+        status = "submitted_to_supervisor"
+    else:
+        status = "draft"
+
+    actor_branch = db.get(Branch, actor.branch_id) if actor.branch_id else None
+    resolved_branchid = str(body.branchid or (actor_branch.code if actor_branch else "")).strip() or None
 
     scoring = CreditScoring(
         scoring_no=scoring_no,
         debtor_id=debtor.id,
         product_id=body.product_id,
-        mapping_id=body.mapping_id,
-        total_score=body.total_score,
+        mapping_id=mapping.id,
+        total_score=total_score,
         passing_score=cutoff,
         eligibility_status=eligibility_status,
         status=status,
+        duplicate_reason=dup_reason,
         supervisor_id=body.supervisor_id if body.send_to_supervisor else None,
         notes=body.notes,
         created_by=actor.id,
         branch_id=debtor.branch_id or actor.branch_id,
+        branchid=resolved_branchid,
     )
     db.add(scoring)
     db.flush()
 
-    for item in body.details:
+    for item in resolved_details:
         db.add(
             CreditScoringDetail(
                 scoring_id=scoring.id,
-                parameter_name=item.parameter_name,
-                sub_parameter_code=item.sub_parameter_code,
-                sub_parameter_desc=item.sub_parameter_desc,
-                weight=item.weight,
-                value=item.value,
-                total=item.total,
+                parameter_name=item["parameter_name"],
+                sub_parameter_code=item["sub_parameter_code"],
+                sub_parameter_desc=item["sub_parameter_desc"],
+                weight=item["weight"],
+                value=item["value"],
+                total=item["total"],
             )
         )
+
+    # Bridge into scoring_transactions so Daftar Scoring / Approval / Laporan remain connected
+    bridged = _bridge_credit_to_transaction(
+        db,
+        actor=actor,
+        scoring=scoring,
+        details=resolved_details,
+        send_to_supervisor=bool(body.send_to_supervisor),
+    )
 
     # 4. If sent to supervisor, create notification
     if body.send_to_supervisor and body.supervisor_id:
@@ -852,9 +1231,9 @@ def save_credit_scoring(
                 event_type="sent_to_approver",
                 channel="in_app",
                 title="Pengajuan Scoring Kredit Baru",
-                body=f"Pengajuan scoring kredit {scoring_no} ({eligibility_status}) untuk debitur {debtor.full_name} menunggu persetujuan Anda.",
-                object_type="credit_scoring",
-                object_id=scoring.id,
+                body=f"Pengajuan scoring kredit {scoring_no} menunggu persetujuan Anda.",
+                object_type="scoring_transaction",
+                object_id=bridged.id,
             )
         )
 
@@ -867,23 +1246,55 @@ def save_credit_scoring(
         after_data={
             "scoring_no": scoring_no,
             "status": status,
-            "total_score": str(body.total_score),
+            "total_score": str(total_score),
             "passing_score": str(cutoff),
             "eligibility_status": eligibility_status,
             "supervisor_id": body.supervisor_id,
+            "bridged_transaction_id": bridged.id,
         },
     )
+
+    if is_duplicate:
+        write_audit(
+            db,
+            actor,
+            "scoring.duplicate_permission_requested",
+            object_type="credit_scoring",
+            object_id=str(scoring.id),
+            reason=dup_reason,
+            after_data={
+                "scoring_no": scoring_no,
+                "status": status,
+                "duplicate_reason": dup_reason,
+                "supervisor_id": body.supervisor_id,
+                "bridged_transaction_id": bridged.id,
+            },
+        )
     db.commit()
+
+    can_view = can_view_score_details(db, actor)
+    result_body: dict[str, Any] = {
+        "id": scoring.id,
+        "scoring_no": scoring_no,
+        "status": status,
+        "transaction_id": bridged.id,
+        "can_view_score_details": can_view,
+    }
+    if can_view:
+        result_body["total_score"] = str(total_score)
+        result_body["passing_score"] = str(cutoff)
+        result_body["eligibility_status"] = eligibility_status
+
+    message = "Scoring kredit berhasil disimpan"
+    if can_view:
+        message = f"Scoring kredit berhasil disimpan ({eligibility_status})"
+    if body.send_to_supervisor:
+        message += " dan dikirim ke Approver"
+    else:
+        message += " sebagai draft"
 
     return {
         "rcode": "00",
-        "message": f"Scoring kredit berhasil disimpan ({eligibility_status})" + (" dan dikirim ke Supervisi" if body.send_to_supervisor else " sebagai draft"),
-        "result": {
-            "id": scoring.id,
-            "scoring_no": scoring_no,
-            "status": status,
-            "total_score": str(body.total_score),
-            "passing_score": str(cutoff),
-            "eligibility_status": eligibility_status,
-        },
+        "message": message,
+        "result": result_body,
     }

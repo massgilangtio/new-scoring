@@ -14,13 +14,14 @@ router = APIRouter(prefix="/api/v1/dashboard", tags=["dashboard"])
 
 STATUS_LABELS = {
     "draft": "Draft",
+    "waiting_duplicate_approval": "Menunggu Izin Pengajuan Ulang",
     "submitted": "Menunggu keputusan",
     "waiting_for_approver_assignment": "Menunggu penugasan",
     "approved": "Disetujui",
     "returned": "Dikembalikan",
     "rejected": "Ditolak",
 }
-IN_PROGRESS = ("draft", "submitted", "waiting_for_approver_assignment", "returned")
+IN_PROGRESS = ("draft", "waiting_duplicate_approval", "submitted", "waiting_for_approver_assignment", "returned")
 MONTHS = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"]
 
 

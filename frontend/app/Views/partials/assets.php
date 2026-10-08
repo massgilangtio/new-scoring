@@ -19,15 +19,19 @@
 <!-- SweetAlert2 CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.4/dist/sweetalert2.min.css">
 
-<!-- Legacy page styles (content only) + Phase 1 shell + Phase 3 dashboard overrides -->
+<!-- App CSS (legacy chrome quarantined) + CA shell/widgets + Phase 3 quarantine -->
+<!-- NOTE: css/app-legacy.css is NOT loaded (old sidebar/topbar island) -->
 <link rel="stylesheet" href="<?= base_url('css/app.css') ?>?v=<?= @filemtime(FCPATH . 'css/app.css') ?: time() ?>">
 <link rel="stylesheet" href="<?= base_url('css/shell-phase1.css') ?>?v=<?= @filemtime(FCPATH . 'css/shell-phase1.css') ?: time() ?>">
+<link rel="stylesheet" href="<?= base_url('css/ca-widgets.css') ?>?v=<?= @filemtime(FCPATH . 'css/ca-widgets.css') ?: time() ?>">
+<link rel="stylesheet" href="<?= base_url('css/ca-phase3-quarantine.css') ?>?v=<?= @filemtime(FCPATH . 'css/ca-phase3-quarantine.css') ?: time() ?>">
 <link rel="stylesheet" href="<?= base_url('css/dash-phase3.css') ?>?v=<?= @filemtime(FCPATH . 'css/dash-phase3.css') ?: time() ?>">
 <link rel="stylesheet" href="<?= base_url('css/master-phase4.css') ?>?v=<?= @filemtime(FCPATH . 'css/master-phase4.css') ?: time() ?>">
 <link rel="stylesheet" href="<?= base_url('css/access-phase5.css') ?>?v=<?= @filemtime(FCPATH . 'css/access-phase5.css') ?: time() ?>">
 <link rel="stylesheet" href="<?= base_url('css/scoring-phase6.css') ?>?v=<?= @filemtime(FCPATH . 'css/scoring-phase6.css') ?: time() ?>">
 <link rel="stylesheet" href="<?= base_url('css/transactions-phase7.css') ?>?v=<?= @filemtime(FCPATH . 'css/transactions-phase7.css') ?: time() ?>">
 <link rel="stylesheet" href="<?= base_url('css/approvals-phase8.css') ?>?v=<?= @filemtime(FCPATH . 'css/approvals-phase8.css') ?: time() ?>">
+<link rel="stylesheet" href="<?= base_url('css/reports-phase9.css') ?>?v=<?= @filemtime(FCPATH . 'css/reports-phase9.css') ?: time() ?>">
 <link rel="stylesheet" href="<?= base_url('css/form-wizards.css') ?>?v=<?= @filemtime(FCPATH . 'css/form-wizards.css') ?: time() ?>">
 
 <!-- Iconify (Color Admin icons) -->

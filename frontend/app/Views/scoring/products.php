@@ -60,9 +60,21 @@
                             <td><span class="product-code"><?= esc($product['code']) ?></span></td>
                             <td class="fw-semibold"><?= esc($product['name']) ?></td>
                             <td class="text-center">
-                                <a href="<?= site_url('scoring/products/' . $product['id']) ?>" class="btn btn-sm btn-outline-primary">
-                                    <i class="fa-solid fa-code-branch me-1"></i> Lihat Versi
-                                </a>
+                                <?php
+                                ob_start();
+                                ?>
+                                        <li>
+                                            <a href="<?= site_url('scoring/products/' . $product['id']) ?>" class="dropdown-action-item">
+                                                <span class="action-icon-circle action-icon-blue"><i class="fa-solid fa-code-branch"></i></span>
+                                                <div class="action-text-group">
+                                                    <span class="action-title">Lihat Versi</span>
+                                                    <span class="action-desc">Kelola versi scoring produk</span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                <?php
+                                echo view('partials/action_dropdown_btn', ['menuHtml' => ob_get_clean()]);
+                                ?>
                             </td>
                         </tr>
                         <?php endif; ?>

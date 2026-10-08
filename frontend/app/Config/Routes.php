@@ -9,13 +9,17 @@ $routes->post('login', 'Auth::authenticate');
 $routes->get('mfa', 'Auth::mfa');
 $routes->post('mfa', 'Auth::confirm');
 $routes->post('login/cancel-mfa', 'Auth::cancelMfa');
+$routes->post('login/reset-mfa', 'Auth::resetMfa');
 $routes->post('logout', 'Auth::logout', ['filter' => 'sessionauth']);
 $routes->get('access/users', 'Access::users', ['filter' => 'sessionauth']);
 $routes->post('access/users', 'Access::storeUser', ['filter' => 'sessionauth']);
 $routes->post('access/users/sync-hris', 'Access::syncUserHris', ['filter' => 'sessionauth']);
+$routes->post('access/users/reset-mfa', 'Access::resetUserMfa', ['filter' => 'sessionauth']);
+$routes->post('access/users/toggle-mfa', 'Access::toggleUserMfa', ['filter' => 'sessionauth']);
 $routes->post('access/users/(:num)', 'Access::updateUser/$1', ['filter' => 'sessionauth']);
 $routes->get('access/job-groups', 'Access::jobGroups', ['filter' => 'sessionauth']);
 $routes->post('access/job-groups', 'Access::storeJobGroup', ['filter' => 'sessionauth']);
+$routes->post('access/job-groups/sync', 'Access::syncJobGroups', ['filter' => 'sessionauth']);
 $routes->post('access/job-groups/(:num)', 'Access::updateJobGroup/$1', ['filter' => 'sessionauth']);
 $routes->get('access/roles', 'Access::roles', ['filter' => 'sessionauth']);
 $routes->post('access/roles', 'Access::storeRole', ['filter' => 'sessionauth']);
@@ -25,6 +29,7 @@ $routes->post('access/roles/(:num)/permissions', 'Access::savePermissions/$1', [
 $routes->get('access/permissions', 'Access::permissions', ['filter' => 'sessionauth']);
 $routes->get('master/branches', 'Master::branches', ['filter' => 'sessionauth']);
 $routes->post('master/branches', 'Master::storeBranch', ['filter' => 'sessionauth']);
+$routes->post('master/branches/sync', 'Master::syncBranches', ['filter' => 'sessionauth']);
 $routes->post('master/branches/(:num)', 'Master::updateBranch/$1', ['filter' => 'sessionauth']);
 $routes->get('master/products/datatables', 'Master::productsDatatables', ['filter' => 'sessionauth']);
 $routes->get('master/products', 'Master::products', ['filter' => 'sessionauth']);
@@ -47,6 +52,8 @@ $routes->get('scoring/mapping/(:num)', 'ScoringConfig::mappingDetail/$1', ['filt
 $routes->post('scoring/mapping/(:num)/update', 'ScoringConfig::updateMapping/$1', ['filter' => 'sessionauth']);
 $routes->post('scoring/mapping/(:num)/delete', 'ScoringConfig::deleteMapping/$1', ['filter' => 'sessionauth']);
 $routes->get('scoring/credit', 'ScoringConfig::creditScoring', ['filter' => 'sessionauth']);
+$routes->get('scoring/credit/check-duplicate', 'ScoringConfig::checkDuplicate', ['filter' => 'sessionauth']);
+$routes->get('scoring/credit/debtor-history/(:num)', 'ScoringConfig::debtorHistory/$1', ['filter' => 'sessionauth']);
 $routes->get('scoring/credit/mapping-items/(:num)', 'ScoringConfig::creditMappingItems/$1', ['filter' => 'sessionauth']);
 $routes->post('scoring/credit/save', 'ScoringConfig::saveCreditScoring', ['filter' => 'sessionauth']);
 
@@ -73,6 +80,8 @@ $routes->get('approvals', 'Approvals::index', ['filter' => 'sessionauth']);
 $routes->get('approvals/(:num)', 'Approvals::show/$1', ['filter' => 'sessionauth']);
 $routes->post('approvals/(:num)/assign', 'Approvals::assign/$1', ['filter' => 'sessionauth']);
 $routes->post('approvals/(:num)/decide', 'Approvals::decide/$1', ['filter' => 'sessionauth']);
+$routes->post('approvals/duplicate/(:num)/approve', 'Approvals::duplicateApprove/$1', ['filter' => 'sessionauth']);
+$routes->post('approvals/duplicate/(:num)/reject', 'Approvals::duplicateReject/$1', ['filter' => 'sessionauth']);
 $routes->get('rescore', 'Rescore::index', ['filter' => 'sessionauth']);
 $routes->post('rescore', 'Rescore::create', ['filter' => 'sessionauth']);
 $routes->post('rescore/(:num)/approve', 'Rescore::approve/$1', ['filter' => 'sessionauth']);
@@ -87,6 +96,7 @@ $routes->get('reports/products', 'Reports::products', ['filter' => 'sessionauth'
 $routes->get('reports/changes/datatables', 'Reports::changesDatatables', ['filter' => 'sessionauth']);
 $routes->get('reports/changes', 'Reports::changes', ['filter' => 'sessionauth']);
 $routes->get('audit/datatables', 'AuditTrail::datatables', ['filter' => 'sessionauth']);
+$routes->get('audit/detail/(:num)', 'AuditTrail::detail/$1', ['filter' => 'sessionauth']);
 $routes->get('audit', 'AuditTrail::index', ['filter' => 'sessionauth']);
 
 $routes->get('notifications', 'Notifications::index', ['filter' => 'sessionauth']);

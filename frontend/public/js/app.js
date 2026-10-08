@@ -370,6 +370,9 @@
         theme: 'bootstrap-5',
         width: '100%',
         allowClear: false,
+        /* Match Bootstrap form-select-sm / form-control-sm */
+        selectionCssClass: 'select2--small',
+        dropdownCssClass: 'select2--small',
         language: {
             noResults: function () { return 'Tidak ada pilihan.'; },
             searching: function () { return 'Mencari...'; },
@@ -585,27 +588,72 @@
             }
         });
 
-        /* ─── Universal Click-to-Copy Handler (.btn-copy-inline) ────
-           Menyalin teks yang ada di atribut data-clipboard ke clipboard
-           dengan feedback visual icon checkmark dan toast notification.
+        /* ─── Universal Click-to-Copy Handler (.btn-copy-inline, [data-clipboard]) ────
+           Menyalin angka/kode/teks ke clipboard secara universal di semua browser
+           (mendukung HTTPS navigator.clipboard dan HTTP fallback textarea execCommand)
+           dengan feedback visual icon checkmark hijau dan toast SweetAlert2.
         */
-        $(document).on('click', '.btn-copy-inline', function (e) {
+        $(document).on('click', '.btn-copy-inline, [data-clipboard], .btn-copy-num', function (e) {
             e.preventDefault();
             e.stopPropagation();
-            var $btn = $(this);
-            var text = $btn.attr('data-clipboard');
+            var $btn = $(this).closest('.btn-copy-inline, [data-clipboard], .btn-copy-num');
+            var text = $btn.attr('data-clipboard') || $btn.data('clipboard');
+            if (text === undefined || text === null || text === '') {
+                var target = $btn.data('copy-target');
+                if (target && $(target).length) {
+                    text = $(target).text().trim();
+                } else {
+                    var $near = $btn.siblings('.font-monospace, code, .badge, strong, span').first();
+                    if ($near.length) {
+                        text = $near.text().trim();
+                    } else {
+                        text = $btn.parent().clone().children('button, .btn').remove().end().text().trim();
+                    }
+                }
+            }
+            text = String(text || '').trim();
             if (!text) return;
 
             var originalHtml = $btn.html();
 
             function showCopySuccess() {
-                $btn.addClass('copied').html('<i class="fa-solid fa-check"></i>');
-                if (window.App && typeof App.toastSuccess === 'function') {
+                $btn.addClass('copied').html('<i class="fa fa-check text-success"></i>');
+                if (window.Swal && typeof Swal.fire === 'function') {
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Tersalin: ' + text,
+                        showConfirmButton: false,
+                        timer: 1500,
+                        timerProgressBar: true
+                    });
+                } else if (window.App && typeof App.toastSuccess === 'function') {
                     App.toastSuccess('Berhasil disalin: ' + text);
                 }
                 setTimeout(function () {
                     $btn.removeClass('copied').html(originalHtml);
                 }, 1500);
+            }
+
+            function fallbackCopy(val) {
+                var textArea = document.createElement("textarea");
+                textArea.value = val;
+                textArea.style.position = "fixed";
+                textArea.style.top = "-9999px";
+                textArea.style.left = "-9999px";
+                textArea.style.opacity = "0";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    textArea.setSelectionRange(0, 99999);
+                } catch (e) {}
+                try {
+                    document.execCommand('copy');
+                } catch (err) {}
+                document.body.removeChild(textArea);
+                showCopySuccess();
             }
 
             if (navigator.clipboard && window.isSecureContext) {
@@ -614,17 +662,6 @@
                 });
             } else {
                 fallbackCopy(text);
-            }
-
-            function fallbackCopy(val) {
-                var $temp = $('<input>');
-                $('body').append($temp);
-                $temp.val(val).select();
-                try {
-                    document.execCommand('copy');
-                } catch (err) {}
-                $temp.remove();
-                showCopySuccess();
             }
         });
 
@@ -637,6 +674,100 @@
             if (!$(this).parent().is('body')) {
                 $(this).appendTo('body');
             }
+        });
+
+        /* Export split btn-group: print-only pages (no Excel item in menu) */
+        $(document).on('click', '#btnExportQuick', function () {
+            var $group = $(this).closest('.btn-group.my-n1');
+            if ($group.length && !$group.find('#btnExportExcel').length) {
+                window.print();
+            }
+        });
+        $(document).on('click', '#btnExportPdf', function () {
+            var $group = $(this).closest('.btn-group.my-n1');
+            if ($group.length && !$group.find('#btnExportExcel').length) {
+                window.print();
+            }
+        });
+
+        /* Color Admin ui_widget_boxes — card expand / reload / collapse / remove */
+        $(document).on('click', '[data-toggle="card-expand"]', function (e) {
+            e.preventDefault();
+            var $card = $(this).closest('.card');
+            var $icon = $(this).find('i');
+            $card.toggleClass('card-expand');
+            if ($card.hasClass('card-expand')) {
+                $icon.removeClass('fa-expand').addClass('fa-compress');
+                $('body').addClass('overflow-hidden');
+            } else {
+                $icon.removeClass('fa-compress').addClass('fa-expand');
+                if (!$('.card.card-expand').length) {
+                    $('body').removeClass('overflow-hidden');
+                }
+            }
+        });
+
+        $(document).on('click', '[data-toggle="card-reload"]', function (e) {
+            e.preventDefault();
+            var $btn = $(this);
+            var $icon = $btn.find('i');
+            var $card = $btn.closest('.card');
+            $icon.addClass('fa-spin');
+            var $table = $card.find('table').filter(function () {
+                return $.fn.DataTable && $.fn.DataTable.isDataTable(this);
+            }).first();
+            if ($table.length) {
+                $table.DataTable().ajax.reload(function () {
+                    $icon.removeClass('fa-spin');
+                }, false);
+            } else {
+                setTimeout(function () { $icon.removeClass('fa-spin'); }, 500);
+            }
+        });
+
+        $(document).on('click', '[data-toggle="card-collapse"]', function (e) {
+            e.preventDefault();
+            var $btn = $(this);
+            var $icon = $btn.find('i');
+            var $card = $btn.closest('.card');
+            var $filter = $card.find('#filterCollapse').first();
+            var $target = $filter.length
+                ? $filter
+                : $card.children('.card-body, .list-group, .collapse').first();
+
+            if (!$target.length) return;
+
+            if ($target.hasClass('collapse') && typeof bootstrap !== 'undefined' && bootstrap.Collapse) {
+                bootstrap.Collapse.getOrCreateInstance($target[0]).toggle();
+                var willShow = !$target.hasClass('show');
+                $icon.toggleClass('fa-minus', willShow).toggleClass('fa-plus', !willShow);
+                return;
+            }
+
+            $target.slideToggle(200, function () {
+                var visible = $target.is(':visible');
+                $icon.toggleClass('fa-minus', visible).toggleClass('fa-plus', !visible);
+            });
+        });
+
+        $(document).on('click', '[data-toggle="card-remove"]', function (e) {
+            e.preventDefault();
+            var $card = $(this).closest('.card');
+            if ($card.hasClass('card-expand')) {
+                $('body').removeClass('overflow-hidden');
+            }
+            $card.slideUp(200, function () {
+                $(this).addClass('d-none').show();
+            });
+        });
+
+        /* Keep filter collapse icons in sync when opened via other controls */
+        $(document).on('show.bs.collapse', '#filterCollapse', function () {
+            $(this).closest('.card').find('[data-toggle="card-collapse"] i')
+                .removeClass('fa-plus').addClass('fa-minus');
+        }).on('hide.bs.collapse', '#filterCollapse', function () {
+            $(this).closest('.card').find('[data-toggle="card-collapse"] i')
+                .removeClass('fa-minus').addClass('fa-plus');
         });
 
     }); // end document.ready

@@ -19,47 +19,11 @@ $otherCount = max(0, $totalRescore - $waitingApproval);
 <div data-swal="error" data-swal-title="Terjadi Kesalahan" data-swal-message="<?= esc($error) ?>" hidden></div>
 <?php endif; ?>
 
-<div class="row mb-3">
-    <div class="col-xl-4 col-md-4">
-        <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-info bg-gradient-to-blue overflow-hidden" data-bs-theme="dark">
-            <div class="card-body position-relative z-3">
-                <div class="mb-2 fw-bold text-white">Total Permintaan</div>
-                <div class="h2 mb-4"><?= esc((string) $totalRescore) ?></div>
-                <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:100%;"></div></div>
-                <div class="small fw-semibold text-white text-opacity-75 mb-n1">Semua scoring ulang</div>
-            </div>
-            <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
-                <iconify-icon icon="solar:refresh-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-4 col-md-4 mt-3 mt-md-0">
-        <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-orange bg-gradient-to-pink overflow-hidden" data-bs-theme="dark">
-            <div class="card-body position-relative z-3">
-                <div class="mb-2 fw-bold text-white">Menunggu Approval</div>
-                <div class="h2 mb-4"><?= esc((string) $waitingApproval) ?></div>
-                <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:<?= $totalRescore > 0 ? (int) round($waitingApproval / $totalRescore * 100) : 0 ?>%;"></div></div>
-                <div class="small fw-semibold text-white text-opacity-75 mb-n1">Perlu diputuskan</div>
-            </div>
-            <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
-                <iconify-icon icon="solar:hourglass-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-4 col-md-4 mt-3 mt-md-0">
-        <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-teal bg-gradient-to-green overflow-hidden" data-bs-theme="dark">
-            <div class="card-body position-relative z-3">
-                <div class="mb-2 fw-bold text-white">Lainnya</div>
-                <div class="h2 mb-4"><?= esc((string) $otherCount) ?></div>
-                <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:<?= $totalRescore > 0 ? (int) round($otherCount / $totalRescore * 100) : 0 ?>%;"></div></div>
-                <div class="small fw-semibold text-white text-opacity-75 mb-n1">Approved / selesai</div>
-            </div>
-            <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
-                <iconify-icon icon="solar:check-circle-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
-            </div>
-        </div>
-    </div>
-</div>
+<?= view('partials/kpi_solid', ['items' => [
+    ['label' => 'Total Permintaan', 'value' => $totalRescore, 'sub' => 'Semua scoring ulang', 'tone' => 'blue', 'icon' => 'solar:refresh-bold-duotone'],
+    ['label' => 'Menunggu Approval', 'value' => $waitingApproval, 'sub' => 'Perlu diputuskan', 'tone' => 'orange', 'icon' => 'solar:hourglass-bold-duotone'],
+    ['label' => 'Lainnya', 'value' => $otherCount, 'sub' => 'Approved / selesai', 'tone' => 'teal', 'icon' => 'solar:check-circle-bold-duotone'],
+]]) ?>
 
 <?php if (in_array('scoring.submit', $profile['permissions'] ?? [], true)) : ?>
 <div class="card card-borderless mb-3">
@@ -68,6 +32,12 @@ $otherCount = max(0, $totalRescore - $waitingApproval);
             <iconify-icon icon="solar:plain-2-bold-duotone" class="me-1"></iconify-icon>
             Ajukan Scoring Ulang
         </h4>
+        <div class="card-header-btn">
+            <button type="button" id="btnRescore" class="btn btn-theme btn-xs" form="rescoreForm">
+                <i class="fa fa-paper-plane me-1"></i><span class="btn-label-full"> Kirim Permintaan</span>
+            </button>
+            <?= view('partials/card_widget_btn', ['wrap' => false]) ?>
+        </div>
     </div>
     <div class="card-body">
         <form id="rescoreForm" method="post" action="<?= site_url('rescore') ?>">
@@ -99,11 +69,6 @@ $otherCount = max(0, $totalRescore - $waitingApproval);
                            placeholder="Alasan pengajuan scoring ulang" required>
                 </div>
             </div>
-            <div class="mt-3">
-                <button type="button" id="btnRescore" class="btn btn-theme">
-                    <i class="fa fa-paper-plane me-1"></i> Kirim Permintaan
-                </button>
-            </div>
         </form>
     </div>
 </div>
@@ -115,10 +80,10 @@ $otherCount = max(0, $totalRescore - $waitingApproval);
             <iconify-icon icon="solar:clipboard-list-bold-duotone" class="me-1"></iconify-icon>
             Daftar Permintaan
         </h4>
+        <?= view('partials/card_widget_btn') ?>
     </div>
-    <div class="card-body p-0">
-        <div class="table-responsive">
-            <table id="rescoreTable" class="table table-hover table-striped align-middle mb-0">
+    <div class="card-body">
+            <table id="rescoreTable" class="table table-hover table-striped align-middle mb-0 w-100">
                 <thead>
                     <tr>
                         <th>Debitur</th>
@@ -139,12 +104,26 @@ $otherCount = max(0, $totalRescore - $waitingApproval);
                         </td>
                         <td class="text-center">
                             <?php if (($item['status'] ?? '') === 'waiting_approval' && in_array('scoring.approve', $profile['permissions'] ?? [], true)) : ?>
-                            <form class="approve-form" method="post" action="<?= site_url('rescore/' . $item['id'] . '/approve') ?>">
-                                <?= csrf_field() ?>
-                                <button type="button" class="btn btn-theme btn-sm btn-approve">
-                                    <i class="fa fa-circle-check me-1"></i> Setujui
-                                </button>
-                            </form>
+                            <?php
+                            ob_start();
+                            ?>
+                                    <li>
+                                        <form class="approve-form m-0 p-0" method="post" action="<?= site_url('rescore/' . $item['id'] . '/approve') ?>">
+                                            <?= csrf_field() ?>
+                                            <button type="button" class="dropdown-action-item btn-approve">
+                                                <span class="action-icon-circle action-icon-green"><i class="fa-solid fa-circle-check"></i></span>
+                                                <div class="action-text-group">
+                                                    <span class="action-title">Setujui</span>
+                                                    <span class="action-desc">Setujui permintaan scoring ulang</span>
+                                                </div>
+                                            </button>
+                                        </form>
+                                    </li>
+                            <?php
+                            echo view('partials/action_dropdown_btn', ['menuHtml' => ob_get_clean()]);
+                            ?>
+                            <?php else : ?>
+                            <span class="text-muted small">—</span>
                             <?php endif; ?>
                         </td>
                     </tr>
@@ -156,7 +135,6 @@ $otherCount = max(0, $totalRescore - $waitingApproval);
                     <?php endif; ?>
                 </tbody>
             </table>
-        </div>
     </div>
 </div>
 

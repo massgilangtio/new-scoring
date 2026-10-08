@@ -15,6 +15,26 @@ class Home extends BaseController
             return redirect()->to('/login')->with('error', (string) ($result['message'] ?? 'Sesi tidak berlaku'));
         }
 
+        $user = $result['result'] ?? [];
+        session()->set([
+            'npp'              => (string) ($user['npp'] ?? $user['username'] ?? ''),
+            'nama'             => (string) ($user['nama'] ?? $user['full_name'] ?? ''),
+            'jabatan'          => (string) ($user['jabatan'] ?? ''),
+            'rolenm'           => (string) ($user['rolenm'] ?? $user['role_name'] ?? ''),
+            'roleid'           => (string) ($user['roleid'] ?? ''),
+            'branchid'         => (string) ($user['branchid'] ?? ''),
+            'id_unit_kerja'    => (string) ($user['id_unit_kerja'] ?? ''),
+            'nm_unit_kerja'    => (string) ($user['nm_unit_kerja'] ?? ''),
+            'id_kel_jabatan'   => (string) ($user['id_kel_jabatan'] ?? ''),
+            'nama_kel_jabatan' => (string) ($user['nama_kel_jabatan'] ?? ''),
+            'username'         => (string) ($user['username'] ?? ''),
+            'full_name'        => (string) ($user['full_name'] ?? $user['nama'] ?? ''),
+            'role_name'        => (string) ($user['role_name'] ?? $user['rolenm'] ?? ''),
+            'branch_name'      => (string) ($user['branch_name'] ?? ''),
+            'permissions'      => $user['permissions'] ?? [],
+            'user'             => $user,
+        ]);
+
         $token = (string) session()->get('access_token');
         $period = trim((string) $this->request->getGet('period'));
         $dashboardPath = '/api/v1/dashboard' . ($period !== '' ? '?period=' . rawurlencode($period) : '');

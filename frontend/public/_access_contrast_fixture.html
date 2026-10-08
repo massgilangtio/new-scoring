@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Access contrast fixture</title>
+  <link href="assets/color-admin/css/vendor.min.css" rel="stylesheet">
+  <link href="assets/color-admin/css/default/app.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/access-phase5.css">
+</head>
+<body>
+<div id="content" class="app-content p-4" style="margin-left:0;background:#f2f3f4;min-height:100vh;">
+  <div class="card card-borderless table-card">
+    <div class="card-header bg-gray-900" data-bs-theme="dark">
+      <h4 class="card-header-title text-white mb-0">Daftar User</h4>
+      <div class="card-header-btn">
+        <button type="button" class="btn btn-theme btn-xs"><i class="fa fa-plus"></i><span class="ms-1">Tambah User</span></button>
+      </div>
+    </div>
+    <div class="card-body">
+      <table id="usersTable" class="table table-hover table-striped align-middle w-100 mb-0">
+        <thead>
+          <tr>
+            <th>No</th><th>Pengguna</th><th>Role</th><th>Cabang</th><th class="text-center">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-muted">1</td>
+            <td>
+              <div class="d-flex align-items-center gap-2">
+                <span class="user-avatar tone-1">AI</span>
+                <div>
+                  <div class="user-meta-name">Admin IT</div>
+                  <div class="user-meta-user">admin.ti</div>
+                </div>
+              </div>
+            </td>
+            <td><span class="badge access-badge access-badge-role">Admin IT</span></td>
+            <td>KANTOR PUSAT</td>
+            <td class="text-center"><span class="badge access-badge access-badge-active">Aktif</span></td>
+          </tr>
+          <tr>
+            <td class="text-muted">2</td>
+            <td>
+              <div class="d-flex align-items-center gap-2">
+                <span class="user-avatar tone-2">AS</span>
+                <div>
+                  <div class="user-meta-name">Approval Scoring</div>
+                  <div class="user-meta-user">approval.scoring</div>
+                </div>
+              </div>
+            </td>
+            <td><span class="badge access-badge access-badge-role">Approval Scoring</span></td>
+            <td>KANTOR PUSAT</td>
+            <td class="text-center"><span class="badge access-badge access-badge-active">Aktif</span></td>
+          </tr>
+          <tr>
+            <td class="text-muted">3</td>
+            <td>
+              <div class="d-flex align-items-center gap-2">
+                <span class="user-avatar tone-3">RS</span>
+                <div>
+                  <div class="user-meta-name">Reviewer Scoring</div>
+                  <div class="user-meta-user">reviewer.scoring</div>
+                </div>
+              </div>
+            </td>
+            <td><span class="badge access-badge access-badge-role">Reviewer Scoring</span></td>
+            <td>KANTOR PUSAT</td>
+            <td class="text-center"><span class="badge access-badge access-badge-inactive">Nonaktif</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body>
+</html>

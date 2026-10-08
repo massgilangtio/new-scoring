@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Phase 9 Preview — Reports + Audit</title>
+    <link rel="icon" href="assets/images/favicon.png">
+    <link href="assets/color-admin/css/vendor.min.css" rel="stylesheet">
+    <link href="assets/color-admin/css/default/app.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/shell-phase1.css">
+    <link rel="stylesheet" href="css/reports-phase9.css">
+    <script src="assets/color-admin/js/iconify/iconify-icon.min.js"></script>
+    <style>
+        .preview-page { display: none; }
+        .preview-page.is-on { display: block; }
+        .badge-approved { background: rgba(25,135,84,.15); color: #198754; }
+        .badge-rejected { background: rgba(220,53,69,.15); color: #dc3545; }
+        .badge-submitted { background: rgba(13,202,240,.15); color: #0dcaf0; }
+        .badge-waiting_approval { background: rgba(255,193,7,.2); color: #b58100; }
+    </style>
+</head>
+<body>
+<div id="app" class="app app-header-fixed app-sidebar-fixed">
+    <div id="appHeader" class="app-header">
+        <div class="brand">
+            <div class="mobile-toggler">
+                <button type="button" class="menu-toggler" data-toggle-class="app-sidebar-mobile-toggled" data-toggle-target=".app">
+                    <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+                </button>
+            </div>
+            <a href="#" class="brand-logo"><img src="assets/images/logo-horizontal.png" alt="New Scoring" class="brand-logo-img"></a>
+        </div>
+        <div class="menu">
+            <div class="menu-item menu-item-form d-none d-md-flex">
+                <form action="#"><input type="text" class="form-control" placeholder="Cari..."><button class="btn btn-search" type="submit"><iconify-icon icon="octicon:search-16"></iconify-icon></button></form>
+            </div>
+            <div class="menu-item"><a href="#" class="menu-link"><span class="rounded-circle bg-theme text-white d-inline-flex align-items-center justify-content-center" style="width:30px;height:30px;font-size:12px;font-weight:700;">AI</span></a></div>
+        </div>
+    </div>
+    <div id="sidebar" class="app-sidebar" data-bs-theme="dark">
+        <div class="app-sidebar-content" data-scrollbar="true" data-height="100%">
+            <div class="menu">
+                <div class="menu-profile"><a href="javascript:;" class="menu-link"><div class="menu-profile-cover with-shadow"></div><div class="menu-profile-image avatar-initials">AI</div><div class="menu-profile-info"><div class="d-flex align-items-center"><div class="flex-grow-1">Admin IT</div></div><small>ADMIN IT · KANTOR PUSAT</small></div></a></div>
+                <div class="menu-header">Navigation</div>
+                <div class="menu-item has-sub" data-preview-group="reports">
+                    <a href="javascript:;" class="menu-link"><div class="menu-icon"><i class="fa fa-file-lines"></i></div><div class="menu-text">Laporan</div><div class="menu-caret"></div></a>
+                    <div class="menu-submenu">
+                        <div class="menu-item" data-preview-nav="scoring"><a href="#scoring" class="menu-link"><div class="menu-text">Laporan Scoring</div></a></div>
+                        <div class="menu-item" data-preview-nav="debtors"><a href="#debtors" class="menu-link"><div class="menu-text">Riwayat Debitur</div></a></div>
+                        <div class="menu-item" data-preview-nav="products"><a href="#products" class="menu-link"><div class="menu-text">Riwayat Produk</div></a></div>
+                        <div class="menu-item" data-preview-nav="changes"><a href="#changes" class="menu-link"><div class="menu-text">Perubahan Parameter</div></a></div>
+                        <div class="menu-item" data-preview-nav="audit"><a href="#audit" class="menu-link"><div class="menu-text">Audit Trail</div></a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="app-sidebar-mobile-backdrop"><a href="#" data-dismiss="app-sidebar-mobile" class="stretched-link"></a></div>
+
+    <div id="content" class="app-content">
+        <!-- SCORING -->
+        <div class="preview-page is-on" id="page-scoring" data-preview="scoring">
+            <ol class="breadcrumb float-xl-end"><li class="breadcrumb-item"><a href="#">Home</a></li><li class="breadcrumb-item active">Laporan</li></ol>
+            <h1 class="page-header">Laporan Scoring <small>riwayat pengajuan</small></h1>
+
+            <ul class="nav nav-pills scoring-subnav gap-2 mb-3">
+                <li class="nav-item"><a class="nav-link active" href="#scoring"><i class="fa fa-chart-pie me-1"></i> Scoring</a></li>
+                <li class="nav-item"><a class="nav-link" href="#debtors"><i class="fa fa-user-clock me-1"></i> Riwayat Debitur</a></li>
+                <li class="nav-item"><a class="nav-link" href="#products"><i class="fa fa-box-archive me-1"></i> Riwayat Produk</a></li>
+                <li class="nav-item"><a class="nav-link" href="#changes"><i class="fa fa-code-compare me-1"></i> Perubahan Parameter</a></li>
+            </ul>
+
+            <div class="row mb-3">
+                <div class="col-xl-4 col-md-4">
+                    <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-info bg-gradient-to-blue overflow-hidden" data-bs-theme="dark">
+                        <div class="card-body position-relative z-3">
+                            <div class="mb-2 fw-bold text-white">Total Laporan</div>
+                            <div class="h2 mb-4">128</div>
+                            <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:100%;"></div></div>
+                            <div class="small fw-semibold text-white text-opacity-75 mb-n1">Semua pengajuan tercatat</div>
+                        </div>
+                        <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                            <iconify-icon icon="solar:chart-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-md-4 mt-3 mt-md-0">
+                    <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-teal bg-gradient-to-green overflow-hidden" data-bs-theme="dark">
+                        <div class="card-body position-relative z-3">
+                            <div class="mb-2 fw-bold text-white">Disetujui</div>
+                            <div class="h2 mb-4">86</div>
+                            <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:67%;"></div></div>
+                            <div class="small fw-semibold text-white text-opacity-75 mb-n1">Status approved</div>
+                        </div>
+                        <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                            <iconify-icon icon="solar:check-circle-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-md-4 mt-3 mt-md-0">
+                    <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-orange bg-gradient-to-pink overflow-hidden" data-bs-theme="dark">
+                        <div class="card-body position-relative z-3">
+                            <div class="mb-2 fw-bold text-white">Ditolak</div>
+                            <div class="h2 mb-4">18</div>
+                            <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:14%;"></div></div>
+                            <div class="small fw-semibold text-white text-opacity-75 mb-n1">Status rejected</div>
+                        </div>
+                        <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                            <iconify-icon icon="solar:close-circle-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-borderless mb-3 filter-card">
+                <div class="card-header bg-gray-900" data-bs-theme="dark">
+                    <h4 class="card-header-title text-white mb-0"><iconify-icon icon="solar:filter-bold-duotone" class="me-1"></iconify-icon> Filter Laporan</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-5"><label class="form-label">Cari</label><input class="form-control" placeholder="No. pengajuan, debitur, NIK..."></div>
+                        <div class="col-md-4"><label class="form-label">Status</label><select class="form-select"><option>Semua status</option><option>approved</option><option>rejected</option></select></div>
+                        <div class="col-md-3"><button class="btn btn-theme w-100"><i class="fa fa-search me-1"></i> Terapkan</button></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-borderless table-card">
+                <div class="card-header bg-gray-900" data-bs-theme="dark">
+                    <h4 class="card-header-title text-white mb-0"><iconify-icon icon="solar:document-text-bold-duotone" class="me-1"></iconify-icon> Riwayat Pengajuan Scoring</h4>
+                    <span class="badge bg-white bg-opacity-15 text-white">128 data</span>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped align-middle mb-0">
+                            <thead><tr><th>No. Pengajuan</th><th>Debitur</th><th>Produk</th><th class="text-center">Skor</th><th>Hasil</th><th>Status</th></tr></thead>
+                            <tbody>
+                                <tr>
+                                    <td><div class="d-inline-flex align-items-center gap-1"><span class="badge bg-primary bg-opacity-15 text-primary py-6px font-monospace">TRX-2026-0041</span><button class="btn btn-default btn-xs btn-icon"><i class="fa fa-copy"></i></button></div></td>
+                                    <td class="fw-semibold">Budi Santoso</td>
+                                    <td>Kredit Multiguna</td>
+                                    <td class="text-center fw-bold text-primary">78</td>
+                                    <td>Layak</td>
+                                    <td><span class="badge badge-approved">approved</span></td>
+                                </tr>
+                                <tr>
+                                    <td><div class="d-inline-flex align-items-center gap-1"><span class="badge bg-primary bg-opacity-15 text-primary py-6px font-monospace">TRX-2026-0038</span><button class="btn btn-default btn-xs btn-icon"><i class="fa fa-copy"></i></button></div></td>
+                                    <td class="fw-semibold">Siti Rahayu</td>
+                                    <td>Kredit Pemilikan Rumah</td>
+                                    <td class="text-center fw-bold text-primary">62</td>
+                                    <td>Pertimbangan</td>
+                                    <td><span class="badge badge-waiting_approval">waiting_approval</span></td>
+                                </tr>
+                                <tr>
+                                    <td><div class="d-inline-flex align-items-center gap-1"><span class="badge bg-primary bg-opacity-15 text-primary py-6px font-monospace">TRX-2026-0035</span><button class="btn btn-default btn-xs btn-icon"><i class="fa fa-copy"></i></button></div></td>
+                                    <td class="fw-semibold">Andi Wijaya</td>
+                                    <td>Kredit Multiguna</td>
+                                    <td class="text-center fw-bold text-primary">41</td>
+                                    <td>Tidak Layak</td>
+                                    <td><span class="badge badge-rejected">rejected</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row align-items-center justify-content-between gap-2 px-3 py-3 border-top">
+                        <div class="text-muted small">Menampilkan 1–3 dari 128 data</div>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="small text-muted">Tampilkan</span>
+                            <select class="form-select form-select-sm" style="width:auto"><option>10</option><option>25</option></select>
+                            <nav><ul class="pagination pagination-sm mb-0"><li class="page-item active"><span class="page-link">1</span></li><li class="page-item"><a class="page-link" href="#">2</a></li><li class="page-item"><a class="page-link" href="#">3</a></li></ul></nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEBTORS -->
+        <div class="preview-page" id="page-debtors" data-preview="debtors">
+            <ol class="breadcrumb float-xl-end"><li class="breadcrumb-item"><a href="#">Home</a></li><li class="breadcrumb-item active">Laporan</li></ol>
+            <h1 class="page-header">Riwayat Debitur <small>histori pengajuan per debitur</small></h1>
+            <ul class="nav nav-pills scoring-subnav gap-2 mb-3">
+                <li class="nav-item"><a class="nav-link" href="#scoring"><i class="fa fa-chart-pie me-1"></i> Scoring</a></li>
+                <li class="nav-item"><a class="nav-link active" href="#debtors"><i class="fa fa-user-clock me-1"></i> Riwayat Debitur</a></li>
+                <li class="nav-item"><a class="nav-link" href="#products"><i class="fa fa-box-archive me-1"></i> Riwayat Produk</a></li>
+                <li class="nav-item"><a class="nav-link" href="#changes"><i class="fa fa-code-compare me-1"></i> Perubahan Parameter</a></li>
+            </ul>
+            <div class="card card-borderless mb-3 filter-card">
+                <div class="card-header bg-gray-900" data-bs-theme="dark">
+                    <h4 class="card-header-title text-white mb-0"><iconify-icon icon="solar:filter-bold-duotone" class="me-1"></iconify-icon> Filter Debitur</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-12 col-md-8">
+                            <label class="form-label">Pilih Debitur</label>
+                            <select class="form-select"><option>Budi Santoso — 3174xxxxxxxxxxxx</option></select>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <button type="button" class="btn btn-theme w-100"><i class="fa fa-search me-1"></i> Tampilkan Riwayat</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card card-borderless table-card">
+                <div class="card-header bg-gray-900" data-bs-theme="dark">
+                    <h4 class="card-header-title text-white mb-0"><iconify-icon icon="solar:user-bold-duotone" class="me-1"></iconify-icon> Budi Santoso</h4>
+                    <span class="badge bg-white bg-opacity-15 text-white">3 pengajuan</span>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped align-middle mb-0">
+                            <thead><tr><th>Nomor Pengajuan</th><th>Produk</th><th class="text-center">Skor</th><th>Hasil</th><th>Status</th></tr></thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="badge bg-primary bg-opacity-15 text-primary py-6px font-monospace">TRX-2026-0041</span></td>
+                                    <td class="fw-semibold">Kredit Multiguna</td>
+                                    <td class="text-center fw-bold text-primary">78</td>
+                                    <td>Layak</td>
+                                    <td><span class="badge badge-approved">approved</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge bg-primary bg-opacity-15 text-primary py-6px font-monospace">TRX-2026-0020</span></td>
+                                    <td class="fw-semibold">Kredit Multiguna</td>
+                                    <td class="text-center fw-bold text-primary">71</td>
+                                    <td>Layak</td>
+                                    <td><span class="badge badge-approved">approved</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PRODUCTS -->
+        <div class="preview-page" id="page-products" data-preview="products">
+            <ol class="breadcrumb float-xl-end"><li class="breadcrumb-item"><a href="#">Home</a></li><li class="breadcrumb-item active">Laporan</li></ol>
+            <h1 class="page-header">Riwayat Produk <small>perubahan &amp; versi model</small></h1>
+            <ul class="nav nav-pills scoring-subnav gap-2 mb-3">
+                <li class="nav-item"><a class="nav-link" href="#scoring"><i class="fa fa-chart-pie me-1"></i> Scoring</a></li>
+                <li class="nav-item"><a class="nav-link" href="#debtors"><i class="fa fa-user-clock me-1"></i> Riwayat Debitur</a></li>
+                <li class="nav-item"><a class="nav-link active" href="#products"><i class="fa fa-box-archive me-1"></i> Riwayat Produk</a></li>
+                <li class="nav-item"><a class="nav-link" href="#changes"><i class="fa fa-code-compare me-1"></i> Perubahan Parameter</a></li>
+            </ul>
+            <div class="row mb-3">
+                <div class="col-xl-8 col-md-8">
+                    <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-indigo bg-gradient-to-purple overflow-hidden" data-bs-theme="dark">
+                        <div class="card-body position-relative z-3">
+                            <div class="mb-2 fw-bold text-white">Produk Terpilih</div>
+                            <div class="h3 mb-1">KMG</div>
+                            <div class="small fw-semibold text-white text-opacity-75 mb-n1">KREDIT MULTIGUNA</div>
+                        </div>
+                        <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                            <iconify-icon icon="solar:box-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-md-4 mt-3 mt-md-0">
+                    <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-teal bg-gradient-to-green overflow-hidden" data-bs-theme="dark">
+                        <div class="card-body position-relative z-3">
+                            <div class="mb-2 fw-bold text-white">Status</div>
+                            <div class="h3 mb-n1">Aktif</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card card-borderless mb-3 filter-card">
+                <div class="card-header bg-gray-900" data-bs-theme="dark">
+                    <h4 class="card-header-title text-white mb-0"><iconify-icon icon="solar:filter-bold-duotone" class="me-1"></iconify-icon> Filter Produk</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-12 col-md-8">
+                            <label class="form-label">Produk Kredit</label>
+                            <select class="form-select"><option>KMG — Kredit Multiguna</option></select>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <button type="button" class="btn btn-theme w-100"><i class="fa fa-search me-1"></i> Tampilkan Riwayat</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-3">
+                <div class="col-xl-7">
+                    <div class="card card-borderless table-card h-100">
+                        <div class="card-header bg-gray-900" data-bs-theme="dark">
+                            <h4 class="card-header-title text-white mb-0"><iconify-icon icon="solar:history-bold-duotone" class="me-1"></iconify-icon> Riwayat Perubahan Data Produk</h4>
+                            <span class="badge bg-white bg-opacity-15 text-white">5 perubahan</span>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-striped align-middle mb-0">
+                                    <thead><tr><th>Waktu</th><th>Aksi</th><th>Pelaksana</th></tr></thead>
+                                    <tbody>
+                                        <tr><td class="small text-muted">2026-03-12 09:14</td><td><span class="badge bg-warning-subtle text-warning-emphasis border">update</span></td><td>Admin Produk</td></tr>
+                                        <tr><td class="small text-muted">2026-02-01 14:22</td><td><span class="badge bg-success-subtle text-success border">create</span></td><td>Admin IT</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-5">
+                    <div class="card card-borderless table-card h-100">
+                        <div class="card-header bg-gray-900" data-bs-theme="dark">
+                            <h4 class="card-header-title text-white mb-0"><iconify-icon icon="solar:layers-bold-duotone" class="me-1"></iconify-icon> Riwayat Versi Model Scoring</h4>
+                            <span class="badge bg-white bg-opacity-15 text-white">3 versi</span>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-striped align-middle mb-0">
+                                    <thead><tr><th>Versi</th><th>Status</th><th>Aktif</th></tr></thead>
+                                    <tbody>
+                                        <tr><td class="fw-semibold">v3</td><td><span class="badge bg-success bg-opacity-15 text-success">active</span></td><td class="small text-muted">2026-03-01</td></tr>
+                                        <tr><td class="fw-semibold">v2</td><td><span class="badge bg-secondary-subtle text-secondary">archived</span></td><td class="small text-muted">2025-11-10</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CHANGES -->
+        <div class="preview-page" id="page-changes" data-preview="changes">
+            <ol class="breadcrumb float-xl-end"><li class="breadcrumb-item"><a href="#">Home</a></li><li class="breadcrumb-item active">Laporan</li></ol>
+            <h1 class="page-header">Perubahan Parameter <small>modifikasi konfigurasi</small></h1>
+            <ul class="nav nav-pills scoring-subnav gap-2 mb-3">
+                <li class="nav-item"><a class="nav-link" href="#scoring"><i class="fa fa-chart-pie me-1"></i> Scoring</a></li>
+                <li class="nav-item"><a class="nav-link" href="#debtors"><i class="fa fa-user-clock me-1"></i> Riwayat Debitur</a></li>
+                <li class="nav-item"><a class="nav-link" href="#products"><i class="fa fa-box-archive me-1"></i> Riwayat Produk</a></li>
+                <li class="nav-item"><a class="nav-link active" href="#changes"><i class="fa fa-code-compare me-1"></i> Perubahan Parameter</a></li>
+            </ul>
+            <div class="card card-borderless table-card">
+                <div class="card-header bg-gray-900" data-bs-theme="dark">
+                    <h4 class="card-header-title text-white mb-0"><iconify-icon icon="solar:code-scan-bold-duotone" class="me-1"></iconify-icon> Riwayat Modifikasi Parameter</h4>
+                    <span class="badge bg-white bg-opacity-15 text-white">42 catatan</span>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped align-middle mb-0">
+                            <thead><tr><th>Waktu Perubahan</th><th>Aksi</th><th>Role Pelaksana</th><th>Objek Konfigurasi</th></tr></thead>
+                            <tbody>
+                                <tr>
+                                    <td class="small text-muted text-nowrap">2026-03-18 10:42</td>
+                                    <td><span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2 py-1 font-monospace">update</span></td>
+                                    <td><span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle px-2 py-1"><i class="fa fa-user-shield me-1"></i>Admin Scoring</span></td>
+                                    <td><div class="d-flex align-items-center gap-2 flex-wrap"><span class="badge bg-primary bg-opacity-15 text-primary">parameter</span><code class="text-primary fw-semibold">ID #12</code></div></td>
+                                </tr>
+                                <tr>
+                                    <td class="small text-muted text-nowrap">2026-03-15 16:05</td>
+                                    <td><span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1 font-monospace">create</span></td>
+                                    <td><span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle px-2 py-1"><i class="fa fa-user-shield me-1"></i>Admin Scoring</span></td>
+                                    <td><div class="d-flex align-items-center gap-2 flex-wrap"><span class="badge bg-primary bg-opacity-15 text-primary">cutoff</span><code class="text-primary fw-semibold">ID #4</code></div></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AUDIT -->
+        <div class="preview-page" id="page-audit" data-preview="audit">
+            <ol class="breadcrumb float-xl-end"><li class="breadcrumb-item"><a href="#">Home</a></li><li class="breadcrumb-item active">Audit</li></ol>
+            <h1 class="page-header">Jejak Audit <small>append-only trail</small></h1>
+            <div class="row mb-3">
+                <div class="col-xl-6 col-md-6">
+                    <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-indigo bg-gradient-to-purple overflow-hidden" data-bs-theme="dark">
+                        <div class="card-body position-relative z-3">
+                            <div class="mb-2 fw-bold text-white">Total Catatan Audit</div>
+                            <div class="h2 mb-4">256</div>
+                            <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:100%;"></div></div>
+                            <div class="small fw-semibold text-white text-opacity-75 mb-n1">Append-only · tidak dapat diubah</div>
+                        </div>
+                        <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                            <iconify-icon icon="solar:shield-check-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-md-6 mt-3 mt-md-0">
+                    <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-teal bg-gradient-to-cyan overflow-hidden" data-bs-theme="dark">
+                        <div class="card-body position-relative z-3">
+                            <div class="mb-2 fw-bold text-white">Integritas Log</div>
+                            <div class="h2 mb-4">Aktif</div>
+                            <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:100%;"></div></div>
+                            <div class="small fw-semibold text-white text-opacity-75 mb-n1">Update/delete audit dicegah trigger DB</div>
+                        </div>
+                        <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
+                            <iconify-icon icon="solar:lock-keyhole-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card card-borderless mb-3 filter-card">
+                <div class="card-header bg-gray-900" data-bs-theme="dark">
+                    <h4 class="card-header-title text-white mb-0"><iconify-icon icon="solar:filter-bold-duotone" class="me-1"></iconify-icon> Filter Audit</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-4"><label class="form-label">Cari</label><input class="form-control" placeholder="Aksi, role, objek..."></div>
+                        <div class="col-md-3"><label class="form-label">Aksi</label><select class="form-select"><option>Semua aksi</option></select></div>
+                        <div class="col-md-3"><label class="form-label">Tipe Objek</label><select class="form-select"><option>Semua tipe</option></select></div>
+                        <div class="col-md-2"><button class="btn btn-theme w-100"><i class="fa fa-search me-1"></i></button></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card card-borderless table-card">
+                <div class="card-header bg-gray-900" data-bs-theme="dark">
+                    <h4 class="card-header-title text-white mb-0"><iconify-icon icon="solar:shield-minimalistic-bold-duotone" class="me-1"></iconify-icon> Jejak Audit Sistem</h4>
+                    <span class="badge bg-white bg-opacity-15 text-white">256 entri</span>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive d-none d-md-block">
+                        <table class="table table-hover table-striped align-middle mb-0 audit-table">
+                            <thead><tr><th>Waktu</th><th>Role</th><th>Aksi</th><th>Objek</th><th>Sebelum</th><th>Sesudah</th></tr></thead>
+                            <tbody>
+                                <tr>
+                                    <td class="small text-muted text-nowrap">2026-03-18 10:42</td>
+                                    <td><span class="badge bg-info bg-opacity-15 text-info">Admin Scoring</span></td>
+                                    <td><span class="badge bg-secondary-subtle text-secondary border">update</span></td>
+                                    <td class="small"><strong>parameter</strong> <span class="text-muted">12</span></td>
+                                    <td><code class="report-json-before">{"weight": 10}</code></td>
+                                    <td><code class="report-json-after">{"weight": 15}</code></td>
+                                </tr>
+                                <tr>
+                                    <td class="small text-muted text-nowrap">2026-03-17 08:11</td>
+                                    <td><span class="badge bg-info bg-opacity-15 text-info">Approver</span></td>
+                                    <td><span class="badge bg-secondary-subtle text-secondary border">approve</span></td>
+                                    <td class="small"><strong>transaction</strong> <span class="text-muted">41</span></td>
+                                    <td><span class="text-muted">-</span></td>
+                                    <td><code class="report-json-after">{"status":"approved"}</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="audit-mobile-list d-md-none">
+                        <div class="audit-mobile-item">
+                            <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+                                <div class="small text-muted">2026-03-18 10:42</div>
+                                <span class="badge bg-secondary-subtle text-secondary border">update</span>
+                            </div>
+                            <div class="d-flex flex-wrap gap-1 mb-2">
+                                <span class="badge bg-info bg-opacity-15 text-info">Admin Scoring</span>
+                                <span class="badge bg-primary bg-opacity-15 text-primary">parameter #12</span>
+                            </div>
+                            <div class="mb-2">
+                                <div class="small text-muted mb-1">Sebelum</div>
+                                <code class="report-json-before">{"weight": 10}</code>
+                            </div>
+                            <div>
+                                <div class="small text-muted mb-1">Sesudah</div>
+                                <code class="report-json-after">{"weight": 15}</code>
+                            </div>
+                        </div>
+                        <div class="audit-mobile-item">
+                            <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+                                <div class="small text-muted">2026-03-17 08:11</div>
+                                <span class="badge bg-secondary-subtle text-secondary border">approve</span>
+                            </div>
+                            <div class="d-flex flex-wrap gap-1 mb-2">
+                                <span class="badge bg-info bg-opacity-15 text-info">Approver</span>
+                                <span class="badge bg-primary bg-opacity-15 text-primary">transaction #41</span>
+                            </div>
+                            <div class="mb-2">
+                                <div class="small text-muted mb-1">Sebelum</div>
+                                <span class="text-muted small">-</span>
+                            </div>
+                            <div>
+                                <div class="small text-muted mb-1">Sesudah</div>
+                                <code class="report-json-after">{"status":"approved"}</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="assets/color-admin/js/vendor.min.js"></script>
+<script src="assets/color-admin/js/app.min.js"></script>
+<script>
+function showPreview(name) {
+    document.querySelectorAll('.preview-page').forEach(function (el) {
+        el.classList.toggle('is-on', el.getAttribute('data-preview') === name);
+    });
+    document.querySelectorAll('[data-preview-nav]').forEach(function (el) {
+        el.classList.toggle('active', el.getAttribute('data-preview-nav') === name);
+    });
+    document.querySelectorAll('[data-preview-group]').forEach(function (el) {
+        el.classList.toggle('active', true);
+    });
+}
+var pages = ['scoring', 'debtors', 'products', 'changes', 'audit'];
+var hash = (location.hash || '#scoring').replace('#', '');
+if (pages.indexOf(hash) === -1) hash = 'scoring';
+showPreview(hash);
+window.addEventListener('hashchange', function () {
+    var h = (location.hash || '#scoring').replace('#', '');
+    if (pages.indexOf(h) !== -1) showPreview(h);
+});
+</script>
+</body>
+</html>

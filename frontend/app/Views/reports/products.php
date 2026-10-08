@@ -15,67 +15,41 @@ $versions  = $history['versions'] ?? [];
 ?>
 <?= view('partials/shell_start', ['profile' => $profile, 'title' => 'Riwayat Produk']) ?>
 
-<!-- Subnav -->
-<ul class="subnav mb-4">
-    <li><a href="<?= site_url('reports/scoring') ?>"><i class="fa-solid fa-chart-bar"></i> Scoring</a></li>
-    <li><a href="<?= site_url('reports/debtors') ?>"><i class="fa-solid fa-users"></i> Riwayat Debitur</a></li>
-    <li><a href="<?= site_url('reports/products') ?>" class="active"><i class="fa-solid fa-box-archive"></i> Riwayat Produk</a></li>
-    <li><a href="<?= site_url('reports/changes') ?>"><i class="fa-solid fa-sliders"></i> Perubahan Parameter</a></li>
-</ul>
+<?= view('partials/reports_subnav', ['active' => 'products']) ?>
 
-<!-- 1. Header Banner -->
-<div class="module-banner-wrap position-relative mb-4">
-    <img class="module-banner-img"
-         src="<?= base_url('assets/images/mockup-background-header-riwayatproduk.png') ?>?v=4"
-         alt="Riwayat Produk Banner">
-    <?php if ($prod) : ?>
-    <div class="rp-banner-overlay-card">
-        <div class="rp-banner-card-icon">
-            <i class="fa-solid fa-box-open"></i>
-        </div>
-        <div class="rp-banner-card-info">
-            <span class="rp-banner-card-label">Produk Terpilih</span>
-            <h4 class="rp-banner-card-code mb-0"><?= esc($prod['code']) ?></h4>
-            <div class="rp-banner-card-name text-truncate" title="<?= esc($prod['name']) ?>"><?= esc(strtoupper($prod['name'])) ?></div>
+<?php if ($prod) : ?>
+<?= view('partials/kpi_solid', ['items' => [
+    ['label' => 'Produk Terpilih', 'value' => $prod['code'], 'sub' => strtoupper((string) $prod['name']), 'tone' => 'indigo', 'icon' => 'solar:box-bold-duotone'],
+    ['label' => 'Status', 'value' => $isActive ? 'Aktif' : 'Nonaktif', 'sub' => 'Status produk saat ini', 'tone' => $isActive ? 'teal' : 'orange', 'icon' => $isActive ? 'solar:check-circle-bold-duotone' : 'solar:close-circle-bold-duotone'],
+]]) ?>
+<?php endif; ?>
+
+<div class="card card-borderless mb-3 filter-card">
+    <div class="card-header bg-gray-900" data-bs-theme="dark">
+        <h4 class="card-header-title text-white mb-0">
+            <iconify-icon icon="solar:filter-bold-duotone" class="me-1"></iconify-icon>
+            Filter Produk
+        </h4>
+        <div class="card-header-btn">
+            <button type="submit" class="btn btn-primary btn-xs" form="productHistoryFilterForm">
+                <i class="fa fa-search me-1"></i><span class="btn-label-full"> Tampilkan Riwayat</span>
+            </button>
+            <?= view('partials/card_widget_btn', ['wrap' => false]) ?>
         </div>
     </div>
-    <?php endif; ?>
-</div>
-
-<!-- 2. Filter Card -->
-<div class="filter-card mb-4">
-    <div class="filter-card-header">
-        <div class="filter-header-left">
-            <div class="filter-icon-badge">
-                <i class="fa-solid fa-filter"></i>
-            </div>
-            <div>
-                <h6 class="filter-title">Filter Produk</h6>
-                <p class="filter-subtitle">Pilih produk kredit untuk melihat riwayat perubahan dan versi model scoring.</p>
-            </div>
-        </div>
-    </div>
-    <div class="filter-card-body">
-        <form method="get" action="<?= site_url('reports/products') ?>">
+    <div class="card-body filter-card-body">
+        <form id="productHistoryFilterForm" method="get" action="<?= site_url('reports/products') ?>">
             <div class="row g-3 align-items-end">
-                <div class="col-12 col-md-8">
-                    <label class="filter-form-label" for="product_filter">Produk Kredit</label>
-                    <div class="filter-input-wrap">
-                        <i class="fa-solid fa-box-open filter-input-icon text-primary"></i>
-                        <select id="product_filter" name="id" class="form-select filter-select2" data-placeholder="Pilih atau cari produk..." style="padding-left:42px !important;">
-                            <option value=""></option>
-                            <?php foreach ($products as $product) : ?>
-                                <option value="<?= esc($product['id']) ?>" <?= (int) $selected === (int) $product['id'] ? 'selected' : '' ?>>
-                                    <?= esc($product['code']) ?> — <?= esc($product['name']) ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-12 col-md-4">
-                    <button type="submit" class="btn btn-primary-gradient w-100">
-                        <i class="fa-solid fa-magnifying-glass me-2"></i> Tampilkan Riwayat
-                    </button>
+                <div class="col-12">
+                    <label class="form-label" for="product_filter">Produk Kredit</label>
+                    <select id="product_filter" name="id" class="select2" data-placeholder="Pilih atau cari produk...">
+                        <option value=""></option>
+                        <?php foreach ($products as $product) : ?>
+                            <option value="<?= esc($product['id']) ?>" <?= (int) $selected === (int) $product['id'] ? 'selected' : '' ?>>
+                                <?= esc($product['code']) ?> — <?= esc($product['name']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
             </div>
         </form>
@@ -96,29 +70,16 @@ $versions  = $history['versions'] ?? [];
 
     <!-- ===== SISI KIRI: RIWAYAT PERUBAHAN DATA PRODUK ===== -->
     <div class="col-12 col-xl-7">
-        <div class="card shadow-sm border-0 h-100">
-            <!-- Card Header -->
-            <div class="card-header bg-white py-3 border-bottom">
-                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="rp-card-icon rp-icon-purple">
-                            <i class="fa-solid fa-clock-rotate-left"></i>
-                        </div>
-                        <div>
-                            <div class="d-flex align-items-center gap-2 flex-wrap">
-                                <h6 class="fw-bold mb-0 text-dark" style="font-size:15px;">Riwayat Perubahan Data Produk</h6>
-                                <span class="badge rp-badge-product"><?= esc($prod['name']) ?></span>
-                            </div>
-                            <p class="text-muted small mb-0 mt-1">Daftar log perubahan data pada produk kredit yang dipilih</p>
-                        </div>
-                    </div>
-                    <div class="rp-stat-pill rp-stat-pill-green">
-                        <div class="rp-stat-icon"><i class="fa-regular fa-file-lines"></i></div>
-                        <div>
-                            <div class="rp-stat-label">Total Perubahan</div>
-                            <div class="rp-stat-value" id="rpStatPerubahanVal"><?= count($auditLogs) ?></div>
-                        </div>
-                    </div>
+        <div class="card card-borderless table-card h-100">
+            <div class="card-header bg-gray-900" data-bs-theme="dark">
+                <h4 class="card-header-title text-white mb-0">
+                    <iconify-icon icon="solar:history-bold-duotone" class="me-1"></iconify-icon>
+                    Riwayat Perubahan Data Produk
+                </h4>
+                <div class="d-flex align-items-center gap-1">
+                    <?= view('partials/export_header_btn', ['mode' => 'print']) ?>
+                    <span class="badge bg-white bg-opacity-15 text-white" id="rpStatPerubahanVal"><?= count($auditLogs) ?> perubahan</span>
+                    <?= view('partials/card_widget_btn') ?>
                 </div>
             </div>
 
@@ -158,7 +119,7 @@ $versions  = $history['versions'] ?? [];
                     <div class="row g-2 align-items-center">
                         <div class="col-12 col-sm-4">
                             <label class="form-label small text-muted mb-1 fw-semibold">Filter Aksi</label>
-                            <select id="filterAuditAction" class="form-select form-select-sm">
+                            <select id="filterAuditAction" class="form-select form-select-sm select2" data-placeholder="Semua aksi">
                                 <option value="">Semua Aksi</option>
                                 <option value="Tambah Produk">Tambah Produk</option>
                                 <option value="Ubah Produk">Ubah Produk</option>
@@ -167,9 +128,9 @@ $versions  = $history['versions'] ?? [];
                         </div>
                         <div class="col-12 col-sm-4">
                             <label class="form-label small text-muted mb-1 fw-semibold">Filter Role Pelaksana</label>
-                            <select id="filterAuditRole" class="form-select form-select-sm">
+                            <select id="filterAuditRole" class="form-select form-select-sm select2" data-placeholder="Semua role">
                                 <option value="">Semua Role</option>
-                                <option value="Admin IT">Admin IT</option>
+                                <option value="Administrator">Administrator</option>
                                 <option value="System">System</option>
                             </select>
                         </div>
@@ -276,7 +237,7 @@ $versions  = $history['versions'] ?? [];
                         </td>
                         <td>
                             <span class="badge rounded-pill rp-badge-role">
-                                <i class="fa-solid fa-user-shield me-1 text-muted"></i><?= esc($log['actor_role_name'] ?? 'Admin IT') ?>
+                                <i class="fa-solid fa-user-shield me-1 text-muted"></i><?= esc($log['actor_role_name'] ?? 'Administrator') ?>
                             </span>
                         </td>
                         <td>
@@ -298,26 +259,30 @@ $versions  = $history['versions'] ?? [];
                             <?php endif; ?>
                         </td>
                         <td class="text-center">
-                            <div class="dropdown">
-                                <button type="button" class="btn btn-sm btn-link text-muted p-0" data-bs-toggle="dropdown" data-bs-popper-config='{"strategy":"fixed"}' aria-expanded="false" title="Menu Opsi">
-                                    <i class="fa-solid fa-ellipsis-vertical"></i>
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-end shadow-sm border py-2" style="font-size:12px;min-width:180px;border-radius:10px;z-index:1070;">
+                            <?php
+                            ob_start();
+                            ?>
                                     <li>
-                                        <span class="dropdown-header text-muted fw-semibold" style="font-size:11px;">Opsi Log Audit</span>
-                                    </li>
-                                    <li>
-                                        <button type="button" class="dropdown-item d-flex align-items-center gap-2 py-2" onclick="navigator.clipboard.writeText('<?= esc($log['occurred_at'] ?? '') ?>'); if(window.App && App.toastInfo) App.toastInfo('Waktu disalin ke clipboard');">
-                                            <i class="fa-regular fa-copy text-primary" style="font-size:13px;"></i> Salin Waktu Log
+                                        <button type="button" class="dropdown-action-item" onclick="navigator.clipboard.writeText('<?= esc($log['occurred_at'] ?? '') ?>'); if(window.App && App.toastInfo) App.toastInfo('Waktu disalin ke clipboard');">
+                                            <span class="action-icon-circle action-icon-blue"><i class="fa-regular fa-copy"></i></span>
+                                            <div class="action-text-group">
+                                                <span class="action-title">Salin Waktu Log</span>
+                                                <span class="action-desc">Salin timestamp ke clipboard</span>
+                                            </div>
                                         </button>
                                     </li>
                                     <li>
-                                        <button type="button" class="dropdown-item d-flex align-items-center gap-2 py-2" onclick="if(window.App && App.alertInfo) App.alertInfo('Detail Log', 'Aksi: <?= esc($actionLabel) ?><br>Waktu: <?= esc($log['occurred_at'] ?? '-') ?><br>Role: <?= esc($log['actor_role_name'] ?? 'Admin IT') ?>');">
-                                            <i class="fa-solid fa-circle-info text-info" style="font-size:13px;"></i> Lihat Ringkasan
+                                        <button type="button" class="dropdown-action-item" onclick="if(window.App && App.alertInfo) App.alertInfo('Detail Log', 'Aksi: <?= esc($actionLabel) ?><br>Waktu: <?= esc($log['occurred_at'] ?? '-') ?><br>Role: <?= esc($log['actor_role_name'] ?? 'Administrator') ?>');">
+                                            <span class="action-icon-circle action-icon-green"><i class="fa-solid fa-circle-info"></i></span>
+                                            <div class="action-text-group">
+                                                <span class="action-title">Lihat Ringkasan</span>
+                                                <span class="action-desc">Aksi, waktu, dan role</span>
+                                            </div>
                                         </button>
                                     </li>
-                                </ul>
-                            </div>
+                            <?php
+                            echo view('partials/action_dropdown_btn', ['menuHtml' => ob_get_clean()]);
+                            ?>
                         </td>
                     </tr>
                     <?php endforeach; ?>
@@ -336,29 +301,15 @@ $versions  = $history['versions'] ?? [];
 
     <!-- ===== SISI KANAN: RIWAYAT VERSI MODEL SCORING ===== -->
     <div class="col-12 col-xl-5">
-        <div class="card shadow-sm border-0 h-100">
-            <!-- Card Header -->
-            <div class="card-header bg-white py-3 border-bottom">
-                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="rp-card-icon rp-icon-blue">
-                            <i class="fa-solid fa-layer-group"></i>
-                        </div>
-                        <div>
-                            <div class="d-flex align-items-center gap-2 flex-wrap">
-                                <h6 class="fw-bold mb-0 text-dark" style="font-size:15px;">Riwayat Versi Model Scoring</h6>
-                                <span class="badge rp-badge-code"><?= esc($prod['code'] ?? '') ?></span>
-                            </div>
-                            <p class="text-muted small mb-0 mt-1">Daftar versi konfigurasi model scoring untuk produk ini</p>
-                        </div>
-                    </div>
-                    <div class="rp-stat-pill rp-stat-pill-purple">
-                        <div class="rp-stat-icon"><i class="fa-solid fa-layer-group"></i></div>
-                        <div>
-                            <div class="rp-stat-label">Total Versi</div>
-                            <div class="rp-stat-value"><?= count($versions) ?></div>
-                        </div>
-                    </div>
+        <div class="card card-borderless table-card h-100">
+            <div class="card-header bg-gray-900" data-bs-theme="dark">
+                <h4 class="card-header-title text-white mb-0">
+                    <iconify-icon icon="solar:layers-bold-duotone" class="me-1"></iconify-icon>
+                    Riwayat Versi Model Scoring
+                </h4>
+                <div class="d-flex align-items-center gap-1">
+                    <span class="badge bg-white bg-opacity-15 text-white"><?= count($versions) ?> versi</span>
+                    <?= view('partials/card_widget_btn') ?>
                 </div>
             </div>
 
@@ -860,35 +811,25 @@ $(document).ready(function () {
     });
 
     <?php if (! empty($auditLogs)) : ?>
-    // 2. DataTables untuk Riwayat Perubahan Data Produk (Audit Log)
-    var auditTable = $('#auditLogTable').DataTable({
+    // 2. DataTables — Riwayat Perubahan (App.initDT + pagination Color Admin)
+    var auditTable = App.initDT('#auditLogTable', {
         dom: "<'table-responsive'tr><'px-3 py-3 border-top d-flex justify-content-between align-items-center flex-wrap gap-2'ip>",
         order: [[0, 'desc']],
         pageLength: 10,
-        responsive: true,
-        autoWidth: false,
-        language: {
-            info: 'Menampilkan _START_ - _END_ dari _TOTAL_ data',
-            infoEmpty: 'Menampilkan 0 data',
-            infoFiltered: '(disaring dari _MAX_ total data)',
-            zeroRecords: '<div class="text-center py-5 text-muted small"><i class="fa-solid fa-magnifying-glass fa-2x mb-2 d-block opacity-50 text-secondary"></i>Tidak ada data perubahan yang sesuai dengan filter pencarian.</div>',
-            paginate: {
-                previous: '<i class="fa-solid fa-chevron-left"></i>',
-                next: '<i class="fa-solid fa-chevron-right"></i>'
-            }
-        },
+        lengthMenu: [[5, 10, 25, 50], [5, 10, 25, 50]],
         columnDefs: [
             { orderable: false, targets: [3, 4] }
         ]
     });
 
-    // Custom Page Length Handler
+    App.initSelect2('#filterAuditAction', { placeholder: 'Semua aksi', allowClear: true });
+    App.initSelect2('#filterAuditRole', { placeholder: 'Semua role', allowClear: true });
+
     $('#auditLogPageLength').on('change', function () {
         var len = parseInt($(this).val(), 10);
         auditTable.page.len(len).draw();
     });
 
-    // Custom Search Input Handler (Realtime)
     $('#auditLogSearchInput').on('keyup input', function () {
         var query = $(this).val();
         auditTable.search(query).draw();
@@ -899,50 +840,35 @@ $(document).ready(function () {
         }
     });
 
-    // Clear Search Button Handler
     $('#auditLogSearchClear').on('click', function () {
         $('#auditLogSearchInput').val('').trigger('input').focus();
     });
 
-    // Filter Aksi Handler
     $('#filterAuditAction').on('change', function () {
         var val = $(this).val();
-        auditTable.column(1).search(val ? val : '', true, false).draw();
+        auditTable.column(1).search(val ? '^' + $.fn.dataTable.util.escapeRegex(val) + '$' : '', true, false).draw();
     });
 
-    // Filter Role Handler
     $('#filterAuditRole').on('change', function () {
         var val = $(this).val();
-        auditTable.column(2).search(val ? val : '', true, false).draw();
+        auditTable.column(2).search(val ? '^' + $.fn.dataTable.util.escapeRegex(val) + '$' : '', true, false).draw();
     });
 
-    // Reset All Filters Handler
     $('#btnResetAuditFilters').on('click', function () {
-        $('#filterAuditAction').val('');
-        $('#filterAuditRole').val('');
+        $('#filterAuditAction').val(null).trigger('change');
+        $('#filterAuditRole').val(null).trigger('change');
         $('#auditLogSearchInput').val('').trigger('input');
         auditTable.search('').columns().search('').draw();
     });
     <?php endif; ?>
 
     <?php if (! empty($versions)) : ?>
-    // 3. DataTables untuk Riwayat Versi Model Scoring
-    $('#productHistoryTable').DataTable({
+    // 3. DataTables — Riwayat Versi Model Scoring
+    App.initDT('#productHistoryTable', {
         dom: "<'table-responsive'tr><'px-3 py-2 border-top d-flex justify-content-between align-items-center flex-wrap gap-2'ip>",
         order: [[1, 'desc']],
         pageLength: 5,
-        responsive: true,
-        autoWidth: false,
-        language: {
-            info: 'Menampilkan _START_ - _END_ dari _TOTAL_ versi',
-            infoEmpty: 'Menampilkan 0 versi',
-            infoFiltered: '(disaring dari _MAX_ total versi)',
-            zeroRecords: '<div class="text-center py-4 text-muted small">Tidak ada versi scoring yang sesuai.</div>',
-            paginate: {
-                previous: '<i class="fa-solid fa-chevron-left"></i>',
-                next: '<i class="fa-solid fa-chevron-right"></i>'
-            }
-        }
+        lengthMenu: [[5, 10, 25], [5, 10, 25]]
     });
     <?php endif; ?>
 });

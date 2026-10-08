@@ -31,85 +31,50 @@ $distinctMappedCount = count($mappedProductIds);
     <li class="nav-item"><a class="nav-link active" href="<?= site_url('scoring/mapping') ?>"><i class="fa fa-diagram-project me-1"></i>Mapping</a></li>
 </ul>
 
-<div class="row mb-3">
-    <div class="col-xl-4 col-md-4">
-        <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-blue bg-gradient-to-indigo overflow-hidden" data-bs-theme="dark">
-            <div class="card-body position-relative z-3">
-                <div class="mb-2 fw-bold text-white">Produk Terpetakan</div>
-                <div class="h2 mb-4"><?= esc((string) $distinctMappedCount) ?></div>
-                <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:<?= $totalMasterProducts > 0 ? (int) round($distinctMappedCount / $totalMasterProducts * 100) : 0 ?>%;"></div></div>
-                <div class="small fw-semibold text-white text-opacity-75 mb-n1">dari <?= esc((string) $totalMasterProducts) ?> master produk</div>
-            </div>
-            <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
-                <iconify-icon icon="solar:box-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-4 col-md-4 mt-3 mt-md-0">
-        <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-teal bg-gradient-to-green overflow-hidden" data-bs-theme="dark">
-            <div class="card-body position-relative z-3">
-                <div class="mb-2 fw-bold text-white">Versi Kebijakan</div>
-                <div class="h2 mb-4"><?= esc((string) $totalMappings) ?></div>
-                <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:100%;"></div></div>
-                <div class="small fw-semibold text-white text-opacity-75 mb-n1">Mapping aktif digunakan</div>
-            </div>
-            <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
-                <iconify-icon icon="solar:branching-paths-up-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-4 col-md-4 mt-3 mt-md-0">
-        <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-orange bg-gradient-to-pink overflow-hidden" data-bs-theme="dark">
-            <div class="card-body position-relative z-3">
-                <div class="mb-2 fw-bold text-white">Katalog Produk</div>
-                <div class="h2 mb-4"><?= esc((string) $totalMasterProducts) ?></div>
-                <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:100%;"></div></div>
-                <div class="small fw-semibold text-white text-opacity-75 mb-n1">Source of truth master</div>
-            </div>
-            <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
-                <iconify-icon icon="solar:database-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
-            </div>
-        </div>
-    </div>
-</div>
+<?= view('partials/kpi_solid', ['items' => [
+    ['label' => 'Produk Terpetakan', 'value' => $distinctMappedCount, 'sub' => 'dari ' . $totalMasterProducts . ' master produk', 'tone' => 'blue', 'icon' => 'solar:box-bold-duotone'],
+    ['label' => 'Versi Kebijakan', 'value' => $totalMappings, 'sub' => 'Mapping aktif digunakan', 'tone' => 'teal', 'icon' => 'solar:branching-paths-up-bold-duotone'],
+    ['label' => 'Katalog Produk', 'value' => $totalMasterProducts, 'sub' => 'Source of truth master', 'tone' => 'orange', 'icon' => 'solar:database-bold-duotone'],
+]]) ?>
 
-<div class="card card-borderless mb-3">
+<div class="card card-borderless mb-3 passing-score-card">
     <div class="card-header bg-gray-900" data-bs-theme="dark">
-        <h4 class="card-header-title text-white mb-0 d-flex align-items-center gap-2">
-            <iconify-icon icon="solar:medal-ribbons-star-bold-duotone"></iconify-icon>
+        <h4 class="card-header-title text-white mb-0">
+            <iconify-icon icon="solar:medal-ribbons-star-bold-duotone" class="me-1"></iconify-icon>
             Batas Skor Layak — Semua Produk
         </h4>
+        <div class="card-header-btn">
+            <button type="button" class="btn btn-success btn-xs" id="btnSaveGlobalPassingScore" form="globalPassingScoreForm">
+                <i class="fa fa-floppy-disk"></i><span class="btn-label-full ms-1">Simpan Pengaturan</span>
+            </button>
+            <?= view('partials/card_widget_btn', ['wrap' => false]) ?>
+        </div>
     </div>
     <div class="card-body">
         <form id="globalPassingScoreForm" method="post" action="<?= site_url('scoring/passing-score-setting') ?>">
             <?= csrf_field() ?>
-            <div class="row g-3 align-items-end">
-                <div class="col-12 col-md-4">
-                    <label class="form-label fw-semibold" for="globalPassingScore">
+            <div class="row g-3 align-items-center">
+                <div class="col-12 col-lg-5">
+                    <label class="form-label" for="globalPassingScore">
                         Default Batas Skor Layak <span class="text-danger">*</span>
                     </label>
-                    <div class="input-group">
-                        <span class="input-group-text bg-white text-muted fw-bold">&ge;</span>
-                        <input type="number" step="0.01" min="0" max="1000" class="form-control fw-bold"
+                    <div class="input-group flex-nowrap">
+                        <span class="input-group-text fw-semibold">&ge;</span>
+                        <input type="number" step="0.01" min="0" max="1000" class="form-control"
                                id="globalPassingScore" name="passing_score"
                                value="<?= esc($defaultPassingScore) ?>" required>
-                        <span class="input-group-text bg-white text-muted small">Poin</span>
+                        <span class="input-group-text">Poin</span>
                     </div>
-                    <div class="form-text small">Dipakai sebagai default saat membuat mapping produk baru.</div>
+                    <div class="form-text">Dipakai sebagai default saat membuat mapping produk baru.</div>
                 </div>
-                <div class="col-12 col-md-5">
-                    <div class="form-check mt-1">
+                <div class="col-12 col-lg-7">
+                    <div class="form-check mt-lg-4">
                         <input class="form-check-input" type="checkbox" name="apply_to_all" value="1" id="chkApplyAllPassingScore">
                         <label class="form-check-label" for="chkApplyAllPassingScore">
-                            <strong>Terapkan ke semua produk</strong>
-                            <span class="text-muted d-block" style="font-size:12px;">Perbarui batas layak pada seluruh mapping produk yang sudah ada.</span>
+                            <span class="fw-semibold">Terapkan ke semua produk</span>
+                            <span class="text-muted d-block small">Perbarui batas layak pada seluruh mapping produk yang sudah ada.</span>
                         </label>
                     </div>
-                </div>
-                <div class="col-12 col-md-3">
-                    <button type="button" class="btn btn-theme w-100" id="btnSaveGlobalPassingScore">
-                        <i class="fa fa-floppy-disk me-1"></i> Simpan Pengaturan
-                    </button>
                 </div>
             </div>
         </form>
@@ -122,19 +87,14 @@ $distinctMappedCount = count($mappedProductIds);
             <iconify-icon icon="solar:filter-bold-duotone"></iconify-icon>
             Filter Data Mapping
         </h4>
-        <div class="card-header-btn">
-            <button type="button" class="btn btn-default btn-xs" id="btnToggleFilter" data-bs-toggle="collapse" data-bs-target="#filterCollapse" aria-expanded="true" aria-controls="filterCollapse">
-                <span id="filterToggleText">Sembunyikan Filter</span>
-                <i class="fa fa-chevron-up ms-1" id="filterToggleIcon"></i>
-            </button>
-        </div>
+        <?= view('partials/filter_header_btn') ?>
     </div>
     <div class="collapse show" id="filterCollapse">
         <div class="card-body filter-card-body">
             <div class="row g-3">
                 <div class="col-12 col-md-6 col-lg-4">
                     <label class="form-label" for="filterSearchMapping">Search Mapping / Versi</label>
-                    <div class="input-group">
+                    <div class="input-group flex-nowrap">
                         <span class="input-group-text"><i class="fa fa-search"></i></span>
                         <input type="text" class="form-control" id="filterSearchMapping" placeholder="Cari nama versi, produk, atau kode...">
                     </div>
@@ -150,11 +110,11 @@ $distinctMappedCount = count($mappedProductIds);
                         <?php endforeach; ?>
                     </select>
                 </div>
-                <div class="col-12 col-lg-3 d-flex align-items-end gap-2">
-                    <button type="button" class="btn btn-theme flex-grow-1" id="btnApplyFilter">
+                <div class="col-12 col-lg-3 d-flex align-items-end gap-1">
+                    <button type="button" class="btn btn-primary btn-xs" id="btnApplyFilter">
                         <i class="fa fa-search me-1"></i> Terapkan
                     </button>
-                    <button type="button" class="btn btn-default" id="btnResetFilter">
+                    <button type="button" class="btn btn-default btn-xs" id="btnResetFilter">
                         <i class="fa fa-rotate-left"></i>
                     </button>
                 </div>
@@ -169,26 +129,15 @@ $distinctMappedCount = count($mappedProductIds);
             <iconify-icon icon="solar:checklist-minimalistic-bold-duotone" class="me-1"></iconify-icon>
             Daftar Mapping Produk
         </h4>
-        <div class="card-header-btn d-flex align-items-center gap-2 table-card-actions">
-            <div class="dropdown">
-                <button type="button" class="btn btn-default btn-sm dropdown-toggle" id="btnExportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa fa-upload me-1"></i> Export
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="btnExportDropdown">
-                    <li>
-                        <button type="button" class="dropdown-item" onclick="window.print()">
-                            <i class="fa fa-file-pdf text-danger me-2"></i> Export PDF / Cetak
-                        </button>
-                    </li>
-                </ul>
-            </div>
-            <button type="button" class="btn btn-theme btn-sm" id="btnTambahMappingTabel" data-bs-toggle="modal" data-bs-target="#mappingModal">
-                <i class="fa fa-plus me-1"></i> Buat Mapping Baru
+        <div class="d-flex align-items-center gap-1">
+            <?= view('partials/export_header_btn', ['mode' => 'print']) ?>
+            <button type="button" class="btn btn-theme btn-xs" id="btnTambahMappingTabel" data-bs-toggle="modal" data-bs-target="#mappingModal">
+                <i class="fa fa-plus me-1"></i><span class="btn-label-full"> Buat Mapping</span>
             </button>
+            <?= view('partials/card_widget_btn') ?>
         </div>
     </div>
-    <div class="card-body p-0">
-        <div class="table-responsive">
+    <div class="card-body">
             <table id="mappingsTable" class="table table-striped table-hover align-middle mb-0 w-100">
                 <thead>
                     <tr>
@@ -280,12 +229,9 @@ $distinctMappedCount = count($mappedProductIds);
                                     <?php endif; ?>
                                 </td>
                                 <td class="text-center align-middle">
-                                    <!-- Button Dropdown Aksi (Persis Produk) -->
-                                    <div class="dropdown">
-                                        <button class="btn-action-trigger" type="button" data-bs-toggle="dropdown" data-bs-popper-config='{"strategy":"fixed"}' aria-expanded="false" title="Menu Aksi">
-                                            <i class="fa-solid fa-ellipsis"></i>
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end dropdown-action-menu shadow-lg">
+                                    <?php
+                                    ob_start();
+                                    ?>
                                             <li>
                                                 <button type="button" class="dropdown-action-item btn-view-mapping" data-id="<?= esc($m['id']) ?>">
                                                     <span class="action-icon-circle action-icon-green"><i class="fa-solid fa-circle-info"></i></span>
@@ -315,15 +261,15 @@ $distinctMappedCount = count($mappedProductIds);
                                                     </div>
                                                 </button>
                                             </li>
-                                        </ul>
-                                    </div>
+                                    <?php
+                                    echo view('partials/action_dropdown_btn', ['menuHtml' => ob_get_clean()]);
+                                    ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </tbody>
             </table>
-        </div>
     </div>
 </div>
 
@@ -469,7 +415,7 @@ $dotColors = ['#ef4444', '#3b82f6', '#f59e0b', '#10b981', '#8b5cf6', '#06b6d4'];
                                 <div class="info-list-row">
                                     <span class="info-list-label">Batas Layak</span>
                                     <span class="info-list-colon">:</span>
-                                    <span class="info-list-value text-success fw-bold" id="infoPassingScore">&ge; 350.00</span>
+                                    <span class="info-list-value text-success fw-bold" id="infoPassingScore">&ge; <?= esc($defaultPassingScore) ?></span>
                                 </div>
                                 <div class="info-list-row align-items-center">
                                     <span class="info-list-label">Status</span>
@@ -749,6 +695,24 @@ document.addEventListener('DOMContentLoaded', function () {
     // ============================================================
     // 0. Inisialisasi Select2 pada Modal Mapping Baru & Sinkron Info Produk
     // ============================================================
+    function formatPassingScore(val) {
+        var n = parseFloat(val);
+        if (isNaN(n)) {
+            n = parseFloat(<?= json_encode($defaultPassingScore) ?>) || 350;
+        }
+        return n.toFixed(2);
+    }
+
+    function syncPassingScoreInfo(scoreVal) {
+        var el = document.getElementById('infoPassingScore');
+        if (!el) return;
+        var scoreInput = document.getElementById('modalPassingScore');
+        var raw = (scoreVal !== undefined && scoreVal !== null && String(scoreVal) !== '')
+            ? scoreVal
+            : (scoreInput ? scoreInput.value : <?= json_encode($defaultPassingScore) ?>);
+        el.textContent = '\u2265 ' + formatPassingScore(raw);
+    }
+
     function syncProductInfoPanel(selectEl) {
         var opt = selectEl.options[selectEl.selectedIndex];
         if (opt && opt.value) {
@@ -769,13 +733,25 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('infoProdCategory').textContent = '-';
             document.getElementById('infoProdStatus').textContent = '-';
         }
+        // Batas Layak ikut nilai form (bukan hardcode 350)
+        syncPassingScoreInfo();
     }
 
     function initModalProductSelect2() {
         var $select = $('#modalProductSelect');
-        if ($.fn.select2) {
+        if (typeof App !== 'undefined' && App.initSelect2InModal) {
+            App.initSelect2InModal('#modalProductSelect', '#mappingModal', {
+                placeholder: '-- Pilih Kode Produk --',
+                allowClear: false,
+                width: '100%'
+            }).on('change', function () {
+                syncProductInfoPanel(this);
+            });
+        } else if ($.fn.select2) {
             $select.select2({
                 theme: 'bootstrap-5',
+                selectionCssClass: 'select2--small',
+                dropdownCssClass: 'select2--small',
                 dropdownParent: $('#mappingModal'),
                 placeholder: '-- Pilih Kode Produk --',
                 allowClear: false,
@@ -790,6 +766,16 @@ document.addEventListener('DOMContentLoaded', function () {
             pSelect.addEventListener('change', function () {
                 syncProductInfoPanel(this);
             });
+        }
+
+        var scoreInput = document.getElementById('modalPassingScore');
+        if (scoreInput) {
+            ['input', 'change'].forEach(function (evt) {
+                scoreInput.addEventListener(evt, function () {
+                    syncPassingScoreInfo(this.value);
+                });
+            });
+            syncPassingScoreInfo(scoreInput.value);
         }
     }
 
@@ -807,6 +793,8 @@ document.addEventListener('DOMContentLoaded', function () {
     } else if ($.fn.select2) {
         $('#filterProductSelect').select2({
             theme: 'bootstrap-5',
+            selectionCssClass: 'select2--small',
+            dropdownCssClass: 'select2--small',
             placeholder: 'Semua Master Produk',
             allowClear: true,
             width: '100%'
@@ -1714,6 +1702,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('modalVersionName').value = 'Versi 1.0 - Kebijakan 2026';
         if (document.getElementById('modalPassingScore')) {
             document.getElementById('modalPassingScore').value = <?= json_encode($defaultPassingScore) ?>;
+            syncPassingScoreInfo(<?= json_encode($defaultPassingScore) ?>);
         }
         var pSelect = document.getElementById('modalProductSelect');
         if (pSelect) {
@@ -1848,7 +1837,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 // 2. Set Version Name & Passing Score
                 document.getElementById('modalVersionName').value = data.version_name || '';
                 if (document.getElementById('modalPassingScore')) {
-                    document.getElementById('modalPassingScore').value = parseFloat(data.passing_score || 350.0).toFixed(2);
+                    var scoreVal = formatPassingScore(data.passing_score);
+                    document.getElementById('modalPassingScore').value = scoreVal;
+                    syncPassingScoreInfo(scoreVal);
                 }
 
                 // 3. Set Attachment

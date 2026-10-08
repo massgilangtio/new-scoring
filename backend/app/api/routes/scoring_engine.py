@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from app.api.deps import current_user, get_db
 from app.api.errors import ApiError
 from app.models.tables import ScoringVersion, User
-from app.services.authorization import SCORING_CONFIGURE, has_permission
+from app.services.authorization import SCORING_CONFIGURE, can_view_score_details, has_permission
 from app.services.scoring_engine import ScoringError, calculate_version
 
 router = APIRouter(prefix="/api/v1/scoring", tags=["scoring-engine"])
@@ -42,4 +42,23 @@ def calculate(
         result = calculate_version(db, version, [(row.parameter_id, row.option_id) for row in body.answers])
     except ScoringError as exc:
         raise ApiError(400, "01", exc.message) from exc
+
+    can_view = can_view_score_details(db, actor)
+    if not can_view:
+        result = {
+            "scoring_version_id": result.get("scoring_version_id"),
+            "version_status": result.get("version_status"),
+            "can_view_score_details": False,
+            "lines": [
+                {
+                    "parameter_name": line.get("parameter_name"),
+                    "option_label": line.get("option_label"),
+                    "display_order": line.get("display_order"),
+                }
+                for line in (result.get("lines") or [])
+            ],
+        }
+    else:
+        result = {**result, "can_view_score_details": True}
+
     return {"rcode": "00", "message": "Skor berhasil dihitung", "result": result}

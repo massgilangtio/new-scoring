@@ -38,6 +38,39 @@ class Auth extends BaseController
 
         $step = (string) ($result['result']['step'] ?? '');
         $token = (string) ($result['result']['mfa_token'] ?? '');
+
+        if ($step === 'direct') {
+            session()->regenerate(true);
+            $user = $result['result']['user'] ?? [];
+            session()->set([
+                'access_token'     => (string) ($result['result']['access_token'] ?? ''),
+                'npp'              => (string) ($user['npp'] ?? $user['username'] ?? ''),
+                'nama'             => (string) ($user['nama'] ?? $user['full_name'] ?? ''),
+                'jabatan'          => (string) ($user['jabatan'] ?? ''),
+                'rolenm'           => (string) ($user['rolenm'] ?? $user['role_name'] ?? ''),
+                'roleid'           => (string) ($user['roleid'] ?? ''),
+                'branchid'         => (string) ($user['branchid'] ?? ''),
+                'branch_name'      => (string) ($user['branch_name'] ?? $user['branchnm'] ?? ''),
+                'branchnm'         => (string) ($user['branchnm'] ?? $user['branch_name'] ?? ''),
+                'branch_code'      => (string) ($user['branch_code'] ?? $user['branchid'] ?? ''),
+                'id_unit_kerja'    => (string) ($user['id_unit_kerja'] ?? ''),
+                'nm_unit_kerja'    => (string) ($user['nm_unit_kerja'] ?? ''),
+                'id_kel_jabatan'   => (string) ($user['id_kel_jabatan'] ?? ''),
+                'nama_kel_jabatan' => (string) ($user['nama_kel_jabatan'] ?? ''),
+                'user'             => $user,
+            ]);
+
+            if ($this->request->isAJAX()) {
+                return $this->authJson([
+                    'ok'       => true,
+                    'step'     => 'direct',
+                    'redirect' => site_url('/'),
+                ]);
+            }
+
+            return redirect()->to('/');
+        }
+
         if (! in_array($step, ['mfa_setup', 'mfa_verify'], true) || $token === '') {
             return $this->failLogin('Respons autentikasi tidak dikenali');
         }
@@ -82,7 +115,32 @@ class Auth extends BaseController
         }
 
         session()->regenerate(true);
-        session()->set('access_token', (string) ($result['result']['access_token'] ?? ''));
+        $user = $result['result']['user'] ?? [];
+        session()->set([
+            'access_token'     => (string) ($result['result']['access_token'] ?? ''),
+            // Informasi profil pegawai spesifik yang diminta
+            'npp'              => (string) ($user['npp'] ?? $user['username'] ?? ''),
+            'nama'             => (string) ($user['nama'] ?? $user['full_name'] ?? ''),
+            'jabatan'          => (string) ($user['jabatan'] ?? ''),
+            'rolenm'           => (string) ($user['rolenm'] ?? $user['role_name'] ?? ''),
+            'roleid'           => (string) ($user['roleid'] ?? ''),
+            'branchid'         => (string) ($user['branchid'] ?? ''),
+            'branch_name'      => (string) ($user['branch_name'] ?? $user['branchnm'] ?? ''),
+            'branchnm'         => (string) ($user['branchnm'] ?? $user['branch_name'] ?? ''),
+            'branch_code'      => (string) ($user['branch_code'] ?? $user['branchid'] ?? ''),
+            // Informasi unit & organisasi
+            'id_unit_kerja'    => (string) ($user['id_unit_kerja'] ?? ''),
+            'nm_unit_kerja'    => (string) ($user['nm_unit_kerja'] ?? ''),
+            'id_kel_jabatan'   => (string) ($user['id_kel_jabatan'] ?? ''),
+            'nama_kel_jabatan' => (string) ($user['nama_kel_jabatan'] ?? ''),
+            // Field standar & objek user utuh
+            'username'         => (string) ($user['username'] ?? ''),
+            'full_name'        => (string) ($user['full_name'] ?? $user['nama'] ?? ''),
+            'role_name'        => (string) ($user['role_name'] ?? $user['rolenm'] ?? ''),
+            'permissions'      => $user['permissions'] ?? [],
+            'user'             => $user,
+        ]);
+
 
         if ($this->request->isAJAX()) {
             return $this->authJson(['ok' => true, 'redirect' => site_url('/')]);
@@ -96,6 +154,40 @@ class Auth extends BaseController
         session()->remove(['mfa_step', 'mfa_token', 'mfa_qr']);
         if ($this->request->isAJAX()) {
             return $this->authJson(['ok' => true]);
+        }
+
+        return redirect()->to('/login');
+    }
+
+    public function resetMfa()
+    {
+        $token = (string) session()->get('mfa_token');
+        if ($token === '') {
+            return $this->failMfa('Sesi autentikasi telah berakhir');
+        }
+
+        $result = (new ApiClient())->post('/api/v1/auth/mfa/reset', [], $token);
+        if (($result['rcode'] ?? '') !== '00') {
+            return $this->failMfa((string) ($result['message'] ?? 'Gagal mereset secret key'));
+        }
+
+        $step = (string) ($result['result']['step'] ?? 'mfa_setup');
+        $newToken = (string) ($result['result']['mfa_token'] ?? '');
+        $qr = (string) ($result['result']['qr_svg'] ?? '');
+
+        session()->set([
+            'mfa_step'  => $step,
+            'mfa_token' => $newToken,
+            'mfa_qr'    => $this->safeQr($qr),
+        ]);
+
+        if ($this->request->isAJAX()) {
+            return $this->authJson([
+                'ok'      => true,
+                'step'    => $step,
+                'qr'      => session()->get('mfa_qr'),
+                'message' => 'Secret key berhasil direset. Silakan scan barcode baru.',
+            ]);
         }
 
         return redirect()->to('/login');

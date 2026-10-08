@@ -6,7 +6,7 @@ import httpx
 from fastapi import APIRouter, Depends, File, UploadFile
 from openpyxl import load_workbook
 from pydantic import BaseModel, Field
-from sqlalchemy import func, select
+from sqlalchemy import func, select, text
 from sqlalchemy.orm import Session
 
 from app.api.deps import current_user, get_db
@@ -15,6 +15,7 @@ from app.core.config import get_settings
 from app.models.tables import Branch, Debtor, Product, ProductType, User
 from app.services.audit import write_audit
 from app.services.authorization import MASTER_MANAGE, has_permission, visible_branch_id
+from app.services.gateway import call_gateway_inq_branch
 
 router = APIRouter(prefix="/api/v1/master", tags=["master"])
 
@@ -37,7 +38,7 @@ class ProductBody(BaseModel):
 class DebtorBody(BaseModel):
     nik: str = Field(pattern=r"^[0-9]{16}$")
     full_name: str = Field(min_length=1, max_length=150)
-    branch_id: int
+    branch_id: int | None = None
     is_active: bool = True
     cis_id: str | None = None
     cif_id: str | None = None
@@ -168,6 +169,114 @@ def update_branch(
     )
     db.commit()
     return {"rcode": "00", "message": "Cabang berhasil diperbarui", "result": {"id": branch.id}}
+
+
+@router.post("/branches/sync")
+def sync_branches_from_gateway(
+    actor: User = Depends(require_master_manager),
+    db: Session = Depends(get_db),
+) -> dict:
+    settings = get_settings()
+    gateway_branches = call_gateway_inq_branch(settings)
+    if gateway_branches is None:
+        raise ApiError(502, "02", "Gagal menghubungi Core Gateway untuk inquiry cabang")
+
+    upsert_branches_sql = text("""
+        INSERT INTO branches (code, name, is_active, created_at, updated_at)
+        VALUES (:code, :name, :is_active, now(), now())
+        ON CONFLICT (code) DO UPDATE
+        SET name = EXCLUDED.name,
+            is_active = EXCLUDED.is_active,
+            updated_at = now()
+    """)
+
+    upsert_cfg_branch_sql = text("""
+        INSERT INTO cfg_branch (branchid, branchnm, address, city, typebu, stsbranch, stsaktif, mainbranch, created_at, updated_at)
+        VALUES (:branchid, :branchnm, :address, :city, :typebu, :stsbranch, :stsaktif, :mainbranch, now(), now())
+        ON CONFLICT (branchid) DO UPDATE
+        SET branchnm = EXCLUDED.branchnm,
+            address = EXCLUDED.address,
+            city = EXCLUDED.city,
+            typebu = EXCLUDED.typebu,
+            stsbranch = EXCLUDED.stsbranch,
+            stsaktif = EXCLUDED.stsaktif,
+            mainbranch = EXCLUDED.mainbranch,
+            updated_at = now()
+    """)
+
+    count = 0
+    valid_codes = []
+    for item in gateway_branches:
+        branch_id = str(item.get("BRANCHID", "")).strip()
+        if not branch_id:
+            continue
+        valid_codes.append(branch_id)
+        branch_name = str(item.get("BRANCHNM", "")).strip()
+        address = str(item.get("ADDRESS", "")).strip() if item.get("ADDRESS") else None
+        city = str(item.get("CITY", "")).strip() if item.get("CITY") else None
+        flg_open = item.get("FLGOPEN", 1)
+        is_active = bool(flg_open == 1)
+        main_branch = str(item.get("MAINBRNCH", "")).strip() if item.get("MAINBRNCH") else None
+        type_bu = int(item.get("TYPEBU")) if item.get("TYPEBU") is not None else 1
+        type_branch = int(item.get("TYPEBRNCH")) if item.get("TYPEBRNCH") is not None else 1
+
+        db.execute(
+            upsert_branches_sql,
+            {"code": branch_id, "name": branch_name, "is_active": is_active},
+        )
+        db.execute(
+            upsert_cfg_branch_sql,
+            {
+                "branchid": branch_id,
+                "branchnm": branch_name,
+                "address": address,
+                "city": city,
+                "typebu": type_bu,
+                "stsbranch": type_branch,
+                "stsaktif": 1 if is_active else 0,
+                "mainbranch": main_branch,
+            },
+        )
+        count += 1
+
+    # Bersihkan cabang lokal yang tidak ada dalam respon Core Gateway
+    if valid_codes:
+        pusat_id = db.scalar(select(Branch.id).where(Branch.code == "001"))
+        stale_branch_ids = list(
+            db.scalars(select(Branch.id).where(~Branch.code.in_(valid_codes))).all()
+        )
+        if stale_branch_ids and pusat_id:
+            db.execute(text("UPDATE users SET branch_id = :pusat_id WHERE branch_id = ANY(:ids)"), {"pusat_id": pusat_id, "ids": stale_branch_ids})
+            db.execute(text("UPDATE debtors SET branch_id = :pusat_id WHERE branch_id = ANY(:ids)"), {"pusat_id": pusat_id, "ids": stale_branch_ids})
+            db.execute(text("ALTER TABLE scoring_transactions DISABLE TRIGGER trg_scoring_transactions_guard"))
+            db.execute(text("UPDATE scoring_transactions SET branch_id = :pusat_id WHERE branch_id = ANY(:ids)"), {"pusat_id": pusat_id, "ids": stale_branch_ids})
+            db.execute(text("ALTER TABLE scoring_transactions ENABLE TRIGGER trg_scoring_transactions_guard"))
+            db.execute(text("UPDATE credit_scorings SET branch_id = :pusat_id WHERE branch_id = ANY(:ids)"), {"pusat_id": pusat_id, "ids": stale_branch_ids})
+            db.execute(text("UPDATE rescore_requests SET branch_id = :pusat_id WHERE branch_id = ANY(:ids)"), {"pusat_id": pusat_id, "ids": stale_branch_ids})
+            db.execute(text("ALTER TABLE audit_logs DISABLE TRIGGER trg_audit_logs_immutable"))
+            db.execute(text("UPDATE audit_logs SET actor_branch_id = :pusat_id WHERE actor_branch_id = ANY(:ids)"), {"pusat_id": pusat_id, "ids": stale_branch_ids})
+            db.execute(text("ALTER TABLE audit_logs ENABLE TRIGGER trg_audit_logs_immutable"))
+            db.execute(text("DELETE FROM branches WHERE id = ANY(:ids)"), {"ids": stale_branch_ids})
+
+        db.execute(text("DELETE FROM cfg_branch WHERE NOT (branchid = ANY(:codes))"), {"codes": valid_codes})
+
+    write_audit(
+        db,
+        actor,
+        "master.branches_synced_gateway",
+        object_type="branch",
+        object_id="all",
+        after_data={"total_synced": count},
+    )
+    db.commit()
+
+    return {
+        "rcode": "00",
+        "message": f"Berhasil sinkronisasi {count} cabang dari Core Banking Gateway",
+        "result": {"total": count},
+    }
+
+
 
 
 def _plain_number(value: Decimal | None) -> str | None:
@@ -690,7 +799,8 @@ def create_debtor(
 ) -> dict:
     if db.scalar(select(Debtor.id).where(Debtor.nik == body.nik)) is not None:
         raise ApiError(400, "01", "NIK sudah terdaftar")
-    _branch_for_write(db, actor, body.branch_id)
+    target_branch_id = body.branch_id or actor.branch_id
+    _branch_for_write(db, actor, target_branch_id)
     profile = _debtor_profile(body)
     # CIS ID create by sistem (10 digit: 02 + YY + 6-digit sequence)
     if not profile.get("cis_id") or len(str(profile.get("cis_id"))) != 10:
@@ -699,7 +809,7 @@ def create_debtor(
     debtor = Debtor(
         nik=body.nik,
         full_name=body.full_name.strip(),
-        branch_id=body.branch_id,
+        branch_id=target_branch_id,
         is_active=body.is_active,
         created_by=actor.id,
         **profile,
@@ -727,7 +837,8 @@ def update_debtor(
     taken = db.scalar(select(Debtor.id).where(Debtor.nik == body.nik, Debtor.id != debtor.id))
     if taken is not None:
         raise ApiError(400, "01", "NIK sudah terdaftar")
-    _branch_for_write(db, actor, body.branch_id)
+    target_branch_id = body.branch_id or debtor.branch_id or actor.branch_id
+    _branch_for_write(db, actor, target_branch_id)
     before = {
         "nik": debtor.nik,
         "full_name": debtor.full_name,
@@ -736,7 +847,7 @@ def update_debtor(
     }
     debtor.nik = body.nik
     debtor.full_name = body.full_name.strip()
-    debtor.branch_id = body.branch_id
+    debtor.branch_id = target_branch_id
     debtor.is_active = body.is_active
     for key, value in _debtor_profile(body).items():
         if key in body.model_fields_set:

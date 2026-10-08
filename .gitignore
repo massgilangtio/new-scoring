@@ -22,29 +22,23 @@ frontend/writable/session/*
 !frontend/writable/**/.gitkeep
 
 # local screenshot tooling
-docs/phase1-screenshots/node_modules/
-docs/phase1-screenshots/package-lock.json
-docs/phase1-screenshots/package.json
+node_modules/
+**/node_modules/
+backend/temp_chrome_profile*/
+temp_chrome_profile*/
+docs/login_debug.png
+docs/test_login.mjs
 docs/phase1-screenshots/chrome-profile*/
 docs/phase1-screenshots/measure.js
 docs/phase1-screenshots/measure-dom.html
 docs/phase1-screenshots/measure-dom.html.err
-docs/phase3-screenshots/node_modules/
-docs/phase3-screenshots/package-lock.json
-docs/phase3-screenshots/package.json
 docs/phase3-screenshots/shot.js
 docs/phase3-screenshots/_extract_ca.py
-docs/phase4-screenshots/node_modules/
-docs/phase4-screenshots/package-lock.json
-docs/phase4-screenshots/package.json
 docs/phase4-screenshots/shot.js
 docs/phase4-screenshots/_extract_v2.py
 docs/phase4-screenshots/_v2_out.txt
-docs/phase5-screenshots/node_modules/
 docs/phase5-screenshots/shot.js
-docs/phase6-screenshots/node_modules/
 docs/phase6-screenshots/shot.js
-docs/phase7-screenshots/node_modules/
 docs/phase7-screenshots/shot.js
 frontend/public/_phase1_shell_preview_mobile_open.html
 frontend/public/_phase1_measure.html

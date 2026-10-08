@@ -20,68 +20,41 @@ $doneCount = (int) (($statusCounts['approved'] ?? 0) + ($statusCounts['rejected'
 <div data-swal="error" data-swal-title="Terjadi Kesalahan" data-swal-message="<?= esc($error) ?>" hidden></div>
 <?php endif; ?>
 
-<div class="row mb-3">
-    <div class="col-xl-4 col-md-4">
-        <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-info bg-gradient-to-blue overflow-hidden" data-bs-theme="dark">
-            <div class="card-body position-relative z-3">
-                <div class="mb-2 fw-bold text-white">Total Pengajuan</div>
-                <div class="h2 mb-4"><?= esc((string) $totalTx) ?></div>
-                <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:100%;"></div></div>
-                <div class="small fw-semibold text-white text-opacity-75 mb-n1">Semua pengajuan scoring</div>
-            </div>
-            <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
-                <iconify-icon icon="solar:document-text-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-4 col-md-4 mt-3 mt-md-0">
-        <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-orange bg-gradient-to-pink overflow-hidden" data-bs-theme="dark">
-            <div class="card-body position-relative z-3">
-                <div class="mb-2 fw-bold text-white">Dalam Proses</div>
-                <div class="h2 mb-4"><?= esc((string) ($draftCount + $pendingCount)) ?></div>
-                <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:<?= $totalTx > 0 ? (int) round(($draftCount + $pendingCount) / $totalTx * 100) : 0 ?>%;"></div></div>
-                <div class="small fw-semibold text-white text-opacity-75 mb-n1">Draft / menunggu approval</div>
-            </div>
-            <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
-                <iconify-icon icon="solar:hourglass-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-4 col-md-4 mt-3 mt-md-0">
-        <div class="card rounded-3 border-0 bg-gradient-135 bg-gradient-from-teal bg-gradient-to-green overflow-hidden" data-bs-theme="dark">
-            <div class="card-body position-relative z-3">
-                <div class="mb-2 fw-bold text-white">Selesai</div>
-                <div class="h2 mb-4"><?= esc((string) $doneCount) ?></div>
-                <div class="progress h-5px bg-black mb-2"><div class="progress-bar bg-white bg-opacity-100 rounded-end" style="width:<?= $totalTx > 0 ? (int) round($doneCount / $totalTx * 100) : 0 ?>%;"></div></div>
-                <div class="small fw-semibold text-white text-opacity-75 mb-n1">Approved / rejected</div>
-            </div>
-            <div class="position-absolute w-100px h-100px bottom-0 end-0 d-flex align-items-center justify-content-center m-n3">
-                <iconify-icon icon="solar:check-circle-bold-duotone" class="text-black text-opacity-30" style="font-size:150px"></iconify-icon>
-            </div>
-        </div>
-    </div>
-</div>
+<?= view('partials/kpi_solid', ['items' => [
+    ['label' => 'Total Pengajuan', 'value' => $totalTx, 'sub' => 'Semua pengajuan scoring', 'tone' => 'blue', 'icon' => 'solar:document-text-bold-duotone'],
+    ['label' => 'Dalam Proses', 'value' => $draftCount + $pendingCount, 'sub' => 'Draft / menunggu approval', 'tone' => 'orange', 'icon' => 'solar:hourglass-bold-duotone'],
+    ['label' => 'Selesai', 'value' => $doneCount, 'sub' => 'Approved / rejected', 'tone' => 'teal', 'icon' => 'solar:check-circle-bold-duotone'],
+]]) ?>
 
 <div class="card card-borderless table-card">
     <div class="card-header bg-gray-900" data-bs-theme="dark">
-        <h4 class="card-header-title text-white mb-0">
+        <h4 class="card-header-title text-white mb-0 d-flex align-items-center">
             <iconify-icon icon="solar:document-text-bold-duotone" class="me-1"></iconify-icon>
             Daftar Pengajuan Scoring
+            <?php
+            $userBranchId = (string) ($profile['branchid'] ?? '001');
+            $userBranchName = (string) ($profile['branch_name'] ?? '');
+            if ($userBranchId !== '001') : ?>
+                <span class="badge bg-theme text-theme-color ms-2"><i class="fa fa-building me-1"></i>Cabang: <?= esc($userBranchId) ?> - <?= esc($userBranchName) ?></span>
+            <?php else : ?>
+                <span class="badge bg-indigo-subtle text-indigo border ms-2"><i class="fa fa-globe me-1"></i>Kantor Pusat (Semua Cabang)</span>
+            <?php endif; ?>
         </h4>
         <div class="card-header-btn">
-            <a href="<?= site_url('scoring/credit') ?>" class="btn btn-theme btn-sm">
-                <i class="fa fa-plus me-1"></i> Pengajuan Baru
+            <a href="<?= site_url('scoring/credit') ?>" class="btn btn-theme btn-xs">
+                <i class="fa fa-plus me-1"></i><span class="btn-label-full"> Pengajuan Baru</span>
             </a>
+            <?= view('partials/card_widget_btn', ['wrap' => false]) ?>
         </div>
     </div>
-    <div class="card-body p-0">
-        <div class="table-responsive">
-            <table id="transactionsTable" class="table table-hover table-striped align-middle mb-0">
+    <div class="card-body">
+            <table id="transactionsTable" class="table table-hover table-striped align-middle mb-0 w-100">
                 <thead>
                     <tr>
                         <th style="width:50px;">No</th>
                         <th>Nomor Pengajuan</th>
                         <th>Nama Debitur</th>
+                        <th>Cabang</th>
                         <th>Produk</th>
                         <th>Tanggal</th>
                         <th>Status</th>
@@ -104,6 +77,16 @@ $doneCount = (int) (($statusCounts['approved'] ?? 0) + ($statusCounts['rejected'
                                 </div>
                             </td>
                             <td class="fw-semibold"><?= esc($item['debtor_name']) ?></td>
+                            <td>
+                                <div class="d-flex flex-column gap-0">
+                                    <span class="badge bg-secondary-subtle text-secondary border font-monospace mb-1" style="width: fit-content;">
+                                        <i class="fa fa-building me-1"></i><?= esc($item['branch_code'] ?: '-') ?>
+                                    </span>
+                                    <span class="small text-muted text-truncate" style="max-width:180px;" title="<?= esc($item['branch_name'] ?: '-') ?>">
+                                        <?= esc($item['branch_name'] ?: '-') ?>
+                                    </span>
+                                </div>
+                            </td>
                             <td><?= esc($item['product_name']) ?></td>
                             <td><?= esc(! empty($item['created_at']) ? date('d M Y', strtotime($item['created_at'])) : '-') ?></td>
                             <td>
@@ -112,34 +95,48 @@ $doneCount = (int) (($statusCounts['approved'] ?? 0) + ($statusCounts['rejected'
                                 </span>
                             </td>
                             <td class="text-center">
-                                <div class="d-inline-flex align-items-center gap-1">
-                                    <a href="<?= site_url('transactions/' . $item['id']) ?>"
-                                       class="btn btn-default btn-xs btn-icon"
-                                       title="Buka Detail">
-                                        <i class="fa fa-eye"></i>
-                                    </a>
-                                    <?php if (in_array($status, ['approved', 'rejected'], true)) : ?>
-                                    <form method="post" action="<?= site_url('transactions/' . $item['id'] . '/duplicate') ?>" class="d-inline rescore-from-tx-form">
-                                        <?= csrf_field() ?>
-                                        <button type="button" class="btn btn-theme btn-xs btn-icon btn-rescore-tx" title="Scoring Ulang">
-                                            <i class="fa fa-arrows-rotate"></i>
-                                        </button>
-                                    </form>
-                                    <?php endif; ?>
-                                </div>
+                                <?php
+                                ob_start();
+                                ?>
+                                        <li>
+                                            <a href="<?= site_url('transactions/' . $item['id']) ?>" class="dropdown-action-item">
+                                                <span class="action-icon-circle action-icon-green"><i class="fa-solid fa-eye"></i></span>
+                                                <div class="action-text-group">
+                                                    <span class="action-title">Buka Detail</span>
+                                                    <span class="action-desc">Lihat / lanjutkan pengajuan</span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <?php if (in_array($status, ['approved', 'rejected'], true)) : ?>
+                                        <li><hr class="dropdown-divider my-1"></li>
+                                        <li>
+                                            <form method="post" action="<?= site_url('transactions/' . $item['id'] . '/duplicate') ?>" class="rescore-from-tx-form m-0 p-0">
+                                                <?= csrf_field() ?>
+                                                <button type="button" class="dropdown-action-item btn-rescore-tx">
+                                                    <span class="action-icon-circle action-icon-orange"><i class="fa-solid fa-arrows-rotate"></i></span>
+                                                    <div class="action-text-group">
+                                                        <span class="action-title">Scoring Ulang</span>
+                                                        <span class="action-desc">Buat pengajuan baru dari data ini</span>
+                                                    </div>
+                                                </button>
+                                            </form>
+                                        </li>
+                                        <?php endif; ?>
+                                <?php
+                                echo view('partials/action_dropdown_btn', ['menuHtml' => ob_get_clean()]);
+                                ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>
                     <?php if (empty($items)) : ?>
                         <tr>
-                            <td colspan="7" class="text-center text-muted py-4">
+                            <td colspan="8" class="text-center text-muted py-4">
                                 Belum ada pengajuan. Klik "Pengajuan Baru" untuk memulai.
                             </td>
                         </tr>
                     <?php endif; ?>
                 </tbody>
             </table>
-        </div>
     </div>
 </div>
 
@@ -147,10 +144,10 @@ $doneCount = (int) (($statusCounts['approved'] ?? 0) + ($statusCounts['rejected'
 $(document).ready(function () {
     if ($('#transactionsTable tbody tr td[colspan]').length === 0) {
         App.initDT('#transactionsTable', {
-            order: [[4, 'desc']],
+            order: [[5, 'desc']],
             columnDefs: [
-                { orderable: false, targets: [6] },
-                { searchable: false, targets: [0, 6] }
+                { orderable: false, targets: [7] },
+                { searchable: false, targets: [0, 7] }
             ]
         });
     }

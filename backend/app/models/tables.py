@@ -76,18 +76,22 @@ class RolePermission(Base):
     )
 
 
-class JobGroup(Base):
-    """Kelompok Jabatan — dihubungkan ke Role untuk otorisasi user."""
+class KelompokJabatan(Base):
+    """Kelompok Jabatan HRIS (tbl_kel_jabatan) — dihubungkan ke Role untuk otorisasi user."""
 
-    __tablename__ = "job_groups"
+    __tablename__ = "tbl_kel_jabatan"
 
     id: Mapped[int] = _pk()
-    code: Mapped[str] = mapped_column(Text, unique=True, nullable=False)
-    name: Mapped[str] = mapped_column(Text, nullable=False)
-    role_id: Mapped[int] = mapped_column(ForeignKey("roles.id", ondelete="RESTRICT"), nullable=False)
+    id_kel_jabatan: Mapped[str] = mapped_column(String(50), nullable=False)
+    nama_kel_jabatan: Mapped[str | None] = mapped_column(String(200))
+    role_id: Mapped[int | None] = mapped_column(ForeignKey("roles.id", ondelete="SET NULL"))
+    total_pegawai: Mapped[int] = mapped_column(Integer, default=0, server_default=text("0"))
     is_active: Mapped[bool] = mapped_column(Boolean, nullable=False, server_default=text("true"))
     created_at: Mapped[datetime] = _created_at()
     updated_at: Mapped[datetime] = _updated_at()
+
+
+JobGroup = KelompokJabatan
 
 
 class User(Base):
@@ -104,7 +108,7 @@ class User(Base):
     password_hash: Mapped[str] = mapped_column(Text, nullable=False)
     full_name: Mapped[str] = mapped_column(Text, nullable=False)
     role_id: Mapped[int] = mapped_column(ForeignKey("roles.id", ondelete="RESTRICT"), nullable=False)
-    job_group_id: Mapped[int | None] = mapped_column(ForeignKey("job_groups.id", ondelete="RESTRICT"))
+    job_group_id: Mapped[int | None] = mapped_column(ForeignKey("tbl_kel_jabatan.id", ondelete="SET NULL"))
     branch_id: Mapped[int] = mapped_column(ForeignKey("branches.id", ondelete="RESTRICT"), nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean, nullable=False, server_default=text("true"))
     mfa_secret_encrypted: Mapped[str | None] = mapped_column(Text)
@@ -290,7 +294,7 @@ class ScoringTransaction(Base):
     __tablename__ = "scoring_transactions"
     __table_args__ = (
         CheckConstraint(
-            "status IN ('draft', 'submitted', 'waiting_for_approver_assignment', 'approved', 'returned', 'rejected')",
+            "status IN ('draft', 'submitted', 'waiting_for_approver_assignment', 'waiting_duplicate_approval', 'approved', 'returned', 'rejected')",
             name="ck_scoring_transactions_status",
         ),
         CheckConstraint("current_revision >= 0", name="ck_scoring_transactions_revision"),
@@ -306,7 +310,9 @@ class ScoringTransaction(Base):
         ForeignKey("scoring_versions.id", ondelete="RESTRICT"), nullable=False
     )
     branch_id: Mapped[int] = mapped_column(ForeignKey("branches.id", ondelete="RESTRICT"), nullable=False)
+    branchid: Mapped[str | None] = mapped_column(Text, nullable=True)
     status: Mapped[str] = mapped_column(Text, nullable=False, server_default=text("'draft'"))
+    duplicate_reason: Mapped[str | None] = mapped_column(Text, nullable=True)
     created_by: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="RESTRICT"), nullable=False)
     assigned_approver_id: Mapped[int | None] = mapped_column(ForeignKey("users.id", ondelete="RESTRICT"))
     duplicated_from_id: Mapped[int | None] = mapped_column(
@@ -500,7 +506,7 @@ class Notification(Base):
     __tablename__ = "notifications"
     __table_args__ = (
         CheckConstraint(
-            "event_type IN ('sent_to_approver', 'approved', 'returned', 'rejected')",
+            "event_type IN ('sent_to_approver', 'approved', 'returned', 'rejected', 'duplicate_approved', 'duplicate_rejected')",
             name="ck_notifications_event_type",
         ),
         CheckConstraint("channel = 'in_app'", name="ck_notifications_channel"),
@@ -608,10 +614,12 @@ class CreditScoring(Base):
     passing_score: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False, server_default=text("350.00"))
     eligibility_status: Mapped[str] = mapped_column(Text, nullable=False, server_default=text("'TIDAK LAYAK'"))
     status: Mapped[str] = mapped_column(Text, nullable=False, server_default=text("'draft'"))
+    duplicate_reason: Mapped[str | None] = mapped_column(Text, nullable=True)
     supervisor_id: Mapped[int | None] = mapped_column(ForeignKey("users.id", ondelete="SET NULL"))
     notes: Mapped[str | None] = mapped_column(Text)
     created_by: Mapped[int | None] = mapped_column(ForeignKey("users.id", ondelete="SET NULL"))
     branch_id: Mapped[int | None] = mapped_column(ForeignKey("branches.id", ondelete="SET NULL"))
+    branchid: Mapped[str | None] = mapped_column(Text, nullable=True)
     created_at: Mapped[datetime] = _created_at()
     updated_at: Mapped[datetime] = _updated_at()
 
