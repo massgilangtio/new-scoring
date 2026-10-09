@@ -99,5 +99,10 @@ $routes->get('audit/datatables', 'AuditTrail::datatables', ['filter' => 'session
 $routes->get('audit/detail/(:num)', 'AuditTrail::detail/$1', ['filter' => 'sessionauth']);
 $routes->get('audit', 'AuditTrail::index', ['filter' => 'sessionauth']);
 
+$routes->get('system-logs/datatables', 'SystemLogs::datatables', ['filter' => 'sessionauth']);
+$routes->get('system-logs/detail/(:num)', 'SystemLogs::detail/$1', ['filter' => 'sessionauth']);
+$routes->post('system-logs/clear', 'SystemLogs::clear', ['filter' => 'sessionauth']);
+$routes->get('system-logs', 'SystemLogs::index', ['filter' => 'sessionauth']);
+
 $routes->get('notifications', 'Notifications::index', ['filter' => 'sessionauth']);
 $routes->post('notifications/(:num)/read', 'Notifications::read/$1', ['filter' => 'sessionauth']);

@@ -12,6 +12,8 @@ backend/.env
 _run.log
 _run.err
 *.log
+backend/logs/
+logs/
 .DS_Store
 Thumbs.db
 backend/.venv/

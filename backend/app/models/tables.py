@@ -636,3 +636,34 @@ class CreditScoringDetail(Base):
     value: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False, server_default=text("0"))
     total: Mapped[Decimal] = mapped_column(Numeric(12, 2), nullable=False, server_default=text("0"))
 
+
+class SystemLog(Base):
+    __tablename__ = "system_logs"
+    __table_args__ = (
+        Index("ix_system_logs_created_at", "created_at"),
+        Index("ix_system_logs_level", "level"),
+        Index("ix_system_logs_status_code", "status_code"),
+        Index("ix_system_logs_path", "path"),
+        Index("ix_system_logs_username", "username"),
+    )
+
+    id: Mapped[int] = _pk()
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=text("now()")
+    )
+    level: Mapped[str] = mapped_column(String(20), nullable=False, server_default=text("'INFO'"))
+    status_code: Mapped[int] = mapped_column(Integer, nullable=False)
+    method: Mapped[str] = mapped_column(String(10), nullable=False)
+    path: Mapped[str] = mapped_column(String(500), nullable=False)
+    query_params: Mapped[str | None] = mapped_column(Text)
+    client_ip: Mapped[str | None] = mapped_column(String(50))
+    user_agent: Mapped[str | None] = mapped_column(Text)
+    user_id: Mapped[int | None] = mapped_column(BigInteger)
+    username: Mapped[str | None] = mapped_column(String(100))
+    execution_time_ms: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False, server_default=text("0"))
+    request_body: Mapped[dict | list | None] = mapped_column(JSONB)
+    response_body: Mapped[dict | list | None] = mapped_column(JSONB)
+    error_message: Mapped[str | None] = mapped_column(Text)
+    traceback: Mapped[str | None] = mapped_column(Text)
+
+

@@ -15,6 +15,7 @@ function access_perm_module(string $code): array
         'master'    => ['key' => 'master', 'label' => 'Master Data', 'icon' => 'fa-solid fa-database', 'tone' => 'master'],
         'report'    => ['key' => 'report', 'label' => 'Laporan', 'icon' => 'fa-solid fa-chart-pie', 'tone' => 'report'],
         'audit'     => ['key' => 'audit', 'label' => 'Audit Trail', 'icon' => 'fa-solid fa-shield-halved', 'tone' => 'audit'],
+        'system'    => ['key' => 'audit', 'label' => 'Log Sistem & Error', 'icon' => 'fa-solid fa-server', 'tone' => 'audit'],
         'access'    => ['key' => 'access', 'label' => 'User & Access', 'icon' => 'fa-solid fa-user-group', 'tone' => 'access'],
         'branch'    => ['key' => 'other', 'label' => 'Lainnya', 'icon' => 'fa-solid fa-ellipsis', 'tone' => 'other'],
     ];

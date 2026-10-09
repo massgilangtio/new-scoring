@@ -1,3 +1,5 @@
+import traceback
+
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
@@ -6,6 +8,7 @@ from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.api.errors import ApiError
+from app.api.middleware import SystemLogMiddleware
 from app.api.routes.access import router as access_router
 from app.api.routes.audit import router as audit_router
 from app.api.routes.auth import router as auth_router
@@ -20,9 +23,14 @@ from app.api.routes.rescore import router as rescore_router
 from app.api.routes.transactions import router as transaction_router
 from app.api.routes.scoring_parameters import router as scoring_params_router
 from app.api.routes.gateway_mock import router as gateway_mock_router
+from app.api.routes.system_logs import router as system_logs_router
 from app.db.session import engine
 
 app = FastAPI(title="New Credit Score", version="0.1.0", docs_url=None, redoc_url=None, openapi_url=None)
+
+# Register SystemLogMiddleware before routers
+app.add_middleware(SystemLogMiddleware)
+
 app.include_router(auth_router)
 app.include_router(audit_router)
 app.include_router(dashboard_router)
@@ -37,10 +45,12 @@ app.include_router(rescore_router)
 app.include_router(report_router)
 app.include_router(notification_router)
 app.include_router(gateway_mock_router)
+app.include_router(system_logs_router)
 
 
 @app.exception_handler(ApiError)
 def api_error_handler(_request: Request, exc: ApiError) -> JSONResponse:
+    _request.state.error_message = f"[{exc.rcode}] {exc.message}"
     return JSONResponse(
         status_code=exc.status_code,
         content={"rcode": exc.rcode, "message": exc.message, "result": {}},
@@ -58,11 +68,14 @@ def http_error_handler(_request: Request, exc: StarletteHTTPException) -> JSONRe
     else:
         message = "Permintaan tidak dapat diproses"
         rcode = "99"
+    _request.state.error_message = f"HTTP {exc.status_code}: {message}"
     return JSONResponse(status_code=exc.status_code, content={"rcode": rcode, "message": message, "result": {}})
 
 
 @app.exception_handler(Exception)
 def unhandled_handler(_request: Request, _exc: Exception) -> JSONResponse:
+    _request.state.error_message = f"{_exc.__class__.__name__}: {str(_exc)}"
+    _request.state.traceback = traceback.format_exc()
     return JSONResponse(
         status_code=500,
         content={"rcode": "99", "message": "Terjadi kesalahan pada layanan", "result": {}},
@@ -71,10 +84,12 @@ def unhandled_handler(_request: Request, _exc: Exception) -> JSONResponse:
 
 @app.exception_handler(RequestValidationError)
 def validation_handler(_request: Request, _exc: RequestValidationError) -> JSONResponse:
+    _request.state.error_message = f"Validation Error: {_exc.errors()}"
     return JSONResponse(
         status_code=400,
         content={"rcode": "01", "message": "Data permintaan tidak lengkap", "result": {}},
     )
+
 
 
 @app.get("/health")

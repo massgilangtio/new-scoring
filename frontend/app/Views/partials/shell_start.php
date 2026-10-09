@@ -74,6 +74,9 @@ if ($can('report.changes')) {
 if ($can('audit.view')) {
     $reports[] = ['label' => 'Audit Trail', 'href' => site_url('audit'), 'active' => $path === 'audit' || str_starts_with($path, 'audit/'), 'icon' => 'fa-solid fa-shield-halved'];
 }
+if ($can('system.logs') || $can('audit.view')) {
+    $reports[] = ['label' => 'Log Sistem & Error', 'href' => site_url('system-logs'), 'active' => $path === 'system-logs' || str_starts_with($path, 'system-logs/'), 'icon' => 'fa-solid fa-bug'];
+}
 if ($reports !== []) {
     $groups[] = ['label' => 'Laporan', 'icon' => 'fa-solid fa-file-lines', 'theme' => 'red', 'items' => $reports];
 }
